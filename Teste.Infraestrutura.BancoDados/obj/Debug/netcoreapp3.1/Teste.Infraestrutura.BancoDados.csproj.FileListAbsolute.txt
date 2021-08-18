@@ -1,0 +1,14 @@
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\bin\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.deps.json
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\bin\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.dll
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\bin\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.pdb
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\bin\Debug\netcoreapp3.1\Teste.Dominio.dll
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\bin\Debug\netcoreapp3.1\Teste.Dominio.pdb
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\bin\Debug\netcoreapp3.1\Teste.Dominio.dll.config
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\obj\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.csproj.AssemblyReference.cache
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\obj\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.GeneratedMSBuildEditorConfig.editorconfig
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\obj\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.AssemblyInfoInputs.cache
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\obj\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.AssemblyInfo.cs
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\obj\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.csproj.CoreCompileInputs.cache
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\obj\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.csproj.CopyComplete
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\obj\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.dll
+C:\Tiradentes\Teste\Tiradentes\Teste.Infraestrutura.BancoDados\obj\Debug\netcoreapp3.1\Teste.Infraestrutura.BancoDados.pdb
