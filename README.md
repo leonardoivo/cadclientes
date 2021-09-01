@@ -1,2 +1,0 @@
-# Tiradentes-Backend-Teste
-

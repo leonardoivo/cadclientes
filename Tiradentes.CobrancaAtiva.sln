@@ -1,0 +1,85 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31624.102
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{53783008-995E-4A47-9F1D-986243525924}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "tests", "tests", "{99A0628B-90AD-4FE5-A7BE-F9BBFC9DAE2C}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Api", "Api", "{270806F7-1D84-4A29-B9AE-5BA46140D02F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tiradentes.CobrancaAtiva.Api", "src\Tiradentes.CobrancaAtiva.Api\Tiradentes.CobrancaAtiva.Api.csproj", "{8F1F579A-4E6D-4B01-9756-2054F06C5079}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Application", "Application", "{D953D67E-88A9-4C37-9214-60E80B3D93C7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tiradentes.CobrancaAtiva.Application", "src\Tiradentes.CobrancaAtiva.Application\Tiradentes.CobrancaAtiva.Application.csproj", "{4D7C5DAB-77B7-4A8F-87F3-DC82BEEE92DD}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Domain", "Domain", "{87371425-1F27-4771-8A03-A71EEE8C7CD8}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ioc", "Ioc", "{EC7F73DA-C8BC-4341-B03D-2A08DD977826}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{E61301A3-09E3-4A58-B107-5B72860EA2E2}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tiradentes.CobrancaAtiva.Domain", "src\Tiradentes.CobrancaAtiva.Domain\Tiradentes.CobrancaAtiva.Domain.csproj", "{8DFE1FFA-9FDC-4B64-A2CF-A0C6C7193831}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tiradentes.CobrancaAtiva.CrossCutting.IoC", "src\Tiradentes.CobrancaAtiva.CrossCutting.IoC\Tiradentes.CobrancaAtiva.CrossCutting.IoC.csproj", "{522FF44D-73D6-4425-A01F-76A6AF6BE76E}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tiradentes.CobrancaAtiva.Services", "src\Tiradentes.CobrancaAtiva\Tiradentes.CobrancaAtiva.Services.csproj", "{040788F2-483B-446B-AE2F-55BA14DC1A1E}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Infrastructure", "Infrastructure", "{F1F27DD6-2002-4B70-AADE-28D60D66AEA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Tiradentes.CobrancaAtiva.Infrastructure", "src\Tiradentes.CobrancaAtiva.Infrastructure\Tiradentes.CobrancaAtiva.Infrastructure.csproj", "{55C7CC38-0EDB-4F86-958C-A9478BC6C426}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{8F1F579A-4E6D-4B01-9756-2054F06C5079}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8F1F579A-4E6D-4B01-9756-2054F06C5079}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8F1F579A-4E6D-4B01-9756-2054F06C5079}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8F1F579A-4E6D-4B01-9756-2054F06C5079}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4D7C5DAB-77B7-4A8F-87F3-DC82BEEE92DD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4D7C5DAB-77B7-4A8F-87F3-DC82BEEE92DD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4D7C5DAB-77B7-4A8F-87F3-DC82BEEE92DD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4D7C5DAB-77B7-4A8F-87F3-DC82BEEE92DD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8DFE1FFA-9FDC-4B64-A2CF-A0C6C7193831}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8DFE1FFA-9FDC-4B64-A2CF-A0C6C7193831}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8DFE1FFA-9FDC-4B64-A2CF-A0C6C7193831}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8DFE1FFA-9FDC-4B64-A2CF-A0C6C7193831}.Release|Any CPU.Build.0 = Release|Any CPU
+		{522FF44D-73D6-4425-A01F-76A6AF6BE76E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{522FF44D-73D6-4425-A01F-76A6AF6BE76E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{522FF44D-73D6-4425-A01F-76A6AF6BE76E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{522FF44D-73D6-4425-A01F-76A6AF6BE76E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{040788F2-483B-446B-AE2F-55BA14DC1A1E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{040788F2-483B-446B-AE2F-55BA14DC1A1E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{040788F2-483B-446B-AE2F-55BA14DC1A1E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{040788F2-483B-446B-AE2F-55BA14DC1A1E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{55C7CC38-0EDB-4F86-958C-A9478BC6C426}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{55C7CC38-0EDB-4F86-958C-A9478BC6C426}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{55C7CC38-0EDB-4F86-958C-A9478BC6C426}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{55C7CC38-0EDB-4F86-958C-A9478BC6C426}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{270806F7-1D84-4A29-B9AE-5BA46140D02F} = {53783008-995E-4A47-9F1D-986243525924}
+		{8F1F579A-4E6D-4B01-9756-2054F06C5079} = {270806F7-1D84-4A29-B9AE-5BA46140D02F}
+		{D953D67E-88A9-4C37-9214-60E80B3D93C7} = {53783008-995E-4A47-9F1D-986243525924}
+		{4D7C5DAB-77B7-4A8F-87F3-DC82BEEE92DD} = {D953D67E-88A9-4C37-9214-60E80B3D93C7}
+		{87371425-1F27-4771-8A03-A71EEE8C7CD8} = {53783008-995E-4A47-9F1D-986243525924}
+		{EC7F73DA-C8BC-4341-B03D-2A08DD977826} = {53783008-995E-4A47-9F1D-986243525924}
+		{E61301A3-09E3-4A58-B107-5B72860EA2E2} = {53783008-995E-4A47-9F1D-986243525924}
+		{8DFE1FFA-9FDC-4B64-A2CF-A0C6C7193831} = {87371425-1F27-4771-8A03-A71EEE8C7CD8}
+		{522FF44D-73D6-4425-A01F-76A6AF6BE76E} = {EC7F73DA-C8BC-4341-B03D-2A08DD977826}
+		{040788F2-483B-446B-AE2F-55BA14DC1A1E} = {E61301A3-09E3-4A58-B107-5B72860EA2E2}
+		{F1F27DD6-2002-4B70-AADE-28D60D66AEA5} = {53783008-995E-4A47-9F1D-986243525924}
+		{55C7CC38-0EDB-4F86-958C-A9478BC6C426} = {F1F27DD6-2002-4B70-AADE-28D60D66AEA5}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {1FCB1346-BD83-4A39-8A7A-0D27BAA01085}
+	EndGlobalSection
+EndGlobal

@@ -1,0 +1,13 @@
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\obj\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.csproj.AssemblyReference.cache
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\obj\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\obj\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.AssemblyInfoInputs.cache
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\obj\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.AssemblyInfo.cs
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\obj\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.csproj.CoreCompileInputs.cache
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\bin\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.deps.json
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\bin\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.dll
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\bin\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.pdb
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\bin\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Domain.dll
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\bin\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Domain.pdb
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\obj\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.csproj.CopyComplete
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\obj\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.dll
+C:\Users\henrique.rosa\Documents\tiradentes-backend-teste\src\Tiradentes.CobrancaAtiva.Application\obj\Debug\netcoreapp3.1\Tiradentes.CobrancaAtiva.Application.pdb
