@@ -1,0 +1,36 @@
+{
+  "runtimeTarget": {
+    "name": ".NETCoreApp,Version=v3.1",
+    "signature": ""
+  },
+  "compilationOptions": {},
+  "targets": {
+    ".NETCoreApp,Version=v3.1": {
+      "Tiradentes.CobrancaAtiva.Services.Interface/1.0.0": {
+        "dependencies": {
+          "Tiradentes.CobrancaAtiva.Entities": "1.0.0"
+        },
+        "runtime": {
+          "Tiradentes.CobrancaAtiva.Services.Interface.dll": {}
+        }
+      },
+      "Tiradentes.CobrancaAtiva.Entities/1.0.0": {
+        "runtime": {
+          "Tiradentes.CobrancaAtiva.Entities.dll": {}
+        }
+      }
+    }
+  },
+  "libraries": {
+    "Tiradentes.CobrancaAtiva.Services.Interface/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    },
+    "Tiradentes.CobrancaAtiva.Entities/1.0.0": {
+      "type": "project",
+      "serviceable": false,
+      "sha512": ""
+    }
+  }
+}

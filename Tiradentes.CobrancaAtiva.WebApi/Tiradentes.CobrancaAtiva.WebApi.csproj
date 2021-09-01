@@ -1,0 +1,22 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>net5.0</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="AutoMapper" Version="10.1.1" />
+    <PackageReference Include="AutoMapper.Extensions.Microsoft.DependencyInjection" Version="8.1.1" />
+    <PackageReference Include="Microsoft.Extensions.DependencyInjection" Version="5.0.2" />
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="5.6.3" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Entities\Tiradentes.CobrancaAtiva.Entities.csproj" />
+    <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Infra\Tiradentes.CobrancaAtiva.Infra.csproj" />
+    <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Mapper\Tiradentes.CobrancaAtiva.Mapper.csproj" />
+    <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Repositories\Tiradentes.CobrancaAtiva.Repositories.csproj" />
+    <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Services.Interface\Tiradentes.CobrancaAtiva.Services.Interface.csproj" />
+  </ItemGroup>
+
+</Project>
