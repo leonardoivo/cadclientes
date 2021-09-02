@@ -1,8 +1,10 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.Text.Json;
+using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
+using Tiradentes.CobrancaAtiva.Application.Utils;
 
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
@@ -15,6 +17,13 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         public EmpresaParceiraController(IEmpresaParceiraService service)
         {
             _service = service;
+        }
+
+        [HttpGet("VerificaCnpjCadastrado")]
+        public async Task<ActionResult<bool>> VerificarCnpjJaCadastrado(string Cnpj)
+        {
+            await _service.VerificarCnpjJaCadastrado(Cnpj);
+            return Ok();
         }
 
         [HttpGet]
