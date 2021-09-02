@@ -149,4 +149,7 @@ velocity.log
 .history
 .ionide
 
+# Visual Studio 2015/2017 cache/options directory
+.vs/
+
 # End of https://www.toptal.com/developers/gitignore/api/dotnetcore,visualstudiocode,konyvisualizer
