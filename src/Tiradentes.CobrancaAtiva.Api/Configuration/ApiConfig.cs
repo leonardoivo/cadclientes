@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using Tiradentes.CobrancaAtiva.Application.Middlewares;
 
 namespace Tiradentes.CobrancaAtiva.Api.Configuration
 {
@@ -25,6 +26,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
             app.UseRouting();
 
             app.UseAuthorization();
+
+            app.UseMiddleware<ExcpetionMiddleware>();
 
             app.UseEndpoints(endpoints =>
             {
