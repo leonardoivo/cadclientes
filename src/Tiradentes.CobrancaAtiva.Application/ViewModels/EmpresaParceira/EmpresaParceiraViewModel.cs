@@ -1,11 +1,10 @@
 ﻿using System.Collections.Generic;
 
-namespace Tiradentes.CobrancaAtiva.Domain.Models
+namespace Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira
 {
-    public class EmpresaParceiraModel : BaseModel
+    public class EmpresaParceiraViewModel
     {
-        public EmpresaParceiraModel() { }
-
+        public int Id { get; set; }
         public string NomeFantasia { get; set; }
         public string RazaoSocial { get; set; }
         public string Sigla { get; set; }
@@ -15,12 +14,11 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string CEP { get; set; }
         public string Estado { get; set; }
         public string Cidade { get; set; }
-        public string Logradouro     { get; set; }
+        public string Logradouro { get; set; }
         public string Numero { get; set; }
         public string Complemento { get; set; }
         public string Telefone { get; set; }
         public bool Status { get; set; }
-
-        public List<ContatoModel> Contatos { get; set; }
+        public List<ContatoViewModel> Contatos { get; set; }
     }
 }

@@ -20,7 +20,13 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IList<BuscaEmpresaParceiraViewModel>>> Buscar()
         {
-            return Ok(await _service.Busca());
+            return Ok(await _service.Buscar());
+        }
+
+        [HttpPost]
+        public async Task<ActionResult<EmpresaParceiraViewModel>> Criar([FromBody] EmpresaParceiraViewModel viewModel)
+        {
+            return await _service.Criar(viewModel);
         }
     }
 }

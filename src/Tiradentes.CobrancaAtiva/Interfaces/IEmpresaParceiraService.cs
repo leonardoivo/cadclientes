@@ -6,6 +6,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
     public interface IEmpresaParceiraService
     {
-        Task<IList<BuscaEmpresaParceiraViewModel>> Busca();
+        Task<IList<BuscaEmpresaParceiraViewModel>> Buscar();
+        Task<EmpresaParceiraViewModel> Criar(EmpresaParceiraViewModel viewModel);
     }
 }

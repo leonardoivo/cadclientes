@@ -1,4 +1,6 @@
 ﻿using AutoMapper;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
+using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 {
@@ -6,7 +8,8 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
     {
         public ViewModelToDomainMappingProfile()
         {
-
+            CreateMap<EmpresaParceiraViewModel, EmpresaParceiraModel>();
+            CreateMap<ContatoViewModel, ContatoModel>();
         }
     }
 }
