@@ -1,10 +1,12 @@
 {
   "version": 2,
-  "dgSpecHash": "83X2Wi80O0y325f1XpRE5qCl8YC1Za29PIihtrrxpfgSru9IADemxadLOjVgrgnSDbFtVyNrKcZHCFwF2dPsqQ==",
+  "dgSpecHash": "WOH7cPG0KDRpbCkDsVo4rJKeDswMiBax5K4CB82eTVr9HRwb5rJCttkfVCoD+7FMJOHthmQ7grcMkjQ3mFUr/g==",
   "success": true,
   "projectFilePath": "C:\\Users\\henrique.rosa\\Documents\\tiradentes-backend-teste\\src\\Tiradentes.CobrancaAtiva.CrossCutting.IoC\\Tiradentes.CobrancaAtiva.CrossCutting.IoC.csproj",
   "expectedPackageFiles": [
     "C:\\Users\\henrique.rosa\\.nuget\\packages\\automapper\\10.1.1\\automapper.10.1.1.nupkg.sha512",
+    "C:\\Users\\henrique.rosa\\.nuget\\packages\\microsoft.aspnetcore.http.abstractions\\2.2.0\\microsoft.aspnetcore.http.abstractions.2.2.0.nupkg.sha512",
+    "C:\\Users\\henrique.rosa\\.nuget\\packages\\microsoft.aspnetcore.http.features\\2.2.0\\microsoft.aspnetcore.http.features.2.2.0.nupkg.sha512",
     "C:\\Users\\henrique.rosa\\.nuget\\packages\\microsoft.bcl.asyncinterfaces\\1.1.1\\microsoft.bcl.asyncinterfaces.1.1.1.nupkg.sha512",
     "C:\\Users\\henrique.rosa\\.nuget\\packages\\microsoft.bcl.hashcode\\1.1.1\\microsoft.bcl.hashcode.1.1.1.nupkg.sha512",
     "C:\\Users\\henrique.rosa\\.nuget\\packages\\microsoft.csharp\\4.7.0\\microsoft.csharp.4.7.0.nupkg.sha512",
@@ -27,7 +29,8 @@
     "C:\\Users\\henrique.rosa\\.nuget\\packages\\system.collections.immutable\\1.7.1\\system.collections.immutable.1.7.1.nupkg.sha512",
     "C:\\Users\\henrique.rosa\\.nuget\\packages\\system.componentmodel.annotations\\4.7.0\\system.componentmodel.annotations.4.7.0.nupkg.sha512",
     "C:\\Users\\henrique.rosa\\.nuget\\packages\\system.diagnostics.diagnosticsource\\4.7.1\\system.diagnostics.diagnosticsource.4.7.1.nupkg.sha512",
-    "C:\\Users\\henrique.rosa\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512"
+    "C:\\Users\\henrique.rosa\\.nuget\\packages\\system.reflection.emit\\4.7.0\\system.reflection.emit.4.7.0.nupkg.sha512",
+    "C:\\Users\\henrique.rosa\\.nuget\\packages\\system.text.encodings.web\\4.5.0\\system.text.encodings.web.4.5.0.nupkg.sha512"
   ],
   "logs": []
 }

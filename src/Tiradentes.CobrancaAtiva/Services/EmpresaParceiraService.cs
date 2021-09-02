@@ -7,7 +7,7 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
 {
-    public class EmpresaParceiraService : IEmpresaParceiraService
+    public class EmpresaParceiraService : BaseService, IEmpresaParceiraService
     {
         protected readonly IEmpresaParceiraRepository _repositorio;
         protected readonly IMapper _map;
