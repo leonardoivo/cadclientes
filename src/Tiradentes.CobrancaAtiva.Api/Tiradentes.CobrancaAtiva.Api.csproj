@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="3.1.18">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="Swashbuckle.AspNetCore" Version="6.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Application\Tiradentes.CobrancaAtiva.Application.csproj" />
+    <ProjectReference Include="..\Tiradentes.CobrancaAtiva.CrossCutting.IoC\Tiradentes.CobrancaAtiva.CrossCutting.IoC.csproj" />
+  </ItemGroup>
+
+
+</Project>
