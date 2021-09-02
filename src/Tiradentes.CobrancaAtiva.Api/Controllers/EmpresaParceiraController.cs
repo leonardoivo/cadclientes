@@ -5,6 +5,7 @@ using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Application.Utils;
+using Tiradentes.CobrancaAtiva.Application.QueryParams;
 
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
@@ -27,7 +28,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<BuscaEmpresaParceiraViewModel>>> Buscar()
+        public async Task<ActionResult<IList<BuscaEmpresaParceiraViewModel>>> Buscar([FromQuery] ConsultaEmpresaParceiraQueryParam queryParams)
         {
             return Ok(await _service.Buscar());
         }
