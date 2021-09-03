@@ -37,14 +37,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
              await _service.Buscar(queryParams);
 
         [HttpPost]
-        public async Task<ActionResult<EmpresaParceiraViewModel>> Criar(
-            [FromBody] EmpresaParceiraViewModel viewModel) =>
-            await _service.Criar(viewModel);
-
-        [HttpPut]
-        public async Task<ActionResult<EmpresaParceiraViewModel>> Atualizar([FromBody] EmpresaParceiraViewModel viewModel)
+        public async Task<ActionResult<EmpresaParceiraViewModel>> Criar([FromBody] EmpresaParceiraViewModel viewModel)
         {
-            return await _service.Atualizar(viewModel);
+            return await _service.Criar(viewModel);
         }
     }
 }
