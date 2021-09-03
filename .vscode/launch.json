@@ -9,7 +9,7 @@
             "type": "coreclr",
             "request": "launch",
             "preLaunchTask": "build",
-            "program": "${workspaceFolder}/src/Tiradentes.CobrancaAtiva.Api/bin/Debug/netcoreapp3.1/Tiradentes.CobrancaAtiva.Api.dll",
+            "program": "${workspaceFolder}/src/Tiradentes.CobrancaAtiva.Api/bin/Debug/net5.0/Tiradentes.CobrancaAtiva.Api.dll",
             "args": [],
             "cwd": "${workspaceFolder}/src/Tiradentes.CobrancaAtiva.Api",
             "stopAtEntry": false,
