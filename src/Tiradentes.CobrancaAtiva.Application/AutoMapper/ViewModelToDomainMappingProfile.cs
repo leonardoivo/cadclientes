@@ -10,7 +10,6 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
         {
             CreateMap<EmpresaParceiraViewModel, EmpresaParceiraModel>();
             CreateMap<ContatoEmpresaParceiraViewModel, ContatoEmpresaParceiraModel>();
-            CreateMap<EnderecoEmpresaParceiraViewModel, EnderecoEmpresaParceiraModel>();
         }
     }
 }

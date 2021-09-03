@@ -41,7 +41,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             viewModel.Id = 0;
             viewModel.Status = true;
-            viewModel.Endereco.Id = 0;
             foreach(var contato in viewModel.Contatos)
             {
                 contato.Id = 0;
