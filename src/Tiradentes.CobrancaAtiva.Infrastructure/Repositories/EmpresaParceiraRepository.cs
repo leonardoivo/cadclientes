@@ -4,9 +4,9 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
-using System.Collections.Generic;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using System.Linq;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
@@ -20,7 +20,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             return await base.DbSet.FirstOrDefaultAsync(e => e.CNPJ == Cnpj) != null;
         }
 
-        public async Task<IList<EmpresaParceiraModel>> Buscar(EmpresaParceiraQueryParam queryParams)
+        public async Task<ModelPaginada<EmpresaParceiraModel>> Buscar(EmpresaParceiraQueryParam queryParams)
         {
             var query = DbSet.Include(e => e.Contatos).AsQueryable();
 
@@ -48,7 +48,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
 
-            return await query.ToListAsync();
+            return await query.Paginar(0, 0);
         }
     }
 }
