@@ -5,7 +5,8 @@
         public string Contato { get; set; }
         public string Email { get; set; }
         public string Telefone { get; set; }
+        public int EmpresaId { get; set; }
 
-        public EmpresaParceiraModel EmpresaParceira { get; set; }
+        public EmpresaParceiraModel Empresa { get; set; }
     }
 }
