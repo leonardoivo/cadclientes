@@ -13,6 +13,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             {
                 cfg.AddProfile(new DomainToViewModelMappingProfile());
                 cfg.AddProfile(new ViewModelToDomainMappingProfile());
+                cfg.AddProfile(new QueryParamMappingProfile());
             });
         }
     }

@@ -17,8 +17,8 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira
         public string Logradouro { get; set; }
         public string Numero { get; set; }
         public string Complemento { get; set; }
-        public string Telefone { get; set; }
         public bool Status { get; set; }
-        public List<ContatoViewModel> Contatos { get; set; }
+
+        public List<ContatoEmpresaParceiraViewModel> Contatos { get; set; }
     }
 }

@@ -9,7 +9,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
         public ViewModelToDomainMappingProfile()
         {
             CreateMap<EmpresaParceiraViewModel, EmpresaParceiraModel>();
-            CreateMap<ContatoViewModel, ContatoModel>();
+            CreateMap<ContatoEmpresaParceiraViewModel, ContatoEmpresaParceiraModel>();
         }
     }
 }

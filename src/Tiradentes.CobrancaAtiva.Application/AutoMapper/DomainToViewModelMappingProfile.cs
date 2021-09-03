@@ -1,5 +1,8 @@
 ﻿using AutoMapper;
+using System.Linq;
+using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
@@ -8,9 +11,12 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
     {
         public DomainToViewModelMappingProfile()
         {
-            CreateMap<EmpresaParceiraModel, BuscaEmpresaParceiraViewModel>();
+            CreateMap<EmpresaParceiraModel, BuscaEmpresaParceiraViewModel>()
+                .ForMember(dest => dest.Contato, 
+                    opt => opt.MapFrom(src => src.Contatos.FirstOrDefault().Contato));
             CreateMap<EmpresaParceiraModel, EmpresaParceiraViewModel>();
-            CreateMap<ContatoModel, ContatoViewModel>();
+            CreateMap<ModelPaginada<EmpresaParceiraModel>, ViewModelPaginada<BuscaEmpresaParceiraViewModel>>();
+            CreateMap<ContatoEmpresaParceiraModel, ContatoEmpresaParceiraViewModel>();
         }
     }
 }

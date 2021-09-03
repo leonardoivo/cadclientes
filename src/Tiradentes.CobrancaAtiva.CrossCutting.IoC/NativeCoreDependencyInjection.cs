@@ -3,8 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
-using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
+using Tiradentes.CobrancaAtiva.Services.Services;
 
 namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
 {
