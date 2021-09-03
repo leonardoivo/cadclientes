@@ -25,6 +25,12 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return Ok();
         }
 
+        [HttpGet("{Id}")]
+        public async Task<ActionResult<EmpresaParceiraViewModel>> Buscar(int Id)
+        {
+            return await _service.BuscarPorId(Id);
+        }
+
         [HttpGet]
         public async Task<ActionResult<ViewModelPaginada<BuscaEmpresaParceiraViewModel>>> Buscar([FromQuery] ConsultaEmpresaParceiraQueryParam queryParams)
         {
@@ -35,6 +41,12 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         public async Task<ActionResult<EmpresaParceiraViewModel>> Criar([FromBody] EmpresaParceiraViewModel viewModel)
         {
             return await _service.Criar(viewModel);
+        }
+
+        [HttpPut]
+        public async Task<ActionResult<EmpresaParceiraViewModel>> Atualizar([FromBody] EmpresaParceiraViewModel viewModel)
+        {
+            return await _service.Atualizar(viewModel);
         }
     }
 }
