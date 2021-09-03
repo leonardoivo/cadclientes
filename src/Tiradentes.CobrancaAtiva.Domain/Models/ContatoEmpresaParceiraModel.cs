@@ -1,6 +1,6 @@
 ﻿namespace Tiradentes.CobrancaAtiva.Domain.Models
 {
-    public class ContatoModel : BaseModel
+    public class ContatoEmpresaParceiraModel : BaseModel
     {
         public string Contato { get; set; }
         public string Email { get; set; }

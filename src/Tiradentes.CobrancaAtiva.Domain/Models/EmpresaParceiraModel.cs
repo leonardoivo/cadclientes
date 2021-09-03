@@ -12,15 +12,9 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string CNPJ { get; set; }
         public string NumeroContrato { get; set; }
         public string URL { get; set; }
-        public string CEP { get; set; }
-        public string Estado { get; set; }
-        public string Cidade { get; set; }
-        public string Logradouro     { get; set; }
-        public string Numero { get; set; }
-        public string Complemento { get; set; }
-        public string Telefone { get; set; }
         public bool Status { get; set; }
 
-        public List<ContatoModel> Contatos { get; set; }
+        public ICollection<ContatoEmpresaParceiraModel> Contatos { get; set; }
+        public EnderecoEmpresaParceiraModel Endereco { get; set; }
     }
 }

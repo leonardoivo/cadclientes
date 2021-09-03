@@ -1,6 +1,6 @@
 ﻿namespace Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira
 {
-    public class ContatoViewModel
+    public class ContatoEmpresaParceiraViewModel
     {
         public int Id { get; set; }
         public string Contato { get; set; }
