@@ -19,6 +19,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Telefone)
               .HasColumnName("telefone");
 
+            builder.Property(ep => ep.EmpresaId)
+              .HasColumnName("cod_empresa");
+
+            builder.HasOne(c => c.Empresa)
+                .WithMany(e => e.Contatos)
+                .HasForeignKey(c => c.EmpresaId);
+
             builder.ToTable("EMPRESA_CONTATO");
         }
     }

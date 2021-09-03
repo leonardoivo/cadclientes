@@ -24,6 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             var query = DbSet
                         .Include(e => e.Contatos)
+                        .Include(e => e.Endereco)
                         .AsQueryable();
 
             if (!string.IsNullOrEmpty(queryParams.NomeFantasia))
@@ -42,15 +43,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.Contatos.Where(c => c.Contato.Contains(queryParams.Contato)).Any());
 
             if (!string.IsNullOrEmpty(queryParams.Estado))
-                query = query.Where(e => e.Estado.Contains(queryParams.Estado));
+                query = query.Where(e => e.Endereco.Estado.Contains(queryParams.Estado));
 
             if (!string.IsNullOrEmpty(queryParams.Cidade))
-                query = query.Where(e => e.Cidade.Contains(queryParams.Cidade));
+                query = query.Where(e => e.Endereco.Cidade.Contains(queryParams.Cidade));
 
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
 
-            return await query.Paginar(0, 0);
+            return await query.Paginar(queryParams.Pagina, queryParams.Limite);
         }
     }
 }
