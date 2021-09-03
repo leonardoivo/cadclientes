@@ -30,6 +30,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             if(CnpjCadastrado) throw CustomException.EntityNotFound(JsonSerializer.Serialize(new { erro = "CNPJ já cadastrado" }));
         }
 
+        public async Task<EmpresaParceiraViewModel> BuscarPorId(int id)
+        {
+            var resultadoConsulta = await _repositorio.BuscarPorIdCompleto(id);
+            return _map.Map<EmpresaParceiraViewModel>(resultadoConsulta);
+        }
+
         public async Task<ViewModelPaginada<BuscaEmpresaParceiraViewModel>> Buscar(ConsultaEmpresaParceiraQueryParam queryParams)
         {
             var query = _map.Map<EmpresaParceiraQueryParam>(queryParams);
@@ -49,6 +55,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
 
             await _repositorio.Criar(model);
+
+            return _map.Map<EmpresaParceiraViewModel>(model);
+        }
+
+        public async Task<EmpresaParceiraViewModel> Atualizar(EmpresaParceiraViewModel viewModel)
+        {
+            var model = _map.Map<EmpresaParceiraModel>(viewModel);
+
+            await _repositorio.Alterar(model);
 
             return _map.Map<EmpresaParceiraViewModel>(model);
         }

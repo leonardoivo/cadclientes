@@ -8,6 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     public interface IEmpresaParceiraRepository : IBaseRepository<EmpresaParceiraModel>
     {
         Task<bool> VerificaCnpjJaCadastrado(string Cnpj);
+        Task<EmpresaParceiraModel> BuscarPorIdCompleto(int id);
         Task<ModelPaginada<EmpresaParceiraModel>> Buscar(EmpresaParceiraQueryParam queryParams);
     }
 }
