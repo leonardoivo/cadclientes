@@ -22,11 +22,17 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IEnderecoService, EnderecoService>();
             #endregion
 
-            services.AddDbContext<CobrancaAtivaDbContext>(options =>
-                options.UseInMemoryDatabase("CobrancaAtiva"));
-
             //services.AddDbContext<CobrancaAtivaDbContext>(options =>
-            //    options.UseOracle("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=srvoradev03)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=gtdev)));User Id=nilton;Password=nildti2006;"));
+            //    options.UseInMemoryDatabase("CobrancaAtiva"));
+
+            var host = "srvoradev03";
+            var port = 1521;
+            var sid = "gtdev";
+            var user = "nilton";
+            var pass = "nildti2006";
+            var conn = $"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={host})(PORT={port}))(CONNECT_DATA=(SERVICE_NAME={sid})));User Id={user};Password={pass};";
+            services.AddDbContext<CobrancaAtivaDbContext>(options =>
+                options.UseOracle(conn));
 
             return services;
         }
