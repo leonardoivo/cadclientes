@@ -29,7 +29,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             modelPaginada.PaginaAtual = pagina;
             modelPaginada.TamanhoPagina = limite;
-            modelPaginada.TotalPaginas = (int)Math.Ceiling(modelPaginada.TotalPaginas / (double)limite);
+            modelPaginada.TotalPaginas = (int)Math.Ceiling(modelPaginada.TotalItems / (double)limite);
 
             return modelPaginada;
         }
