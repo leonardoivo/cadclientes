@@ -10,5 +10,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         { }
 
         public DbSet<EmpresaParceiraModel> EmpresaParceira { get; set; }
+        public DbSet<ContatoEmpresaParceiraModel> ContatoEmpresaParceira { get; set; } 
     }
 }
