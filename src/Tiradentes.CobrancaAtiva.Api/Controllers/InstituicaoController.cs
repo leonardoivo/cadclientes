@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Instituicao;
@@ -18,7 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ViewModelPaginada<InstituicaoViewModel>>> Buscar() =>
+        public async Task<ActionResult<IList<InstituicaoViewModel>>> Buscar() =>
              Ok(await _service.Buscar());
     }
 }
