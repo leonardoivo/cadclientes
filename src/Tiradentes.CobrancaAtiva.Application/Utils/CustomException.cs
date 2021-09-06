@@ -17,5 +17,8 @@ namespace Tiradentes.CobrancaAtiva.Application.Utils
 
         public static CustomException EntityNotFound(string message) =>
             new CustomException(HttpStatusCode.NotFound, message);
+
+        public static CustomException ErroValidacao(string message) =>
+           new CustomException(HttpStatusCode.BadRequest, message);
     }
 }

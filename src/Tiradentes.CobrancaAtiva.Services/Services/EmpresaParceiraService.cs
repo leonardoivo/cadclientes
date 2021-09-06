@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.Utils;
+using Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -45,6 +46,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<EmpresaParceiraViewModel> Criar(EmpresaParceiraViewModel viewModel)
         {
+            Validate(new CriarEmpresaParceiraValidation(), viewModel);
+
             viewModel.Id = 0;
             viewModel.Status = true;
             foreach(var contato in viewModel.Contatos)
@@ -69,6 +72,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _repositorio.Alterar(model);
 
             return _map.Map<EmpresaParceiraViewModel>(model);
+        }
+
+        public void Dispose()
+        {
+            _repositorio?.Dispose();
         }
     }
 }
