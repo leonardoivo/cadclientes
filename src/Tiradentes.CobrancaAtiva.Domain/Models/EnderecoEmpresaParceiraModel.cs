@@ -22,14 +22,14 @@
             Complemento = complemento;
         }
 
-        public string CEP { get; set; }
-        public string Estado { get; set; }
-        public string Cidade { get; set; }
-        public string Logradouro { get; set; }
-        public string Numero { get; set; }
-        public string Complemento { get; set; }
-        public int EmpresaId { get; set; }
+        public string CEP { get; private set; }
+        public string Estado { get; private set; }
+        public string Cidade { get; private set; }
+        public string Logradouro { get; private set; }
+        public string Numero { get; private set; }
+        public string Complemento { get; private set; }
+        public int EmpresaId { get; private set; }
 
-        public EmpresaParceiraModel Empresa { get; set; }
+        public EmpresaParceiraModel Empresa { get; private set; }
     }
 }
