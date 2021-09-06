@@ -1,6 +1,6 @@
 ﻿namespace Tiradentes.CobrancaAtiva.Application.QueryParams
 {
-    public class ConsultaEmpresaParceiraQueryParam
+    public class ConsultaEmpresaParceiraQueryParam : BasePaginacaoQueryParam
     {
         public string NomeFantasia { get; set; }
         public string CNPJ { get; set; }

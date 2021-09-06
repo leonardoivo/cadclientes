@@ -53,6 +53,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
+            model.Endereco = new EnderecoEmpresaParceiraModel(0, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
+                                                                viewModel.Logradouro, viewModel.Numero, 
+                                                                viewModel.Complemento);
 
             await _repositorio.Criar(model);
 
