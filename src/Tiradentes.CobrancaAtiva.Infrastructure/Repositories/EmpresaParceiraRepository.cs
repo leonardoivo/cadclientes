@@ -15,6 +15,22 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public EmpresaParceiraRepository(CobrancaAtivaDbContext context) : base(context)
         { }
 
+        public override async Task Alterar(EmpresaParceiraModel model)
+        {
+            var childs = await base.Db.ContatoEmpresaParceira
+                .Include(c => c.Empresa)
+                .Where(c => c.Empresa.Id == model.Id)
+                .AsNoTracking()
+                .ToListAsync();
+                
+            foreach (var item in childs) {
+                if (!model.Contatos.Where(c => c.Id == item.Id).Any())
+                    base.Db.Entry<ContatoEmpresaParceiraModel>(item).State = EntityState.Deleted;
+            }
+
+            await base.Alterar(model);
+        }
+
         public async Task<bool> VerificaCnpjJaCadastrado(string Cnpj) 
         {
             return await base.DbSet.FirstOrDefaultAsync(e => e.CNPJ == Cnpj) != null;

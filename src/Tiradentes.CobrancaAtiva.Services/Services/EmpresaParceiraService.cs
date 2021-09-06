@@ -10,6 +10,8 @@ using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
+using System.Linq;
+
 namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class EmpresaParceiraService : BaseService, IEmpresaParceiraService
@@ -69,6 +71,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _repositorio.Alterar(model);
 
             return _map.Map<EmpresaParceiraViewModel>(model);
+        }
+
+        public async Task Deletar(EmpresaParceiraViewModel viewModel)
+        {
+            var model = _map.Map<EmpresaParceiraModel>(viewModel);
+
+            await _repositorio.Deletar(viewModel.Id);
         }
     }
 }
