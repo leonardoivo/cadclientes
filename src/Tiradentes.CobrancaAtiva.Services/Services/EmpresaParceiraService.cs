@@ -11,8 +11,6 @@ using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
-using System.Linq;
-
 namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class EmpresaParceiraService : BaseService, IEmpresaParceiraService
