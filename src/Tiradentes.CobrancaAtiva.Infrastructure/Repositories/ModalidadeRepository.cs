@@ -15,7 +15,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task<IList<ModalidadeModel>> BuscarPorInstituicao(int instituicaoId)
         {
-            return await DbSet.ToListAsync();
+            return await DbSet
+                .Where(m => m.InstituicoesModalidades
+                    .Where(im => im.InstituicaoId == instituicaoId)
+                    .Any())
+                .ToListAsync();
         }
     }
 }

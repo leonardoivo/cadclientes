@@ -6,6 +6,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
     {
         public string Instituicao { get; set; }
 
-        public virtual ICollection<ModalidadeModel> Modalidades { get; set; }
+        public virtual ICollection<InstituicaoModalidadeModel> InstituicoesModalidades { get; set; }
     }
 }

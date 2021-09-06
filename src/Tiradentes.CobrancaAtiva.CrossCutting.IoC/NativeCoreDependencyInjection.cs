@@ -17,12 +17,14 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IEmpresaParceiraRepository, EmpresaParceiraRepository>();
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddScoped<IInstituicaoRepository, InstituicaoRepository>();
+            services.AddScoped<IModalidadeRepository, ModalidadeRepository>();
             #endregion
 
             #region Services
             services.AddScoped<IEmpresaParceiraService, EmpresaParceiraService>();
             services.AddScoped<IEnderecoService, EnderecoService>();
             services.AddScoped<IInstituicaoService, InstituicaoService>();
+            services.AddScoped<IModalidadeService, ModalidadeService>();
             #endregion
 
             

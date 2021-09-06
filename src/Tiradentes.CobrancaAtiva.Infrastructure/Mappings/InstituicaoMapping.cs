@@ -16,6 +16,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Instituicao)
              .HasColumnName("INSTITUICAO");
 
+            builder.HasMany(i => i.InstituicoesModalidades)
+                .WithOne(im => im.Instituicao);
+
             builder.ToTable("INSTITUICAO");
         }
     }
