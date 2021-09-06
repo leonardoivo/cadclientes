@@ -22,11 +22,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             var paginaInicial = (pagina - 1) * limite;
 
-            var t =  query.ToQueryString();
-
             modelPaginada.Items = await query
-                                    // .Skip(paginaInicial)
-                                    // .Take(limite)
+                                    .Skip(paginaInicial)
+                                    .Take(limite)
                                     .ToListAsync();
 
             modelPaginada.PaginaAtual = pagina;

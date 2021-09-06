@@ -11,28 +11,28 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasKey(ep => ep.Id);
 
             builder.Property(ep => ep.Id)
-               .HasColumnName("cod_endereco");
+               .HasColumnName("COD_ENDERECO");
 
             builder.Property(ep => ep.CEP)
-               .HasColumnName("cep");
+               .HasColumnName("CEP");
 
             builder.Property(ep => ep.Estado)
-                .HasColumnName("estado");
+                .HasColumnName("ESTADO");
 
             builder.Property(ep => ep.Cidade)
-                .HasColumnName("cidade");
+                .HasColumnName("CIDADE");
 
             builder.Property(ep => ep.Logradouro)
-                .HasColumnName("logradouro");
+                .HasColumnName("LOGRADOURO");
 
             builder.Property(ep => ep.Numero)
-                .HasColumnName("numero");
+                .HasColumnName("NUMERO");
 
             builder.Property(ep => ep.Complemento)
-                .HasColumnName("complemento");
+                .HasColumnName("COMPLEMENTO");
 
             builder.Property(ep => ep.EmpresaId)
-              .HasColumnName("cod_empresa");
+              .HasColumnName("COD_EMPRESA");
 
             builder.HasOne(ep => ep.Empresa)
                 .WithOne(e => e.Endereco)
