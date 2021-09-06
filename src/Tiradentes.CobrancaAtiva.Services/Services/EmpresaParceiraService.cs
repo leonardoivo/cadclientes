@@ -3,6 +3,7 @@ using System.Text.Json;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.Utils;
+using Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -47,6 +48,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<EmpresaParceiraViewModel> Criar(EmpresaParceiraViewModel viewModel)
         {
+            Validate(new CriarEmpresaParceiraValidation(), viewModel);
+
             viewModel.Id = 0;
             viewModel.Status = true;
             foreach(var contato in viewModel.Contatos)
@@ -55,9 +58,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
-            model.Endereco = new EnderecoEmpresaParceiraModel(0, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
-                                                                viewModel.Logradouro, viewModel.Numero, 
-                                                                viewModel.Complemento);
+            model.SetarEndereco(0, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
+                                viewModel.Logradouro, viewModel.Numero, 
+                                viewModel.Complemento);
 
             await _repositorio.Criar(model);
 
@@ -78,6 +81,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
 
             await _repositorio.Deletar(viewModel.Id);
+        }
+
+        public void Dispose()
+        {
+            _repositorio?.Dispose();
         }
     }
 }
