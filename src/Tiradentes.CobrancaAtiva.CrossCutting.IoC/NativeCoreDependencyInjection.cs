@@ -32,7 +32,8 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             var pass = "nildti2006";
             //var conn = $"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={host})(PORT={port}))(CONNECT_DATA=(SERVICE_NAME={sid})));User Id={user};Password={pass};";
             //var conn = $"Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={host})(PORT={port}))(CONNECT_DATA=(SERVICE_NAME={sid})));User Id={user};Password={pass};";
-            var conn = $"User Id={user};Password={pass}; Data Source=${host}:{port}/${sid}";
+            var conn = $"User ID={user}; Password={pass}; Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST={host})(PORT={port}))(CONNECT_DATA=(SID={sid})));";
+            //var conn = $"User Id={user};Password={pass}; Data Source={host}:{port}";
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
                 options.UseOracle(conn));
 
