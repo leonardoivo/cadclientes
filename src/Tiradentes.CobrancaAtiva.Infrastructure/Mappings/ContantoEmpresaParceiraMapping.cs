@@ -9,6 +9,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
         public void Configure(EntityTypeBuilder<ContatoEmpresaParceiraModel> builder)
         {
             builder.HasKey(ep => ep.Id).HasName("cod_contato");
+            
+            builder.Property(ep => ep.Id)
+              .HasColumnName("cod_contato");
 
             builder.Property(ep => ep.Contato)
               .HasColumnName("contato");

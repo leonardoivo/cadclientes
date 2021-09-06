@@ -8,7 +8,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<EnderecoEmpresaParceiraModel> builder)
         {
-            builder.HasKey(ep => ep.Id).HasName("cod_empresa");
+            builder.HasKey(ep => ep.Id);
+
+            builder.Property(ep => ep.Id)
+               .HasColumnName("cod_endereco");
 
             builder.Property(ep => ep.CEP)
                .HasColumnName("cep");
@@ -31,9 +34,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.EmpresaId)
               .HasColumnName("cod_empresa");
 
-            builder.HasOne(c => c.Empresa)
+            builder.HasOne(ep => ep.Empresa)
                 .WithOne(e => e.Endereco)
-                .HasForeignKey("cod_empresa");
+                .HasForeignKey<EnderecoEmpresaParceiraModel>(e => e.EmpresaId);
 
             builder.ToTable("EMPRESA_ENDERECO");
         }
