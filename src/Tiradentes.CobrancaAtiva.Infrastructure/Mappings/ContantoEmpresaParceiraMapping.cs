@@ -8,22 +8,22 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ContatoEmpresaParceiraModel> builder)
         {
-            builder.HasKey(ep => ep.Id).HasName("cod_contato");
+            builder.HasKey(ep => ep.Id);
             
             builder.Property(ep => ep.Id)
-              .HasColumnName("cod_contato");
+              .HasColumnName("COD_CONTATO");
 
             builder.Property(ep => ep.Contato)
-              .HasColumnName("contato");
+              .HasColumnName("CONTATO");
 
             builder.Property(ep => ep.Email)
-              .HasColumnName("email");
+              .HasColumnName("EMAIL");
 
             builder.Property(ep => ep.Telefone)
-              .HasColumnName("telefone");
+              .HasColumnName("TELEFONE");
 
             builder.Property(ep => ep.EmpresaId)
-              .HasColumnName("cod_empresa");
+              .HasColumnName("COD_EMPRESA");
 
             builder.HasOne(c => c.Empresa)
                 .WithMany(e => e.Contatos)

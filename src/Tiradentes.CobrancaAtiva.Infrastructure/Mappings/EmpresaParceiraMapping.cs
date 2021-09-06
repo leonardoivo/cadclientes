@@ -11,31 +11,31 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasKey(ep => ep.Id);
 
             builder.Property(ep => ep.Id)
-               .HasColumnName("cod_empresa");
+               .HasColumnName("COD_EMPRESA");
 
             builder.Property(ep => ep.NomeFantasia)
-                .HasColumnName("nome_fantasia");
+                .HasColumnName("NOME_FANTASIA");
 
             builder.Property(ep => ep.RazaoSocial)
-                .HasColumnName("razao_social");
+                .HasColumnName("RAZAO_SOCIAL");
 
             builder.Property(ep => ep.Sigla)
-                .HasColumnName("sigla");
+                .HasColumnName("SIGLA");
 
             builder.Property(ep => ep.CNPJ)
-                .HasColumnName("cnpj");
+                .HasColumnName("CNPJ");
 
             builder.Property(ep => ep.NumeroContrato)
-                .HasColumnName("numero_contrato");
+                .HasColumnName("NUMERO_CONTRATO");
 
             //builder.Property(ep => ep.AditivoContrato)
             //    .HasColumnName("aditivo_contrato");
 
             builder.Property(ep => ep.URL)
-               .HasColumnName("url_empresa");
+               .HasColumnName("URL_EMPRESA");
 
             builder.Property(ep => ep.Status)
-               .HasColumnName("status_empresa");
+               .HasColumnName("STATUS_EMPRESA");
 
             builder.HasMany(c => c.Contatos)
                 .WithOne(e => e.Empresa);
