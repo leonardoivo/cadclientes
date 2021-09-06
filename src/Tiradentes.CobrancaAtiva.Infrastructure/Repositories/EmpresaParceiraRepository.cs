@@ -26,8 +26,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task<ModelPaginada<EmpresaParceiraModel>> Buscar(EmpresaParceiraQueryParam queryParams)
         {
             var query = DbSet
-                        .Include(e => e.Contatos)
-                        .Include(e => e.Endereco)
+                        // .Include(e => e.Contatos)
+                        // .Include(e => e.Endereco)
                         .AsQueryable();
 
             if (!string.IsNullOrEmpty(queryParams.NomeFantasia))
@@ -42,14 +42,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             //if (!string.IsNullOrEmpty(queryParams.AditivoContrato))
             //    query = query.Where(e => e.AditivoContrato.Contains(queryParams.AditivoContrato));
 
-            if (!string.IsNullOrEmpty(queryParams.Contato))
-                query = query.Where(e => e.Contatos.Where(c => c.Contato.Contains(queryParams.Contato)).Any());
+            // if (!string.IsNullOrEmpty(queryParams.Contato))
+            //     query = query.Where(e => e.Contatos.Where(c => c.Contato.Contains(queryParams.Contato)).Any());
 
-            if (!string.IsNullOrEmpty(queryParams.Estado))
-                query = query.Where(e => e.Endereco.Estado.Contains(queryParams.Estado));
+            // if (!string.IsNullOrEmpty(queryParams.Estado))
+            //     query = query.Where(e => e.Endereco.Estado.Contains(queryParams.Estado));
 
-            if (!string.IsNullOrEmpty(queryParams.Cidade))
-                query = query.Where(e => e.Endereco.Cidade.Contains(queryParams.Cidade));
+            // if (!string.IsNullOrEmpty(queryParams.Cidade))
+            //     query = query.Where(e => e.Endereco.Cidade.Contains(queryParams.Cidade));
 
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
