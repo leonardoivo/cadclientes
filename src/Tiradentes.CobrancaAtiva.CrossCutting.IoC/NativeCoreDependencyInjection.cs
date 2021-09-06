@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
@@ -10,7 +11,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
 {
     public static class NativeCoreDependencyInjection
     {
-        public static IServiceCollection AddDependencies(this IServiceCollection services)
+        public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
             #region Repositorios
             services.AddScoped<IEmpresaParceiraRepository, EmpresaParceiraRepository>();
@@ -22,11 +23,10 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IEnderecoService, EnderecoService>();
             #endregion
 
+            
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
-                options.UseInMemoryDatabase("CobrancaAtiva"));
-
-            //services.AddDbContext<CobrancaAtivaDbContext>(options =>
-            //    options.UseOracle("Data Source=(DESCRIPTION=(ADDRESS=(PROTOCOL=TCP)(HOST=srvoradev03)(PORT=1521))(CONNECT_DATA=(SERVICE_NAME=gtdev)));User Id=nilton;Password=nildti2006;"));
+                options.UseOracle(configuration.GetConnectionString("Empresas"),
+                                    b => b.UseOracleSQLCompatibility("11")));
 
             return services;
         }
