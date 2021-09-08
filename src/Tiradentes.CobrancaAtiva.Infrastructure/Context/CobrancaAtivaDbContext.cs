@@ -12,6 +12,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         public DbSet<EmpresaParceiraModel> EmpresaParceira { get; set; }
         public DbSet<ContatoEmpresaParceiraModel> ContatoEmpresaParceira { get; set; }
         public DbSet<EnderecoEmpresaParceiraModel> EnderecoEmpresaParceira { get; set; }
+        public DbSet<InstituicaoModel> Instituicao { get; set; }
+        public DbSet<ModalidadeModel> Modalidade { get; set; }
+        public DbSet<InstituicaoModalidadeModel> InstituicaoModalidade { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

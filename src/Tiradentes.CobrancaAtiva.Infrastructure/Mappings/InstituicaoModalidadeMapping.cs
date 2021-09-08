@@ -8,8 +8,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<InstituicaoModalidadeModel> builder)
         {
+            builder.HasKey(e => new { e.InstituicaoId, e.ModalidadeId });
+
             builder.Property(ep => ep.InstituicaoId)
-             .HasColumnName("COD_INTITUICAO");
+             .HasColumnName("COD_INSTITUICAO");
 
             builder.Property(ep => ep.ModalidadeId)
              .HasColumnName("COD_MODALIDADE");
