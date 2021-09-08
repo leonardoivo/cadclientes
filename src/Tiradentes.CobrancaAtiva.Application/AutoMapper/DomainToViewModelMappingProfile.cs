@@ -2,6 +2,8 @@
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Instituicao;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Modalidade;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
@@ -24,6 +26,9 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ModelPaginada<EmpresaParceiraModel>, ViewModelPaginada<BuscaEmpresaParceiraViewModel>>();
             CreateMap<ContatoEmpresaParceiraModel, ContatoEmpresaParceiraViewModel>();
             CreateMap<EnderecoEmpresaParceiraModel, EnderecoEmpresaParceiraViewModel>();
+
+            CreateMap<InstituicaoModel, InstituicaoViewModel>();
+            CreateMap<ModalidadeModel, ModalidadeViewModel>();
         }
     }
 }
