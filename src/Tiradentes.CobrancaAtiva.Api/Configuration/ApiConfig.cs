@@ -29,6 +29,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
 
             app.UseMiddleware<ExcpetionMiddleware>();
 
+            app.UseCors(option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
