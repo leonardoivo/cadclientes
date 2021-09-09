@@ -4,9 +4,9 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 
 namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
 {
-    public class CriarEmpresaParceiraValidation : AbstractValidator<EmpresaParceiraViewModel>
+    public class AtualizarEmpresaParceiraValidation : AbstractValidator<EmpresaParceiraViewModel>
     {
-        public CriarEmpresaParceiraValidation()
+        public AtualizarEmpresaParceiraValidation()
         {
             RuleFor(e => e.NomeFantasia)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio)
@@ -26,6 +26,9 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
 
             RuleFor(e => e.NumeroContrato)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio)
+                .MaximumLength(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+
+            RuleFor(e => e.AditivoContrato)
                 .MaximumLength(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.URL)

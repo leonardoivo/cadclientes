@@ -11,7 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations
 
             var cnpjNumeros = Utils.ApenasNumeros(cnpj);
 
-            if (cnpjNumeros.Length == 14) return false;
+            if (cnpjNumeros.Length != 14) return false;
 
             string[] cnpjsInvalidos =
             {

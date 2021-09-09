@@ -69,7 +69,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<EmpresaParceiraViewModel> Atualizar(EmpresaParceiraViewModel viewModel)
         {
+            Validate(new AtualizarEmpresaParceiraValidation(), viewModel);
+
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
+            
+            model.SetarEndereco(0, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
+                    viewModel.Logradouro, viewModel.Numero, 
+                    viewModel.Complemento);
 
             await _repositorio.Alterar(model);
 

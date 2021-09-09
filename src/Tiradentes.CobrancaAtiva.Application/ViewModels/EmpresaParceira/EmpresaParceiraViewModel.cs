@@ -10,6 +10,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira
         public string Sigla { get; set; }
         public string CNPJ { get; set; }
         public string NumeroContrato { get; set; }
+        public string AditivoContrato { get; set; }
         public string URL { get; set; }
         public string CEP { get; set; }
         public string Estado { get; set; }
