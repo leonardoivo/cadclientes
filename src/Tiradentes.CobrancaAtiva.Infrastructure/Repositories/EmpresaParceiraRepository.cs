@@ -37,7 +37,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         }
 
         public async Task<EmpresaParceiraModel> BuscarPorIdCompleto(int id) =>
-            await DbSet.Include(e => e.Contatos).FirstOrDefaultAsync(e => e.Id == id);
+            await DbSet.Include(e => e.Contatos).Include(e => e.Endereco).FirstOrDefaultAsync(e => e.Id == id);
 
         public async Task<ModelPaginada<EmpresaParceiraModel>> Buscar(EmpresaParceiraQueryParam queryParams)
         {

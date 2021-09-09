@@ -28,8 +28,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.NumeroContrato)
                 .HasColumnName("NUMERO_CONTRATO");
 
-            //builder.Property(ep => ep.AditivoContrato)
-            //    .HasColumnName("aditivo_contrato");
+            builder.Property(ep => ep.AditivoContrato)
+                .HasColumnName("ADITIVO_CONTRATO");
 
             builder.Property(ep => ep.URL)
                .HasColumnName("URL_EMPRESA");
