@@ -7,7 +7,7 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("modalidade")]
     public class ModalidadeController : ControllerBase
     {
         private readonly IModalidadeService _service;

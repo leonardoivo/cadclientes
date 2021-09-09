@@ -8,7 +8,7 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels;
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("empresa-parceira")]
     public class EmpresaParceiraController : ControllerBase
     {
         private readonly IEmpresaParceiraService _service;
@@ -18,7 +18,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _service = service;
         }
 
-        [HttpGet("VerificaCnpjCadastrado")]
+        [HttpGet("verifica-cnpj-cadastrado")]
         public async Task<ActionResult<bool>> VerificarCnpjJaCadastrado(string Cnpj)
         {
             await _service.VerificarCnpjJaCadastrado(Cnpj);

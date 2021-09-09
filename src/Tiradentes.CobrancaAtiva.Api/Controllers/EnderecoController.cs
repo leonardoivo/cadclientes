@@ -5,7 +5,7 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("endereco")]
     public class EnderecoController : Controller
     {
         private readonly IEnderecoService _service;
