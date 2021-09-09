@@ -6,11 +6,26 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
     {
         public EmpresaParceiraModel() { }
 
+        public EmpresaParceiraModel(
+            string NomeFantasia, string RazaoSocial, 
+            string Sigla, string CNPJ, string NumeroContrato,
+            string URL, bool Status)
+        {
+            this.NomeFantasia = NomeFantasia;
+            this.RazaoSocial = RazaoSocial;
+            this.Sigla = Sigla;
+            this.CNPJ = CNPJ;
+            this.NumeroContrato = NumeroContrato;
+            this.URL = URL;
+            this.Status= Status;
+        }
+
         public string NomeFantasia { get; private set; }
         public string RazaoSocial { get; private set; }
         public string Sigla { get; private set; }
         public string CNPJ { get; private set; }
         public string NumeroContrato { get; private set; }
+        public string AditivoContrato { get; private set; }
         public string URL { get; private set; }
         public bool Status { get; private set; }
 

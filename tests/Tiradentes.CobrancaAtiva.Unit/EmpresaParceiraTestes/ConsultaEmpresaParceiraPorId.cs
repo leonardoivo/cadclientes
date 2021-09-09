@@ -44,10 +44,15 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                    Description = "Teste buscando um dado existente no banco")]
         public async Task TesteBuscarPorIdComResultado()
         {
-            var model = new EmpresaParceiraModel
-            {
-                NomeFantasia = "Nome Fantasia"
-            };
+            var model = new EmpresaParceiraModel(
+                NomeFantasia: "Nome Fantasia",
+                RazaoSocial: null,
+                Sigla: null,
+                CNPJ: null,
+                NumeroContrato: null,
+                URL: null,
+                Status: true
+            );
 
             await InserirDadoNoBanco(model);
 
@@ -64,10 +69,15 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                     Description = "Teste buscando um dado inexistente")]
         public async Task TesteBuscarPorId()
         {
-            var model = new EmpresaParceiraModel
-            {
-                NomeFantasia = "Nome Fantasia"
-            };
+            var model = new EmpresaParceiraModel(
+                NomeFantasia: "Nome Fantasia",
+                RazaoSocial: null,
+                Sigla: null,
+                CNPJ: null,
+                NumeroContrato: null,
+                URL: null,
+                Status: true
+            );
 
             await InserirDadoNoBanco(model);
 
