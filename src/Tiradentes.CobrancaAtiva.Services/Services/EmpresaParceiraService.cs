@@ -74,11 +74,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<EmpresaParceiraViewModel>(model);
         }
 
-        public async Task Deletar(EmpresaParceiraViewModel viewModel)
+        public async Task Deletar(int id)
         {
-            var model = _map.Map<EmpresaParceiraModel>(viewModel);
-
-            await _repositorio.Deletar(viewModel.Id);
+            await _repositorio.Deletar(id);
         }
 
         public void Dispose()

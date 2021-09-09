@@ -12,7 +12,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task<ViewModelPaginada<BuscaEmpresaParceiraViewModel>> Buscar(ConsultaEmpresaParceiraQueryParam queryParams);
         Task<EmpresaParceiraViewModel> Criar(EmpresaParceiraViewModel viewModel);
         Task<EmpresaParceiraViewModel> Atualizar(EmpresaParceiraViewModel viewModel);
-        Task Deletar(EmpresaParceiraViewModel viewModel);
+        Task Deletar(int id);
         Task<EmpresaParceiraViewModel> BuscarPorId(int Id);
     }
 }

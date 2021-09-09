@@ -49,11 +49,11 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return await _service.Atualizar(viewModel);
         }
 
-        [HttpDelete]
-        public async Task<ActionResult<EmpresaParceiraViewModel>> Deletar([FromBody] EmpresaParceiraViewModel viewModel)
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<EmpresaParceiraViewModel>> Deletar(int id)
         {
-            await _service.Deletar(viewModel);
-            return Ok();
+            await _service.Deletar(id);
+            return NoContent();
         }
     }
 }
