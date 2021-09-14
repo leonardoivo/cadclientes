@@ -29,8 +29,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
 
             
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
-                options.UseOracle(configuration.GetConnectionString("Empresas"),
-                                    b => b.UseOracleSQLCompatibility("11")));
+                options.UseOracle(configuration.GetConnectionString("Empresas")));
 
             return services;
         }
