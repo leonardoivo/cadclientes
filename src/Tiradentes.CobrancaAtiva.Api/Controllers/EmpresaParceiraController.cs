@@ -4,6 +4,9 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
+using Microsoft.AspNetCore.Http;
+using System.Collections.Generic;
+using FluentValidation.Results;
 
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
@@ -44,6 +47,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
              await _service.Criar(viewModel);
 
         [HttpPut]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List<ValidationFailure>))]
+        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(teste))]
         public async Task<ActionResult<EmpresaParceiraViewModel>> Atualizar([FromBody] EmpresaParceiraViewModel viewModel)
         {
             return await _service.Atualizar(viewModel);
@@ -56,4 +62,10 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return NoContent();
         }
     }
+
+    public class teste {
+
+        public string erro { get; set; }
+    }
+
 }
