@@ -70,6 +70,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
 
+            query = query.OrderBy(e => e.NomeFantasia);
+
             return await query.OrderBy(e => e.NomeFantasia).Paginar(queryParams.Pagina, queryParams.Limite);
         }
     }

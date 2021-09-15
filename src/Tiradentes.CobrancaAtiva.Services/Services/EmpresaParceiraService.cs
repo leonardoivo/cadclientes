@@ -69,9 +69,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             Validate(new AtualizarEmpresaParceiraValidation(), viewModel);
 
+            var modelNoBanco = await _repositorio.BuscarPorIdCompleto(viewModel.Id);
+
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
             
-            model.SetarEndereco(0, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
+            model.SetarEndereco(modelNoBanco.Endereco.Id, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
                     viewModel.Logradouro, viewModel.Numero, 
                     viewModel.Complemento);
 
