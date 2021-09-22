@@ -43,7 +43,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasOne(c => c.Endereco)
                 .WithOne(e => e.Empresa);
 
-            builder.ToTable("EMPRESA");
+            builder.ToTable("EMPRESAS");
         }
     }
 }

@@ -38,7 +38,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .WithOne(e => e.Endereco)
                 .HasForeignKey<EnderecoEmpresaParceiraModel>(e => e.EmpresaId);
 
-            builder.ToTable("EMPRESA_ENDERECO");
+            builder.ToTable("EMPRESAS_ENDERECOS");
         }
     }
 }

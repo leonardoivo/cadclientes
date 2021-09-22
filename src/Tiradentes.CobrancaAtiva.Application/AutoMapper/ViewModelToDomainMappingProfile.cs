@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.HonorarioEmpresaParceira;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
@@ -17,6 +18,9 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                 .ForSourceMember(dest => dest.Complemento, opt => opt.DoNotValidate());
             CreateMap<ContatoEmpresaParceiraViewModel, ContatoEmpresaParceiraModel>();
             CreateMap<EnderecoEmpresaParceiraViewModel, EnderecoEmpresaParceiraModel>();
+            
+            CreateMap<HonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();
+            CreateMap<CreateHonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();  
         }
     }
 }
