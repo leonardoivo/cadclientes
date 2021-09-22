@@ -8,9 +8,21 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
 {
     public static class ApiConfig
     {
+        static string AllowAllOrigins = "_AllowAllOrigins";
 
         public static void ApiServiceConfig(this IServiceCollection services)
         {
+            services.AddCors(options =>
+            {
+                options.AddPolicy(name: AllowAllOrigins,
+                                  builder =>
+                                  {
+                                      builder.AllowAnyOrigin()
+                                                .AllowAnyHeader()
+                                                .AllowAnyMethod();
+                                  });
+            });
+
             services.AddControllers();
         }
 
@@ -29,7 +41,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
 
             app.UseMiddleware<ExcpetionMiddleware>();
 
-            app.UseCors(option => option.AllowAnyOrigin().AllowAnyMethod().AllowAnyHeader());
+            app.UseCors(AllowAllOrigins);
 
             app.UseEndpoints(endpoints =>
             {
