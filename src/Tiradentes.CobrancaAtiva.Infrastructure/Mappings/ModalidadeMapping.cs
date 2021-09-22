@@ -19,7 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasMany(m => m.InstituicoesModalidades)
                 .WithOne(im => im.Modalidade);
 
-            builder.ToTable("MODALIDADE");
+            builder.ToTable("MODALIDADES");
         }
     }
 }
