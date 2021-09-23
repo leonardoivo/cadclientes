@@ -22,6 +22,11 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _service = service;
         }
 
+        [HttpGet]
+        public async Task<ActionResult<ViewModelPaginada<HonorarioEmpresaParceiraViewModel>>> Buscar(
+            [FromQuery] ConsultaHonorarioEmpresaParceiraQueryParam queryParams) =>
+             await _service.Buscar(queryParams);
+
         [HttpPost]
         public async Task<ActionResult<HonorarioEmpresaParceiraViewModel>> Criar(
             [FromBody] CreateHonorarioEmpresaParceiraViewModel viewModel) =>

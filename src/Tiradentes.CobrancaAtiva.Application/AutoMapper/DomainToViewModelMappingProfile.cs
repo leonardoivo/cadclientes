@@ -25,6 +25,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                 .ForMember(dest => dest.Numero, opt => opt.MapFrom(src => src.Endereco.Numero))
                 .ForMember(dest => dest.Complemento, opt => opt.MapFrom(src => src.Endereco.Complemento));
             CreateMap<ModelPaginada<EmpresaParceiraModel>, ViewModelPaginada<BuscaEmpresaParceiraViewModel>>();
+            CreateMap<ModelPaginada<HonorarioEmpresaParceiraModel>, ViewModelPaginada<HonorarioEmpresaParceiraViewModel>>();
             CreateMap<ContatoEmpresaParceiraModel, ContatoEmpresaParceiraViewModel>();
             CreateMap<EnderecoEmpresaParceiraModel, EnderecoEmpresaParceiraViewModel>();
             CreateMap<HonorarioEmpresaParceiraModel, HonorarioEmpresaParceiraViewModel>();

@@ -48,11 +48,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasForeignKey(c => c.EmpresaParceiraId)
                 .HasConstraintName("FK_HONORARIO_COD_EMPRESA");
 
-            builder.HasOne(c => c.InstituicaoModel)
+            builder.HasOne(c => c.Instituicao)
                 .WithMany(e => e.Honorarios)
                 .HasForeignKey(c => c.InstituicaoId);
 
-            builder.HasOne(c => c.ModalidadeModel)
+            builder.HasOne(c => c.Modalidade)
                 .WithMany(e => e.Honorarios)
                 .HasForeignKey(c => c.ModalidadeId);
 

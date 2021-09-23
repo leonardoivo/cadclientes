@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.Validations.HonorarioEmpresaParceira;
+using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.HonorarioEmpresaParceira;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
+using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
@@ -39,6 +42,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _repositorio.Alterar(model);
 
             return _map.Map<HonorarioEmpresaParceiraViewModel>(model);
+        }
+
+        public async Task<ViewModelPaginada<HonorarioEmpresaParceiraViewModel>> Buscar(ConsultaHonorarioEmpresaParceiraQueryParam queryParams)
+        {
+            var query = _map.Map<HonorarioEmpresaParceiraQueryParam>(queryParams);
+            var resultadoConsulta = await _repositorio.Buscar(query);
+            return _map.Map<ViewModelPaginada<HonorarioEmpresaParceiraViewModel>>(resultadoConsulta);
         }
 
         public void Dispose()
