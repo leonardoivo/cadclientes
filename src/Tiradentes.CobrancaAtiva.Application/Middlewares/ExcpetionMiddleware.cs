@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Http;
+using Microsoft.Extensions.Logging;
 using System;
 using System.Text;
 using System.Text.Json;
@@ -10,10 +11,11 @@ namespace Tiradentes.CobrancaAtiva.Application.Middlewares
     public class ExcpetionMiddleware
     {
         private readonly RequestDelegate _next;
-
-        public ExcpetionMiddleware(RequestDelegate next)
+        private readonly ILogger _logger;
+        public ExcpetionMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
         {
             _next = next;
+            _logger = loggerFactory.CreateLogger<ExcpetionMiddleware>();
         }
 
 
@@ -29,6 +31,10 @@ namespace Tiradentes.CobrancaAtiva.Application.Middlewares
             }
             catch (Exception ex)
             {
+                if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production")
+                {
+                    _logger.LogError(ex.Message);
+                }
                 await TratarErro(500, JsonSerializer.Serialize(new { erro = "Erro inesperado" }), httpContext);
             }
         }

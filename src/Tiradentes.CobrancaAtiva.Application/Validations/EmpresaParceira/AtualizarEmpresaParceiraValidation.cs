@@ -38,19 +38,19 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
                .Length(8).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Estado)
-               .Length(50).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(50).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Cidade)
-               .Length(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Logradouro)
-               .Length(70).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(70).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Numero)
-               .Length(10).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(10).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Complemento)
-               .Length(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Contatos)
                 .Cascade(CascadeMode.Stop)
