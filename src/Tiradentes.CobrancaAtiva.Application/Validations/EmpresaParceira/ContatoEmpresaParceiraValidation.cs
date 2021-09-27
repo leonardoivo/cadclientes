@@ -17,6 +17,7 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
 
             RuleFor(e => e.Telefone)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio)
+                .Matches(@"^[\d]+$").WithMessage("Telefone inválido")
                 .MaximumLength(12).WithMessage(MensagensErroValidacao.TamanhaMaximo);
         }
     }

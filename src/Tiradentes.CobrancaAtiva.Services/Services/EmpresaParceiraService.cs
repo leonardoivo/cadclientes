@@ -71,6 +71,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var modelNoBanco = await _repositorio.BuscarPorIdCompleto(viewModel.Id);
 
+            if (modelNoBanco == null) EntidadeNaoEncontrada("Empresa não encontrada"); 
+
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
             
             model.SetarEndereco(modelNoBanco.Endereco.Id, viewModel.CEP, viewModel.Estado, viewModel.Cidade,

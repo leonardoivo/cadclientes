@@ -22,6 +22,8 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
             RuleFor(e => e.CNPJ)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio)
+                .Length(14).WithMessage("CNPJ inválido")
+                .Matches(@"^[\d]+$").WithMessage("CNPJ inválido")
                 .Must(cnpj => CommonValidacoes.ValidarCnpj(cnpj)).WithMessage("CNPJ inválido");
 
             RuleFor(e => e.NumeroContrato)
@@ -32,7 +34,9 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
                .MaximumLength(100).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.CEP)
-               .Length(8).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+                .Cascade(CascadeMode.Stop)
+                .Length(8).WithMessage(MensagensErroValidacao.TamanhaMaximo)
+                .Matches(@"^[\d]+$").WithMessage("CEP inválido");
 
             RuleFor(e => e.Estado)
                .MaximumLength(50).WithMessage(MensagensErroValidacao.TamanhaMaximo);
