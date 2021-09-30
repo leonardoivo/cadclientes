@@ -1,0 +1,14 @@
+version: '2.4'
+services:
+  mec_backend:
+    extends:
+      file: common-services.yml
+      service: mec_backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - 80:80
+    # volumes:
+    #  - ./app:/usr/share/nginx/html:ro
+    restart: always
