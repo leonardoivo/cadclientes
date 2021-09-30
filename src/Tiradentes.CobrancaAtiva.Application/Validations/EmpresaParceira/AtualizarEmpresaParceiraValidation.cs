@@ -22,6 +22,8 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
             RuleFor(e => e.CNPJ)
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio)
+                .Length(14).WithMessage("CNPJ inválido")
+                .Matches(@"^[\d]+$").WithMessage("CNPJ inválido")
                 .Must(cnpj => CommonValidacoes.ValidarCnpj(cnpj)).WithMessage("CNPJ inválido");
 
             RuleFor(e => e.NumeroContrato)
@@ -35,22 +37,23 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
                .MaximumLength(100).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.CEP)
-               .Length(8).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .Length(8).WithMessage(MensagensErroValidacao.TamanhaMaximo)
+               .Matches(@"^[\d]+$").WithMessage("CEP inválido");
 
             RuleFor(e => e.Estado)
-               .Length(50).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(50).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Cidade)
-               .Length(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Logradouro)
-               .Length(70).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(70).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Numero)
-               .Length(10).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(10).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Complemento)
-               .Length(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+               .MaximumLength(40).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Contatos)
                 .Cascade(CascadeMode.Stop)

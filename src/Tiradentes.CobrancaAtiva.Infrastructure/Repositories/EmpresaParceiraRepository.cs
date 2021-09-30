@@ -37,7 +37,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         }
 
         public async Task<EmpresaParceiraModel> BuscarPorIdCompleto(int id) =>
-            await DbSet.Include(e => e.Contatos).Include(e => e.Endereco).FirstOrDefaultAsync(e => e.Id == id);
+            await DbSet.AsNoTracking().Include(e => e.Contatos).Include(e => e.Endereco).FirstOrDefaultAsync(e => e.Id == id);
 
         public async Task<ModelPaginada<EmpresaParceiraModel>> Buscar(EmpresaParceiraQueryParam queryParams)
         {
@@ -55,8 +55,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (!string.IsNullOrEmpty(queryParams.NomeFantasia))
                 query = query.Where(e => e.NomeFantasia.Contains(queryParams.NomeFantasia));
 
-            //if (!string.IsNullOrEmpty(queryParams.AditivoContrato))
-            //    query = query.Where(e => e.AditivoContrato.Contains(queryParams.AditivoContrato));
+            if (!string.IsNullOrEmpty(queryParams.AditivoContrato))
+                query = query.Where(e => e.AditivoContrato.Contains(queryParams.AditivoContrato));
 
             if (!string.IsNullOrEmpty(queryParams.Contato))
                 query = query.Where(e => e.Contatos.Where(c => c.Contato.Contains(queryParams.Contato)).Any());

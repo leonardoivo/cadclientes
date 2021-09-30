@@ -19,8 +19,12 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
         public DomainToViewModelMappingProfile()
         {
             CreateMap<EmpresaParceiraModel, BuscaEmpresaParceiraViewModel>()
-                .ForMember(dest => dest.Contato, 
-                    opt => opt.MapFrom(src => src.Contatos.FirstOrDefault().Contato));
+                .ForMember(dest => dest.Contato,
+                    opt => opt.MapFrom(src => src.Contatos.FirstOrDefault().Contato))
+                .ForMember(dest => dest.Cidade, 
+                    opt => opt.MapFrom(src => src.Endereco.Cidade))
+                .ForMember(dest => dest.Estado, 
+                    opt => opt.MapFrom(src => src.Endereco.Estado));
             CreateMap<EmpresaParceiraModel, EmpresaParceiraViewModel>()
                 .ForMember(dest => dest.CEP, opt => opt.MapFrom(src => src.Endereco.CEP))
                 .ForMember(dest => dest.Estado, opt => opt.MapFrom(src => src.Endereco.Estado))
