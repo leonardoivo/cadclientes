@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Endereco;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
@@ -16,10 +17,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> BuscarPorCep()
+        public async Task<ActionResult<EnderecoViewModel>> BuscarPorCep(string cep)
         {
-            await _service.BuscarPorCep();
-            return Ok();
+            return await _service.BuscarPorCep(cep);
         }
     }
 }
