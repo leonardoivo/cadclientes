@@ -69,7 +69,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                    Description = "Teste Atualizar Empresa Parceira no Banco")]
         public async Task TesteExcluirEmpresaParceira()
         {
-            await _service.Deletar(_model);
+            await _service.Deletar(_model.Id);
         }
     }
 }
