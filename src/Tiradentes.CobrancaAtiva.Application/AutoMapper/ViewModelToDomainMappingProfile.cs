@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.HonorarioEmpresaParceira;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.InstituicaoModalidadeRegra;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
@@ -21,6 +22,9 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             
             CreateMap<HonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();
             CreateMap<CreateHonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();  
+
+            CreateMap<InstituicaoModalidadeRegraViewModel, InstituicaoModalidadeRegraModel>();
+            CreateMap<CreateInstituicaoModalidadeRegraViewModel, InstituicaoModalidadeRegraModel>();
         }
     }
 }
