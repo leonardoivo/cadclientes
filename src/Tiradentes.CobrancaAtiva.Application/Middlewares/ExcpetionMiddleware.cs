@@ -34,8 +34,12 @@ namespace Tiradentes.CobrancaAtiva.Application.Middlewares
                 if(Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") != "Production")
                 {
                     _logger.LogError(ex.Message);
+                    await TratarErro(500, ex.Message, httpContext);
                 }
-                await TratarErro(500, JsonSerializer.Serialize(new { erro = "Erro inesperado" }), httpContext);
+                else 
+                {
+                    await TratarErro(500, JsonSerializer.Serialize(new { erro = "Erro inesperado" }), httpContext);
+                }
             }
         }
 
