@@ -16,6 +16,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Descricao)
              .HasColumnName("DESCRICAO_CURSO");
 
+            builder.HasMany(c => c.RegraNegociacaoCurso)
+               .WithOne(e => e.Curso);
+
             builder.ToTable("CURSOS");
         }
     }
