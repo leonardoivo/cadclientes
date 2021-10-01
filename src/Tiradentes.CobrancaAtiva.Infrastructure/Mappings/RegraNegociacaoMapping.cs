@@ -14,16 +14,25 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
               .HasColumnName("COD_REGRA_NEGOCIACAO");
 
             builder.Property(ep => ep.InstituicaoId)
-              .HasColumnName("COD_INDTITUICAO");
+              .HasColumnName("COD_INSTITUICAO");
 
             builder.Property(ep => ep.ModedalidadeId)
-              .HasColumnName("COD_REGRA_NEGOCIACAO");
+              .HasColumnName("COD_MODALIDADE");
 
             builder.Property(ep => ep.PercentJurosMulta)
-              .HasColumnName("PERCENT_JUROS_MULTA");
+              .HasColumnName("PERCENT_JUROS_MULTA")
+              .HasColumnType("NUMBER(3,5)");
 
             builder.Property(ep => ep.PercentValor)
-              .HasColumnName("PERCENT_VALOR");
+              .HasColumnName("PERCENT_VALOR")
+              .HasColumnType("NUMBER(3,5)");
+
+            builder.Property(ep => ep.Status)
+              .HasColumnName("STATUS")
+              .HasColumnType("NUMBER(1)");
+
+            builder.Property(ep => ep.Validade)
+              .HasColumnName("VALIDADE");
 
             builder.HasMany(c => c.RegraNegociacaoCurso)
                .WithOne(e => e.RegraNegociacao);
