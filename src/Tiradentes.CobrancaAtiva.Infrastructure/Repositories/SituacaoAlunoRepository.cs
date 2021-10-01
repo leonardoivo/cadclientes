@@ -4,9 +4,9 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
-    public class SituacaoRepository : BaseRepository<SituacaoModel>, ISituacaoRepository
+    public class SituacaoAlunoRepository : BaseRepository<SituacaoAlunoModel>, ISituacaoAlunoRepository
     {
-        public SituacaoRepository(CobrancaAtivaDbContext context) : base(context)
+        public SituacaoAlunoRepository(CobrancaAtivaDbContext context) : base(context)
         { }
     }
 }

@@ -4,7 +4,7 @@ using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
-    public interface ISituacaoRepository : IBaseRepository<SituacaoModel>
+    public interface ISituacaoAlunoRepository : IBaseRepository<SituacaoAlunoModel>
     {
     }
 }

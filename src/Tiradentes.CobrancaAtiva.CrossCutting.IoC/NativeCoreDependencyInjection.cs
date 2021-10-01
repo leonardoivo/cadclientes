@@ -20,7 +20,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IEnderecoRepository, EnderecoRepository>();
             services.AddScoped<IInstituicaoRepository, InstituicaoRepository>();
             services.AddScoped<IModalidadeRepository, ModalidadeRepository>();
-            services.AddScoped<ISituacaoRepository, SituacaoRepository>();
+            services.AddScoped<ISituacaoAlunoRepository, SituacaoAlunoRepository>();
             services.AddScoped<ITipoPagamentoRepository, TipoPagamentoRepository>();
             services.AddScoped<ITipoTituloRepository, TipoTituloRepository>();
             services.AddScoped<IHonorarioEmpresaParceiraRepository, HonorarioEmpresaParceiraRepository>();
@@ -34,7 +34,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IEnderecoService, EnderecoService>();
             services.AddScoped<IInstituicaoService, InstituicaoService>();
             services.AddScoped<IModalidadeService, ModalidadeService>();
-            services.AddScoped<ISituacaoService, SituacaoService>();
+            services.AddScoped<ISituacaoAlunoService, SituacaoAlunoService>();
             services.AddScoped<ITipoTituloService, TipoTituloService>();
             services.AddScoped<ITipoPagamentoService, TipoPagamentoService>();
             services.AddScoped<IHonorarioEmpresaParceiraService, HonorarioEmpresaParceiraService>();

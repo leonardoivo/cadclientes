@@ -1,29 +1,28 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using Tiradentes.CobrancaAtiva.Application.ViewModels.Instituicao;
-using Tiradentes.CobrancaAtiva.Application.ViewModels.Situacao;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.SituacaoAluno;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
 {
-    public class SituacaoService : ISituacaoService
+    public class SituacaoAlunoService : ISituacaoAlunoService
     {
-        protected readonly ISituacaoRepository _repositorio;
+        protected readonly ISituacaoAlunoRepository _repositorio;
         protected readonly IMapper _map;
 
-        public SituacaoService(ISituacaoRepository repositorio, IMapper map)
+        public SituacaoAlunoService(ISituacaoAlunoRepository repositorio, IMapper map)
         {
             _repositorio = repositorio;
             _map = map;
         }
 
-        public async Task<IList<SituacaoViewModel>> Buscar()
+        public async Task<IList<SituacaoAlunoViewModel>> Buscar()
         {
             var situacoes = await _repositorio.Buscar();
 
-            return _map.Map<List<SituacaoViewModel>>(situacoes);
+            return _map.Map<List<SituacaoAlunoViewModel>>(situacoes);
         }
 
         public void Dispose()
