@@ -24,7 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasForeignKey(c => c.TipoPagamentoId);
 
             builder.HasOne(c => c.RegraNegociacao)
-                .WithMany(e => e.RegraNegocicaoTipoPagamento)
+                .WithMany(e => e.RegraNegociacaoTipoPagamento)
                 .HasForeignKey(c => c.RegraNegociacaoId);
 
             builder.ToTable("REGRA_NEGOCIACAO_TIPO_PAGAMENTO");

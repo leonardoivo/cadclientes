@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Models
 {
@@ -20,7 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public ICollection<RegraNegociacaoCursoModel> RegraNegociacaoCurso { get; private set; }
         public ICollection<RegraNegociacaoSemestreModel> RegraNegociacaoSemestre { get; private set; }
         public ICollection<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; private set; }
-        public ICollection<RegraNegociacaoTipoPagamentoModel> RegraNegocicaoTipoPagamento { get; private set; }
+        public ICollection<RegraNegociacaoTipoPagamentoModel> RegraNegociacaoTipoPagamento { get; private set; }
         public ICollection<RegraNegociacaoTipoTituloModel> RegraNegociacaoTipoTitulo { get; private set; }
     }
 }

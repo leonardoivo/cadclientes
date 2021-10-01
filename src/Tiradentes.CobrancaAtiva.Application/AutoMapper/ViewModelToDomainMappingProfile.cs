@@ -31,7 +31,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                     opt => opt.MapFrom(src => src.SemestreIds.Select(c => new RegraNegociacaoSemestreModel(c))))
                 .ForMember(dest => dest.RegraNegociacaoSituacaoAluno,
                     opt => opt.MapFrom(src => src.SituacaoAlunoIds.Select(c => new RegraNegociacaoSituacaoAlunoModel(c))))
-                .ForMember(dest => dest.RegraNegocicaoTipoPagamento,
+                .ForMember(dest => dest.RegraNegociacaoTipoPagamento,
                     opt => opt.MapFrom(src => src.TipoPagamentoIds.Select(c => new RegraNegociacaoTipoPagamentoModel(c))))
                 .ForMember(dest => dest.RegraNegociacaoTipoTitulo,
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new RegraNegociacaoTipoTituloModel(c))));  

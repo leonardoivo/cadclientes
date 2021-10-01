@@ -52,7 +52,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasMany(c => c.RegraNegociacaoSituacaoAluno)
               .WithOne(e => e.RegraNegociacao);
 
-            builder.HasMany(c => c.RegraNegocicaoTipoPagamento)
+            builder.HasMany(c => c.RegraNegociacaoTipoPagamento)
               .WithOne(e => e.RegraNegociacao);
 
             builder.HasMany(c => c.RegraNegociacaoTipoTitulo)
