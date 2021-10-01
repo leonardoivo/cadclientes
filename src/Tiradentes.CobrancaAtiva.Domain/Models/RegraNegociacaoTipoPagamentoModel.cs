@@ -2,6 +2,15 @@
 {
     public class RegraNegociacaoTipoPagamentoModel : BaseModel
     {
+        public RegraNegociacaoTipoPagamentoModel()
+        {
+        }
+
+        public RegraNegociacaoTipoPagamentoModel(int tipoPagamentoId)
+        {
+            TipoPagamentoId = tipoPagamentoId;
+        }
+
         public int TipoPagamentoId { get; set; }
         public int RegraNegociacaoId { get; set; }
 

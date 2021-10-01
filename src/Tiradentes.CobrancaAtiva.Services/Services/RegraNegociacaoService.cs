@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
+using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
@@ -23,6 +24,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var list = await _repositorio.Buscar();
 
             return _map.Map<List<RegraNegociacaoViewModel>>(list);
+        }
+
+        public async Task<RegraNegociacaoViewModel> Criar(CriarRegraNegociacaoViewModel viewModel)
+        {
+            var model = _map.Map<RegraNegociacaoModel>(viewModel);
+
+            await _repositorio.Criar(model);
+
+            return _map.Map<RegraNegociacaoViewModel>(model);
         }
     }
 }

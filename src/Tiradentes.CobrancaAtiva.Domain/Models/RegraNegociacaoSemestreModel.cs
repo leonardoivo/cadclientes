@@ -2,6 +2,13 @@
 {
     public class RegraNegociacaoSemestreModel : BaseModel
     {
+        public RegraNegociacaoSemestreModel()
+        { }
+        public RegraNegociacaoSemestreModel(int semestreId)
+        {
+            SemestreId = semestreId;
+        }
+
         public int SemestreId { get; set; }
         public int RegraNegociacaoId { get; set; }
 

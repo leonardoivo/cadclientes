@@ -22,5 +22,12 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         {
             return Ok(await _service.Buscar());
         }
+
+        [HttpPost]
+        public async Task<ActionResult<RegraNegociacaoViewModel>> Buscar(
+            [FromBody] CriarRegraNegociacaoViewModel viewModel)
+        {
+            return await _service.Criar(viewModel);
+        }
     }
 }

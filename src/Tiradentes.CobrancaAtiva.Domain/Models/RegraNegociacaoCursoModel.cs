@@ -2,6 +2,13 @@
 {
     public class RegraNegociacaoCursoModel : BaseModel
     {
+        public RegraNegociacaoCursoModel()
+        { }
+        public RegraNegociacaoCursoModel(int cursoId)
+        {
+            CursoId = cursoId;
+        }
+
         public int CursoId { get; set; }
         public int RegraNegociacaoId { get; set; }
 

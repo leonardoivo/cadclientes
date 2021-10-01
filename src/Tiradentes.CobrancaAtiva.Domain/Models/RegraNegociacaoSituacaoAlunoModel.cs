@@ -2,6 +2,15 @@
 {
     public class RegraNegociacaoSituacaoAlunoModel : BaseModel
     {
+        public RegraNegociacaoSituacaoAlunoModel()
+        {
+        }
+
+        public RegraNegociacaoSituacaoAlunoModel(int situacaoAlunoId)
+        {
+            SituacaoAlunoId = situacaoAlunoId;
+        }
+
         public int SituacaoAlunoId { get; set; }
         public int RegraNegociacaoId { get; set; }
 

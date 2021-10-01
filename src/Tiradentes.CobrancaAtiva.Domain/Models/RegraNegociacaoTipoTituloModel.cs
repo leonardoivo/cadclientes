@@ -2,6 +2,15 @@
 {
     public class RegraNegociacaoTipoTituloModel : BaseModel
     {
+        public RegraNegociacaoTipoTituloModel()
+        {
+        }
+
+        public RegraNegociacaoTipoTituloModel(int tipoTituloId)
+        {
+            TipoTituloId = tipoTituloId;
+        }
+
         public int TipoTituloId { get; set; }
         public int RegraNegociacaoId { get; set; }
 

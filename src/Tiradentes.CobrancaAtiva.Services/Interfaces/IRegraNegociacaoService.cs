@@ -7,5 +7,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     public interface IRegraNegociacaoService
     {
         Task<IList<RegraNegociacaoViewModel>> Buscar();
+        Task<RegraNegociacaoViewModel> Criar(CriarRegraNegociacaoViewModel viewModel);
     }
 }
