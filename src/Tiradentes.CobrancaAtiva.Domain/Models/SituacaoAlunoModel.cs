@@ -2,7 +2,7 @@
 
 namespace Tiradentes.CobrancaAtiva.Domain.Models
 {
-    public class SituacaoModel : BaseModel
+    public class SituacaoAlunoModel : BaseModel
     {
         public string Situacao { get; set; }
     }

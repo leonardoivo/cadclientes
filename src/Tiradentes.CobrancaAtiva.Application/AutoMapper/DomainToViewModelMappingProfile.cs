@@ -9,6 +9,7 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.Instituicao;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Modalidade;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Semestre;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Situacao;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.SituacaoAluno;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
@@ -44,7 +45,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<CursoModel, CursoViewModel>();
             CreateMap<SemestreModel, SemestreViewModel>();
-            CreateMap<SituacaoModel, SituacaoViewModel>();
+            CreateMap<SituacaoAlunoModel, SituacaoAlunoViewModel>();
             CreateMap<TipoPagamentoModel, TipoPagamentoViewModel>();
             CreateMap<TipoTituloModel, TipoTituloViewModel>();
 
