@@ -24,7 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .WithMany(m => m.InstituicoesModalidades)
                 .HasForeignKey(im => im.ModalidadeId);
 
-            builder.ToTable("INSTITUICAO_MODALIDADE");
+            builder.ToTable("INSTITUICOES_MODALIDADES");
         }
     }
 }
