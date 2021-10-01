@@ -32,7 +32,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
               .HasColumnType("NUMBER(1)");
 
             builder.Property(ep => ep.Validade)
-              .HasColumnName("VALIDADE");
+              .HasColumnName("VALIDADE")
+              .HasColumnType("DATE");
+
+            builder.HasOne(im => im.Instituicao)
+                .WithMany(m => m.RegraNegociacao)
+                .HasForeignKey(im => im.InstituicaoId);
+
+            builder.HasOne(im => im.Modalidade)
+                .WithMany(m => m.RegraNegociacao)
+                .HasForeignKey(im => im.ModedalidadeId);
 
             builder.HasMany(c => c.RegraNegociacaoCurso)
                .WithOne(e => e.RegraNegociacao);

@@ -15,6 +15,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public bool Status { get; private set; }
         public DateTime Validade { get; private set; }
 
+        public InstituicaoModel Instituicao { get; set; }
+        public ModalidadeModel Modalidade { get; set; }
         public ICollection<RegraNegociacaoCursoModel> RegraNegociacaoCurso { get; private set; }
         public ICollection<RegraNegociacaoSemestreModel> RegraNegociacaoSemestre { get; private set; }
         public ICollection<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; private set; }

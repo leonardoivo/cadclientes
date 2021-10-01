@@ -53,6 +53,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<EnderecoModel, EnderecoViewModel>();
 
             CreateMap<RegraNegociacaoModel, RegraNegociacaoViewModel>();
+            CreateMap<BuscaRegraNegociacao, BuscaRegraNegociacaoViewModel>();
         }
     }
 }

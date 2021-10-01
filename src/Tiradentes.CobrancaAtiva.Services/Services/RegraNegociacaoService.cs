@@ -19,11 +19,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _repositorio = repositorio;
         }
 
-        public async Task<IList<RegraNegociacaoViewModel>> Buscar()
+        public async Task<IList<BuscaRegraNegociacaoViewModel>> Buscar()
         {
-            var list = await _repositorio.Buscar();
+            var list = await _repositorio.BuscarT();
 
-            return _map.Map<List<RegraNegociacaoViewModel>>(list);
+            return _map.Map<List<BuscaRegraNegociacaoViewModel>>(list);
         }
 
         public async Task<RegraNegociacaoViewModel> Criar(CriarRegraNegociacaoViewModel viewModel)

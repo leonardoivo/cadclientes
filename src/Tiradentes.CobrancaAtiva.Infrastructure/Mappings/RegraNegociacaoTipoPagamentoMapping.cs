@@ -11,7 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasKey(ep => ep.Id);
 
             builder.Property(ep => ep.Id)
-              .HasColumnName("COD_REGRA_NEGOCIACAO_CURSO");
+              .HasColumnName("COD_REGRA_NEGOCIACAO_TIPO_PAGAMENTO");
 
             builder.Property(ep => ep.TipoPagamentoId)
               .HasColumnName("COD_TIPO_PAGAMENTO");
