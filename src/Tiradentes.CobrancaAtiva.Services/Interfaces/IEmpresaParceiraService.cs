@@ -8,7 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
     public interface IEmpresaParceiraService : IDisposable
     {
-        Task VerificarCnpjJaCadastrado(string Cnpj);
+        Task VerificarCnpjJaCadastrado(string cnpj, int? id);
         Task<ViewModelPaginada<BuscaEmpresaParceiraViewModel>> Buscar(ConsultaEmpresaParceiraQueryParam queryParams);
         Task<EmpresaParceiraViewModel> Criar(EmpresaParceiraViewModel viewModel);
         Task<EmpresaParceiraViewModel> Atualizar(EmpresaParceiraViewModel viewModel);

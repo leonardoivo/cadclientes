@@ -24,11 +24,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _map = map;
         }
 
-        public async Task VerificarCnpjJaCadastrado(string Cnpj)
+        public async Task VerificarCnpjJaCadastrado(string cnpj, int? id)
         {
-            var CnpjCadastrado = await _repositorio.VerificaCnpjJaCadastrado(Cnpj);
+            var CnpjCadastrado = await _repositorio.VerificaCnpjJaCadastrado(cnpj, id);
             
-            if(CnpjCadastrado) throw CustomException.EntityNotFound(JsonSerializer.Serialize(new { erro = "CNPJ já cadastrado" }));
+            if(CnpjCadastrado) throw CustomException.BadRequest(JsonSerializer.Serialize(new { erro = "CNPJ já cadastrado" }));
         }
 
         public async Task<EmpresaParceiraViewModel> BuscarPorId(int id)
