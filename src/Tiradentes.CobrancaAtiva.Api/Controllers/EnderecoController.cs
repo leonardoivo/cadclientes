@@ -16,7 +16,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
+        [HttpGet("busca-por-cep/{cep}")]
         public async Task<ActionResult<EnderecoViewModel>> BuscarPorCep(string cep)
         {
             return await _service.BuscarPorCep(cep);

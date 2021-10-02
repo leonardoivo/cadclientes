@@ -4,7 +4,7 @@ using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 {
-    class SituacaoMapping : IEntityTypeConfiguration<SituacaoAlunoModel>
+    class SituacaoAlunoMapping : IEntityTypeConfiguration<SituacaoAlunoModel>
     {
         public void Configure(EntityTypeBuilder<SituacaoAlunoModel> builder)
         {
@@ -15,6 +15,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 
             builder.Property(ep => ep.Situacao)
              .HasColumnName("DESCRICAO_SITUACAO");
+
+            builder.HasMany(c => c.RegraNegociacaoSituacaoAluno)
+               .WithOne(e => e.SituacaoAluno);
 
             builder.ToTable("SITUACOES_ALUNO");
         }

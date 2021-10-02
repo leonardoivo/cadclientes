@@ -16,6 +16,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.TipoPagamento)
              .HasColumnName("DESCRICAO_TIPO_PAGAMENTO");
 
+            builder.HasMany(c => c.RegraNegociacaoTipoPagamento)
+               .WithOne(e => e.TipoPagamento);
+
             builder.ToTable("TIPO_PAGAMENTO");
         }
     }

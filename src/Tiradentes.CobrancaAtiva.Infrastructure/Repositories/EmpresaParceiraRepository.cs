@@ -31,9 +31,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await base.Alterar(model);
         }
 
-        public async Task<bool> VerificaCnpjJaCadastrado(string Cnpj) 
+        public async Task<bool> VerificaCnpjJaCadastrado(string cnpj, int? id) 
         {
-            return await base.DbSet.FirstOrDefaultAsync(e => e.CNPJ == Cnpj) != null;
+            var query = DbSet.Where(e => e.CNPJ == cnpj);
+
+            if (id.HasValue) query = query.Where(e => e.Id == id.Value);
+
+            return await query.AnyAsync();
         }
 
         public async Task<EmpresaParceiraModel> BuscarPorIdCompleto(int id) =>

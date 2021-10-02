@@ -21,10 +21,10 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _service = service;
         }
 
-        [HttpGet("verifica-cnpj-cadastrado")]
-        public async Task<ActionResult<bool>> VerificarCnpjJaCadastrado(string Cnpj)
+        [HttpGet("verifica-cnpj-cadastrado/{cnpj}")]
+        public async Task<ActionResult> VerificarCnpjJaCadastrado(string cnpj, int? id = null)
         {
-            await _service.VerificarCnpjJaCadastrado(Cnpj);
+            await _service.VerificarCnpjJaCadastrado(cnpj, id);
             return Ok();
         }
 
