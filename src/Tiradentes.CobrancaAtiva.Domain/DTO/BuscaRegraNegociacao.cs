@@ -6,6 +6,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
 {
     public class BuscaRegraNegociacao 
     {
+        public int Id { get; set; }
         public string Instituicao { get; set; }
         public string Modedalidade { get; set; }
         public decimal PercentJurosMulta { get; set; }

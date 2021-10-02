@@ -23,5 +23,60 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public ICollection<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; private set; }
         public ICollection<RegraNegociacaoTipoPagamentoModel> RegraNegociacaoTipoPagamento { get; private set; }
         public ICollection<RegraNegociacaoTipoTituloModel> RegraNegociacaoTipoTitulo { get; private set; }
+
+        public void SetRegraNegociacaoCurso(ICollection<RegraNegociacaoCursoModel> datas ) 
+        {
+            RegraNegociacaoCurso = RegraNegociacaoCurso
+                                    .Select(r => new RegraNegociacaoCursoModel {
+                                        Id = datas.FirstOrDefault(c => c.CursoId.Equals(r.CursoId))?.Id ?? 0,
+                                        RegraNegociacaoId = Id,
+                                        CursoId = r.CursoId
+                                    })
+                                    .ToList();
+        }
+
+         public void SetRegraNegociacaoSemestre(ICollection<RegraNegociacaoSemestreModel> datas ) 
+        {
+            RegraNegociacaoSemestre = RegraNegociacaoSemestre
+                                    .Select(r => new RegraNegociacaoSemestreModel {
+                                        Id = datas.FirstOrDefault(c => c.SemestreId.Equals(r.SemestreId))?.Id ?? 0,
+                                        RegraNegociacaoId = Id,
+                                        SemestreId = r.SemestreId
+                                    })
+                                    .ToList();
+        }
+
+        public void SetRegraNegociacaoSituacaoAluno(ICollection<RegraNegociacaoSituacaoAlunoModel> datas ) 
+        {
+            RegraNegociacaoSituacaoAluno = RegraNegociacaoSituacaoAluno
+                                    .Select(r => new RegraNegociacaoSituacaoAlunoModel {
+                                        Id = datas.FirstOrDefault(c => c.SituacaoAlunoId.Equals(r.SituacaoAlunoId))?.Id ?? 0,
+                                        RegraNegociacaoId = Id,
+                                        SituacaoAlunoId = r.SituacaoAlunoId
+                                    })
+                                    .ToList();
+        }
+
+         public void SetRegraNegociacaoTipoPagamento(ICollection<RegraNegociacaoTipoPagamentoModel> datas ) 
+        {
+            RegraNegociacaoTipoPagamento = RegraNegociacaoTipoPagamento
+                                    .Select(r => new RegraNegociacaoTipoPagamentoModel {
+                                        Id = datas.FirstOrDefault(c => c.TipoPagamentoId.Equals(r.TipoPagamentoId))?.Id ?? 0,
+                                        RegraNegociacaoId = Id,
+                                        TipoPagamentoId = r.TipoPagamentoId
+                                    })
+                                    .ToList();
+        }
+
+         public void SetRegraRegraNegociacaoTipoTitulo(ICollection<RegraNegociacaoTipoTituloModel> datas ) 
+        {
+            RegraNegociacaoTipoTitulo = RegraNegociacaoTipoTitulo
+                                    .Select(r => new RegraNegociacaoTipoTituloModel {
+                                        Id = datas.FirstOrDefault(c => c.TipoTituloId.Equals(r.TipoTituloId))?.Id ?? 0,
+                                        RegraNegociacaoId = Id,
+                                        TipoTituloId = r.TipoTituloId
+                                    })
+                                    .ToList();
+        }
     }
 }

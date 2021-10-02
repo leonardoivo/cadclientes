@@ -51,7 +51,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var model = _map.Map<RegraNegociacaoModel>(viewModel);
 
-            await _repositorio.Criar(model);
+            model.SetRegraNegociacaoCurso(modelBanco.RegraNegociacaoCurso);
+            model.SetRegraNegociacaoSemestre(modelBanco.RegraNegociacaoSemestre);
+            model.SetRegraNegociacaoSituacaoAluno(modelBanco.RegraNegociacaoSituacaoAluno);
+            model.SetRegraNegociacaoTipoPagamento(modelBanco.RegraNegociacaoTipoPagamento);
+            model.SetRegraRegraNegociacaoTipoTitulo(modelBanco.RegraNegociacaoTipoTitulo);
+
+            await _repositorio.Alterar(model);
 
             return _map.Map<RegraNegociacaoViewModel>(model);
         }
