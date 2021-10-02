@@ -19,6 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             return await  DbSet
                             .Select(r  => new BuscaRegraNegociacao {
+                                Id = r.Id,
                                 Instituicao = r.Instituicao.Instituicao,
                                 Modedalidade = r.Modalidade.Modalidade,
                                 PercentJurosMulta = r.PercentJurosMulta,
@@ -40,6 +41,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     .Where(r => r.Id.Equals(id))
                     .Select(r => new BuscaRegraNegociacao
                     {
+                        Id = r.Id,
                         Instituicao = r.Instituicao.Instituicao,
                         Modedalidade = r.Modalidade.Modalidade,
                         PercentJurosMulta = r.PercentJurosMulta,
@@ -52,6 +54,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         TiposPagamentos = r.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamento),
                         TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
                     })
+                    .AsNoTracking()
                     .FirstOrDefaultAsync();
         }
 
@@ -63,26 +66,28 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                          .Include(r => r.RegraNegociacaoTipoPagamento)
                          .Include(r => r.RegraNegociacaoTipoTitulo)
                          .Where(r => r.Id.Equals(id))
+                         .AsNoTracking()
                          .FirstOrDefaultAsync();
         }
 
         public override Task Alterar(RegraNegociacaoModel model)
         {
-            Db.Curso.RemoveRange(
-                Db.Curso.Where(
-                    c => !model.RegraNegociacaoCurso.Select(x => x.CursoId).Contains(c.Id)));
-            Db.Semestre.RemoveRange(
-                Db.Semestre.Where(
-                    c => !model.RegraNegociacaoSemestre.Select(x => x.SemestreId).Contains(c.Id)));
-            Db.SituacaoAluno.RemoveRange(
-                Db.SituacaoAluno.Where(
-                    c => !model.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAlunoId).Contains(c.Id)));
-            Db.TipoPagamento.RemoveRange(
-                Db.TipoPagamento.Where(
-                    c => !model.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamentoId).Contains(c.Id)));
-            Db.TipoTitulo.RemoveRange(
-                Db.TipoTitulo.Where(
-                    c => !model.RegraNegociacaoTipoTitulo.Select(x => x.TipoTituloId).Contains(c.Id)));
+            Db.RegraNegociacaoCurso.RemoveRange(
+                Db.RegraNegociacaoCurso.Where(
+                    c => !model.RegraNegociacaoCurso.Select(x => x.Id).Contains(c.Id)));
+            Db.RegraNegociacaoSemestre.RemoveRange(
+                Db.RegraNegociacaoSemestre.Where(
+                    c => !model.RegraNegociacaoSemestre.Select(x => x.Id).Contains(c.Id)));
+            Db.RegraNegociacaoSituacaoAluno.RemoveRange(
+                Db.RegraNegociacaoSituacaoAluno.Where(
+                    c => !model.RegraNegociacaoSituacaoAluno.Select(x => x.Id).Contains(c.Id)));
+            Db.RegraNegociacaoTipoPagamento.RemoveRange(
+                Db.RegraNegociacaoTipoPagamento.Where(
+                    c => !model.RegraNegociacaoTipoPagamento.Select(x => x.Id).Contains(c.Id)));
+            Db.RegraNegociacaoTipoTitulo.RemoveRange(
+                Db.RegraNegociacaoTipoTitulo.Where(
+                    c => !model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)));
+                    
             return base.Alterar(model);
         }
     }

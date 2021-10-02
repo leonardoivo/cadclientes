@@ -34,6 +34,17 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                 .ForMember(dest => dest.RegraNegociacaoTipoPagamento,
                     opt => opt.MapFrom(src => src.TipoPagamentoIds.Select(c => new RegraNegociacaoTipoPagamentoModel(c))))
                 .ForMember(dest => dest.RegraNegociacaoTipoTitulo,
+                    opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new RegraNegociacaoTipoTituloModel(c))));
+            CreateMap<AlterarRegraNegociacaoViewModel, RegraNegociacaoModel>()
+                .ForMember(dest => dest.RegraNegociacaoCurso, 
+                    opt => opt.MapFrom(src => src.CursoIds.Select(c => new RegraNegociacaoCursoModel(c))))
+                .ForMember(dest => dest.RegraNegociacaoSemestre,
+                    opt => opt.MapFrom(src => src.SemestreIds.Select(c => new RegraNegociacaoSemestreModel(c))))
+                .ForMember(dest => dest.RegraNegociacaoSituacaoAluno,
+                    opt => opt.MapFrom(src => src.SituacaoAlunoIds.Select(c => new RegraNegociacaoSituacaoAlunoModel(c))))
+                .ForMember(dest => dest.RegraNegociacaoTipoPagamento,
+                    opt => opt.MapFrom(src => src.TipoPagamentoIds.Select(c => new RegraNegociacaoTipoPagamentoModel(c))))
+                .ForMember(dest => dest.RegraNegociacaoTipoTitulo,
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new RegraNegociacaoTipoTituloModel(c))));  
         }
     }
