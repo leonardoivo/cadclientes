@@ -51,25 +51,25 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         .AsQueryable();
 
             if (!string.IsNullOrEmpty(queryParams.NomeFantasia))
-                query = query.Where(e => e.NomeFantasia.Contains(queryParams.NomeFantasia));
+                query = query.Where(e => e.NomeFantasia.ToLower().Contains(queryParams.NomeFantasia.ToLower()));
 
             if (!string.IsNullOrEmpty(queryParams.CNPJ))
                 query = query.Where(e => e.CNPJ.Contains(queryParams.CNPJ));
 
-            if (!string.IsNullOrEmpty(queryParams.NomeFantasia))
-                query = query.Where(e => e.NomeFantasia.Contains(queryParams.NomeFantasia));
+            if (!string.IsNullOrEmpty(queryParams.NumeroContrato))
+                query = query.Where(e => e.NumeroContrato.ToLower().Contains(queryParams.NumeroContrato.ToLower()));
 
             if (!string.IsNullOrEmpty(queryParams.AditivoContrato))
-                query = query.Where(e => e.AditivoContrato.Contains(queryParams.AditivoContrato));
+                query = query.Where(e => e.AditivoContrato.ToLower().Contains(queryParams.AditivoContrato.ToLower()));
 
             if (!string.IsNullOrEmpty(queryParams.Contato))
-                query = query.Where(e => e.Contatos.Where(c => c.Contato.Contains(queryParams.Contato)).Any());
+                query = query.Where(e => e.Contatos.Where(c => c.Contato.ToLower().Contains(queryParams.Contato.ToLower())).Any());
 
             if (!string.IsNullOrEmpty(queryParams.Estado))
-                query = query.Where(e => e.Endereco.Estado.Contains(queryParams.Estado));
+                query = query.Where(e => e.Endereco.Estado.Equals(queryParams.Estado));
 
             if (!string.IsNullOrEmpty(queryParams.Cidade))
-                query = query.Where(e => e.Endereco.Cidade.Contains(queryParams.Cidade));
+                query = query.Where(e => e.Endereco.Cidade.ToLower().Contains(queryParams.Cidade.ToLower()));
 
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
