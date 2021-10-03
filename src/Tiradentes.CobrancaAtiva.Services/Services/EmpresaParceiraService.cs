@@ -26,9 +26,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task VerificarCnpjJaCadastrado(string cnpj, int? id)
         {
-            var CnpjCadastrado = await _repositorio.VerificaCnpjJaCadastrado(cnpj, id);
-            
-            if(CnpjCadastrado) throw CustomException.BadRequest(JsonSerializer.Serialize(new { erro = "CNPJ já cadastrado" }));
+            await ValidaCnpj(cnpj, id);
         }
 
         public async Task<EmpresaParceiraViewModel> BuscarPorId(int id)
@@ -47,6 +45,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         public async Task<EmpresaParceiraViewModel> Criar(EmpresaParceiraViewModel viewModel)
         {
             Validate(new CriarEmpresaParceiraValidation(), viewModel);
+
+            await ValidaCnpj(viewModel.CNPJ);
 
             viewModel.Id = 0;
             viewModel.Status = true;
@@ -71,7 +71,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var modelNoBanco = await _repositorio.BuscarPorIdCompleto(viewModel.Id);
 
-            if (modelNoBanco == null) EntidadeNaoEncontrada("Empresa não encontrada"); 
+            if (modelNoBanco == null) EntidadeNaoEncontrada("Empresa não encontrada");
+
+            await ValidaCnpj(viewModel.CNPJ, viewModel.Id);
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
             
@@ -92,6 +94,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         public void Dispose()
         {
             _repositorio?.Dispose();
+        }
+
+        private async Task ValidaCnpj(string cnpj, int? id = null)
+        {
+            var CnpjCadastrado = await _repositorio.VerificaCnpjJaCadastrado(cnpj, id);
+
+            if (CnpjCadastrado) throw CustomException.BadRequest(JsonSerializer.Serialize(new { erro = "CNPJ já cadastrado" }));
         }
     }
 }
