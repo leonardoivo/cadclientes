@@ -10,11 +10,14 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         { }
 
         public int InstituicaoId { get; private set; }
-        public int ModedalidadeId { get; private set; }
+        public int ModalidadeId { get; private set; }
         public decimal PercentJurosMulta { get; private set; }
         public decimal PercentValor { get; private set; }
         public bool Status { get; private set; }
-        public DateTime Validade { get; private set; }
+        public DateTime MesAnoInicial { get; private set; }
+        public DateTime MesAnoFinal { get; private set; }
+        public DateTime ValidadeInicial { get; private set; }
+        public DateTime ValidadeFinal { get; private set; }
 
         public InstituicaoModel Instituicao { get; set; }
         public ModalidadeModel Modalidade { get; set; }

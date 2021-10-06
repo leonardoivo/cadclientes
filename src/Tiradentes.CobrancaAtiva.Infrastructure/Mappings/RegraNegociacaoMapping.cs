@@ -16,7 +16,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.InstituicaoId)
               .HasColumnName("COD_INSTITUICAO");
 
-            builder.Property(ep => ep.ModedalidadeId)
+            builder.Property(ep => ep.ModalidadeId)
               .HasColumnName("COD_MODALIDADE");
 
             builder.Property(ep => ep.PercentJurosMulta)
@@ -31,8 +31,20 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
               .HasColumnName("STATUS")
               .HasColumnType("NUMBER(1)");
 
-            builder.Property(ep => ep.Validade)
-              .HasColumnName("VALIDADE")
+            builder.Property(ep => ep.MesAnoInicial)
+              .HasColumnName("MESANO_INICIAL")
+              .HasColumnType("DATE");
+
+            builder.Property(ep => ep.MesAnoFinal)
+              .HasColumnName("MESANO_FINAL")
+              .HasColumnType("DATE");
+
+            builder.Property(ep => ep.ValidadeInicial)
+              .HasColumnName("VALIDADE_INICIAL")
+              .HasColumnType("DATE");
+
+            builder.Property(ep => ep.ValidadeFinal)
+              .HasColumnName("VALIDADE_FINAL")
               .HasColumnType("DATE");
 
             builder.HasOne(im => im.Instituicao)
@@ -41,7 +53,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 
             builder.HasOne(im => im.Modalidade)
                 .WithMany(m => m.RegraNegociacao)
-                .HasForeignKey(im => im.ModedalidadeId);
+                .HasForeignKey(im => im.ModalidadeId);
 
             builder.HasMany(c => c.RegraNegociacaoCurso)
                .WithOne(e => e.RegraNegociacao);

@@ -1,8 +1,8 @@
 ﻿using System;
 
-namespace Tiradentes.CobrancaAtiva.Domain.QueryParams
+namespace Tiradentes.CobrancaAtiva.Application.QueryParams
 {
-    public class RegraNegociacaoQueryParam : BasePaginacaoQueryParam
+    public class ConsultaRegraNegociacaoQueryParam : BasePaginacaoQueryParam
     {
         public int InstituicaoId { get; set; }
         public int ModalidadeId { get; set; }

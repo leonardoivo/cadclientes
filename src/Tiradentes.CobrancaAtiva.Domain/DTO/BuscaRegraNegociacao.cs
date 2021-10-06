@@ -7,12 +7,15 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
     public class BuscaRegraNegociacao 
     {
         public int Id { get; set; }
-        public string Instituicao { get; set; }
-        public string Modedalidade { get; set; }
+        public InstituicaoModel Instituicao { get; set; }
+        public ModalidadeModel Modalidade { get; set; }
         public decimal PercentJurosMulta { get; set; }
         public decimal PercentValor { get; set; }
         public bool Status { get; set; }
-        public DateTime Validade { get; set; }
+        public DateTime MesAnoInicial { get; set; }
+        public DateTime MesAnoFinal { get; set; }
+        public DateTime ValidadeInicial { get; set; }
+        public DateTime ValidadeFinal { get; set; }
 
         public IEnumerable<CursoModel> Cursos { get; set; }
         public IEnumerable<SemestreModel> Semestres { get; set; }
