@@ -33,5 +33,6 @@ steps:
         '--allow-unauthenticated',
         '--vpc-connector=$_GCP_CLOUD_RUN_VPC_CONNECTOR',
         '--min-instances=$_GCP_CLOUD_RUN_MIN_INSTANCES',
-        '--max-instances=$_GCP_CLOUD_RUN_MAX_INSTANCES'
+        '--max-instances=$_GCP_CLOUD_RUN_MAX_INSTANCES',
+        '--service-account=$_GCP_CLOUD_RUN_SERVICE_NAME@$_GCP_PROJECT_ID.iam.gserviceaccount.com'
     ]
