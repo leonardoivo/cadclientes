@@ -3,12 +3,18 @@ stages:
     - deploy
 
 build:
+    only:
+    # - develop
+    - main
     image: mcr.microsoft.com/dotnet/sdk:5.0
     stage: build
     script:
         - "dotnet build"
 
 deploy:
+  only:
+  # - develop
+  - main
   image: google/cloud-sdk
   stage: deploy
   script:
