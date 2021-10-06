@@ -15,24 +15,65 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public RegraNegociacaoRepository(CobrancaAtivaDbContext context) : base(context)
         { }
 
-        public async Task<IList<BuscaRegraNegociacao>> Buscar(RegraNegociacaoQueryParam queryParam)
+        public async Task<ModelPaginada<BuscaRegraNegociacao>> Buscar(RegraNegociacaoQueryParam queryParams)
         {
-            return await  DbSet
+            var query = DbSet
                             .Select(r  => new BuscaRegraNegociacao {
                                 Id = r.Id,
-                                Instituicao = r.Instituicao.Instituicao,
-                                Modedalidade = r.Modalidade.Modalidade,
+                                Instituicao = r.Instituicao,
+                                Modalidade = r.Modalidade,
                                 PercentJurosMulta = r.PercentJurosMulta,
                                 PercentValor = r.PercentValor,
                                 Status = r.Status,
-                                Validade = r.Validade,
+                                MesAnoInicial = r.MesAnoInicial,
+                                MesAnoFinal = r.MesAnoFinal,
+                                ValidadeInicial = r.ValidadeInicial,
+                                ValidadeFinal = r.ValidadeFinal,
                                 Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
                                 Semestres = r.RegraNegociacaoSemestre.Select(x => x.Semestre),
                                 SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
                                 TiposPagamentos = r.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamento),
                                 TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
                             })
-                            .ToListAsync();
+                            .AsQueryable();
+
+            if (queryParams.InstituicaoId != 0)
+                query = query.Where(e => e.Instituicao.Id == queryParams.InstituicaoId);
+
+            if (queryParams.ModalidadeId != 0)
+                query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);   
+
+            if (queryParams.ValidadeInicial.HasValue)
+                query = query.Where(e => e.ValidadeInicial.ToString("dd/MM/yyyy").Equals(queryParams.ValidadeInicial.Value.ToString("dd/MM/yyyy")));
+
+            if (queryParams.ValidadeFinal.HasValue)
+                query = query.Where(e => e.ValidadeFinal.ToString("dd/MM/yyyy").Equals(queryParams.ValidadeFinal.Value.ToString("dd/MM/yyyy")));
+
+            if (queryParams.MesAnoInicial.HasValue)
+                query = query.Where(e => e.MesAnoInicial.ToString("MM/yyyy").Equals(queryParams.MesAnoInicial.Value.ToString("MM/yyyy")));
+
+            if (queryParams.MesAnoFinal.HasValue)
+                query = query.Where(e => e.MesAnoFinal.ToString("MM/yyyy").Equals(queryParams.MesAnoFinal.Value.ToString("MM/yyyy")));   
+
+            if (queryParams.Cursos.Length > 0)
+                query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
+
+            if (queryParams.Semestres.Length > 0)
+                query = query.Where(e => e.Semestres.Where(c => queryParams.Semestres.Contains(c.Id)).Any());
+
+            if (queryParams.TiposPagamentos.Length > 0)
+                query = query.Where(e => e.TiposPagamentos.Where(c => queryParams.TiposPagamentos.Contains(c.Id)).Any());
+
+            if (queryParams.SituacoesAlunos.Length > 0)
+                query = query.Where(e => e.SituacoesAlunos.Where(c => queryParams.SituacoesAlunos.Contains(c.Id)).Any());
+
+            if (queryParams.TiposTitulos.Length > 0)
+                query = query.Where(e => e.TiposTitulos.Where(c => queryParams.TiposTitulos.Contains(c.Id)).Any());
+
+            if (queryParams.Status.HasValue)
+                query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
+
+            return await query.OrderBy(e => e.Id).Paginar(queryParams.Pagina, queryParams.Limite);
         }
 
         public Task<BuscaRegraNegociacao> BuscarPorIdComRelacionamentos(int id)
@@ -42,12 +83,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     .Select(r => new BuscaRegraNegociacao
                     {
                         Id = r.Id,
-                        Instituicao = r.Instituicao.Instituicao,
-                        Modedalidade = r.Modalidade.Modalidade,
+                        Instituicao = r.Instituicao,
+                        Modalidade = r.Modalidade,
                         PercentJurosMulta = r.PercentJurosMulta,
                         PercentValor = r.PercentValor,
                         Status = r.Status,
-                        Validade = r.Validade,
+                        MesAnoInicial = r.MesAnoInicial,
+                        MesAnoFinal = r.MesAnoFinal,
+                        ValidadeInicial = r.ValidadeInicial,
+                        ValidadeFinal = r.ValidadeFinal,
                         Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
                         Semestres = r.RegraNegociacaoSemestre.Select(x => x.Semestre),
                         SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),

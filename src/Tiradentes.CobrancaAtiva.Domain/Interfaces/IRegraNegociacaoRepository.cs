@@ -8,7 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
     public interface IRegraNegociacaoRepository : IBaseRepository<RegraNegociacaoModel>
     {
-        Task<IList<BuscaRegraNegociacao>> Buscar(RegraNegociacaoQueryParam queryParam);
+        Task<ModelPaginada<BuscaRegraNegociacao>> Buscar(RegraNegociacaoQueryParam queryParam);
         Task<BuscaRegraNegociacao> BuscarPorIdComRelacionamentos(int id);
     }
 }

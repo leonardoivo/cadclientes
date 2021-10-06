@@ -1,7 +1,11 @@
 ﻿using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.QueryParams;
+using Tiradentes.CobrancaAtiva.Application.Validations.HonorarioEmpresaParceira;
+using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
@@ -20,11 +24,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _repositorio = repositorio;
         }
 
-        public async Task<IList<BuscaRegraNegociacaoViewModel>> Buscar()
+        public async Task<ViewModelPaginada<BuscaRegraNegociacaoViewModel>> Buscar(ConsultaRegraNegociacaoQueryParam queryParam)
         {
-            var list = await _repositorio.Buscar(new RegraNegociacaoQueryParam());
+            var regraQueryParam = _map.Map<RegraNegociacaoQueryParam>(queryParam);
 
-            return _map.Map<List<BuscaRegraNegociacaoViewModel>>(list);
+            var list = await _repositorio.Buscar(regraQueryParam);
+
+            return _map.Map<ViewModelPaginada<BuscaRegraNegociacaoViewModel>>(list);
         }
 
         public async Task<BuscaRegraNegociacaoViewModel> BuscarPorId(int id)
@@ -36,6 +42,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<RegraNegociacaoViewModel> Criar(CriarRegraNegociacaoViewModel viewModel)
         {
+            Validate(new CriarRegraNegociacaoValidation(), viewModel);
+
             var model = _map.Map<RegraNegociacaoModel>(viewModel);
 
             await _repositorio.Criar(model);
