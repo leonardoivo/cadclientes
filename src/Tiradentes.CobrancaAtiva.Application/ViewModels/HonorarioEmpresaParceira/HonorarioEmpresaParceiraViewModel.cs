@@ -12,12 +12,12 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.HonorarioEmpresaParcei
         public InstituicaoViewModel Instituicao { get; set; }
         public ModalidadeViewModel Modalidade { get; set; }
 
+        public float PercentualCobrancaIndevida { get; set; }
+        public float ValorCobrancaIndevida { get; set; }
         public float PercentualNegociacaoEmpresaParceira { get; set; }
-        public float ValorNegociacaoEmpresaParceira { get; set; } 
-        public float PercentualNegociacaoEmpresaCobranca { get; set; }
-        public float ValorNegociacaoInstituicaoEnsino { get; set; } 
-        public float PercentualNegociacaoInstituicaoEnsino { get; set; } 
-        public float CobrancaIndevida { get; set; }
+        public float ValorNegociacaoEmpresaParceira { get; set; }
+        public float PercentualNegociacaoInstituicaoEnsino { get; set; }
+        public float ValorNegociacaoInstituicaoEnsino { get; set; }
         public string Informacao { get; set; }
     }
 }
