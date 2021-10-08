@@ -44,10 +44,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);   
 
             if (queryParams.ValidadeInicial.HasValue)
-                query = query.Where(e => e.ValidadeInicial.Month == queryParams.ValidadeInicial.Value.Month && e.ValidadeInicial.Year == queryParams.ValidadeInicial.Value.Year);
+                query = query.Where(e => e.ValidadeInicial.Day == queryParams.ValidadeInicial.Value.Day && 
+                    e.ValidadeInicial.Month == queryParams.ValidadeInicial.Value.Month &&
+                    e.ValidadeInicial.Year == queryParams.ValidadeInicial.Value.Year);
 
             if (queryParams.ValidadeFinal.HasValue)
-                query = query.Where(e => e.ValidadeFinal.Month == queryParams.ValidadeFinal.Value.Month && e.ValidadeFinal.Year == queryParams.ValidadeFinal.Value.Year);
+                query = query.Where(e => e.ValidadeFinal.Day == queryParams.ValidadeFinal.Value.Day && 
+                    e.ValidadeFinal.Month == queryParams.ValidadeFinal.Value.Month &&
+                    e.ValidadeFinal.Year == queryParams.ValidadeFinal.Value.Year);
 
             if (queryParams.MesAnoInicial.HasValue)
                 query = query.Where(e => e.MesAnoInicial.Month == queryParams.MesAnoInicial.Value.Month && e.MesAnoInicial.Year == queryParams.MesAnoInicial.Value.Year);
