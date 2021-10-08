@@ -44,16 +44,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);   
 
             if (queryParams.ValidadeInicial.HasValue)
-                query = query.Where(e => e.ValidadeInicial.ToString("dd/MM/yyyy").Equals(queryParams.ValidadeInicial.Value.ToString("dd/MM/yyyy")));
+                query = query.Where(e => e.ValidadeInicial.Month == queryParams.ValidadeInicial.Value.Month && e.ValidadeInicial.Year == queryParams.ValidadeInicial.Value.Year);
 
             if (queryParams.ValidadeFinal.HasValue)
-                query = query.Where(e => e.ValidadeFinal.ToString("dd/MM/yyyy").Equals(queryParams.ValidadeFinal.Value.ToString("dd/MM/yyyy")));
+                query = query.Where(e => e.ValidadeFinal.Month == queryParams.ValidadeFinal.Value.Month && e.ValidadeFinal.Year == queryParams.ValidadeFinal.Value.Year);
 
             if (queryParams.MesAnoInicial.HasValue)
-                query = query.Where(e => e.MesAnoInicial.ToString("MM/yyyy").Equals(queryParams.MesAnoInicial.Value.ToString("MM/yyyy")));
+                query = query.Where(e => e.MesAnoInicial.Month == queryParams.MesAnoInicial.Value.Month && e.MesAnoInicial.Year == queryParams.MesAnoInicial.Value.Year);
 
             if (queryParams.MesAnoFinal.HasValue)
-                query = query.Where(e => e.MesAnoFinal.ToString("MM/yyyy").Equals(queryParams.MesAnoFinal.Value.ToString("MM/yyyy")));   
+                query = query.Where(e => e.MesAnoFinal.Month == queryParams.MesAnoFinal.Value.Month && e.MesAnoFinal.Year == queryParams.MesAnoFinal.Value.Year);   
 
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
