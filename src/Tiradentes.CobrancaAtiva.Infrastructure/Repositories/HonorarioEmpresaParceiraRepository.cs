@@ -18,7 +18,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task<ModelPaginada<HonorarioEmpresaParceiraModel>> Buscar(HonorarioEmpresaParceiraQueryParam queryParams)
         {
             var query = DbSet
-                        .Include(e => e.EmpresaParceira)
                         .Include(e => e.Modalidade)
                         .Include(e => e.Instituicao)
                         .AsQueryable();
