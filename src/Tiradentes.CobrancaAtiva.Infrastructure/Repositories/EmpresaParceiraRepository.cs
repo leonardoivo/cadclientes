@@ -35,7 +35,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             var query = DbSet.Where(e => e.CNPJ == cnpj);
 
-            if (id.HasValue) query = query.Where(e => e.Id == id.Value);
+            if (id.HasValue) query = query.Where(e => e.Id != id.Value);
 
             return await query.AnyAsync();
         }
