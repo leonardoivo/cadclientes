@@ -13,7 +13,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public int ModalidadeId { get; private set; }
         public decimal PercentJurosMulta { get; private set; }
         public decimal PercentValor { get; private set; }
-        public bool Status { get; private set; }
+        public bool Status { get; set; }
         public DateTime MesAnoInicial { get; private set; }
         public DateTime MesAnoFinal { get; private set; }
         public DateTime ValidadeInicial { get; private set; }

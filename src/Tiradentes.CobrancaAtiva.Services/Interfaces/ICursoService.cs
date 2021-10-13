@@ -9,5 +9,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     public interface ICursoService : IDisposable
     {
         Task<IList<CursoViewModel>> Buscar();
+        Task<IList<CursoViewModel>> BuscarPorInstituicaoModalidade(int instituicaoId, int modalidadeId);
     }
 }

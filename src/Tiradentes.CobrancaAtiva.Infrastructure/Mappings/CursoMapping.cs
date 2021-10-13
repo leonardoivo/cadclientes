@@ -16,6 +16,20 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Descricao)
              .HasColumnName("DESCRICAO_CURSO");
 
+            builder.Property(ep => ep.InstituicaoId)
+             .HasColumnName("COD_INSTITUICAO");
+
+            builder.Property(ep => ep.ModalidadeId)
+             .HasColumnName("COD_MODALIDADE");
+
+            builder.HasOne(im => im.Instituicao)
+                .WithMany(m => m.Cursos)
+                .HasForeignKey(im => im.InstituicaoId);
+
+            builder.HasOne(im => im.Modalidade)
+                .WithMany(m => m.Cursos)
+                .HasForeignKey(im => im.ModalidadeId);
+
             builder.HasMany(c => c.RegraNegociacaoCurso)
                .WithOne(e => e.Curso);
 

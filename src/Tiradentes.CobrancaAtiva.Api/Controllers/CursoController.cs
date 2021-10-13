@@ -23,5 +23,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IList<CursoViewModel>>> Buscar() =>
              Ok(await _service.Buscar());
+
+        [HttpGet("por-instituicao-modalidade/{instituicaoId:int}/{modalidadeId:int}")]
+        public async Task<ActionResult<IList<CursoViewModel>>> Buscar(int instituicaoId, int modalidadeId) =>
+             Ok(await _service.BuscarPorInstituicaoModalidade(instituicaoId, modalidadeId));
     }
 }
