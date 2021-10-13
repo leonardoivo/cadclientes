@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Linq;
+using System.Net;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
@@ -14,6 +15,89 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
     {
         public RegraNegociacaoRepository(CobrancaAtivaDbContext context) : base(context)
         { }
+
+        public async Task<List<RegraNegociacaoModel>> ListarRegrasParaInativar()
+        {
+            var query = DbSet
+                            .Include(r => r.Instituicao)
+                            .Include(r => r.Modalidade)
+                            .Include(r => r.RegraNegociacaoCurso)
+                            .Include(r => r.RegraNegociacaoSemestre)
+                            .Include(r => r.RegraNegociacaoSituacaoAluno)
+                            .Include(r => r.RegraNegociacaoTipoPagamento)
+                            .Include(r => r.RegraNegociacaoTipoTitulo)
+                            .AsQueryable();
+
+            query = query.Where(e => e.Status == true);
+            query = query.Where(e => e.ValidadeFinal <= System.DateTime.Now);
+
+            var regrasCadastradas = await query.ToListAsync();
+
+            return regrasCadastradas;
+        }
+
+        public async Task<List<RegraNegociacaoModel>> ListarRegrasParaAtivar()
+        {
+            var query = DbSet
+                            .Include(r => r.Instituicao)
+                            .Include(r => r.Modalidade)
+                            .Include(r => r.RegraNegociacaoCurso)
+                            .Include(r => r.RegraNegociacaoSemestre)
+                            .Include(r => r.RegraNegociacaoSituacaoAluno)
+                            .Include(r => r.RegraNegociacaoTipoPagamento)
+                            .Include(r => r.RegraNegociacaoTipoTitulo)
+                            .AsQueryable();
+
+            query = query.Where(e => e.Status == false);
+            query = query.Where(e => e.ValidadeInicial <= System.DateTime.Now && e.ValidadeFinal >= System.DateTime.Now);
+
+            var regrasCadastradas = await query.ToListAsync();
+
+            return regrasCadastradas;
+        }
+
+        public override Task Criar(RegraNegociacaoModel model)
+        {
+            var query = DbSet
+                            .Select(r  => new BuscaRegraNegociacao {
+                                Id = r.Id,
+                                Instituicao = r.Instituicao,
+                                Modalidade = r.Modalidade,
+                                PercentJurosMulta = r.PercentJurosMulta,
+                                PercentValor = r.PercentValor,
+                                Status = r.Status,
+                                MesAnoInicial = r.MesAnoInicial,
+                                MesAnoFinal = r.MesAnoFinal,
+                                ValidadeInicial = r.ValidadeInicial,
+                                ValidadeFinal = r.ValidadeFinal,
+                                Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
+                                Semestres = r.RegraNegociacaoSemestre.Select(x => x.Semestre),
+                                SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
+                                TiposPagamentos = r.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamento),
+                                TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
+                            })
+                            .AsQueryable();
+
+            query = query.Where(e => e.Status == true).Where(e => e.Modalidade.Id == model.ModalidadeId);
+
+            query = query.Where(e => e.MesAnoInicial <= model.MesAnoFinal && model.MesAnoInicial <= e.MesAnoFinal); 
+
+            var regrasCadastradas = query.ToList();
+
+            if(regrasCadastradas.Count > 0)
+            {
+                regrasCadastradas = regrasCadastradas.AsQueryable()
+                    .Where(e => e.Instituicao.Id == model.InstituicaoId)
+                    .Where(e => e.Cursos.Where(c => model.RegraNegociacaoCurso.Select(c => c.CursoId).Contains(c.Id)).Any())
+                    .Where(e => e.Semestres.Where(c => model.RegraNegociacaoSemestre.Select(c => c.SemestreId).Contains(c.Id)).Any())
+                    .ToList();
+
+                if(regrasCadastradas.Count > 0)
+                    throw new System.Exception("Regra já cadastrada!");
+            }
+
+            return base.Criar(model);
+        }
 
         public async Task<ModelPaginada<BuscaRegraNegociacao>> Buscar(RegraNegociacaoQueryParam queryParams)
         {

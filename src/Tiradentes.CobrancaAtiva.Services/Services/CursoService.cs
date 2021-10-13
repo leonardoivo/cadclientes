@@ -27,6 +27,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<List<CursoViewModel>>(tipoTitulos);
         }
 
+        public async Task<IList<CursoViewModel>> BuscarPorInstituicaoModalidade(int instituicaoId, int modalidadeId)
+        {
+            var tipoTitulos = await _repositorio.BuscarPorInstituicaoModalidade(instituicaoId, modalidadeId);
+
+            return _map.Map<List<CursoViewModel>>(tipoTitulos);
+        }
+
         public void Dispose()
         {
             _repositorio?.Dispose();

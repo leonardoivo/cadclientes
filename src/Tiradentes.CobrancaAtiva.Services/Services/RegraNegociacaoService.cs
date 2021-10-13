@@ -24,6 +24,28 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _repositorio = repositorio;
         }
 
+        public async Task InativarRegrasNegociacao() 
+        {
+            var regrasParaInativar = await _repositorio.ListarRegrasParaInativar();
+
+            foreach (var regraNegociacao in regrasParaInativar)
+            {
+                regraNegociacao.Status = false;
+                await _repositorio.Alterar(regraNegociacao);
+            }
+        }
+
+        public async Task AtivarRegrasNegociacao() 
+        {
+            var regrasParaInativar = await _repositorio.ListarRegrasParaAtivar();
+
+            foreach (var regraNegociacao in regrasParaInativar)
+            {
+                regraNegociacao.Status = true;
+                await _repositorio.Alterar(regraNegociacao);
+            }
+        }
+
         public async Task<ViewModelPaginada<BuscaRegraNegociacaoViewModel>> Buscar(ConsultaRegraNegociacaoQueryParam queryParam)
         {
             var regraQueryParam = _map.Map<RegraNegociacaoQueryParam>(queryParam);
