@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tiradentes.CobrancaAtiva.Api.Configuration;
+using Tiradentes.CobrancaAtiva.Api.Workers;
 using Tiradentes.CobrancaAtiva.CrossCutting.IoC;
 
 namespace Tiradentes.CobrancaAtiva.Api
@@ -31,6 +32,8 @@ namespace Tiradentes.CobrancaAtiva.Api
             services.ApiServiceConfig();
             services.AutoMapperServiceConfig();
             services.SwaggerServiceConfig();
+            
+            services.AddHostedService<RegraNegociacaoWorker>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
