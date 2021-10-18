@@ -11,6 +11,7 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Semestre;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Situacao;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.SituacaoAluno;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.TituloAvulso;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
@@ -56,6 +57,8 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<RegraNegociacaoModel, RegraNegociacaoViewModel>();
             CreateMap<BuscaRegraNegociacao, BuscaRegraNegociacaoViewModel>();
+
+            CreateMap<TituloAvulsoModel, TituloAvulsoViewModel>();
         }
     }
 }
