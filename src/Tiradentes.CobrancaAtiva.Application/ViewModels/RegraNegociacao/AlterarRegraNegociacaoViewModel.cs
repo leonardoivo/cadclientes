@@ -16,7 +16,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao
         public DateTime ValidadeFinal { get; set; }
         public int[] CursoIds { get; set; }
         public int[] SituacaoAlunoIds { get; set; }
-        public int[] SemestreIds { get; set; }
+        public int[] TitulosAvulsosId { get; set; }
         public int[] TipoPagamentoIds { get; set; }
         public int[] TipoTituloIds { get; set; }
     }

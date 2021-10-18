@@ -22,7 +22,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public InstituicaoModel Instituicao { get; set; }
         public ModalidadeModel Modalidade { get; set; }
         public ICollection<RegraNegociacaoCursoModel> RegraNegociacaoCurso { get; private set; }
-        public ICollection<RegraNegociacaoSemestreModel> RegraNegociacaoSemestre { get; private set; }
+        public ICollection<RegraNegociacaoTituloAvulsoModel> RegraNegociacaoTituloAvulso { get; private set; }
         public ICollection<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; private set; }
         public ICollection<RegraNegociacaoTipoPagamentoModel> RegraNegociacaoTipoPagamento { get; private set; }
         public ICollection<RegraNegociacaoTipoTituloModel> RegraNegociacaoTipoTitulo { get; private set; }
@@ -38,13 +38,13 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
                                     .ToList();
         }
 
-         public void SetRegraNegociacaoSemestre(ICollection<RegraNegociacaoSemestreModel> datas ) 
+         public void SetRegraNegociacaoTituloAvulso(ICollection<RegraNegociacaoTituloAvulsoModel> datas ) 
         {
-            RegraNegociacaoSemestre = RegraNegociacaoSemestre
-                                    .Select(r => new RegraNegociacaoSemestreModel {
-                                        Id = datas.FirstOrDefault(c => c.SemestreId.Equals(r.SemestreId))?.Id ?? 0,
+            RegraNegociacaoTituloAvulso = RegraNegociacaoTituloAvulso
+                                    .Select(r => new RegraNegociacaoTituloAvulsoModel {
+                                        Id = datas.FirstOrDefault(c => c.TituloAvulsoId.Equals(r.TituloAvulsoId))?.Id ?? 0,
                                         RegraNegociacaoId = Id,
-                                        SemestreId = r.SemestreId
+                                        TituloAvulsoId = r.TituloAvulsoId
                                     })
                                     .ToList();
         }

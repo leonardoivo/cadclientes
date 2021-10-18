@@ -7,6 +7,5 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public int Numeral { get; set; }
         public string Descricao { get; set; }
 
-        public ICollection<RegraNegociacaoSemestreModel> RegraNegociacaoSemestre { get; private set; }
     }
 }

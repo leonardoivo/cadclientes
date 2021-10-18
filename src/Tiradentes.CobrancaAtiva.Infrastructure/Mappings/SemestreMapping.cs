@@ -19,9 +19,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Numeral)
              .HasColumnName("NUMERAL_SEMESTRE");
 
-            builder.HasMany(c => c.RegraNegociacaoSemestre)
-               .WithOne(e => e.Semestre);
-
             builder.ToTable("SEMESTRES");
         }
     }

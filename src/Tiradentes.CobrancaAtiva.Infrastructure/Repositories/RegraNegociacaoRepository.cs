@@ -22,7 +22,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Include(r => r.Instituicao)
                             .Include(r => r.Modalidade)
                             .Include(r => r.RegraNegociacaoCurso)
-                            .Include(r => r.RegraNegociacaoSemestre)
+                            .Include(r => r.RegraNegociacaoTituloAvulso)
                             .Include(r => r.RegraNegociacaoSituacaoAluno)
                             .Include(r => r.RegraNegociacaoTipoPagamento)
                             .Include(r => r.RegraNegociacaoTipoTitulo)
@@ -42,7 +42,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Include(r => r.Instituicao)
                             .Include(r => r.Modalidade)
                             .Include(r => r.RegraNegociacaoCurso)
-                            .Include(r => r.RegraNegociacaoSemestre)
+                            .Include(r => r.RegraNegociacaoTituloAvulso)
                             .Include(r => r.RegraNegociacaoSituacaoAluno)
                             .Include(r => r.RegraNegociacaoTipoPagamento)
                             .Include(r => r.RegraNegociacaoTipoTitulo)
@@ -71,7 +71,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 ValidadeInicial = r.ValidadeInicial,
                                 ValidadeFinal = r.ValidadeFinal,
                                 Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
-                                Semestres = r.RegraNegociacaoSemestre.Select(x => x.Semestre),
+                                TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
                                 SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
                                 TiposPagamentos = r.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamento),
                                 TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
@@ -89,7 +89,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 regrasCadastradas = regrasCadastradas.AsQueryable()
                     .Where(e => e.Instituicao.Id == model.InstituicaoId)
                     .Where(e => e.Cursos.Where(c => model.RegraNegociacaoCurso.Select(c => c.CursoId).Contains(c.Id)).Any())
-                    .Where(e => e.Semestres.Where(c => model.RegraNegociacaoSemestre.Select(c => c.SemestreId).Contains(c.Id)).Any())
+                    //.Where(e => e.Semestres.Where(c => model.RegraNegociacaoSemestre.Select(c => c.SemestreId).Contains(c.Id)).Any())
                     .ToList();
 
                 if(regrasCadastradas.Count > 0)
@@ -114,7 +114,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 ValidadeInicial = r.ValidadeInicial,
                                 ValidadeFinal = r.ValidadeFinal,
                                 Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
-                                Semestres = r.RegraNegociacaoSemestre.Select(x => x.Semestre),
+                                TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
                                 SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
                                 TiposPagamentos = r.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamento),
                                 TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
@@ -146,8 +146,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
 
-            if (queryParams.Semestres.Length > 0)
-                query = query.Where(e => e.Semestres.Where(c => queryParams.Semestres.Contains(c.Id)).Any());
+            // if (queryParams.Semestres.Length > 0)
+            //     query = query.Where(e => e.Semestres.Where(c => queryParams.Semestres.Contains(c.Id)).Any());
 
             if (queryParams.TiposPagamentos.Length > 0)
                 query = query.Where(e => e.TiposPagamentos.Where(c => queryParams.TiposPagamentos.Contains(c.Id)).Any());
@@ -181,7 +181,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         ValidadeInicial = r.ValidadeInicial,
                         ValidadeFinal = r.ValidadeFinal,
                         Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
-                        Semestres = r.RegraNegociacaoSemestre.Select(x => x.Semestre),
+                        TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
                         SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
                         TiposPagamentos = r.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamento),
                         TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
@@ -193,7 +193,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public override Task<RegraNegociacaoModel> BuscarPorId(int id)
         {
             return DbSet.Include(r => r.RegraNegociacaoCurso)
-                         .Include(r => r.RegraNegociacaoSemestre)
+                         .Include(r => r.RegraNegociacaoTituloAvulso)
                          .Include(r => r.RegraNegociacaoSituacaoAluno)
                          .Include(r => r.RegraNegociacaoTipoPagamento)
                          .Include(r => r.RegraNegociacaoTipoTitulo)
@@ -207,9 +207,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             Db.RegraNegociacaoCurso.RemoveRange(
                 Db.RegraNegociacaoCurso.Where(
                     c => !model.RegraNegociacaoCurso.Select(x => x.Id).Contains(c.Id)));
-            Db.RegraNegociacaoSemestre.RemoveRange(
-                Db.RegraNegociacaoSemestre.Where(
-                    c => !model.RegraNegociacaoSemestre.Select(x => x.Id).Contains(c.Id)));
+            Db.RegraNegociacaoTituloAvulso.RemoveRange(
+                Db.RegraNegociacaoTituloAvulso.Where(
+                    c => !model.RegraNegociacaoTituloAvulso.Select(x => x.Id).Contains(c.Id)));
             Db.RegraNegociacaoSituacaoAluno.RemoveRange(
                 Db.RegraNegociacaoSituacaoAluno.Where(
                     c => !model.RegraNegociacaoSituacaoAluno.Select(x => x.Id).Contains(c.Id)));
