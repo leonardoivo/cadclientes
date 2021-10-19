@@ -7,5 +7,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string Situacao { get; set; }
 
         public ICollection<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; private set; }
+        public ICollection<ParametroEnvioSituacaoAlunoModel> ParametroEnvioSituacaoAluno { get; private set; }
     }
 }

@@ -26,6 +26,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IHonorarioEmpresaParceiraRepository, HonorarioEmpresaParceiraRepository>();
             services.AddScoped<IRegraNegociacaoService, RegraNegociacaoService>();
             services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
+            services.AddScoped<IParametroEnvioService, ParametroEnvioService>();
             #endregion
 
             #region Services
@@ -41,6 +42,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IHonorarioEmpresaParceiraService, HonorarioEmpresaParceiraService>();
             services.AddScoped<IRegraNegociacaoRepository, RegraNegociacaoRepository>();
             services.AddScoped<ITituloAvulsoRepository, TituloAvulsoRepository>();
+            services.AddScoped<IParametroEnvioRepository, ParametroEnvioRepository>();
             #endregion
 
             

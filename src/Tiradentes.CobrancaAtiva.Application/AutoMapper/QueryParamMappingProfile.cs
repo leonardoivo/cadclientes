@@ -12,6 +12,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ConsultaHonorarioEmpresaParceiraQueryParam, HonorarioEmpresaParceiraQueryParam>();
             CreateMap<ConsultaInstituicaoModalidadeRegraQueryParam, InstituicaoModalidadeRegraQueryParam>();
             CreateMap<ConsultaRegraNegociacaoQueryParam, RegraNegociacaoQueryParam>();
+            CreateMap<ConsultaParametroEnvioQueryParam, ParametroEnvioQueryParam>();
         }
     }
 }

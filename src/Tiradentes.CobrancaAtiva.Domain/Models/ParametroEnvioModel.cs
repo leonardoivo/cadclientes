@@ -22,65 +22,54 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public ModalidadeModel Modalidade { get; set; }
         public EmpresaParceiraModel EmpresaParceira { get; set; }
 
-        /*public ICollection<RegraNegociacaoCursoModel> RegraNegociacaoCurso { get; private set; }
-        public ICollection<RegraNegociacaoSemestreModel> RegraNegociacaoSemestre { get; private set; }
-        public ICollection<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; private set; }
-        public ICollection<RegraNegociacaoTipoPagamentoModel> RegraNegociacaoTipoPagamento { get; private set; }
-        public ICollection<RegraNegociacaoTipoTituloModel> RegraNegociacaoTipoTitulo { get; private set; }
-
-        public void SetRegraNegociacaoCurso(ICollection<RegraNegociacaoCursoModel> datas ) 
+        public ICollection<ParametroEnvioCursoModel> ParametroEnvioCurso { get; private set; }
+        public ICollection<ParametroEnvioSituacaoAlunoModel> ParametroEnvioSituacaoAluno { get; private set; }
+        public ICollection<ParametroEnvioTipoTituloModel> ParametroEnvioTipoTitulo { get; private set; }
+        public ICollection<ParametroEnvioTituloAvulsoModel> ParametroEnvioTituloAvulso { get; private set; }
+        
+        
+        public void SetParametroEnvioCurso(ICollection<ParametroEnvioCursoModel> datas ) 
         {
-            RegraNegociacaoCurso = RegraNegociacaoCurso
-                                    .Select(r => new RegraNegociacaoCursoModel {
+            ParametroEnvioCurso = ParametroEnvioCurso
+                                    .Select(r => new ParametroEnvioCursoModel {
                                         Id = datas.FirstOrDefault(c => c.CursoId.Equals(r.CursoId))?.Id ?? 0,
-                                        RegraNegociacaoId = Id,
+                                        ParametroEnvioId = Id,
                                         CursoId = r.CursoId
                                     })
                                     .ToList();
         }
 
-         public void SetRegraNegociacaoSemestre(ICollection<RegraNegociacaoSemestreModel> datas ) 
+         public void SetParametroEnvioTituloAvulso(ICollection<ParametroEnvioTituloAvulsoModel> datas ) 
         {
-            RegraNegociacaoSemestre = RegraNegociacaoSemestre
-                                    .Select(r => new RegraNegociacaoSemestreModel {
-                                        Id = datas.FirstOrDefault(c => c.SemestreId.Equals(r.SemestreId))?.Id ?? 0,
-                                        RegraNegociacaoId = Id,
-                                        SemestreId = r.SemestreId
+            ParametroEnvioTituloAvulso = ParametroEnvioTituloAvulso
+                                    .Select(r => new ParametroEnvioTituloAvulsoModel {
+                                        Id = datas.FirstOrDefault(c => c.TituloAvulsoId.Equals(r.TituloAvulsoId))?.Id ?? 0,
+                                        ParametroEnvioId = Id,
+                                        TituloAvulsoId = r.TituloAvulsoId
                                     })
                                     .ToList();
         }
 
-        public void SetRegraNegociacaoSituacaoAluno(ICollection<RegraNegociacaoSituacaoAlunoModel> datas ) 
+        public void SetParametroEnvioSituacaoAluno(ICollection<ParametroEnvioSituacaoAlunoModel> datas ) 
         {
-            RegraNegociacaoSituacaoAluno = RegraNegociacaoSituacaoAluno
-                                    .Select(r => new RegraNegociacaoSituacaoAlunoModel {
+            ParametroEnvioSituacaoAluno = ParametroEnvioSituacaoAluno
+                                    .Select(r => new ParametroEnvioSituacaoAlunoModel {
                                         Id = datas.FirstOrDefault(c => c.SituacaoAlunoId.Equals(r.SituacaoAlunoId))?.Id ?? 0,
-                                        RegraNegociacaoId = Id,
+                                        ParametroEnvioId = Id,
                                         SituacaoAlunoId = r.SituacaoAlunoId
                                     })
                                     .ToList();
         }
 
-         public void SetRegraNegociacaoTipoPagamento(ICollection<RegraNegociacaoTipoPagamentoModel> datas ) 
+         public void SetParametroEnvioTipoTitulo(ICollection<ParametroEnvioTipoTituloModel> datas ) 
         {
-            RegraNegociacaoTipoPagamento = RegraNegociacaoTipoPagamento
-                                    .Select(r => new RegraNegociacaoTipoPagamentoModel {
-                                        Id = datas.FirstOrDefault(c => c.TipoPagamentoId.Equals(r.TipoPagamentoId))?.Id ?? 0,
-                                        RegraNegociacaoId = Id,
-                                        TipoPagamentoId = r.TipoPagamentoId
-                                    })
-                                    .ToList();
-        }
-
-         public void SetRegraRegraNegociacaoTipoTitulo(ICollection<RegraNegociacaoTipoTituloModel> datas ) 
-        {
-            RegraNegociacaoTipoTitulo = RegraNegociacaoTipoTitulo
-                                    .Select(r => new RegraNegociacaoTipoTituloModel {
+            ParametroEnvioTipoTitulo = ParametroEnvioTipoTitulo
+                                    .Select(r => new ParametroEnvioTipoTituloModel {
                                         Id = datas.FirstOrDefault(c => c.TipoTituloId.Equals(r.TipoTituloId))?.Id ?? 0,
-                                        RegraNegociacaoId = Id,
+                                        ParametroEnvioId = Id,
                                         TipoTituloId = r.TipoTituloId
                                     })
                                     .ToList();
-        }*/
+        }
     }
 }
