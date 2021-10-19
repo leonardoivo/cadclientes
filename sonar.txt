@@ -1,0 +1,5 @@
+sonar-scanner \
+  -Dsonar.projectKey=Mec-Backend \
+  -Dsonar.sources=. \
+  -Dsonar.host.url=http://localhost:9002 \
+  -Dsonar.login=b3b6df1270c783427b53661b35c3f7d41c0d381c
