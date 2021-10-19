@@ -89,7 +89,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 regrasCadastradas = regrasCadastradas.AsQueryable()
                     .Where(e => e.Instituicao.Id == model.InstituicaoId)
                     .Where(e => e.Cursos.Where(c => model.RegraNegociacaoCurso.Select(c => c.CursoId).Contains(c.Id)).Any())
-                    //.Where(e => e.Semestres.Where(c => model.RegraNegociacaoSemestre.Select(c => c.SemestreId).Contains(c.Id)).Any())
+                    .Where(e => e.TiposTitulos.Where(c => model.RegraNegociacaoTipoTitulo.Select(c => c.TipoTituloId).Contains(c.Id)).Any())
                     .ToList();
 
                 if(regrasCadastradas.Count > 0)
@@ -146,8 +146,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
 
-            // if (queryParams.Semestres.Length > 0)
-            //     query = query.Where(e => e.Semestres.Where(c => queryParams.Semestres.Contains(c.Id)).Any());
+            if (queryParams.TitulosAvulsos.Length > 0)
+                 query = query.Where(e => e.TitulosAvulsos.Where(c => queryParams.TitulosAvulsos.Contains(c.Id)).Any());
 
             if (queryParams.TiposPagamentos.Length > 0)
                 query = query.Where(e => e.TiposPagamentos.Where(c => queryParams.TiposPagamentos.Contains(c.Id)).Any());
