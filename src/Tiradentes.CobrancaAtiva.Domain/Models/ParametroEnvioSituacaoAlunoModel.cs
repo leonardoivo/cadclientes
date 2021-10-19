@@ -12,7 +12,7 @@
         }
 
         public int SituacaoAlunoId { get; set; }
-        public int RegraNegociacaoId { get; set; }
+        public int ParametroEnvioId { get; set; }
 
         public SituacaoAlunoModel SituacaoAluno { get; set; }
         public ParametroEnvioModel ParametroEnvio { get; set; }

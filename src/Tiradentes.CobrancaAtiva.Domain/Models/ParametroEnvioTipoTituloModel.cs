@@ -12,7 +12,7 @@
         }
 
         public int TipoTituloId { get; set; }
-        public int RegraNegociacaoId { get; set; }
+        public int ParametroEnvioId { get; set; }
 
         public TipoTituloModel TipoTitulo { get; set; }
         public ParametroEnvioModel ParametroEnvio { get; set; }

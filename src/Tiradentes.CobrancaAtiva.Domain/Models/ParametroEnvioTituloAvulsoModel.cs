@@ -6,15 +6,15 @@
         {
         }
 
-        public ParametroEnvioTituloAvulsoModel(int tipoTituloId)
+        public ParametroEnvioTituloAvulsoModel(int tituloAvulsoId)
         {
-            TipoTituloId = tipoTituloId;
+            TituloAvulsoId = tituloAvulsoId;
         }
 
-        public int TipoTituloId { get; set; }
-        public int RegraNegociacaoId { get; set; }
+        public int TituloAvulsoId { get; set; }
+        public int ParametroEnvioId { get; set; }
 
-        public TipoTituloModel TipoTitulo { get; set; }
+        public TituloAvulsoModel TituloAvulso { get; set; }
         public ParametroEnvioModel ParametroEnvio { get; set; }
     }
 }
