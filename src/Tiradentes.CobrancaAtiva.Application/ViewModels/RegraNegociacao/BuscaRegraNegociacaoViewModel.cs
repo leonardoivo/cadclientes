@@ -6,6 +6,7 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.Modalidade;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Semestre;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Situacao;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.SituacaoAluno;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.TituloAvulso;
 
 namespace Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao
 {
@@ -23,7 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao
         public DateTime ValidadeFinal { get; set; }
 
         public IEnumerable<CursoViewModel> Cursos { get; set; }
-        public IEnumerable<SemestreViewModel> Semestres { get; set; }
+        public IEnumerable<TituloAvulsoViewModel> TitulosAvulsos { get; set; }
         public IEnumerable<SituacaoAlunoViewModel> SituacoesAlunos { get; set; }
         public IEnumerable<TipoPagamentoViewModel> TiposPagamentos { get; set; }
         public IEnumerable<TipoTituloViewModel> TiposTitulos { get; set; }
