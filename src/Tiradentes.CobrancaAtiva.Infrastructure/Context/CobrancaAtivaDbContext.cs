@@ -22,10 +22,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         public DbSet<TipoTituloModel> TipoTitulo { get; set; }
         public DbSet<RegraNegociacaoModel> RegraNegociacao { get; set; }
         public DbSet<RegraNegociacaoCursoModel> RegraNegociacaoCurso { get; set; }
-        public DbSet<RegraNegociacaoSemestreModel> RegraNegociacaoSemestre { get; set; }
+        public DbSet<RegraNegociacaoTituloAvulsoModel> RegraNegociacaoTituloAvulso { get; set; }
         public DbSet<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; set; }
         public DbSet<RegraNegociacaoTipoPagamentoModel> RegraNegociacaoTipoPagamento { get; set; }
         public DbSet<RegraNegociacaoTipoTituloModel> RegraNegociacaoTipoTitulo { get; set; }
+        public DbSet<ParametroEnvioModel> ParametroEnvio { get; set; }
+        public DbSet<ParametroEnvioCursoModel> ParametroEnvioCurso { get; set; }
+        public DbSet<ParametroEnvioSituacaoAlunoModel> ParametroEnvioSituacaoAluno { get; set; }
+        public DbSet<ParametroEnvioTipoTituloModel> ParametroEnvioTipoTitulo { get; set; }
+        public DbSet<ParametroEnvioTituloAvulsoModel> ParametroEnvioTituloAvulso { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

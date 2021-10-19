@@ -13,5 +13,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public InstituicaoModel Instituicao { get; set; }
 
         public ICollection<RegraNegociacaoCursoModel> RegraNegociacaoCurso { get; private set; }
+        public ICollection<ParametroEnvioCursoModel> ParametroEnvioCurso { get; private set; }
     }
 }

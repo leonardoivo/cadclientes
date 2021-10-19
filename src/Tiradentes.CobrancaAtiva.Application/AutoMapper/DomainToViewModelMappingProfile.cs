@@ -7,10 +7,12 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.Endereco;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.HonorarioEmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Instituicao;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Modalidade;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Semestre;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Situacao;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.SituacaoAluno;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.TituloAvulso;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
@@ -37,7 +39,9 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ModelPaginada<EmpresaParceiraModel>, ViewModelPaginada<BuscaEmpresaParceiraViewModel>>();
             CreateMap<ModelPaginada<HonorarioEmpresaParceiraModel>, ViewModelPaginada<HonorarioEmpresaParceiraViewModel>>();
             CreateMap<ModelPaginada<RegraNegociacaoModel>, ViewModelPaginada<RegraNegociacaoViewModel>>();
+            CreateMap<ModelPaginada<ParametroEnvioModel>, ViewModelPaginada<ParametroEnvioViewModel>>();
             CreateMap<ModelPaginada<BuscaRegraNegociacao>, ViewModelPaginada<BuscaRegraNegociacaoViewModel>>();
+            CreateMap<ModelPaginada<BuscaParametroEnvio>, ViewModelPaginada<BuscaParametroEnvioViewModel>>();
             CreateMap<ContatoEmpresaParceiraModel, ContatoEmpresaParceiraViewModel>();
             CreateMap<EnderecoEmpresaParceiraModel, EnderecoEmpresaParceiraViewModel>();
             CreateMap<HonorarioEmpresaParceiraModel, HonorarioEmpresaParceiraViewModel>();
@@ -50,12 +54,15 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<SituacaoAlunoModel, SituacaoAlunoViewModel>();
             CreateMap<TipoPagamentoModel, TipoPagamentoViewModel>();
             CreateMap<TipoTituloModel, TipoTituloViewModel>();
-
-
+            CreateMap<TituloAvulsoModel, TituloAvulsoViewModel>();
+            
             CreateMap<EnderecoModel, EnderecoViewModel>();
 
             CreateMap<RegraNegociacaoModel, RegraNegociacaoViewModel>();
             CreateMap<BuscaRegraNegociacao, BuscaRegraNegociacaoViewModel>();
+
+            CreateMap<ParametroEnvioModel, ParametroEnvioViewModel>();
+            CreateMap<BuscaParametroEnvio, BuscaParametroEnvioViewModel>();
         }
     }
 }

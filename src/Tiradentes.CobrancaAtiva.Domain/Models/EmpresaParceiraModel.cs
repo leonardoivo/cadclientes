@@ -31,6 +31,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
 
         public ICollection<ContatoEmpresaParceiraModel> Contatos { get; private set; }
         public ICollection<HonorarioEmpresaParceiraModel> Honorarios { get; private set; }
+        public ICollection<ParametroEnvioModel> ParametroEnvios { get; private set; }
         public EnderecoEmpresaParceiraModel Endereco { get; private set; }
 
         public void SetarEndereco(int id,
