@@ -22,6 +22,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.EmpresaParceiraId)
               .HasColumnName("COD_EMPRESA");
 
+            builder.Property(ep => ep.DiaEnvio)
+              .HasColumnName("DIA_ENVIO");
+
             builder.Property(ep => ep.Status)
               .HasColumnName("STATUS")
               .HasColumnType("NUMBER(1)");

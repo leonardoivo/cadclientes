@@ -7,6 +7,7 @@ namespace Tiradentes.CobrancaAtiva.Application.QueryParams
         public int InstituicaoId { get; set; }
         public int ModalidadeId { get; set; }
         public int EmpresaId { get; set; }
+        public int DiaEnvio { get; set; }
         public bool? Status { get; set; }
         public DateTime? InadimplenciaInicial { get; set; }
         public DateTime? InadimplenciaFinal { get; set; }

@@ -16,6 +16,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio
         public InstituicaoViewModel Instituicao { get; set; }
         public ModalidadeViewModel Modalidade { get; set; }
         public EmpresaParceira.EmpresaParceiraViewModel EmpresaParceira { get; set; }
+        public int DiaEnvio { get; set; }
         public bool Status { get; set; }
         public DateTime InadimplenciaInicial { get; set; }
         public DateTime InadimplenciaFinal { get; set; }
