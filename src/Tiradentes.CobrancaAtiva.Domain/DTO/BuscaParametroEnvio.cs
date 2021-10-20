@@ -11,6 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public ModalidadeModel Modalidade { get; set; }
         public EmpresaParceiraModel EmpresaParceira { get; set; }
         public bool Status { get; set; }
+        public int DiaEnvio { get; set; }
         public DateTime InadimplenciaInicial { get; set; }
         public DateTime InadimplenciaFinal { get; set; }
         public DateTime ValidadeInicial { get; set; }
