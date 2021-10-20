@@ -18,7 +18,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public DateTime ValidadeFinal { get; set; }
 
         public IEnumerable<CursoModel> Cursos { get; set; }
-        public IEnumerable<SemestreModel> Semestres { get; set; }
+        public IEnumerable<TituloAvulsoModel> TitulosAvulsos { get; set; }
         public IEnumerable<SituacaoAlunoModel> SituacoesAlunos { get; set; }
         public IEnumerable<TipoPagamentoModel> TiposPagamentos { get; set; }
         public IEnumerable<TipoTituloModel> TiposTitulos { get; set; }
