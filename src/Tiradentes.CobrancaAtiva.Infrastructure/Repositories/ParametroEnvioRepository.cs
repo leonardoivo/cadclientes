@@ -24,6 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 Modalidade = r.Modalidade,
                                 EmpresaParceira = r.EmpresaParceira,
                                 Status = r.Status,
+                                DiaEnvio = r.DiaEnvio,
                                 InadimplenciaInicial = r.InadimplenciaInicial,
                                 InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
@@ -49,8 +50,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     .Where(e => e.Semestres.Where(c => model.RegraNegociacaoSemestre.Select(c => c.SemestreId).Contains(c.Id)).Any())
                     .ToList();*/
 
-                if(regrasCadastradas.Count > 0)
-                    throw new System.Exception("Parametro envio já cadastrado!");
+                /*if(regrasCadastradas.Count > 0)
+                    throw new System.Exception("Parametro envio já cadastrado!");*/
             }
 
             return base.Criar(model);
@@ -65,6 +66,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 Modalidade = r.Modalidade,
                                 EmpresaParceira = r.EmpresaParceira,
                                 Status = r.Status,
+                                DiaEnvio = r.DiaEnvio,
                                 InadimplenciaInicial = r.InadimplenciaInicial,
                                 InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
@@ -83,7 +85,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);  
 
             if (queryParams.EmpresaParceiraId != 0)
-                query = query.Where(e => e.EmpresaParceira.Id == queryParams.EmpresaParceiraId);  
+                query = query.Where(e => e.EmpresaParceira.Id == queryParams.EmpresaParceiraId);
+
+            if (queryParams.DiaEnvio.HasValue && queryParams.DiaEnvio != 0)
+                query = query.Where(e => e.DiaEnvio == queryParams.DiaEnvio);  
 
             if (queryParams.ValidadeInicial.HasValue)
                 query = query.Where(e => e.ValidadeInicial.Day == queryParams.ValidadeInicial.Value.Day && 
@@ -132,6 +137,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         Modalidade = r.Modalidade,
                         EmpresaParceira = r.EmpresaParceira,
                         Status = r.Status,
+                        DiaEnvio = r.DiaEnvio,
                         InadimplenciaInicial = r.InadimplenciaInicial,
                         InadimplenciaFinal = r.InadimplenciaFinal,
                         ValidadeInicial = r.ValidadeInicial,
