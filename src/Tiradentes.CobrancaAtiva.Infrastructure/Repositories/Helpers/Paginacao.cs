@@ -31,6 +31,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             modelPaginada.TamanhoPagina = limite;
             modelPaginada.TotalPaginas = (int)Math.Ceiling(modelPaginada.TotalItems / (double)limite);
 
+
             return modelPaginada;
         }
     }
