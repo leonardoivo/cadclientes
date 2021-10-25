@@ -76,7 +76,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             query = query.Ordenar(queryParams.OrdenarPor, "NomeFantasia", queryParams.SentidoOrdenacao == "desc");
 
-            return await query.OrderBy(e => e.NomeFantasia).Paginar(queryParams.Pagina, queryParams.Limite);
+            return await query.Paginar(queryParams.Pagina, queryParams.Limite);
         }
     }
 }
