@@ -12,7 +12,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             string propriedadeDefault,
             bool desc)
         {
-            if (string.IsNullOrEmpty(propriedade)) return query;
             var parametro = Expression.Parameter(typeof(TModel), "x");
             MemberExpression corpo;
             try
