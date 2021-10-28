@@ -18,9 +18,15 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                 .ForSourceMember(dest => dest.Cidade, opt => opt.DoNotValidate())
                 .ForSourceMember(dest => dest.Logradouro, opt => opt.DoNotValidate())
                 .ForSourceMember(dest => dest.Numero, opt => opt.DoNotValidate())
-                .ForSourceMember(dest => dest.Complemento, opt => opt.DoNotValidate());
+                .ForSourceMember(dest => dest.Complemento, opt => opt.DoNotValidate())
+                .ForSourceMember(dest => dest.BancoId, opt => opt.DoNotValidate())
+                .ForSourceMember(dest => dest.ContaCorrente, opt => opt.DoNotValidate())
+                .ForSourceMember(dest => dest.CodigoAgencia, opt => opt.DoNotValidate())
+                .ForSourceMember(dest => dest.Convenio, opt => opt.DoNotValidate())
+                .ForSourceMember(dest => dest.Pix, opt => opt.DoNotValidate());
             CreateMap<ContatoEmpresaParceiraViewModel, ContatoEmpresaParceiraModel>();
             CreateMap<EnderecoEmpresaParceiraViewModel, EnderecoEmpresaParceiraModel>();
+            CreateMap<ContaBancariaEmpresaParceiraViewModel, ContaBancariaEmpresaParceiraModel>();
             
             CreateMap<HonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();
             CreateMap<CreateHonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>(); 

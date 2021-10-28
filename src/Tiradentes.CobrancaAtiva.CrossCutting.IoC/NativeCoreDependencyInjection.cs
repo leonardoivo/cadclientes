@@ -24,9 +24,10 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<ITipoPagamentoRepository, TipoPagamentoRepository>();
             services.AddScoped<ITipoTituloRepository, TipoTituloRepository>();
             services.AddScoped<IHonorarioEmpresaParceiraRepository, HonorarioEmpresaParceiraRepository>();
-            services.AddScoped<IRegraNegociacaoService, RegraNegociacaoService>();
-            services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
-            services.AddScoped<IParametroEnvioService, ParametroEnvioService>();
+            services.AddScoped<IRegraNegociacaoRepository, RegraNegociacaoRepository>();
+            services.AddScoped<ITituloAvulsoRepository, TituloAvulsoRepository>();
+            services.AddScoped<IParametroEnvioRepository, ParametroEnvioRepository>();
+            services.AddScoped<IBancoRepository, BancoRepository>();
             #endregion
 
             #region Services
@@ -40,9 +41,10 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<ITipoTituloService, TipoTituloService>();
             services.AddScoped<ITipoPagamentoService, TipoPagamentoService>();
             services.AddScoped<IHonorarioEmpresaParceiraService, HonorarioEmpresaParceiraService>();
-            services.AddScoped<IRegraNegociacaoRepository, RegraNegociacaoRepository>();
-            services.AddScoped<ITituloAvulsoRepository, TituloAvulsoRepository>();
-            services.AddScoped<IParametroEnvioRepository, ParametroEnvioRepository>();
+            services.AddScoped<IBancoService, BancoService>();
+            services.AddScoped<IRegraNegociacaoService, RegraNegociacaoService>();
+            services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
+            services.AddScoped<IParametroEnvioService, ParametroEnvioService>();
             #endregion
 
             

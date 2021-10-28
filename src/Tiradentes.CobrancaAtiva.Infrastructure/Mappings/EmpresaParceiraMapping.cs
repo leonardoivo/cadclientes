@@ -37,10 +37,25 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Status)
                .HasColumnName("STATUS_EMPRESA");
 
+            builder.Property(ep => ep.IpSftp)
+               .HasColumnName("IP_SFTP");
+
+            builder.Property(ep => ep.PortaSftp)
+               .HasColumnName("PORTA_SFTP");
+
+            builder.Property(ep => ep.UsuarioSftp)
+               .HasColumnName("USUARIO_SFTP");
+
+            builder.Property(ep => ep.SenhaSftp)
+               .HasColumnName("SENHA_SFTP");
+
             builder.HasMany(c => c.Contatos)
                 .WithOne(e => e.Empresa);
 
             builder.HasOne(c => c.Endereco)
+                .WithOne(e => e.Empresa);
+
+            builder.HasOne(c => c.ContaBancaria)
                 .WithOne(e => e.Empresa);
 
             builder.ToTable("EMPRESAS");
