@@ -41,13 +41,19 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         }
 
         public async Task<EmpresaParceiraModel> BuscarPorIdCompleto(int id) =>
-            await DbSet.AsNoTracking().Include(e => e.Contatos).Include(e => e.Endereco).FirstOrDefaultAsync(e => e.Id == id);
+            await DbSet
+                    .AsNoTracking()
+                    .Include(e => e.Contatos)
+                    .Include(e => e.Endereco)
+                    .Include(e => e.ContaBancaria)
+                    .FirstOrDefaultAsync(e => e.Id == id);
 
         public async Task<ModelPaginada<EmpresaParceiraModel>> Buscar(EmpresaParceiraQueryParam queryParams)
         {
             var query = DbSet
                         .Include(e => e.Contatos)
                         .Include(e => e.Endereco)
+                        .Include(e => e.ContaBancaria)
                         .AsQueryable();
 
             if (!string.IsNullOrEmpty(queryParams.NomeFantasia))

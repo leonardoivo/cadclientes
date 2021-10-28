@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Banco;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Curso;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Endereco;
@@ -35,7 +36,12 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                 .ForMember(dest => dest.Cidade, opt => opt.MapFrom(src => src.Endereco.Cidade))
                 .ForMember(dest => dest.Logradouro, opt => opt.MapFrom(src => src.Endereco.Logradouro))
                 .ForMember(dest => dest.Numero, opt => opt.MapFrom(src => src.Endereco.Numero))
-                .ForMember(dest => dest.Complemento, opt => opt.MapFrom(src => src.Endereco.Complemento));
+                .ForMember(dest => dest.Complemento, opt => opt.MapFrom(src => src.Endereco.Complemento))
+                .ForMember(dest => dest.BancoId, opt => opt.MapFrom(src => src.ContaBancaria.BancoId))
+                .ForMember(dest => dest.ContaCorrente, opt => opt.MapFrom(src => src.ContaBancaria.ContaCorrente))
+                .ForMember(dest => dest.CodigoAgencia, opt => opt.MapFrom(src => src.ContaBancaria.CodigoAgencia))
+                .ForMember(dest => dest.Convenio, opt => opt.MapFrom(src => src.ContaBancaria.Convenio))
+                .ForMember(dest => dest.Pix, opt => opt.MapFrom(src => src.ContaBancaria.Pix));
             CreateMap<ModelPaginada<EmpresaParceiraModel>, ViewModelPaginada<BuscaEmpresaParceiraViewModel>>();
             CreateMap<ModelPaginada<HonorarioEmpresaParceiraModel>, ViewModelPaginada<HonorarioEmpresaParceiraViewModel>>();
             CreateMap<ModelPaginada<RegraNegociacaoModel>, ViewModelPaginada<RegraNegociacaoViewModel>>();
@@ -44,6 +50,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ModelPaginada<BuscaParametroEnvio>, ViewModelPaginada<BuscaParametroEnvioViewModel>>();
             CreateMap<ContatoEmpresaParceiraModel, ContatoEmpresaParceiraViewModel>();
             CreateMap<EnderecoEmpresaParceiraModel, EnderecoEmpresaParceiraViewModel>();
+            CreateMap<ContaBancariaEmpresaParceiraModel, ContaBancariaEmpresaParceiraViewModel>();
             CreateMap<HonorarioEmpresaParceiraModel, HonorarioEmpresaParceiraViewModel>();
 
             CreateMap<InstituicaoModel, InstituicaoViewModel>();
@@ -57,6 +64,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<TituloAvulsoModel, TituloAvulsoViewModel>();
             
             CreateMap<EnderecoModel, EnderecoViewModel>();
+            CreateMap<BancoModel, BancoViewModel>();
 
             CreateMap<RegraNegociacaoModel, RegraNegociacaoViewModel>();
             CreateMap<BuscaRegraNegociacao, BuscaRegraNegociacaoViewModel>();
