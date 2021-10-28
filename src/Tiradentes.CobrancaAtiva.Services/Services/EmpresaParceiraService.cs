@@ -1,4 +1,7 @@
 ﻿using AutoMapper;
+using Renci.SshNet;
+using System;
+using System.IO;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
@@ -59,6 +62,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             model.SetarEndereco(0, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
                                 viewModel.Logradouro, viewModel.Numero, 
                                 viewModel.Complemento);
+            model.SetarContaBancaria(0, viewModel.ContaCorrente, viewModel.CodigoAgencia,
+                                viewModel.Convenio, viewModel.Pix, viewModel.BancoId);
 
             await _repositorio.Criar(model);
 
@@ -81,6 +86,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     viewModel.Logradouro, viewModel.Numero, 
                     viewModel.Complemento);
 
+            model.SetarContaBancaria(modelNoBanco.ContaBancaria.Id, viewModel.ContaCorrente, viewModel.CodigoAgencia,
+                                viewModel.Convenio, viewModel.Pix, viewModel.BancoId);
+
             await _repositorio.Alterar(model);
 
             return _map.Map<EmpresaParceiraViewModel>(model);
@@ -101,6 +109,42 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var CnpjCadastrado = await _repositorio.VerificaCnpjJaCadastrado(cnpj, id);
 
             if (CnpjCadastrado) throw CustomException.BadRequest(JsonSerializer.Serialize(new { erro = "CNPJ já cadastrado" }));
+        }
+
+        public async void EnviarArquivoSftp(int id)
+        {
+            var empresaParceira = await _repositorio.BuscarPorId(id);
+
+            using var client = new SftpClient(empresaParceira.IpSftp, empresaParceira.PortaSftp, empresaParceira.UsuarioSftp, empresaParceira.SenhaSftp);
+            try
+            {
+                var filename = "arquivo-alunos-" + DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH'-'mm'-'ss") + ".csv";
+
+                using StreamWriter file = new(filename);
+                await file.WriteLineAsync("aluno,teste1,teste2");
+                file.Close();
+
+                client.Connect();
+                using var s = File.OpenRead(filename);
+
+                client.UploadFile(s, "/mnt/Dados/unit/unit_usr/" + filename);
+            }
+            catch(Renci.SshNet.Common.SshConnectionException sexc)
+            {
+                throw sexc;
+            }
+            catch(Renci.SshNet.Common.SftpPermissionDeniedException pexce)
+            {
+                throw pexce;
+            }
+            catch(Renci.SshNet.Common.SshException ssexc)
+            {
+                throw ssexc;
+            }
+            finally
+            {
+                client.Disconnect();
+            }
         }
     }
 }
