@@ -26,7 +26,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         public DbSet<RegraNegociacaoCursoModel> RegraNegociacaoCurso { get; set; }
         public DbSet<RegraNegociacaoTituloAvulsoModel> RegraNegociacaoTituloAvulso { get; set; }
         public DbSet<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; set; }
-        public DbSet<RegraNegociacaoTipoPagamentoModel> RegraNegociacaoTipoPagamento { get; set; }
         public DbSet<RegraNegociacaoTipoTituloModel> RegraNegociacaoTipoTitulo { get; set; }
         public DbSet<ParametroEnvioModel> ParametroEnvio { get; set; }
         public DbSet<ParametroEnvioCursoModel> ParametroEnvioCurso { get; set; }
