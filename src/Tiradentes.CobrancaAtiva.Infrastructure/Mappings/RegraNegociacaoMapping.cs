@@ -19,13 +19,40 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.ModalidadeId)
               .HasColumnName("COD_MODALIDADE");
 
-            builder.Property(ep => ep.PercentJurosMulta)
-              .HasColumnName("PERCENT_JUROS_MULTA")
+            builder.Property(ep => ep.PercentJurosMultaAVista)
+              .HasColumnName("PERCENT_JUROS_MULTA_AVISTA")
               .HasColumnType("NUMBER(3,5)");
 
-            builder.Property(ep => ep.PercentValor)
-              .HasColumnName("PERCENT_VALOR")
+            builder.Property(ep => ep.PercentValorAVista)
+              .HasColumnName("PERCENT_VALOR_AVISTA")
               .HasColumnType("NUMBER(3,5)");
+
+
+            builder.Property(ep => ep.PercentJurosMultaCartao)
+              .HasColumnName("PERCENT_JUROS_MULTA_CARTAO")
+              .HasColumnType("NUMBER(3,5)");
+
+            builder.Property(ep => ep.PercentValorCartao)
+              .HasColumnName("PERCENT_VALOR_CARTAO")
+              .HasColumnType("NUMBER(3,5)");
+
+            builder.Property(ep => ep.QuantidadeParcelasCartao)
+              .HasColumnName("QUANT_PARCELA_CARTAO");
+
+            builder.Property(ep => ep.PercentJurosMultaBoleto)
+              .HasColumnName("PERCENT_JUROS_MULTA_BOLETO")
+              .HasColumnType("NUMBER(3,5)");
+
+            builder.Property(ep => ep.PercentValorBoleto)
+              .HasColumnName("PERCENT_VALOR_BOLETO")
+              .HasColumnType("NUMBER(3,5)");
+
+            builder.Property(ep => ep.PercentEntradaBoleto)
+              .HasColumnName("PERCENT_ENTRADA_BOLETO")
+              .HasColumnType("NUMBER(3,5)");
+
+            builder.Property(ep => ep.QuantidadeParcelasBoleto)
+              .HasColumnName("QUANT_PARCELA_BOLETO");
 
             builder.Property(ep => ep.Status)
               .HasColumnName("STATUS")
@@ -62,9 +89,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
               .WithOne(e => e.RegraNegociacao);
 
             builder.HasMany(c => c.RegraNegociacaoSituacaoAluno)
-              .WithOne(e => e.RegraNegociacao);
-
-            builder.HasMany(c => c.RegraNegociacaoTipoPagamento)
               .WithOne(e => e.RegraNegociacao);
 
             builder.HasMany(c => c.RegraNegociacaoTipoTitulo)

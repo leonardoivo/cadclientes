@@ -9,8 +9,17 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public int Id { get; set; }
         public InstituicaoModel Instituicao { get; set; }
         public ModalidadeModel Modalidade { get; set; }
-        public decimal PercentJurosMulta { get; set; }
-        public decimal PercentValor { get; set; }
+        public decimal PercentJurosMultaAVista { get; set; }
+        public decimal PercentValorAVista { get; set; }
+
+        public decimal PercentJurosMultaCartao { get; set; }
+        public decimal PercentValorCartao { get; set; }
+        public int QuantidadeParcelasCartao { get; set; }
+
+        public decimal PercentJurosMultaBoleto { get; set; }
+        public decimal PercentValorBoleto { get; set; }
+        public decimal PercentEntradaBoleto { get; set; }
+        public int QuantidadeParcelasBoleto { get; set; }
         public bool Status { get; set; }
         public DateTime MesAnoInicial { get; set; }
         public DateTime MesAnoFinal { get; set; }
@@ -20,7 +29,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public IEnumerable<CursoModel> Cursos { get; set; }
         public IEnumerable<TituloAvulsoModel> TitulosAvulsos { get; set; }
         public IEnumerable<SituacaoAlunoModel> SituacoesAlunos { get; set; }
-        public IEnumerable<TipoPagamentoModel> TiposPagamentos { get; set; }
         public IEnumerable<TipoTituloModel> TiposTitulos { get; set; }
     }
 }
