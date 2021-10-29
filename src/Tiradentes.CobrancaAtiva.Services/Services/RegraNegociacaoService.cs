@@ -84,7 +84,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             model.SetRegraNegociacaoCurso(modelBanco.RegraNegociacaoCurso);
             model.SetRegraNegociacaoTituloAvulso(modelBanco.RegraNegociacaoTituloAvulso);
             model.SetRegraNegociacaoSituacaoAluno(modelBanco.RegraNegociacaoSituacaoAluno);
-            model.SetRegraNegociacaoTipoPagamento(modelBanco.RegraNegociacaoTipoPagamento);
             model.SetRegraRegraNegociacaoTipoTitulo(modelBanco.RegraNegociacaoTipoTitulo);
 
             await _repositorio.Alterar(model);

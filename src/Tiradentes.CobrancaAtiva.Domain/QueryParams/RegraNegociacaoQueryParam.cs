@@ -15,7 +15,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.QueryParams
         public DateTime? ValidadeFinal { get; set; }
         public int[] Cursos { get; set; }
         public int[] TitulosAvulsos { get; set; }
-        public int[] TiposPagamentos { get; set; }
         public int[] SituacoesAlunos { get; set; }
         public int[] TiposTitulos { get; set; }
     }

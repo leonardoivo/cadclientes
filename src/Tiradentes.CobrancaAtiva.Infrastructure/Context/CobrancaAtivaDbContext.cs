@@ -9,9 +9,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         public CobrancaAtivaDbContext(DbContextOptions options) : base(options)
         { }
 
+        public DbSet<BancoModel> Banco { get; set; }
         public DbSet<EmpresaParceiraModel> EmpresaParceira { get; set; }
         public DbSet<ContatoEmpresaParceiraModel> ContatoEmpresaParceira { get; set; }
         public DbSet<EnderecoEmpresaParceiraModel> EnderecoEmpresaParceira { get; set; }
+        public DbSet<ContaBancariaEmpresaParceiraModel> ContaBancariaEmpresaParceira { get; set; }
         public DbSet<InstituicaoModel> Instituicao { get; set; }
         public DbSet<ModalidadeModel> Modalidade { get; set; }
         public DbSet<CursoModel> Curso { get; set; }
@@ -24,7 +26,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         public DbSet<RegraNegociacaoCursoModel> RegraNegociacaoCurso { get; set; }
         public DbSet<RegraNegociacaoTituloAvulsoModel> RegraNegociacaoTituloAvulso { get; set; }
         public DbSet<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; set; }
-        public DbSet<RegraNegociacaoTipoPagamentoModel> RegraNegociacaoTipoPagamento { get; set; }
         public DbSet<RegraNegociacaoTipoTituloModel> RegraNegociacaoTipoTitulo { get; set; }
         public DbSet<ParametroEnvioModel> ParametroEnvio { get; set; }
         public DbSet<ParametroEnvioCursoModel> ParametroEnvioCurso { get; set; }

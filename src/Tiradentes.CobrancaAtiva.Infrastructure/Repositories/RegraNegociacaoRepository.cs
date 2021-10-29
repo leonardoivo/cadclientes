@@ -24,7 +24,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Include(r => r.RegraNegociacaoCurso)
                             .Include(r => r.RegraNegociacaoTituloAvulso)
                             .Include(r => r.RegraNegociacaoSituacaoAluno)
-                            .Include(r => r.RegraNegociacaoTipoPagamento)
                             .Include(r => r.RegraNegociacaoTipoTitulo)
                             .AsQueryable();
 
@@ -44,7 +43,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Include(r => r.RegraNegociacaoCurso)
                             .Include(r => r.RegraNegociacaoTituloAvulso)
                             .Include(r => r.RegraNegociacaoSituacaoAluno)
-                            .Include(r => r.RegraNegociacaoTipoPagamento)
                             .Include(r => r.RegraNegociacaoTipoTitulo)
                             .AsQueryable();
 
@@ -63,8 +61,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 Id = r.Id,
                                 Instituicao = r.Instituicao,
                                 Modalidade = r.Modalidade,
-                                PercentJurosMulta = r.PercentJurosMulta,
-                                PercentValor = r.PercentValor,
+                                PercentJurosMultaAVista = r.PercentJurosMultaAVista,
+                                PercentValorAVista = r.PercentValorAVista,
+                                PercentJurosMultaCartao = r.PercentJurosMultaCartao,
+                                PercentValorCartao = r.PercentValorCartao,
+                                QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
+                                PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
+                                PercentValorBoleto = r.PercentValorBoleto,
+                                QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
+                                PercentEntradaBoleto = r.PercentEntradaBoleto,
                                 Status = r.Status,
                                 MesAnoInicial = r.MesAnoInicial,
                                 MesAnoFinal = r.MesAnoFinal,
@@ -73,7 +78,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
                                 TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
                                 SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
-                                TiposPagamentos = r.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamento),
                                 TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
                             })
                             .AsQueryable();
@@ -106,8 +110,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 Id = r.Id,
                                 Instituicao = r.Instituicao,
                                 Modalidade = r.Modalidade,
-                                PercentJurosMulta = r.PercentJurosMulta,
-                                PercentValor = r.PercentValor,
+                                PercentJurosMultaAVista = r.PercentJurosMultaAVista,
+                                PercentValorAVista = r.PercentValorAVista,
+                                PercentJurosMultaCartao = r.PercentJurosMultaCartao,
+                                PercentValorCartao = r.PercentValorCartao,
+                                QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
+                                PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
+                                PercentValorBoleto = r.PercentValorBoleto,
+                                QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
+                                PercentEntradaBoleto = r.PercentEntradaBoleto,
                                 Status = r.Status,
                                 MesAnoInicial = r.MesAnoInicial,
                                 MesAnoFinal = r.MesAnoFinal,
@@ -116,7 +127,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
                                 TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
                                 SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
-                                TiposPagamentos = r.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamento),
                                 TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
                             })
                             .AsQueryable();
@@ -149,9 +159,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.TitulosAvulsos.Length > 0)
                  query = query.Where(e => e.TitulosAvulsos.Where(c => queryParams.TitulosAvulsos.Contains(c.Id)).Any());
 
-            if (queryParams.TiposPagamentos.Length > 0)
-                query = query.Where(e => e.TiposPagamentos.Where(c => queryParams.TiposPagamentos.Contains(c.Id)).Any());
-
             if (queryParams.SituacoesAlunos.Length > 0)
                 query = query.Where(e => e.SituacoesAlunos.Where(c => queryParams.SituacoesAlunos.Contains(c.Id)).Any());
 
@@ -173,8 +180,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         Id = r.Id,
                         Instituicao = r.Instituicao,
                         Modalidade = r.Modalidade,
-                        PercentJurosMulta = r.PercentJurosMulta,
-                        PercentValor = r.PercentValor,
+                        PercentJurosMultaAVista = r.PercentJurosMultaAVista,
+                        PercentValorAVista = r.PercentValorAVista,
+                        PercentJurosMultaCartao = r.PercentJurosMultaCartao,
+                        PercentValorCartao = r.PercentValorCartao,
+                        QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
+                        PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
+                        PercentValorBoleto = r.PercentValorBoleto,
+                        QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
+                        PercentEntradaBoleto = r.PercentEntradaBoleto,
                         Status = r.Status,
                         MesAnoInicial = r.MesAnoInicial,
                         MesAnoFinal = r.MesAnoFinal,
@@ -183,7 +197,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
                         TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
                         SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
-                        TiposPagamentos = r.RegraNegociacaoTipoPagamento.Select(x => x.TipoPagamento),
                         TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
                     })
                     .AsNoTracking()
@@ -195,7 +208,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             return DbSet.Include(r => r.RegraNegociacaoCurso)
                          .Include(r => r.RegraNegociacaoTituloAvulso)
                          .Include(r => r.RegraNegociacaoSituacaoAluno)
-                         .Include(r => r.RegraNegociacaoTipoPagamento)
                          .Include(r => r.RegraNegociacaoTipoTitulo)
                          .Where(r => r.Id.Equals(id))
                          .AsNoTracking()
@@ -213,9 +225,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             Db.RegraNegociacaoSituacaoAluno.RemoveRange(
                 Db.RegraNegociacaoSituacaoAluno.Where(
                     c => !model.RegraNegociacaoSituacaoAluno.Select(x => x.Id).Contains(c.Id)));
-            Db.RegraNegociacaoTipoPagamento.RemoveRange(
-                Db.RegraNegociacaoTipoPagamento.Where(
-                    c => !model.RegraNegociacaoTipoPagamento.Select(x => x.Id).Contains(c.Id)));
             Db.RegraNegociacaoTipoTitulo.RemoveRange(
                 Db.RegraNegociacaoTipoTitulo.Where(
                     c => !model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)));

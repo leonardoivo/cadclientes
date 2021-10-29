@@ -11,20 +11,30 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
 
         public int InstituicaoId { get; private set; }
         public int ModalidadeId { get; private set; }
-        public decimal PercentJurosMulta { get; private set; }
-        public decimal PercentValor { get; private set; }
         public bool Status { get; set; }
         public DateTime MesAnoInicial { get; private set; }
         public DateTime MesAnoFinal { get; private set; }
         public DateTime ValidadeInicial { get; private set; }
         public DateTime ValidadeFinal { get; private set; }
 
+        public decimal PercentJurosMultaAVista { get; private set; }
+        public decimal PercentValorAVista { get; private set; }
+
+        public decimal PercentJurosMultaCartao { get; private set; }
+        public decimal PercentValorCartao { get; private set; }
+        public int QuantidadeParcelasCartao { get; private set; }
+
+        public decimal PercentJurosMultaBoleto { get; private set; }
+        public decimal PercentValorBoleto { get; private set; }
+        public decimal PercentEntradaBoleto { get; private set; }
+        public int QuantidadeParcelasBoleto { get; private set; }
+
+
         public InstituicaoModel Instituicao { get; set; }
         public ModalidadeModel Modalidade { get; set; }
         public ICollection<RegraNegociacaoCursoModel> RegraNegociacaoCurso { get; private set; }
         public ICollection<RegraNegociacaoTituloAvulsoModel> RegraNegociacaoTituloAvulso { get; private set; }
         public ICollection<RegraNegociacaoSituacaoAlunoModel> RegraNegociacaoSituacaoAluno { get; private set; }
-        public ICollection<RegraNegociacaoTipoPagamentoModel> RegraNegociacaoTipoPagamento { get; private set; }
         public ICollection<RegraNegociacaoTipoTituloModel> RegraNegociacaoTipoTitulo { get; private set; }
 
         public void SetRegraNegociacaoCurso(ICollection<RegraNegociacaoCursoModel> datas ) 
@@ -56,17 +66,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
                                         Id = datas.FirstOrDefault(c => c.SituacaoAlunoId.Equals(r.SituacaoAlunoId))?.Id ?? 0,
                                         RegraNegociacaoId = Id,
                                         SituacaoAlunoId = r.SituacaoAlunoId
-                                    })
-                                    .ToList();
-        }
-
-         public void SetRegraNegociacaoTipoPagamento(ICollection<RegraNegociacaoTipoPagamentoModel> datas ) 
-        {
-            RegraNegociacaoTipoPagamento = RegraNegociacaoTipoPagamento
-                                    .Select(r => new RegraNegociacaoTipoPagamentoModel {
-                                        Id = datas.FirstOrDefault(c => c.TipoPagamentoId.Equals(r.TipoPagamentoId))?.Id ?? 0,
-                                        RegraNegociacaoId = Id,
-                                        TipoPagamentoId = r.TipoPagamentoId
                                     })
                                     .ToList();
         }

@@ -29,10 +29,16 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string URL { get; private set; }
         public bool Status { get; private set; }
 
+        public string IpSftp { get; private set; }
+        public int PortaSftp { get; private set; }
+        public string UsuarioSftp { get; private set; }
+        public string SenhaSftp { get; private set; }
+
         public ICollection<ContatoEmpresaParceiraModel> Contatos { get; private set; }
         public ICollection<HonorarioEmpresaParceiraModel> Honorarios { get; private set; }
         public ICollection<ParametroEnvioModel> ParametroEnvios { get; private set; }
         public EnderecoEmpresaParceiraModel Endereco { get; private set; }
+        public ContaBancariaEmpresaParceiraModel ContaBancaria { get; private set; }
 
         public void SetarEndereco(int id,
                                     string cep,
@@ -44,6 +50,17 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         {
             this.Endereco = new EnderecoEmpresaParceiraModel(id, cep, estado, cidade, logradouro,
                                                             numero, complemento);
+        }
+
+        public void SetarContaBancaria(int Id,
+            string ContaCorrente,
+            string CodigoAgencia,
+            string Convenio,
+            string Pix,
+            int BancoId)
+        { 
+            this.ContaBancaria = new ContaBancariaEmpresaParceiraModel(Id, ContaCorrente, CodigoAgencia, Convenio,
+                                                                        Pix, BancoId);
         }
     }
 }
