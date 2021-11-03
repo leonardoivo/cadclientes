@@ -89,6 +89,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             model.SetarContaBancaria(modelNoBanco.ContaBancaria.Id, viewModel.ContaCorrente, viewModel.CodigoAgencia,
                                 viewModel.Convenio, viewModel.Pix, viewModel.BancoId);
 
+            model.IpSftp = modelNoBanco.IpSftp;
+            model.SenhaSftp = modelNoBanco.SenhaSftp;
+            model.PortaSftp = modelNoBanco.PortaSftp;
+            model.UsuarioSftp = modelNoBanco.UsuarioSftp;
+
             await _repositorio.Alterar(model);
 
             return _map.Map<EmpresaParceiraViewModel>(model);
