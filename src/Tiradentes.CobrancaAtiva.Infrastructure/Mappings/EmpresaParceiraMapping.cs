@@ -43,7 +43,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 
             builder.Property(ep => ep.PortaSftp)
                .HasColumnName("PORTA_SFTP")
-               .HasDefaultValue(0);
+               .HasDefaultValue(22);
 
             builder.Property(ep => ep.UsuarioSftp)
                .HasColumnName("USUARIO_SFTP")
