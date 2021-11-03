@@ -120,7 +120,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var empresaParceira = await _repositorio.BuscarPorId(id);
 
-            using var client = new SftpClient(empresaParceira.IpSftp, empresaParceira.PortaSftp, empresaParceira.UsuarioSftp, empresaParceira.SenhaSftp);
+            using var client = new SftpClient(empresaParceira.IpSftp, empresaParceira.PortaSftp.Value, empresaParceira.UsuarioSftp, empresaParceira.SenhaSftp);
             try
             {
                 var filename = "arquivo-alunos-" + DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH'-'mm'-'ss") + ".csv";

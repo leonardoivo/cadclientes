@@ -30,7 +30,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public bool Status { get; private set; }
 
         public string IpSftp { get; set; }
-        public int PortaSftp { get; set; }
+        public int? PortaSftp { get; set; }
         public string UsuarioSftp { get; set; }
         public string SenhaSftp { get; set; }
 
