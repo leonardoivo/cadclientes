@@ -47,7 +47,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IParametroEnvioService, ParametroEnvioService>();
             #endregion
 
-            
+
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
                 options.UseOracle(configuration.GetConnectionString("Empresas")));
 
