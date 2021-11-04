@@ -168,7 +168,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
 
-            return await query.OrderBy(e => e.Id).Paginar(queryParams.Pagina, queryParams.Limite);
+            query = query.Ordenar(queryParams.OrdenarPor, "ValidadeInicial", queryParams.SentidoOrdenacao == "desc");
+
+            return await query.Paginar(queryParams.Pagina, queryParams.Limite);
         }
 
         public Task<BuscaRegraNegociacao> BuscarPorIdComRelacionamentos(int id)
