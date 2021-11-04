@@ -116,23 +116,25 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             if (CnpjCadastrado) throw CustomException.BadRequest(JsonSerializer.Serialize(new { erro = "CNPJ já cadastrado" }));
         }
 
-        public async void EnviarArquivoSftp(int id)
+        public async Task EnviarArquivoSftp(int id)
         {
             var empresaParceira = await _repositorio.BuscarPorId(id);
 
             using var client = new SftpClient(empresaParceira.IpSftp, empresaParceira.PortaSftp.Value, empresaParceira.UsuarioSftp, empresaParceira.SenhaSftp);
             try
             {
-                var filename = "arquivo-alunos-" + DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH'-'mm'-'ss") + ".csv";
+                /*var filename = "arquivo-alunos-" + DateTime.Now.ToString("yyyy'-'MM'-'dd'T'HH'-'mm'-'ss") + ".csv";
 
                 using StreamWriter file = new(filename);
-                await file.WriteLineAsync("aluno,teste1,teste2");
+                await file.WriteLineAsync("\"CNPJ EMPRESA COBRANÇA\",\"MODALIDADE DE ENSINO\",\"DESCRIÇÃO DA MODALIDADE DE ENSINO\",\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\",\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\",\"IDENTIFICADOR CURSO\",\"DESCRIÇÃO CURSO\",\"TIPO TITULO\",\"DESCRIÇÃO TIPO TÍTULO\",\"TIPO TITULO AVULSO\",\"DESCRICAO INADIMPLENCIA\",\"SITUACAO ALUNO\",\"CPF ALUNO\",\"MATRICULA\",\"PERIODO\",\"IDENTIFICADOR DO ALUNO\",\"IDENTIFICADOR DA PESSOA\",\"NOME\",\"ENDERECO\",\"BAIRRO\",\"CIDADE\",\"CEP\",\"UF\",\"DDD RES\",\"TELEFONE RES\",\"DDD CELULAR\",\"TELEFONE CELULAR\",\"EMAIL DO ALUNO\",\"NUMERO CONTRATO\",\"CONDIÇÃO DE NEGOCIAÇÃO\",\"DESCONTO INCONDICIONAL\",\"VALIDADE DA NEGOCIAÇÃO\",\"NUMERO DA PARCELA\",\"DATA VENCIMENTO\",\"VALOR PARCELA\",OBSERVACAO\",\"CODIGO DA CAMPUS IES\",\"NOME DA CAMPUS IES\",\"FILIACAO - MAE\",\"FILIACAO - PAINUMERO DO RG\"");
                 file.Close();
 
                 client.Connect();
-                using var s = File.OpenRead(filename);
+                using var s = File.OpenRead(filename);*/
 
-                client.UploadFile(s, "/mnt/Dados/unit/unit_usr/" + filename);
+                await GerarArquivoCsv(empresaParceira);
+
+                //client.UploadFile(s, "/mnt/Dados/unit/unit_usr/" + filename);
             }
             catch(Renci.SshNet.Common.SshConnectionException sexc)
             {
@@ -149,6 +151,48 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             finally
             {
                 client.Disconnect();
+            }
+        }
+
+        public async Task GerarArquivoCsv(EmpresaParceiraModel empresaParceira)
+        {
+            var limiteLinhas = 2;
+
+            /// 0 = IES
+            /// 1 = modalidade
+            /// 2 = datageracaoarquivo
+            /// 3 = datainicioinadimplencia
+            /// 4 = datafinalinadimplencia
+            /// 5 = parte atual
+            /// 6 = total de partes
+            var filenameTemplate = "{0}_{1}_{2}_{3}_{4}_PARTE{5}de{6}.csv";
+            var cabecalhoCsv = "\"CNPJ EMPRESA COBRANÇA\",\"MODALIDADE DE ENSINO\",\"DESCRIÇÃO DA MODALIDADE DE ENSINO\",\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\",\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\",\"IDENTIFICADOR CURSO\",\"DESCRIÇÃO CURSO\",\"TIPO TITULO\",\"DESCRIÇÃO TIPO TÍTULO\",\"TIPO TITULO AVULSO\",\"DESCRICAO INADIMPLENCIA\",\"SITUACAO ALUNO\",\"CPF ALUNO\",\"MATRICULA\",\"PERIODO\",\"IDENTIFICADOR DO ALUNO\",\"IDENTIFICADOR DA PESSOA\",\"NOME\",\"ENDERECO\",\"BAIRRO\",\"CIDADE\",\"CEP\",\"UF\",\"DDD RES\",\"TELEFONE RES\",\"DDD CELULAR\",\"TELEFONE CELULAR\",\"EMAIL DO ALUNO\",\"NUMERO CONTRATO\",\"CONDIÇÃO DE NEGOCIAÇÃO\",\"DESCONTO INCONDICIONAL\",\"VALIDADE DA NEGOCIAÇÃO\",\"NUMERO DA PARCELA\",\"DATA VENCIMENTO\",\"VALOR PARCELA\",OBSERVACAO\",\"CODIGO DA CAMPUS IES\",\"NOME DA CAMPUS IES\",\"FILIACAO - MAE\",\"FILIACAO - PAINUMERO DO RG\"";
+
+            var dados = new string[10] {
+                "1",
+                "2",
+                "3",
+                "4",
+                "5",
+                "6",
+                "7",
+                "8",
+                "9",
+                "10",
+            };
+
+            var totalLinhas = dados.Length;
+            var quantidadeArquivos = (int) (totalLinhas / limiteLinhas);
+
+            for(var indexArquivoAtual = 1; indexArquivoAtual <= quantidadeArquivos; indexArquivoAtual++)
+            {
+                using StreamWriter file = new(string.Format(filenameTemplate, "1", "1", "04-11-2021", "01-11-2021", "04-11-2021", indexArquivoAtual.ToString(), quantidadeArquivos.ToString()));
+                await file.WriteLineAsync(cabecalhoCsv);
+                for(var indexDadosInicial = (indexArquivoAtual - 1) * limiteLinhas; indexDadosInicial <= (indexArquivoAtual * limiteLinhas) - 1; indexDadosInicial++)
+                {
+                    await file.WriteLineAsync(dados[indexDadosInicial]);
+                }
+                file.Close();
             }
         }
     }

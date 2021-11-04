@@ -28,6 +28,13 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return Ok();
         }
 
+        [HttpGet("enviar-arquivo-cobranca/{Id}")]
+        public async Task<ActionResult<EmpresaParceiraViewModel>> EnviarArquivoCobranca(int Id)
+        {
+            await _service.EnviarArquivoSftp(Id);
+            return Ok();
+        }
+
         [HttpGet("{Id}")]
         public async Task<ActionResult<EmpresaParceiraViewModel>> Buscar(int Id)
         {
