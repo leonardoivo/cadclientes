@@ -56,7 +56,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var modelBanco = await _repositorio.BuscarPorId(viewModel.Id);
 
-            if (modelBanco == null) EntidadeNaoEncontrada("Parametro envio não cadastrado.");
+            if (modelBanco == null)
+            {
+                EntidadeNaoEncontrada("Parametro envio não cadastrado.");
+                return null;
+            }
 
             var model = _map.Map<ParametroEnvioModel>(viewModel);
 
