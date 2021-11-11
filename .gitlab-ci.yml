@@ -24,9 +24,9 @@ sonarqube-check:
   #   - master # or the name of your main branch
 
 build:
-    only:
+    # only:
     # - develop
-    - main
+    # - main
     image: mcr.microsoft.com/dotnet/sdk:5.0
     stage: build
     script:
