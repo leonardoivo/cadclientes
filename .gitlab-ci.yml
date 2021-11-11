@@ -3,6 +3,7 @@
 #     - deploy
 sonarqube-check:
   image: mcr.microsoft.com/dotnet/sdk:5.0
+  stage: .pre
   variables:
     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
@@ -22,7 +23,6 @@ sonarqube-check:
   # only:
   #   - master # or the name of your main branch
 
-
 build:
     only:
     # - develop
@@ -31,6 +31,11 @@ build:
     stage: build
     script:
         - "dotnet build"
+test:
+    image: mcr.microsoft.com/dotnet/sdk:5.0
+    stage: test
+    script:
+        - "dotnet test"
 
 deploy:
   only:
