@@ -39,7 +39,7 @@ test:
 
 deploy:
   only:
-  # - develop
+  - develop
   - main
   image: google/cloud-sdk
   stage: deploy
