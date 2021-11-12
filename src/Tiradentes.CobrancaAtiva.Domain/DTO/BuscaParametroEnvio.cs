@@ -7,8 +7,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
     public class BuscaParametroEnvio 
     {
         public int Id { get; set; }
-        public InstituicaoModel Instituicao { get; set; }
-        public ModalidadeModel Modalidade { get; set; }
         public EmpresaParceiraModel EmpresaParceira { get; set; }
         public bool Status { get; set; }
         public int DiaEnvio { get; set; }
@@ -17,6 +15,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public DateTime ValidadeInicial { get; set; }
         public DateTime ValidadeFinal { get; set; }
 
+        public IEnumerable<InstituicaoModel> Instituicoes { get; set; }
+        public IEnumerable<ModalidadeModel> Modalidades { get; set; }
         public IEnumerable<CursoModel> Cursos { get; set; }
         public IEnumerable<TituloAvulsoModel> TitulosAvulsos { get; set; }
         public IEnumerable<SituacaoAlunoModel> SituacoesAlunos { get; set; }

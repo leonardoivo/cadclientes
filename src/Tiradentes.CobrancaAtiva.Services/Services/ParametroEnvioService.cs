@@ -64,6 +64,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var model = _map.Map<ParametroEnvioModel>(viewModel);
 
+            model.SetParametroEnvioInstituicao(modelBanco.ParametroEnvioInstituicao);
+            model.SetParametroEnvioModalidade(modelBanco.ParametroEnvioModalidade);
             model.SetParametroEnvioCurso(modelBanco.ParametroEnvioCurso);
             model.SetParametroEnvioSituacaoAluno(modelBanco.ParametroEnvioSituacaoAluno);
             model.SetParametroEnvioTituloAvulso(modelBanco.ParametroEnvioTituloAvulso);
@@ -73,5 +75,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             return _map.Map<ParametroEnvioViewModel>(model);
         }
+
+        public async Task Deletar(int id)
+        {
+            await _repositorio.Deletar(id);
+        }
+
     }
 }

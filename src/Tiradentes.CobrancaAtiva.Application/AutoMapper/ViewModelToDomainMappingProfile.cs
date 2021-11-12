@@ -51,6 +51,10 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new RegraNegociacaoTipoTituloModel(c)))); 
 
             CreateMap<CriarParametroEnvioViewModel, ParametroEnvioModel>()
+                .ForMember(dest => dest.ParametroEnvioInstituicao,
+                    opt => opt.MapFrom(src => src.InstituicaoIds.Select(c => new ParametroEnvioInstituicaoModel(c))))
+                .ForMember(dest => dest.ParametroEnvioModalidade,
+                    opt => opt.MapFrom(src => src.ModalidadeIds.Select(c => new ParametroEnvioModalidadeModel(c))))
                 .ForMember(dest => dest.ParametroEnvioCurso,
                     opt => opt.MapFrom(src => src.CursoIds.Select(c => new ParametroEnvioCursoModel(c))))
                 .ForMember(dest => dest.ParametroEnvioTituloAvulso,
@@ -60,6 +64,10 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                 .ForMember(dest => dest.ParametroEnvioTipoTitulo,
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new ParametroEnvioTipoTituloModel(c))));
             CreateMap<AlterarParametroEnvioViewModel, ParametroEnvioModel>()
+                .ForMember(dest => dest.ParametroEnvioInstituicao,
+                    opt => opt.MapFrom(src => src.InstituicaoIds.Select(c => new ParametroEnvioInstituicaoModel(c))))
+                .ForMember(dest => dest.ParametroEnvioModalidade,
+                    opt => opt.MapFrom(src => src.ModalidadeIds.Select(c => new ParametroEnvioModalidadeModel(c))))
                 .ForMember(dest => dest.ParametroEnvioCurso,
                     opt => opt.MapFrom(src => src.CursoIds.Select(c => new ParametroEnvioCursoModel(c))))
                 .ForMember(dest => dest.ParametroEnvioTituloAvulso,
