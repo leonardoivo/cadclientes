@@ -100,6 +100,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month 
                     && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);   
 
+            if (queryParams.Instituicoes.Length > 0)
+                query = query.Where(e => e.Instituicoes.Where(c => queryParams.Instituicoes.Contains(c.Id)).Any());
+
+            if (queryParams.Modalidades.Length > 0)
+                query = query.Where(e => e.Modalidades.Where(c => queryParams.Modalidades.Contains(c.Id)).Any());
+
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
 
@@ -114,8 +120,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
+                
+            query = query.Ordenar(queryParams.OrdenarPor, "NomeFantasia", queryParams.SentidoOrdenacao == "desc");
 
-            return await query.OrderBy(e => e.Id).Paginar(queryParams.Pagina, queryParams.Limite);
+            return await query.Paginar(queryParams.Pagina, queryParams.Limite);
         }
 
         public Task<BuscaParametroEnvio> BuscarPorIdComRelacionamentos(int id)
