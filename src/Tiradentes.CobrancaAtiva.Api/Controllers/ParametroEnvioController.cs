@@ -44,5 +44,12 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         {
             return await _service.Alterar(viewModel);
         }
+
+        [HttpDelete("{id:int}")]
+        public async Task<ActionResult<ParametroEnvioViewModel>> Deletar(int id)
+        {
+            await _service.Deletar(id);
+            return NoContent();
+        }
     }
 }

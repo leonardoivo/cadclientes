@@ -13,8 +13,6 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio
     public class BuscaParametroEnvioViewModel
     {
         public int Id { get; set; }
-        public InstituicaoViewModel Instituicao { get; set; }
-        public ModalidadeViewModel Modalidade { get; set; }
         public EmpresaParceira.EmpresaParceiraViewModel EmpresaParceira { get; set; }
         public int DiaEnvio { get; set; }
         public bool Status { get; set; }
@@ -23,6 +21,8 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio
         public DateTime ValidadeInicial { get; set; }
         public DateTime ValidadeFinal { get; set; }
 
+        public IEnumerable<InstituicaoViewModel> Instituicoes { get; set; }
+        public IEnumerable<ModalidadeViewModel> Modalidades { get; set; }
         public IEnumerable<CursoViewModel> Cursos { get; set; }
         public IEnumerable<TituloAvulsoViewModel> TitulosAvulsos { get; set; }
         public IEnumerable<SituacaoAlunoViewModel> SituacoesAlunos { get; set; }

@@ -13,12 +13,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Id)
               .HasColumnName("COD_PARAMETRO_ENVIO");
 
-            builder.Property(ep => ep.InstituicaoId)
-              .HasColumnName("COD_INSTITUICAO");
-
-            builder.Property(ep => ep.ModalidadeId)
-              .HasColumnName("COD_MODALIDADE");
-
             builder.Property(ep => ep.EmpresaParceiraId)
               .HasColumnName("COD_EMPRESA");
 
@@ -44,14 +38,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.ValidadeFinal)
               .HasColumnName("VALIDADE_FINAL")
               .HasColumnType("DATE");
-
-            builder.HasOne(im => im.Instituicao)
-                .WithMany(m => m.ParametroEnvio)
-                .HasForeignKey(im => im.InstituicaoId);
-
-            builder.HasOne(im => im.Modalidade)
-                .WithMany(m => m.ParametroEnvio)
-                .HasForeignKey(im => im.ModalidadeId);
 
             builder.HasOne(im => im.EmpresaParceira)
                 .WithMany(m => m.ParametroEnvios)

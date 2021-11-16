@@ -20,8 +20,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             var query = DbSet
                             .Select(r  => new BuscaParametroEnvio {
                                 Id = r.Id,
-                                Instituicao = r.Instituicao,
-                                Modalidade = r.Modalidade,
                                 EmpresaParceira = r.EmpresaParceira,
                                 Status = r.Status,
                                 DiaEnvio = r.DiaEnvio,
@@ -29,14 +27,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
                                 ValidadeFinal = r.ValidadeFinal,
+                                Instituicoes = r.ParametroEnvioInstituicao.Select(x => x.Instituicao),
+                                Modalidades = r.ParametroEnvioModalidade.Select(x => x.Modalidade),
                                 Cursos = r.ParametroEnvioCurso.Select(x => x.Curso),
                                 TitulosAvulsos = r.ParametroEnvioTituloAvulso.Select(x => x.TituloAvulso),
                                 SituacoesAlunos = r.ParametroEnvioSituacaoAluno.Select(x => x.SituacaoAluno),
                                 TiposTitulos = r.ParametroEnvioTipoTitulo.Select(x => x.TipoTitulo)
                             })
                             .AsQueryable();
-
-            query = query.Where(e => e.Status == true).Where(e => e.Modalidade.Id == model.ModalidadeId);
 
             query = query.Where(e => e.InadimplenciaInicial <= model.InadimplenciaFinal && model.InadimplenciaInicial <= e.InadimplenciaFinal); 
 
@@ -62,8 +60,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             var query = DbSet
                             .Select(r  => new BuscaParametroEnvio {
                                 Id = r.Id,
-                                Instituicao = r.Instituicao,
-                                Modalidade = r.Modalidade,
                                 EmpresaParceira = r.EmpresaParceira,
                                 Status = r.Status,
                                 DiaEnvio = r.DiaEnvio,
@@ -71,18 +67,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
                                 ValidadeFinal = r.ValidadeFinal,
+                                Instituicoes = r.ParametroEnvioInstituicao.Select(x => x.Instituicao),
+                                Modalidades = r.ParametroEnvioModalidade.Select(x => x.Modalidade),
                                 Cursos = r.ParametroEnvioCurso.Select(x => x.Curso),
                                 TitulosAvulsos = r.ParametroEnvioTituloAvulso.Select(x => x.TituloAvulso),
                                 SituacoesAlunos = r.ParametroEnvioSituacaoAluno.Select(x => x.SituacaoAluno),
                                 TiposTitulos = r.ParametroEnvioTipoTitulo.Select(x => x.TipoTitulo)
                             })
                             .AsQueryable();
-
-            if (queryParams.InstituicaoId != 0)
-                query = query.Where(e => e.Instituicao.Id == queryParams.InstituicaoId);
-
-            if (queryParams.ModalidadeId != 0)
-                query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);  
 
             if (queryParams.EmpresaParceiraId != 0)
                 query = query.Where(e => e.EmpresaParceira.Id == queryParams.EmpresaParceiraId);
@@ -108,6 +100,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month 
                     && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);   
 
+            if (queryParams.Instituicoes.Length > 0)
+                query = query.Where(e => e.Instituicoes.Where(c => queryParams.Instituicoes.Contains(c.Id)).Any());
+
+            if (queryParams.Modalidades.Length > 0)
+                query = query.Where(e => e.Modalidades.Where(c => queryParams.Modalidades.Contains(c.Id)).Any());
+
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
 
@@ -122,8 +120,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
+                
+            query = query.Ordenar(queryParams.OrdenarPor, "NomeFantasia", queryParams.SentidoOrdenacao == "desc");
 
-            return await query.OrderBy(e => e.Id).Paginar(queryParams.Pagina, queryParams.Limite);
+            return await query.Paginar(queryParams.Pagina, queryParams.Limite);
         }
 
         public Task<BuscaParametroEnvio> BuscarPorIdComRelacionamentos(int id)
@@ -133,8 +133,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     .Select(r => new BuscaParametroEnvio
                     {
                         Id = r.Id,
-                        Instituicao = r.Instituicao,
-                        Modalidade = r.Modalidade,
                         EmpresaParceira = r.EmpresaParceira,
                         Status = r.Status,
                         DiaEnvio = r.DiaEnvio,
@@ -142,6 +140,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         InadimplenciaFinal = r.InadimplenciaFinal,
                         ValidadeInicial = r.ValidadeInicial,
                         ValidadeFinal = r.ValidadeFinal,
+                        Instituicoes = r.ParametroEnvioInstituicao.Select(x => x.Instituicao),
+                        Modalidades = r.ParametroEnvioModalidade.Select(x => x.Modalidade),
                         Cursos = r.ParametroEnvioCurso.Select(x => x.Curso),
                         TitulosAvulsos = r.ParametroEnvioTituloAvulso.Select(x => x.TituloAvulso),
                         SituacoesAlunos = r.ParametroEnvioSituacaoAluno.Select(x => x.SituacaoAluno),
@@ -153,12 +153,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public override Task<ParametroEnvioModel> BuscarPorId(int id)
         {
-            return DbSet.Include(r => r.ParametroEnvioCurso)
+            return Db.ParametroEnvio.Include(r => r.ParametroEnvioCurso)
                          .Include(r => r.ParametroEnvioSituacaoAluno)
                          .Include(r => r.ParametroEnvioTipoTitulo)
                          .Include(r => r.ParametroEnvioTituloAvulso)
-                         .Include(r => r.Modalidade)
-                         .Include(r => r.Instituicao)
+                         .Include(r => r.ParametroEnvioInstituicao)
+                         .Include(r => r.ParametroEnvioModalidade)
                          .Include(r => r.EmpresaParceira)
                          .Where(r => r.Id.Equals(id))
                          .AsNoTracking()
@@ -167,6 +167,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public override Task Alterar(ParametroEnvioModel model)
         {
+            Db.ParametroEnvioInstituicao.RemoveRange(
+                Db.ParametroEnvioInstituicao.Where(
+                    c => !model.ParametroEnvioInstituicao.Select(x => x.Id).Contains(c.Id)));
+            Db.ParametroEnvioModalidade.RemoveRange(
+                Db.ParametroEnvioModalidade.Where(
+                    c => !model.ParametroEnvioModalidade.Select(x => x.Id).Contains(c.Id)));
             Db.ParametroEnvioCurso.RemoveRange(
                 Db.ParametroEnvioCurso.Where(
                     c => !model.ParametroEnvioCurso.Select(x => x.Id).Contains(c.Id)));
@@ -181,6 +187,26 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     c => !model.ParametroEnvioTituloAvulso.Select(x => x.Id).Contains(c.Id)));
                     
             return base.Alterar(model);
+        }
+
+        public override async Task Deletar(int id)
+        {
+            var modelNoBanco = await BuscarPorId(id);
+
+            if(modelNoBanco == null)
+            {
+                return;
+            }
+
+            Db.ParametroEnvioInstituicao.RemoveRange(modelNoBanco.ParametroEnvioInstituicao);
+            Db.ParametroEnvioModalidade.RemoveRange(modelNoBanco.ParametroEnvioModalidade);
+            Db.ParametroEnvioCurso.RemoveRange(modelNoBanco.ParametroEnvioCurso);
+            Db.ParametroEnvioTipoTitulo.RemoveRange(modelNoBanco.ParametroEnvioTipoTitulo);
+            Db.ParametroEnvioSituacaoAluno.RemoveRange(modelNoBanco.ParametroEnvioSituacaoAluno);
+            Db.ParametroEnvioTituloAvulso.RemoveRange(modelNoBanco.ParametroEnvioTituloAvulso);
+
+            Db.Entry(modelNoBanco).State = EntityState.Deleted;
+            await Db.SaveChangesAsync();
         }
     }
 }

@@ -77,7 +77,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var modelBanco = await _repositorio.BuscarPorId(viewModel.Id);
 
-            if (modelBanco == null) EntidadeNaoEncontrada("Regra de negociação não cadastrada.");
+            if (modelBanco == null) 
+            {
+                EntidadeNaoEncontrada("Regra de negociação não cadastrada.");
+                return null;
+            }
 
             var model = _map.Map<RegraNegociacaoModel>(viewModel);
 
