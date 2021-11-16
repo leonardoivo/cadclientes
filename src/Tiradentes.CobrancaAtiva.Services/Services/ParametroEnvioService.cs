@@ -80,6 +80,5 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             await _repositorio.Deletar(id);
         }
-
     }
 }

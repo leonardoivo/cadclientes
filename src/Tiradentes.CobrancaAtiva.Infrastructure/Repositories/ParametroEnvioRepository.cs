@@ -121,7 +121,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
                 
-            query = query.Ordenar(queryParams.OrdenarPor, "NomeFantasia", queryParams.SentidoOrdenacao == "desc");
+            query = query.Ordenar(queryParams.OrdenarPor, "Id", queryParams.SentidoOrdenacao == "desc");
 
             return await query.Paginar(queryParams.Pagina, queryParams.Limite);
         }
