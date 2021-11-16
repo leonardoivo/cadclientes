@@ -16,6 +16,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.EmpresaParceiraId)
               .HasColumnName("COD_EMPRESA");
 
+            builder.Property(ep => ep.InstituicaoId)
+              .HasColumnName("COD_INSTITUICAO");
+
+            builder.Property(ep => ep.ModalidadeId)
+              .HasColumnName("COD_MODALIDADE");
+
             builder.Property(ep => ep.DiaEnvio)
               .HasColumnName("DIA_ENVIO");
 
@@ -42,6 +48,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasOne(im => im.EmpresaParceira)
                 .WithMany(m => m.ParametroEnvios)
                 .HasForeignKey(im => im.EmpresaParceiraId);
+
+            builder.HasOne(im => im.Instituicao)
+                .WithMany(m => m.ParametroEnvios)
+                .HasForeignKey(im => im.InstituicaoId);
+
+            builder.HasOne(im => im.Modalidade)
+                .WithMany(m => m.ParametroEnvios)
+                .HasForeignKey(im => im.ModalidadeId);
 
             builder.HasMany(c => c.ParametroEnvioCurso)
                .WithOne(e => e.ParametroEnvio);

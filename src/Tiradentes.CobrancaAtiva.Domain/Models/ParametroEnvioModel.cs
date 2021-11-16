@@ -10,6 +10,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         { }
 
         public int EmpresaParceiraId { get; private set; }
+        public int InstituicaoId { get; private set; }
+        public int ModalidadeId { get; private set; }
         public int DiaEnvio { get; private set; }
         public bool Status { get; set; }
         public DateTime InadimplenciaInicial { get; private set; }
@@ -18,36 +20,13 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public DateTime ValidadeFinal { get; private set; }
 
         public EmpresaParceiraModel EmpresaParceira { get; set; }
+        public InstituicaoModel Instituicao { get; set; }
+        public ModalidadeModel Modalidade { get; set; }
 
-
-        public ICollection<ParametroEnvioInstituicaoModel> ParametroEnvioInstituicao { get; private set; }
-        public ICollection<ParametroEnvioModalidadeModel> ParametroEnvioModalidade { get; private set; }
         public ICollection<ParametroEnvioCursoModel> ParametroEnvioCurso { get; private set; }
         public ICollection<ParametroEnvioSituacaoAlunoModel> ParametroEnvioSituacaoAluno { get; private set; }
         public ICollection<ParametroEnvioTipoTituloModel> ParametroEnvioTipoTitulo { get; private set; }
         public ICollection<ParametroEnvioTituloAvulsoModel> ParametroEnvioTituloAvulso { get; private set; }
-        
-        public void SetParametroEnvioInstituicao(ICollection<ParametroEnvioInstituicaoModel> datas ) 
-        {
-            ParametroEnvioInstituicao = ParametroEnvioInstituicao
-                                    .Select(r => new ParametroEnvioInstituicaoModel {
-                                        Id = datas.FirstOrDefault(c => c.InstituicaoId.Equals(r.InstituicaoId))?.Id ?? 0,
-                                        ParametroEnvioId = Id,
-                                        InstituicaoId = r.InstituicaoId
-                                    })
-                                    .ToList();
-        }
-
-        public void SetParametroEnvioModalidade(ICollection<ParametroEnvioModalidadeModel> datas ) 
-        {
-            ParametroEnvioModalidade = ParametroEnvioModalidade
-                                    .Select(r => new ParametroEnvioModalidadeModel {
-                                        Id = datas.FirstOrDefault(c => c.ModalidadeId.Equals(r.ModalidadeId))?.Id ?? 0,
-                                        ParametroEnvioId = Id,
-                                        ModalidadeId = r.ModalidadeId
-                                    })
-                                    .ToList();
-        }
         
         public void SetParametroEnvioCurso(ICollection<ParametroEnvioCursoModel> datas ) 
         {

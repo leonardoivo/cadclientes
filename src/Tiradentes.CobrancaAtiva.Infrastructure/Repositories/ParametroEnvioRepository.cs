@@ -21,14 +21,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Select(r  => new BuscaParametroEnvio {
                                 Id = r.Id,
                                 EmpresaParceira = r.EmpresaParceira,
+                                Instituicao = r.Instituicao,
+                                Modalidade = r.Modalidade,
                                 Status = r.Status,
                                 DiaEnvio = r.DiaEnvio,
                                 InadimplenciaInicial = r.InadimplenciaInicial,
                                 InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
                                 ValidadeFinal = r.ValidadeFinal,
-                                Instituicoes = r.ParametroEnvioInstituicao.Select(x => x.Instituicao),
-                                Modalidades = r.ParametroEnvioModalidade.Select(x => x.Modalidade),
                                 Cursos = r.ParametroEnvioCurso.Select(x => x.Curso),
                                 TitulosAvulsos = r.ParametroEnvioTituloAvulso.Select(x => x.TituloAvulso),
                                 SituacoesAlunos = r.ParametroEnvioSituacaoAluno.Select(x => x.SituacaoAluno),
@@ -61,14 +61,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Select(r  => new BuscaParametroEnvio {
                                 Id = r.Id,
                                 EmpresaParceira = r.EmpresaParceira,
+                                Instituicao = r.Instituicao,
+                                Modalidade = r.Modalidade,
                                 Status = r.Status,
                                 DiaEnvio = r.DiaEnvio,
                                 InadimplenciaInicial = r.InadimplenciaInicial,
                                 InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
                                 ValidadeFinal = r.ValidadeFinal,
-                                Instituicoes = r.ParametroEnvioInstituicao.Select(x => x.Instituicao),
-                                Modalidades = r.ParametroEnvioModalidade.Select(x => x.Modalidade),
                                 Cursos = r.ParametroEnvioCurso.Select(x => x.Curso),
                                 TitulosAvulsos = r.ParametroEnvioTituloAvulso.Select(x => x.TituloAvulso),
                                 SituacoesAlunos = r.ParametroEnvioSituacaoAluno.Select(x => x.SituacaoAluno),
@@ -78,6 +78,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             if (queryParams.EmpresaParceiraId != 0)
                 query = query.Where(e => e.EmpresaParceira.Id == queryParams.EmpresaParceiraId);
+
+            if (queryParams.InstituicaoId != 0)
+                query = query.Where(e => e.Instituicao.Id == queryParams.InstituicaoId);
 
             if (queryParams.DiaEnvio.HasValue && queryParams.DiaEnvio != 0)
                 query = query.Where(e => e.DiaEnvio == queryParams.DiaEnvio);  
@@ -100,11 +103,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month 
                     && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);   
 
-            if (queryParams.Instituicoes.Length > 0)
-                query = query.Where(e => e.Instituicoes.Where(c => queryParams.Instituicoes.Contains(c.Id)).Any());
-
             if (queryParams.Modalidades.Length > 0)
-                query = query.Where(e => e.Modalidades.Where(c => queryParams.Modalidades.Contains(c.Id)).Any());
+                query = query.Where(e => queryParams.Modalidades.Contains(e.Modalidade.Id));
 
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
@@ -134,14 +134,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     {
                         Id = r.Id,
                         EmpresaParceira = r.EmpresaParceira,
+                        Instituicao = r.Instituicao,
+                        Modalidade = r.Modalidade,
                         Status = r.Status,
                         DiaEnvio = r.DiaEnvio,
                         InadimplenciaInicial = r.InadimplenciaInicial,
                         InadimplenciaFinal = r.InadimplenciaFinal,
                         ValidadeInicial = r.ValidadeInicial,
                         ValidadeFinal = r.ValidadeFinal,
-                        Instituicoes = r.ParametroEnvioInstituicao.Select(x => x.Instituicao),
-                        Modalidades = r.ParametroEnvioModalidade.Select(x => x.Modalidade),
                         Cursos = r.ParametroEnvioCurso.Select(x => x.Curso),
                         TitulosAvulsos = r.ParametroEnvioTituloAvulso.Select(x => x.TituloAvulso),
                         SituacoesAlunos = r.ParametroEnvioSituacaoAluno.Select(x => x.SituacaoAluno),
@@ -157,9 +157,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                          .Include(r => r.ParametroEnvioSituacaoAluno)
                          .Include(r => r.ParametroEnvioTipoTitulo)
                          .Include(r => r.ParametroEnvioTituloAvulso)
-                         .Include(r => r.ParametroEnvioInstituicao)
-                         .Include(r => r.ParametroEnvioModalidade)
                          .Include(r => r.EmpresaParceira)
+                         .Include(r => r.Instituicao)
+                         .Include(r => r.Modalidade)
                          .Where(r => r.Id.Equals(id))
                          .AsNoTracking()
                          .FirstOrDefaultAsync();
@@ -167,12 +167,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public override Task Alterar(ParametroEnvioModel model)
         {
-            Db.ParametroEnvioInstituicao.RemoveRange(
-                Db.ParametroEnvioInstituicao.Where(
-                    c => !model.ParametroEnvioInstituicao.Select(x => x.Id).Contains(c.Id)));
-            Db.ParametroEnvioModalidade.RemoveRange(
-                Db.ParametroEnvioModalidade.Where(
-                    c => !model.ParametroEnvioModalidade.Select(x => x.Id).Contains(c.Id)));
             Db.ParametroEnvioCurso.RemoveRange(
                 Db.ParametroEnvioCurso.Where(
                     c => !model.ParametroEnvioCurso.Select(x => x.Id).Contains(c.Id)));
@@ -198,8 +192,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 return;
             }
 
-            Db.ParametroEnvioInstituicao.RemoveRange(modelNoBanco.ParametroEnvioInstituicao);
-            Db.ParametroEnvioModalidade.RemoveRange(modelNoBanco.ParametroEnvioModalidade);
             Db.ParametroEnvioCurso.RemoveRange(modelNoBanco.ParametroEnvioCurso);
             Db.ParametroEnvioTipoTitulo.RemoveRange(modelNoBanco.ParametroEnvioTipoTitulo);
             Db.ParametroEnvioSituacaoAluno.RemoveRange(modelNoBanco.ParametroEnvioSituacaoAluno);
