@@ -54,8 +54,12 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 }
             };
 
-            _context.EmpresaParceira.Add(_mapper.Map<EmpresaParceiraModel>(_model));
-            _context.SaveChanges();
+            if(_context.EmpresaParceira.CountAsync().Result == 0)
+            {
+                _context.EmpresaParceira.Add(_mapper.Map<EmpresaParceiraModel>(_model));
+                _context.SaveChanges();
+            }
+            
             _context.ChangeTracker.Clear();
         }
 
@@ -68,11 +72,11 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         [Test]
         [TestCase(TestName = "Teste Atualizar Empresa Parceira",
                    Description = "Teste Atualizar Empresa Parceira no Banco")]
-        public async Task TesteAtualizarEmpresaParceira()
+        public void TesteAtualizarEmpresaParceira()
         {
             _model.NomeFantasia = "Mudança";
 
-            await _service.Atualizar(_model);
+            Assert.IsTrue(_service.Atualizar(_model).IsCompleted);
         }
 
         [Test]
