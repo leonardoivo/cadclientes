@@ -31,6 +31,9 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
             IEmpresaParceiraService service = new EmpresaParceiraService(repository, mapper);
             _controller = new EmpresaParceiraController(service);
+
+            _context.EmpresaParceira.Remove(_context.EmpresaParceira.FirstAsync().Result);
+            _context.SaveChanges();
         }
 
         [TearDown]
