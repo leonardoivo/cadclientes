@@ -14,6 +14,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public int ModalidadeId { get; private set; }
         public int DiaEnvio { get; private set; }
         public bool Status { get; set; }
+        public string MotivoInativacao { get; set; }
         public DateTime InadimplenciaInicial { get; private set; }
         public DateTime InadimplenciaFinal { get; private set; }
         public DateTime ValidadeInicial { get; private set; }
