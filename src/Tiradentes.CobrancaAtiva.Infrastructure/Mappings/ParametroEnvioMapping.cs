@@ -25,6 +25,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.DiaEnvio)
               .HasColumnName("DIA_ENVIO");
 
+            builder.Property(ep => ep.MotivoInativacao)
+              .HasColumnName("MOTIVO_INATIVACAO");
+
             builder.Property(ep => ep.Status)
               .HasColumnName("STATUS")
               .HasColumnType("NUMBER(1)");
