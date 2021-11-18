@@ -12,8 +12,8 @@ sonarqube-check:
     paths:
       - .sonar/cache
   script: 
-      - "apt-get clean"
-      - "apt-get update --allow-unauthenticated"
+      # - "apt-get clean"
+      # - "apt-get update"
       - "apt-get install --yes openjdk-11-jre"
       - "dotnet tool install --global dotnet-sonarscanner"
       - "export PATH=\"$PATH:$HOME/.dotnet/tools\""
