@@ -31,6 +31,13 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return await _service.BuscarPorId(id);
         }
 
+        [HttpGet("enviar-parametro/{id:int}")]
+        public async Task<ActionResult<BuscaParametroEnvioViewModel>> EnviarParametroGeracaoArquivo(int id)
+        {
+            await _service.EnviarParametroParaConsumer(id);
+            return NoContent();
+        }
+
         [HttpPost]
         public async Task<ActionResult<ParametroEnvioViewModel>> Criar(
             [FromBody] CriarParametroEnvioViewModel viewModel)

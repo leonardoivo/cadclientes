@@ -28,6 +28,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<ITituloAvulsoRepository, TituloAvulsoRepository>();
             services.AddScoped<IParametroEnvioRepository, ParametroEnvioRepository>();
             services.AddScoped<IBancoRepository, BancoRepository>();
+            services.AddScoped<IAlunosInadimplentesRepository, AlunosInadimplentesRepository>();
             #endregion
 
             #region Services
@@ -47,7 +48,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IParametroEnvioService, ParametroEnvioService>();
             #endregion
 
-
+            services.AddScoped<MongoContext>();
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
                 options.UseOracle(configuration.GetConnectionString("Empresas")));
 

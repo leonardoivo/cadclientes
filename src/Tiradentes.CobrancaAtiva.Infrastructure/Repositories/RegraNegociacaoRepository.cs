@@ -220,16 +220,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             Db.RegraNegociacaoCurso.RemoveRange(
                 Db.RegraNegociacaoCurso.Where(
-                    c => !model.RegraNegociacaoCurso.Select(x => x.Id).Contains(c.Id)));
+                    c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoCurso.Select(x => x.Id).Contains(c.Id)));
             Db.RegraNegociacaoTituloAvulso.RemoveRange(
                 Db.RegraNegociacaoTituloAvulso.Where(
-                    c => !model.RegraNegociacaoTituloAvulso.Select(x => x.Id).Contains(c.Id)));
+                    c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoTituloAvulso.Select(x => x.Id).Contains(c.Id)));
             Db.RegraNegociacaoSituacaoAluno.RemoveRange(
                 Db.RegraNegociacaoSituacaoAluno.Where(
-                    c => !model.RegraNegociacaoSituacaoAluno.Select(x => x.Id).Contains(c.Id)));
+                    c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoSituacaoAluno.Select(x => x.Id).Contains(c.Id)));
             Db.RegraNegociacaoTipoTitulo.RemoveRange(
                 Db.RegraNegociacaoTipoTitulo.Where(
-                    c => !model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)));
+                    c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)));
                     
             return base.Alterar(model);
         }
