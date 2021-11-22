@@ -46,7 +46,7 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.HonorarioEmpresaParce
              RuleFor(e => e.QuantidadeParcelasBoleto)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 
-             RuleFor(e => e.MesAnoInicial)
+             RuleFor(e => e.InadimplenciaInicial)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
         }
     }

@@ -28,8 +28,8 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao
         public int QuantidadeParcelasBoleto { get; set; }
 
         public bool Status { get; set; }
-        public DateTime MesAnoInicial { get; set; }
-        public DateTime MesAnoFinal { get; set; }
+        public DateTime InadimplenciaInicial { get; set; }
+        public DateTime InadimplenciaFinal { get; set; }
         public DateTime ValidadeInicial { get; set; }
         public DateTime ValidadeFinal { get; set; }
 

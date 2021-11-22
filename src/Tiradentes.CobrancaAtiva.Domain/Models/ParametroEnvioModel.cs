@@ -9,25 +9,25 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public ParametroEnvioModel()
         { }
 
+        public int EmpresaParceiraId { get; private set; }
         public int InstituicaoId { get; private set; }
         public int ModalidadeId { get; private set; }
-        public int EmpresaParceiraId { get; private set; }
         public int DiaEnvio { get; private set; }
         public bool Status { get; set; }
+        public string MotivoInativacao { get; set; }
         public DateTime InadimplenciaInicial { get; private set; }
         public DateTime InadimplenciaFinal { get; private set; }
         public DateTime ValidadeInicial { get; private set; }
         public DateTime ValidadeFinal { get; private set; }
 
+        public EmpresaParceiraModel EmpresaParceira { get; set; }
         public InstituicaoModel Instituicao { get; set; }
         public ModalidadeModel Modalidade { get; set; }
-        public EmpresaParceiraModel EmpresaParceira { get; set; }
 
         public ICollection<ParametroEnvioCursoModel> ParametroEnvioCurso { get; private set; }
         public ICollection<ParametroEnvioSituacaoAlunoModel> ParametroEnvioSituacaoAluno { get; private set; }
         public ICollection<ParametroEnvioTipoTituloModel> ParametroEnvioTipoTitulo { get; private set; }
         public ICollection<ParametroEnvioTituloAvulsoModel> ParametroEnvioTituloAvulso { get; private set; }
-        
         
         public void SetParametroEnvioCurso(ICollection<ParametroEnvioCursoModel> datas ) 
         {

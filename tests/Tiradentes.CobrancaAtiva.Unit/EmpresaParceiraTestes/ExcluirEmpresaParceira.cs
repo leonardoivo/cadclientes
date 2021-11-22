@@ -38,14 +38,14 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 
             _model = new EmpresaParceiraViewModel
             {
-                Id = 1,
+                Id = 10,
                 NomeFantasia = "Nome Fantasia",
                 RazaoSocial = "Razao Social",
-                CNPJ = "97355899000105",
+                CNPJ = "97355899000109",
                 NumeroContrato = "NumeroContrato",
                 Contatos = new System.Collections.Generic.List<ContatoEmpresaParceiraViewModel> {
                     new ContatoEmpresaParceiraViewModel {
-                        Id = 1,
+                        Id = 10,
                         Contato = "Teste",
                         Email = "teste@teste.com",
                         Telefone = "4444444444"
@@ -53,8 +53,11 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 }
             };
 
-            _context.EmpresaParceira.Add(_mapper.Map<EmpresaParceiraModel>(_model));
-            _context.SaveChanges();
+            if(_context.EmpresaParceira.CountAsync().Result == 0)
+            {
+                _context.EmpresaParceira.Add(_mapper.Map<EmpresaParceiraModel>(_model));
+                _context.SaveChanges();
+            }
             _context.ChangeTracker.Clear();
         }
 

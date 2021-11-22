@@ -7,10 +7,11 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
     public class BuscaParametroEnvio 
     {
         public int Id { get; set; }
+        public EmpresaParceiraModel EmpresaParceira { get; set; }
         public InstituicaoModel Instituicao { get; set; }
         public ModalidadeModel Modalidade { get; set; }
-        public EmpresaParceiraModel EmpresaParceira { get; set; }
         public bool Status { get; set; }
+        public string MotivoInativacao { get; set; }
         public int DiaEnvio { get; set; }
         public DateTime InadimplenciaInicial { get; set; }
         public DateTime InadimplenciaFinal { get; set; }

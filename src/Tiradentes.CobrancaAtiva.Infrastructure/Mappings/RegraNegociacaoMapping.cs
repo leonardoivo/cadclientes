@@ -58,12 +58,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
               .HasColumnName("STATUS")
               .HasColumnType("NUMBER(1)");
 
-            builder.Property(ep => ep.MesAnoInicial)
-              .HasColumnName("MESANO_INICIAL")
+            builder.Property(ep => ep.InadimplenciaInicial)
+              .HasColumnName("INADIMPLENCIA_INICIAL")
               .HasColumnType("DATE");
 
-            builder.Property(ep => ep.MesAnoFinal)
-              .HasColumnName("MESANO_FINAL")
+            builder.Property(ep => ep.InadimplenciaFinal)
+              .HasColumnName("INADIMPLENCIA_FINAL")
               .HasColumnType("DATE");
 
             builder.Property(ep => ep.ValidadeInicial)

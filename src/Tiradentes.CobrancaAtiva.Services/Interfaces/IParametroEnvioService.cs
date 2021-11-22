@@ -14,5 +14,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task<BuscaParametroEnvioViewModel> BuscarPorId(int id);
         Task<ParametroEnvioViewModel> Criar(CriarParametroEnvioViewModel viewModel);
         Task<ParametroEnvioViewModel> Alterar(AlterarParametroEnvioViewModel viewModel);
+        Task Deletar(int id);
     }
 }

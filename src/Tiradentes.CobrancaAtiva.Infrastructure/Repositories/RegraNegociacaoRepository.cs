@@ -71,8 +71,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
                                 PercentEntradaBoleto = r.PercentEntradaBoleto,
                                 Status = r.Status,
-                                MesAnoInicial = r.MesAnoInicial,
-                                MesAnoFinal = r.MesAnoFinal,
+                                InadimplenciaInicial = r.InadimplenciaInicial,
+                                InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
                                 ValidadeFinal = r.ValidadeFinal,
                                 Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
@@ -84,7 +84,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             query = query.Where(e => e.Status == true).Where(e => e.Modalidade.Id == model.ModalidadeId);
 
-            query = query.Where(e => e.MesAnoInicial <= model.MesAnoFinal && model.MesAnoInicial <= e.MesAnoFinal); 
+            query = query.Where(e => e.InadimplenciaInicial <= model.InadimplenciaFinal && model.InadimplenciaInicial <= e.InadimplenciaFinal); 
 
             var regrasCadastradas = query.ToList();
 
@@ -120,8 +120,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
                                 PercentEntradaBoleto = r.PercentEntradaBoleto,
                                 Status = r.Status,
-                                MesAnoInicial = r.MesAnoInicial,
-                                MesAnoFinal = r.MesAnoFinal,
+                                InadimplenciaInicial = r.InadimplenciaInicial,
+                                InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
                                 ValidadeFinal = r.ValidadeFinal,
                                 Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
@@ -147,11 +147,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     e.ValidadeFinal.Month == queryParams.ValidadeFinal.Value.Month &&
                     e.ValidadeFinal.Year == queryParams.ValidadeFinal.Value.Year);
 
-            if (queryParams.MesAnoInicial.HasValue)
-                query = query.Where(e => e.MesAnoInicial.Month == queryParams.MesAnoInicial.Value.Month && e.MesAnoInicial.Year == queryParams.MesAnoInicial.Value.Year);
+            if (queryParams.InadimplenciaInicial.HasValue)
+                query = query.Where(e => e.InadimplenciaInicial.Month == queryParams.InadimplenciaInicial.Value.Month && e.InadimplenciaInicial.Year == queryParams.InadimplenciaInicial.Value.Year);
 
-            if (queryParams.MesAnoFinal.HasValue)
-                query = query.Where(e => e.MesAnoFinal.Month == queryParams.MesAnoFinal.Value.Month && e.MesAnoFinal.Year == queryParams.MesAnoFinal.Value.Year);   
+            if (queryParams.InadimplenciaFinal.HasValue)
+                query = query.Where(e => e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);   
 
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
@@ -192,8 +192,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
                         PercentEntradaBoleto = r.PercentEntradaBoleto,
                         Status = r.Status,
-                        MesAnoInicial = r.MesAnoInicial,
-                        MesAnoFinal = r.MesAnoFinal,
+                        InadimplenciaInicial = r.InadimplenciaInicial,
+                        InadimplenciaFinal = r.InadimplenciaFinal,
                         ValidadeInicial = r.ValidadeInicial,
                         ValidadeFinal = r.ValidadeFinal,
                         Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),

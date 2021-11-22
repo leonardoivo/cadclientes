@@ -41,6 +41,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<BuscaParametroEnvioViewModel>(list);
         }
 
+        public async Task EnviarParametroParaConsumer(int id)
+        {
+            var list = await _repositorio.BuscarPorIdComRelacionamentos(id);
+        }
+
         public async Task<ParametroEnvioViewModel> Criar(CriarParametroEnvioViewModel viewModel)
         {
             //Validate(new CriarRegraNegociacaoValidation(), viewModel);
@@ -56,7 +61,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var modelBanco = await _repositorio.BuscarPorId(viewModel.Id);
 
-            if (modelBanco == null) EntidadeNaoEncontrada("Parametro envio não cadastrado.");
+            if (modelBanco == null)
+            {
+                EntidadeNaoEncontrada("Parametro envio não cadastrado.");
+                return null;
+            }
 
             var model = _map.Map<ParametroEnvioModel>(viewModel);
 
@@ -68,6 +77,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _repositorio.Alterar(model);
 
             return _map.Map<ParametroEnvioViewModel>(model);
+        }
+
+        public async Task Deletar(int id)
+        {
+            await _repositorio.Deletar(id);
         }
     }
 }
