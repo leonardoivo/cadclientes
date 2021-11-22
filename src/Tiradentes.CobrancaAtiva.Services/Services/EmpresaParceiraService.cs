@@ -20,11 +20,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
     public class EmpresaParceiraService : BaseService, IEmpresaParceiraService
     {
         protected readonly IEmpresaParceiraRepository _repositorio;
+        protected readonly IAlunosInadimplentesRepository _repositorioAlunosInadimplentes;
         protected readonly IMapper _map;
 
-        public EmpresaParceiraService(IEmpresaParceiraRepository repositorio, IMapper map)
+        public EmpresaParceiraService(IEmpresaParceiraRepository repositorio, 
+            IAlunosInadimplentesRepository repositorioAlunosInadimplentes,
+            IMapper map)
         {
             _repositorio = repositorio;
+            _repositorioAlunosInadimplentes = repositorioAlunosInadimplentes;
             _map = map;
         }
 
@@ -162,35 +166,69 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var arquivosGerados = new List<string>();
 
-            var limiteLinhas = 2;
+            var limiteLinhas = 200;
 
             var filenameTemplate = "{0}_{1}_{2}_{3}_{4}_PARTE{5}de{6}.csv";
-            var cabecalhoCsv = "\"CNPJ EMPRESA COBRANÇA\",\"MODALIDADE DE ENSINO\",\"DESCRIÇÃO DA MODALIDADE DE ENSINO\",\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\",\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\",\"IDENTIFICADOR CURSO\",\"DESCRIÇÃO CURSO\",\"TIPO TITULO\",\"DESCRIÇÃO TIPO TÍTULO\",\"TIPO TITULO AVULSO\",\"DESCRICAO INADIMPLENCIA\",\"SITUACAO ALUNO\",\"CPF ALUNO\",\"MATRICULA\",\"PERIODO\",\"IDENTIFICADOR DO ALUNO\",\"IDENTIFICADOR DA PESSOA\",\"NOME\",\"ENDERECO\",\"BAIRRO\",\"CIDADE\",\"CEP\",\"UF\",\"DDD RES\",\"TELEFONE RES\",\"DDD CELULAR\",\"TELEFONE CELULAR\",\"EMAIL DO ALUNO\",\"NUMERO CONTRATO\",\"CONDIÇÃO DE NEGOCIAÇÃO\",\"DESCONTO INCONDICIONAL\",\"VALIDADE DA NEGOCIAÇÃO\",\"NUMERO DA PARCELA\",\"DATA VENCIMENTO\",\"VALOR PARCELA\",OBSERVACAO\",\"CODIGO DA CAMPUS IES\",\"NOME DA CAMPUS IES\",\"FILIACAO - MAE\",\"FILIACAO - PAINUMERO DO RG\"";
+            var cabecalhoCsv = "\"CNPJ EMPRESA COBRANÇA\",\"MODALIDADE DE ENSINO\",\"DESCRIÇÃO DA MODALIDADE DE ENSINO\",\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\",\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\",\"IDENTIFICADOR CURSO\",\"DESCRIÇÃO CURSO\",\"TIPO TITULO\",\"DESCRIÇÃO TIPO TÍTULO\",\"TIPO TITULO AVULSO\",\"DESCRICAO INADIMPLENCIA\",\"SITUACAO ALUNO\",\"CPF ALUNO\",\"MATRICULA\",\"PERIODO\",\"IDENTIFICADOR DO ALUNO\",\"IDENTIFICADOR DA PESSOA\",\"NOME\",\"ENDERECO\",\"BAIRRO\",\"CIDADE\",\"CEP\",\"UF\",\"DDD RES\",\"TELEFONE RES\",\"DDD CELULAR\",\"TELEFONE CELULAR\",\"EMAIL DO ALUNO\",\"NUMERO CONTRATO\",\"CONDIÇÃO DE NEGOCIAÇÃO\",\"DESCONTO INCONDICIONAL\",\"VALIDADE DA NEGOCIAÇÃO\",\"NUMERO DA PARCELA\",\"DATA VENCIMENTO\",\"VALOR PARCELA\",OBSERVACAO\",\"CODIGO DA CAMPUS IES\",\"NOME DA CAMPUS IES\",\"FILIACAO - MAE\",\"FILIACAO - PAI\"";
 
-            var dados = new string[10] {
-                "1",
-                "2",
-                "3",
-                "4",
-                "5",
-                "6",
-                "7",
-                "8",
-                "9",
-                "10",
-            };
+            var dataTemplate = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39}";
 
-            var totalLinhas = dados.Length;
+            var dados = await _repositorioAlunosInadimplentes.GetAlunosInadimplentes();
+
+            var totalLinhas = dados.Count;
             var quantidadeArquivos = (int) (totalLinhas / limiteLinhas);
 
             for(var indexArquivoAtual = 1; indexArquivoAtual <= quantidadeArquivos; indexArquivoAtual++)
             {
-                var filename = string.Format(filenameTemplate, "1", "1", "04-11-2021", "01-11-2021", "04-11-2021", indexArquivoAtual.ToString(), quantidadeArquivos.ToString());
+                var filename = string.Format(filenameTemplate, "1", "1", "01-10-2021", "01-12-2021", "04-11-2021", indexArquivoAtual.ToString(), quantidadeArquivos.ToString());
                 using StreamWriter file = new(filename);
                 await file.WriteLineAsync(cabecalhoCsv);
                 for(var indexDadosInicial = (indexArquivoAtual - 1) * limiteLinhas; indexDadosInicial <= (indexArquivoAtual * limiteLinhas) - 1; indexDadosInicial++)
                 {
-                    await file.WriteLineAsync(dados[indexDadosInicial]);
+                    var alunoInadimplente = dados[indexDadosInicial];
+                    var dataToWrite = string.Format(dataTemplate,
+                            empresaParceira.CNPJ,
+                            alunoInadimplente.CodModalidadeEnsino,
+                            alunoInadimplente.DescricaoModalidadeEnsino,
+                            "",
+                            alunoInadimplente.DescircaoCampus,
+                            alunoInadimplente.CodCurso,
+                            alunoInadimplente.NomeCurso,
+                            alunoInadimplente.IdtTipoTitulo,
+                            "",
+                            "",
+                            alunoInadimplente.DescricaoTipoInadimplencia,
+                            alunoInadimplente.StatusAluno,
+                            alunoInadimplente.CpfAluno,
+                            alunoInadimplente.MatriculaAluno,
+                            alunoInadimplente.Periodo,
+                            alunoInadimplente.IdtAluno,
+                            alunoInadimplente.IdtAluno,
+                            alunoInadimplente.Nome,
+                            alunoInadimplente.Endereco,
+                            alunoInadimplente.Bairro,
+                            alunoInadimplente.Cidade,
+                            alunoInadimplente.Cep,
+                            alunoInadimplente.Uf,
+                            alunoInadimplente.DddResidencial,
+                            alunoInadimplente.TelefoneResidencial,
+                            alunoInadimplente.DddCelular,
+                            alunoInadimplente.TelefoneCelular,
+                            alunoInadimplente.Email,
+                            alunoInadimplente.ChaveInadimplencia,
+                            "",
+                            "",
+                            "",
+                            alunoInadimplente.NumeroParcela,
+                            alunoInadimplente.DataVencimento.ToShortDateString(),
+                            alunoInadimplente.ValorPagamento,
+                            alunoInadimplente.Observacao,
+                            alunoInadimplente.IdtCampus,
+                            alunoInadimplente.DescircaoCampus,
+                            alunoInadimplente.Mae,
+                            alunoInadimplente.Pai
+                        );
+                    await file.WriteLineAsync(dataToWrite);
                 }
                 file.Close();
                 arquivosGerados.Add(filename);

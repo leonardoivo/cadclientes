@@ -173,16 +173,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             Db.ParametroEnvioCurso.RemoveRange(
                 Db.ParametroEnvioCurso.Where(
-                    c => !model.ParametroEnvioCurso.Select(x => x.Id).Contains(c.Id)));
+                    c => c.ParametroEnvioId == model.Id && !model.ParametroEnvioCurso.Select(x => x.Id).Contains(c.Id)));
             Db.ParametroEnvioTipoTitulo.RemoveRange(
                 Db.ParametroEnvioTipoTitulo.Where(
-                    c => !model.ParametroEnvioTipoTitulo.Select(x => x.Id).Contains(c.Id)));
+                    c => c.ParametroEnvioId == model.Id && !model.ParametroEnvioTipoTitulo.Select(x => x.Id).Contains(c.Id)));
             Db.ParametroEnvioSituacaoAluno.RemoveRange(
                 Db.ParametroEnvioSituacaoAluno.Where(
-                    c => !model.ParametroEnvioSituacaoAluno.Select(x => x.Id).Contains(c.Id)));
+                    c => c.ParametroEnvioId == model.Id && !model.ParametroEnvioSituacaoAluno.Select(x => x.Id).Contains(c.Id)));
             Db.ParametroEnvioTituloAvulso.RemoveRange(
                 Db.ParametroEnvioTituloAvulso.Where(
-                    c => !model.ParametroEnvioTituloAvulso.Select(x => x.Id).Contains(c.Id)));
+                    c => c.ParametroEnvioId == model.Id && !model.ParametroEnvioTituloAvulso.Select(x => x.Id).Contains(c.Id)));
                     
             return base.Alterar(model);
         }

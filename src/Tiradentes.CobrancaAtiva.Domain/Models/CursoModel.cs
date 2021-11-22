@@ -9,6 +9,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public int ModalidadeId { get; set; }
         public int InstituicaoId { get; set; }
 
+        public int CodigoMagister { get; set; }
+
         public ModalidadeModel Modalidade { get; set; }
         public InstituicaoModel Instituicao { get; set; }
 
