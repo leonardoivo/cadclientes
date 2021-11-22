@@ -97,11 +97,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     e.ValidadeFinal.Year == queryParams.ValidadeFinal.Value.Year);
 
             if (queryParams.InadimplenciaInicial.HasValue)
-                query = query.Where(e => e.InadimplenciaInicial.Month == queryParams.InadimplenciaInicial.Value.Month 
+                query = query.Where(e => e.InadimplenciaInicial.Day == queryParams.InadimplenciaInicial.Value.Day
+                    && e.InadimplenciaInicial.Month == queryParams.InadimplenciaInicial.Value.Month 
                     && e.InadimplenciaInicial.Year == queryParams.InadimplenciaInicial.Value.Year);
 
             if (queryParams.InadimplenciaFinal.HasValue)
-                query = query.Where(e => e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month 
+                query = query.Where(e => e.InadimplenciaFinal.Day == queryParams.InadimplenciaFinal.Value.Day
+                    && e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month 
                     && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);   
 
             if (queryParams.Modalidades.Length > 0)

@@ -41,6 +41,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<BuscaParametroEnvioViewModel>(list);
         }
 
+        public async Task EnviarParametroParaConsumer(int id)
+        {
+            var list = await _repositorio.BuscarPorIdComRelacionamentos(id);
+        }
+
         public async Task<ParametroEnvioViewModel> Criar(CriarParametroEnvioViewModel viewModel)
         {
             //Validate(new CriarRegraNegociacaoValidation(), viewModel);
