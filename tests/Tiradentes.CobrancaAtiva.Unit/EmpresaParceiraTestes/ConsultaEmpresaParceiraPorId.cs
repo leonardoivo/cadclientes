@@ -29,7 +29,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
             _context = new CobrancaAtivaDbContext(optionsContext);
             IEmpresaParceiraRepository repository = new EmpresaParceiraRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            IEmpresaParceiraService service = new EmpresaParceiraService(repository, mapper);
+            IEmpresaParceiraService service = new EmpresaParceiraService(repository, null, mapper);
             _controller = new EmpresaParceiraController(service);
         }
 

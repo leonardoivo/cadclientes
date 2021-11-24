@@ -1,12 +1,14 @@
 ﻿using AutoMapper;
-using System.Collections.Generic;
+using Microsoft.Extensions.Options;
+using RabbitMQ.Client;
+using System.Linq;
+using System.Text;
+using System.Text.Json;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.Configuration;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
-using Tiradentes.CobrancaAtiva.Application.Validations.HonorarioEmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
-using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
-using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
@@ -16,13 +18,26 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class ParametroEnvioService : BaseService, IParametroEnvioService
     {
+        private readonly ConnectionFactory _factory;
+        private readonly RabbitMQConfig _rabbitMQConfig;
         private readonly IParametroEnvioRepository _repositorio;
         protected readonly IMapper _map;
 
-        public ParametroEnvioService(IParametroEnvioRepository repositorio, IMapper map)
+        public ParametroEnvioService(IParametroEnvioRepository repositorio, 
+            IMapper map,
+            IOptions<RabbitMQConfig> rabbitMQConfig)
         { 
             _map = map;
             _repositorio = repositorio;
+            _rabbitMQConfig = rabbitMQConfig.Value;
+
+            _factory = new ConnectionFactory
+            {
+                HostName = _rabbitMQConfig.HostName,
+                VirtualHost = _rabbitMQConfig.VirtualHost,
+                UserName = _rabbitMQConfig.UserName,
+                Password = _rabbitMQConfig.Password
+            };
         }
 
         public async Task<ViewModelPaginada<BuscaParametroEnvioViewModel>> Buscar(ConsultaParametroEnvioQueryParam queryParam)
@@ -43,7 +58,42 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task EnviarParametroParaConsumer(int id)
         {
-            var list = await _repositorio.BuscarPorIdComRelacionamentos(id);
+            var parametroEnvio = await _repositorio.BuscarPorIdComRelacionamentos(id);
+
+            using (var connection = _factory.CreateConnection())
+            {
+                using (var channel = connection.CreateModel())
+                {
+                    channel.QueueDeclare(
+                        queue: "queue_test",
+                        durable: false,
+                        exclusive: false,
+                        autoDelete: false,
+                        arguments: null);
+
+                    var viewModels = new ParametroEnvioFilaViewModel();
+                    viewModels.Instituicao = parametroEnvio.Instituicao.Id;
+                    viewModels.Modalidade = parametroEnvio.Modalidade.CodigoMagister;
+                    viewModels.InadimplenciaInicial = parametroEnvio.InadimplenciaInicial;
+                    viewModels.InadimplenciaFinal = parametroEnvio.InadimplenciaFinal;
+                    viewModels.EmpresaParceira = parametroEnvio.EmpresaParceira.Id;
+                    viewModels.ValidadeInicial = parametroEnvio.ValidadeInicial;
+                    viewModels.ValidadeFinal = parametroEnvio.ValidadeFinal;
+                    viewModels.Cursos = parametroEnvio.Cursos.Select(x => x.CodigoMagister.ToString()).ToArray();
+                    viewModels.SituacoesAluno = parametroEnvio.SituacoesAlunos.Select(x => x.CodigoMagister.ToString()).ToArray();
+                    viewModels.TiposTitulos = parametroEnvio.TiposTitulos.Select(x => x.CodigoMagister.ToString()).ToArray();
+                    viewModels.TitulosAvulsos = parametroEnvio.TitulosAvulsos.Select(x => x.CodigoGT.ToString()).ToArray();
+
+                    var stringfiedMessage = JsonSerializer.Serialize(viewModels);
+                    var bytesMessage = Encoding.UTF8.GetBytes(stringfiedMessage);
+
+                    channel.BasicPublish(
+                        exchange: "",
+                        routingKey: "queue_test",
+                        basicProperties: null,
+                        body: bytesMessage);
+                }
+            }
         }
 
         public async Task<ParametroEnvioViewModel> Criar(CriarParametroEnvioViewModel viewModel)

@@ -16,6 +16,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.TipoTitulo)
              .HasColumnName("DESCRICAO_TITULO");
 
+            builder.Property(ep => ep.CodigoMagister)
+             .HasColumnName("COD_MAGISTER");
+
             builder.HasMany(c => c.RegraNegociacaoTipoTitulo)
                .WithOne(e => e.TipoTitulo);
 

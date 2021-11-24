@@ -4,6 +4,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tiradentes.CobrancaAtiva.Api.Configuration;
 using Tiradentes.CobrancaAtiva.Api.Workers;
+using Tiradentes.CobrancaAtiva.Application.Configuration;
 using Tiradentes.CobrancaAtiva.CrossCutting.IoC;
 
 namespace Tiradentes.CobrancaAtiva.Api
@@ -28,6 +29,7 @@ namespace Tiradentes.CobrancaAtiva.Api
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            services.Configure<RabbitMQConfig>(_configuration.GetSection("RabbitMQ"));
             services.AddDependencies(_configuration);
             services.ApiServiceConfig();
             services.AutoMapperServiceConfig();
