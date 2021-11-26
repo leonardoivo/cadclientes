@@ -98,11 +98,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             model.SetarContaBancaria(modelNoBanco.ContaBancaria.Id, viewModel.ContaCorrente, viewModel.CodigoAgencia,
                                 viewModel.Convenio, viewModel.Pix, viewModel.BancoId);
 
-            model.IpSftp = modelNoBanco.IpSftp;
-            model.SenhaSftp = modelNoBanco.SenhaSftp;
-            model.PortaSftp = modelNoBanco.PortaSftp;
-            model.UsuarioSftp = modelNoBanco.UsuarioSftp;
-
             await _repositorio.Alterar(model);
 
             return _map.Map<EmpresaParceiraViewModel>(model);
@@ -129,7 +124,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var empresaParceira = await _repositorio.BuscarPorId(id);
 
-            using var client = new SftpClient(empresaParceira.IpSftp, empresaParceira.PortaSftp.Value, empresaParceira.UsuarioSftp, empresaParceira.SenhaSftp);
+            using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value, empresaParceira.UsuarioEnvioArquivo, empresaParceira.SenhaEnvioArquivo);
             try
             {
                 
