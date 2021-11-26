@@ -9,9 +9,7 @@
         public string AditivoContrato { get; set; }
         public string Contato { get; set; }
         public string Cidade { get; set; }
-
         public string Estado { get; set; }
-
         public bool Status { get; set; }
     }
 }

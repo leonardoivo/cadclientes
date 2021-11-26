@@ -29,10 +29,11 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string URL { get; private set; }
         public bool Status { get; private set; }
 
-        public string IpSftp { get; set; }
-        public int? PortaSftp { get; set; }
-        public string UsuarioSftp { get; set; }
-        public string SenhaSftp { get; set; }
+        public string TipoEnvioArquivo { get; private set; }
+        public string IpEnvioArquivo { get; private set; }
+        public int? PortaEnvioArquivo { get; private set; }
+        public string UsuarioEnvioArquivo { get; private set; }
+        public string SenhaEnvioArquivo { get; private set; }
 
         public ICollection<ContatoEmpresaParceiraModel> Contatos { get; private set; }
         public ICollection<HonorarioEmpresaParceiraModel> Honorarios { get; private set; }

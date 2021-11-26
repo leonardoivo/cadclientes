@@ -37,20 +37,24 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Status)
                .HasColumnName("STATUS_EMPRESA");
 
-            builder.Property(ep => ep.IpSftp)
-               .HasColumnName("IP_SFTP")
+            builder.Property(ep => ep.TipoEnvioArquivo)
+               .HasColumnName("TIPO_ENVIO_ARQUIVO")
                .HasDefaultValue("");
 
-            builder.Property(ep => ep.PortaSftp)
-               .HasColumnName("PORTA_SFTP")
+            builder.Property(ep => ep.IpEnvioArquivo)
+               .HasColumnName("IP_ENVIO_ARQUIVO")
+               .HasDefaultValue("");
+
+            builder.Property(ep => ep.PortaEnvioArquivo)
+               .HasColumnName("PORTA_ENVIO_ARQUIVO")
                .HasDefaultValue(22);
 
-            builder.Property(ep => ep.UsuarioSftp)
-               .HasColumnName("USUARIO_SFTP")
+            builder.Property(ep => ep.UsuarioEnvioArquivo)
+               .HasColumnName("USUARIO_ENVIO_ARQUIVO")
                .HasDefaultValue("");
 
-            builder.Property(ep => ep.SenhaSftp)
-               .HasColumnName("SENHA_SFTP")
+            builder.Property(ep => ep.SenhaEnvioArquivo)
+               .HasColumnName("SENHA_ENVIO_ARQUIVO")
                .HasDefaultValue("");
 
             builder.HasMany(c => c.Contatos)
