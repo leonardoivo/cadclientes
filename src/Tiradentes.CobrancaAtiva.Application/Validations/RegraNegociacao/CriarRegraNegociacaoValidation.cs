@@ -10,9 +10,6 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.HonorarioEmpresaParce
     {
         public CriarRegraNegociacaoValidation()
         {
-            RuleFor(e => e.SituacaoAlunoIds)
-                .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
-
             RuleFor(e => e.ValidadeInicial)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 

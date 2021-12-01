@@ -65,7 +65,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 using (var channel = connection.CreateModel())
                 {
                     channel.QueueDeclare(
-                        queue: "consulta_facilitada",
+                        queue: _rabbitMQConfig.Queue,
                         durable: false,
                         exclusive: false,
                         autoDelete: false,
@@ -89,7 +89,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                     channel.BasicPublish(
                         exchange: "",
-                        routingKey: "consulta_facilitada",
+                        routingKey: _rabbitMQConfig.Queue,
                         basicProperties: null,
                         body: bytesMessage);
                 }
