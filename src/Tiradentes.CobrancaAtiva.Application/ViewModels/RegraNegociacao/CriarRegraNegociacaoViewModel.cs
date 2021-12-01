@@ -4,8 +4,8 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao
 {
     public class CriarRegraNegociacaoViewModel
     {
-        public int InstituicaoId { get; set; }
-        public int ModalidadeId { get; set; }
+        public int? InstituicaoId { get; set; }
+        public int? ModalidadeId { get; set; }
         public decimal PercentJurosMultaAVista { get; set; }
         public decimal PercentValorAVista { get; set; }
 
