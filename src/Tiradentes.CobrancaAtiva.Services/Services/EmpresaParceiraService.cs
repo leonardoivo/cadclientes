@@ -124,7 +124,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var empresaParceira = await _repositorio.BuscarPorId(id);
 
-            using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value, empresaParceira.UsuarioEnvioArquivo, empresaParceira.SenhaEnvioArquivo);
+            await GerarArquivoCsv(empresaParceira);
+
+            /*using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value, empresaParceira.UsuarioEnvioArquivo, empresaParceira.SenhaEnvioArquivo);
             try
             {
                 
@@ -154,7 +156,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             finally
             {
                 client.Disconnect();
-            }
+            }*/
         }
 
         public async Task<List<string>> GerarArquivoCsv(EmpresaParceiraModel empresaParceira)
@@ -165,7 +167,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var filenameTemplate = "{0}_{1}_{2}_{3}_{4}_PARTE{5}de{6}.csv";
             //var cabecalhoCsv = "\"CNPJ EMPRESA COBRANÇA\";\"MODALIDADE DE ENSINO\";\"DESCRIÇÃO DA MODALIDADE DE ENSINO\";\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\";\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\";\"IDENTIFICADOR CURSO\";\"DESCRIÇÃO CURSO\";\"TIPO TITULO\";\"DESCRIÇÃO TIPO TÍTULO\";\"TIPO TITULO AVULSO\";\"DESCRICAO INADIMPLENCIA\";\"SITUACAO ALUNO\";\"CPF ALUNO\";\"MATRICULA\";\"PERIODO\";\"IDENTIFICADOR DO ALUNO\";\"IDENTIFICADOR DA PESSOA\";\"NOME\";\"ENDERECO\";\"BAIRRO\";\"CIDADE\";\"CEP\";\"UF\";\"DDD RES\";\"TELEFONE RES\";\"DDD CELULAR\";\"TELEFONE CELULAR\";\"EMAIL DO ALUNO\";\"NUMERO CONTRATO\";\"PAGAMENTO A VISTA - DESCONTO NA MULTA E JUROS\";\"PAGAMENTO A VISTA - DESCONTO NO VALOR PRINCIPAL\";\"CARTÃO - DESCONTO NA MULTA E JUROS\";\"CARTÃO - DESCONTO NO VALOR PRINCIPAL\";\"CARTÃO - QUANTIDADE DE PARCELAS\";\"BOLETO - DESCONTO NA MULTA E JUROS\";\"BOLETO - DESCONTO NO VALOR PRINCIPAL\";\"BOLETO - ENTRADA\";\"BOLETO - QUANTIDADE DE PARCELAS\";\"DESCONTO INCONDICIONAL\";\"VALIDADE DA NEGOCIAÇÃO\";\"NUMERO DA PARCELA\";\"DATA VENCIMENTO\";\"VALOR PARCELA\";OBSERVACAO\";\"CODIGO DA CAMPUS IES\";\"NOME DA CAMPUS IES\";\"FILIACAO - MAE\";\"FILIACAO - PAI\";\"NUMERO DO RG\"";
-            var cabecalhoCsv = "\"CNPJ EMPRESA COBRANÇA\",\"MODALIDADE DE ENSINO\",\"DESCRIÇÃO DA MODALIDADE DE ENSINO\",\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\",\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\",\"IDENTIFICADOR CURSO\",\"DESCRIÇÃO CURSO\",\"TIPO TITULO\",\"DESCRIÇÃO TIPO TÍTULO\",\"TIPO TITULO AVULSO\",\"DESCRICAO INADIMPLENCIA\",\"SITUACAO ALUNO\",\"CPF ALUNO\",\"MATRICULA\",\"PERIODO\",\"IDENTIFICADOR DO ALUNO\",\"IDENTIFICADOR DA PESSOA\",\"NOME\",\"ENDERECO\",\"BAIRRO\",\"CIDADE\",\"CEP\",\"UF\",\"DDD RES\",\"TELEFONE RES\",\"DDD CELULAR\",\"TELEFONE CELULAR\",\"EMAIL DO ALUNO\",\"NUMERO CONTRATO\",\"PAGAMENTO A VISTA - DESCONTO NA MULTA E JUROS\",\"PAGAMENTO A VISTA - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - DESCONTO NA MULTA E JUROS\",\"CARTÃO - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - QUANTIDADE DE PARCELAS\",\"BOLETO - DESCONTO NA MULTA E JUROS\",\"BOLETO - DESCONTO NO VALOR PRINCIPAL\",\"BOLETO - ENTRADA\",\"BOLETO - QUANTIDADE DE PARCELAS\",\"DESCONTO INCONDICIONAL\",\"VALIDADE DA NEGOCIAÇÃO\",\"NUMERO DA PARCELA\",\"DATA VENCIMENTO\",\"VALOR PARCELA\",OBSERVACAO\",\"CODIGO DA CAMPUS IES\",\"NOME DA CAMPUS IES\",\"FILIACAO - MAE\",\"FILIACAO - PAI\",\"NUMERO DO RG\"";
+            var cabecalhoCsv = "\"CNPJ EMPRESA COBRANÇA\",\"MODALIDADE DE ENSINO\",\"DESCRIÇÃO DA MODALIDADE DE ENSINO\",\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\",\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\",\"IDENTIFICADOR CURSO\",\"DESCRIÇÃO CURSO\",\"TIPO TITULO\",\"DESCRIÇÃO TIPO TÍTULO\",\"TIPO TITULO AVULSO\",\"DESCRICAO INADIMPLENCIA\",\"SITUACAO ALUNO\",\"CPF ALUNO\",\"MATRICULA\",\"PERIODO\",\"IDENTIFICADOR DO ALUNO\",\"IDENTIFICADOR DA PESSOA\",\"NOME\",\"ENDERECO\",\"BAIRRO\",\"CIDADE\",\"CEP\",\"UF\",\"DDD RES\",\"TELEFONE RES\",\"DDD CELULAR\",\"TELEFONE CELULAR\",\"EMAIL DO ALUNO\",\"NUMERO CONTRATO\",\"PAGAMENTO A VISTA - DESCONTO NA MULTA E JUROS\",\"PAGAMENTO A VISTA - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - DESCONTO NA MULTA E JUROS\",\"CARTÃO - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - QUANTIDADE DE PARCELAS\",\"BOLETO - DESCONTO NA MULTA E JUROS\",\"BOLETO - DESCONTO NO VALOR PRINCIPAL\",\"BOLETO - ENTRADA\",\"BOLETO - QUANTIDADE DE PARCELAS\",\"DESCONTO INCONDICIONAL\",\"VALIDADE DA NEGOCIAÇÃO\",\"NUMERO DA PARCELA\",\"DATA VENCIMENTO\",\"VALOR PARCELA\",\"OBSERVACAO\",\"CODIGO DA CAMPUS IES\",\"NOME DA CAMPUS IES\",\"FILIACAO - MAE\",\"FILIACAO - PAI\",\"NUMERO DO RG\"";
 
             //var dataTemplate = "{0};{1};{2};{3};{4};{5};{6};{7};{8};{9};{10};{11};{12};{13};{14};{15};{16};{17};{18};{19};{20};{21};{22};{23};{24};{25};{26};{27};{28};{29};{30};{31};{32};{33};{34};{35};{36};{37};{38};{39};{40};{41};{42};{43};{44};{45};{46};{47};{48}";
             var dataTemplate = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40},{41},{42},{43},{44},{45},{46},{47},{48}";
@@ -213,20 +215,20 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             alunoInadimplente.TelefoneCelular == null ? "" : alunoInadimplente.TelefoneCelular.Replace(",", " "),
                             alunoInadimplente.Email == null ? "" : alunoInadimplente.Email.Replace(",", " "),
                             alunoInadimplente.ChaveInadimplencia == null ? "" : alunoInadimplente.ChaveInadimplencia.Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
-                            "".Replace(",", " "),
+                            "5.0".Replace(",", " "),
+                            "10.0".Replace(",", " "),
+                            "5.0".Replace(",", " "),
+                            "6.0".Replace(",", " "),
+                            "12".Replace(",", " "),
+                            "5.0".Replace(",", " "),
+                            "10.0".Replace(",", " "),
+                            "5.0".Replace(",", " "),
+                            "10".Replace(",", " "),
+                            "10.0".Replace(",", " "),
+                            "31/12/2021".Replace(",", " "),
                             alunoInadimplente.NumeroParcela == null ? "" : alunoInadimplente.NumeroParcela.Replace(",", " "),
                             alunoInadimplente.DataVencimento == null ? "" : alunoInadimplente.DataVencimento.ToShortDateString().Replace(",", " "),
-                            alunoInadimplente.ValorPagamento == null ? "" : alunoInadimplente.ValorPagamento.Replace(",", " "),
+                            alunoInadimplente.ValorPagamento == null ? "" : alunoInadimplente.ValorPagamento.Replace(".", "").Replace(",", "."),
                             alunoInadimplente.Observacao == null ? "" : alunoInadimplente.Observacao.Replace(",", " "),
                             alunoInadimplente.IdtCampus == null ? "" : alunoInadimplente.IdtCampus.Replace(",", " "),
                             alunoInadimplente.DescircaoCampus == null ? "" : alunoInadimplente.DescircaoCampus.Replace(",", " "),
