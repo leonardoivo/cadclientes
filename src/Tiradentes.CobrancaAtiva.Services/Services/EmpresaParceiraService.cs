@@ -3,8 +3,10 @@ using Renci.SshNet;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.WebApi;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.Utils;
 using Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira;
@@ -14,22 +16,30 @@ using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
+using Tiradentes.CobrancaAtiva.Application.Configuration;
+using Microsoft.Extensions.Options;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class EmpresaParceiraService : BaseService, IEmpresaParceiraService
     {
+        protected readonly EncryptationApi _encryptationApi;
         protected readonly IEmpresaParceiraRepository _repositorio;
         protected readonly IAlunosInadimplentesRepository _repositorioAlunosInadimplentes;
         protected readonly IMapper _map;
 
-        public EmpresaParceiraService(IEmpresaParceiraRepository repositorio, 
+        public EmpresaParceiraService(
+            IEmpresaParceiraRepository repositorio,
             IAlunosInadimplentesRepository repositorioAlunosInadimplentes,
-            IMapper map)
+            IMapper map,
+            IOptions<EncryptationConfig> encryptationConfig
+        )
         {
             _repositorio = repositorio;
             _repositorioAlunosInadimplentes = repositorioAlunosInadimplentes;
             _map = map;
+
+            _encryptationApi = new EncryptationApi(encryptationConfig.Value);
         }
 
         public async Task VerificarCnpjJaCadastrado(string cnpj, int? id)
@@ -63,6 +73,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 contato.Id = 0;
             }
 
+            if(viewModel.SenhaEnvioArquivo != null)
+            {
+                viewModel.SenhaEnvioArquivo = await _encryptationApi.CallEncrypt(viewModel.SenhaEnvioArquivo);
+            }
+
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
             model.SetarEndereco(0, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
                                 viewModel.Logradouro, viewModel.Numero, 
@@ -88,6 +103,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
 
             await ValidaCnpj(viewModel.CNPJ, viewModel.Id);
+
+            if(viewModel.SenhaEnvioArquivo != null)
+            {
+                viewModel.SenhaEnvioArquivo = await _encryptationApi.CallEncrypt(viewModel.SenhaEnvioArquivo);
+            }
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
             
@@ -124,9 +144,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var empresaParceira = await _repositorio.BuscarPorId(id);
 
+            var senhaEnvioArquivo = await _encryptationApi.CallDecrypt(empresaParceira.SenhaEnvioArquivo);
+
             await GerarArquivoCsv(empresaParceira);
 
-            /*using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value, empresaParceira.UsuarioEnvioArquivo, empresaParceira.SenhaEnvioArquivo);
+            using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value, empresaParceira.UsuarioEnvioArquivo, senhaEnvioArquivo);
             try
             {
                 
@@ -156,7 +178,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             finally
             {
                 client.Disconnect();
-            }*/
+            }
         }
 
         public async Task<List<string>> GerarArquivoCsv(EmpresaParceiraModel empresaParceira)
@@ -174,6 +196,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var dados = await _repositorioAlunosInadimplentes.GetAlunosInadimplentes();
 
+            dados = dados.Where(alunos => alunos.EmpresaId == empresaParceira.Id).ToList();
+
             var totalLinhas = dados.Count;
             var quantidadeArquivos = (int) (totalLinhas / limiteLinhas);
 
@@ -189,8 +213,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             empresaParceira.CNPJ.Replace(",", "-"),
                             alunoInadimplente.CodModalidadeEnsino == null ? "" : alunoInadimplente.CodModalidadeEnsino.Replace(",", " "),
                             alunoInadimplente.DescricaoModalidadeEnsino == null ? "" : alunoInadimplente.DescricaoModalidadeEnsino.Replace(",", " "),
-                            "".Replace(",", " "),
-                            alunoInadimplente.DescircaoCampus == null ? "" : alunoInadimplente.DescircaoCampus.Replace(",", " "),
+                            alunoInadimplente.InstituicaoId.ToString(),
+                            alunoInadimplente.Instituicao == null ? "" : alunoInadimplente.Instituicao.Replace(",", " "),
                             alunoInadimplente.CodCurso == null ? "" : alunoInadimplente.CodCurso.Replace(",", " "),
                             alunoInadimplente.NomeCurso == null ? "" : alunoInadimplente.NomeCurso.Replace(",", " "),
                             alunoInadimplente.IdtTipoTitulo == null ? "" : alunoInadimplente.IdtTipoTitulo.Replace(",", " "),
@@ -227,7 +251,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             "10.0".Replace(",", " "),
                             "31/12/2021".Replace(",", " "),
                             alunoInadimplente.NumeroParcela == null ? "" : alunoInadimplente.NumeroParcela.Replace(",", " "),
-                            alunoInadimplente.DataVencimento == null ? "" : alunoInadimplente.DataVencimento.ToShortDateString().Replace(",", " "),
+                            alunoInadimplente.DataVencimento.ToShortDateString().Replace(",", " "),
                             alunoInadimplente.ValorPagamento == null ? "" : alunoInadimplente.ValorPagamento.Replace(".", "").Replace(",", "."),
                             alunoInadimplente.Observacao == null ? "" : alunoInadimplente.Observacao.Replace(",", " "),
                             alunoInadimplente.IdtCampus == null ? "" : alunoInadimplente.IdtCampus.Replace(",", " "),

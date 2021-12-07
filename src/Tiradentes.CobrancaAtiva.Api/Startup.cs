@@ -30,6 +30,7 @@ namespace Tiradentes.CobrancaAtiva.Api
         public void ConfigureServices(IServiceCollection services)
         {
             services.Configure<RabbitMQConfig>(_configuration.GetSection("RabbitMQ"));
+            services.Configure<EncryptationConfig>(_configuration.GetSection("Encryptation"));
             services.AddDependencies(_configuration);
             services.ApiServiceConfig();
             services.AutoMapperServiceConfig();

@@ -8,6 +8,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public string NomeEmpresa { get; set; }
         public string CodModalidadeEnsino { get; set; }
         public string DescricaoModalidadeEnsino { get; set; }
+        public int InstituicaoId { get; set; }
+        public string Instituicao { get; set; }
         public string TipoInadimplencia { get; set; }
         public string DescricaoTipoInadimplencia { get; set; }
         public string StatusAluno { get; set; }

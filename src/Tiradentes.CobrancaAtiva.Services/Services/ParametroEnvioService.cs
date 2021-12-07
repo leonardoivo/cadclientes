@@ -21,14 +21,19 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         private readonly ConnectionFactory _factory;
         private readonly RabbitMQConfig _rabbitMQConfig;
         private readonly IParametroEnvioRepository _repositorio;
+        private readonly IGeracaoCobrancasRepository _geracaoCobrancaRepositorio;
         protected readonly IMapper _map;
 
-        public ParametroEnvioService(IParametroEnvioRepository repositorio, 
+        public ParametroEnvioService(
+            IParametroEnvioRepository repositorio, 
+            IGeracaoCobrancasRepository geracaoCobrancaRepositorio,
             IMapper map,
-            IOptions<RabbitMQConfig> rabbitMQConfig)
+            IOptions<RabbitMQConfig> rabbitMQConfig
+        )
         { 
             _map = map;
             _repositorio = repositorio;
+            _geracaoCobrancaRepositorio = geracaoCobrancaRepositorio;
             _rabbitMQConfig = rabbitMQConfig.Value;
 
             _factory = new ConnectionFactory
@@ -59,6 +64,19 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         public async Task EnviarParametroParaConsumer(int id)
         {
             var parametroEnvio = await _repositorio.BuscarPorIdComRelacionamentos(id);
+
+            var geracaoArquivo = new GeracaoCobrancasModel() {
+                CnpjEmpresaCobranca = parametroEnvio.EmpresaParceira.CNPJ,
+                DataGeracao = "07/12/2021",
+                DataInicio = "01/01/2020",
+                DataFim = "01/01/2020",
+                DataHoraEnvio = "01/01/2020",
+                Sistema = "S",
+                Username = "APP_COBRANCA",
+                TipoInadimplencia = "T"
+            };
+
+            await _geracaoCobrancaRepositorio.Criar(geracaoArquivo);
 
             using (var connection = _factory.CreateConnection())
             {
