@@ -40,8 +40,28 @@ test:
 
 deploy:
   only:
-  - develop
   - main
+  image: google/cloud-sdk
+  stage: deploy
+  script:
+    - echo $GCP_SERVICE_KEY > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud builds submit . --config cloudbuild.yaml --substitutions _GCP_PROJECT_ID=$GCP_PROJECT_ID,_GCP_ARTIFACT_REGISTRY_URL=$GCP_ARTIFACT_REGISTRY_URL,_GCP_ARTIFACT_REGISTRY_NAME=$GCP_ARTIFACT_REGISTRY_NAME,_PROJECT_NAME=$PROJECT_NAME,_GCP_CLOUD_RUN_SERVICE_REGION=$GCP_CLOUD_RUN_SERVICE_REGION,_GCP_CLOUD_RUN_SERVICE_NAME=$GCP_CLOUD_RUN_SERVICE_NAME,_GCP_CLOUD_RUN_VPC_CONNECTOR=$GCP_CLOUD_RUN_VPC_CONNECTOR,_GCP_CLOUD_RUN_MIN_INSTANCES=$GCP_CLOUD_RUN_MIN_INSTANCES,_GCP_CLOUD_RUN_MAX_INSTANCES=$GCP_CLOUD_RUN_MAX_INSTANCES,_CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA
+
+deploy-homolog:
+  only:
+  - homolog
+  image: google/cloud-sdk
+  stage: deploy
+  script:
+    - echo $GCP_SERVICE_KEY > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud builds submit . --config cloudbuild.yaml --substitutions _GCP_PROJECT_ID=$GCP_PROJECT_ID,_GCP_ARTIFACT_REGISTRY_URL=$GCP_ARTIFACT_REGISTRY_URL,_GCP_ARTIFACT_REGISTRY_NAME=$GCP_ARTIFACT_REGISTRY_NAME,_PROJECT_NAME_HOMOLOG=$PROJECT_NAME_HOMOLOG,_GCP_CLOUD_RUN_SERVICE_REGION=$GCP_CLOUD_RUN_SERVICE_REGION,_GCP_CLOUD_RUN_SERVICE_NAME=$GCP_CLOUD_RUN_SERVICE_NAME,_GCP_CLOUD_RUN_VPC_CONNECTOR=$GCP_CLOUD_RUN_VPC_CONNECTOR,_GCP_CLOUD_RUN_MIN_INSTANCES=$GCP_CLOUD_RUN_MIN_INSTANCES,_GCP_CLOUD_RUN_MAX_INSTANCES=$GCP_CLOUD_RUN_MAX_INSTANCES,_CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA
+deploy-main:
+  only:
+  - develop
   image: google/cloud-sdk
   stage: deploy
   script:
