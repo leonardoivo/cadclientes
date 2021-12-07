@@ -5,9 +5,9 @@ steps:
       [
         "build",
         "-t",
-        "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME_HOMOLOG:$_CI_COMMIT_SHORT_SHA",
+        "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME:$_CI_COMMIT_SHORT_SHA",
         "-t",
-        "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME_HOMOLOG:latest",
+        "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME:latest",
         ".",
       ]
   
@@ -15,7 +15,7 @@ steps:
     name: "gcr.io/cloud-builders/docker"
     args: [
       "push", 
-      "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME_HOMOLOG"
+      "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME"
       ]
   
   - id: Executando imagem no Cloud Run.
@@ -23,9 +23,9 @@ steps:
     args: [
         'run',
         'deploy',
-        '$_GCP_CLOUD_RUN_SERVICE_NAME',
+        '$_GCP_CLOUD_RUN_SERVICE_NAME2',
         '--image',
-        "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME_HOMOLOG:$_CI_COMMIT_SHORT_SHA",
+        "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME:$_CI_COMMIT_SHORT_SHA",
         '--platform',
         'managed',
         '--region',
