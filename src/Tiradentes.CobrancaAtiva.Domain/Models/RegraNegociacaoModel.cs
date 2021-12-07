@@ -9,8 +9,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public RegraNegociacaoModel()
         { }
 
-        public int InstituicaoId { get; private set; }
-        public int ModalidadeId { get; private set; }
+        public int? InstituicaoId { get; private set; }
+        public int? ModalidadeId { get; private set; }
         public bool Status { get; set; }
         public DateTime InadimplenciaInicial { get; private set; }
         public DateTime InadimplenciaFinal { get; private set; }

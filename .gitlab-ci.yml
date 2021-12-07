@@ -1,6 +1,7 @@
 # stages:
 #     - build
 #     - deploy
+
 sonarqube-check:
   image: mcr.microsoft.com/dotnet/sdk:5.0
   stage: .pre
@@ -20,6 +21,7 @@ sonarqube-check:
       - "dotnet sonarscanner begin /k:\"Mec-backend_AXzMjo45jEZl7aJuSv-D\" /d:sonar.login=\"$SONAR_TOKEN\" /d:\"sonar.host.url=$SONAR_HOST_URL\" "
       - "dotnet build"
       - "dotnet sonarscanner end /d:sonar.login=\"$SONAR_TOKEN\""
+
   # allow_failure: true
   # only:
   #   - master # or the name of your main branch
@@ -40,7 +42,6 @@ test:
 
 deploy:
   only:
-  - develop
   - main
   image: google/cloud-sdk
   stage: deploy
@@ -49,3 +50,24 @@ deploy:
     - gcloud auth activate-service-account --key-file gcloud-service-key.json
     - gcloud config set project $GCP_PROJECT_ID
     - gcloud builds submit . --config cloudbuild.yaml --substitutions _GCP_PROJECT_ID=$GCP_PROJECT_ID,_GCP_ARTIFACT_REGISTRY_URL=$GCP_ARTIFACT_REGISTRY_URL,_GCP_ARTIFACT_REGISTRY_NAME=$GCP_ARTIFACT_REGISTRY_NAME,_PROJECT_NAME=$PROJECT_NAME,_GCP_CLOUD_RUN_SERVICE_REGION=$GCP_CLOUD_RUN_SERVICE_REGION,_GCP_CLOUD_RUN_SERVICE_NAME=$GCP_CLOUD_RUN_SERVICE_NAME,_GCP_CLOUD_RUN_VPC_CONNECTOR=$GCP_CLOUD_RUN_VPC_CONNECTOR,_GCP_CLOUD_RUN_MIN_INSTANCES=$GCP_CLOUD_RUN_MIN_INSTANCES,_GCP_CLOUD_RUN_MAX_INSTANCES=$GCP_CLOUD_RUN_MAX_INSTANCES,_CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA
+
+deploy-homolog:
+  only:
+  - develop
+  image: google/cloud-sdk
+  stage: deploy
+  script:
+    - echo $GCP_SERVICE_KEY > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud builds submit . --config cloudbuildd.yaml --substitutions _GCP_PROJECT_ID=$GCP_PROJECT_ID,_GCP_ARTIFACT_REGISTRY_URL=$GCP_ARTIFACT_REGISTRY_URL,_GCP_ARTIFACT_REGISTRY_NAME=$GCP_ARTIFACT_REGISTRY_NAME,_PROJECT_NAME=$PROJECT_NAME,_GCP_CLOUD_RUN_SERVICE_REGION=$GCP_CLOUD_RUN_SERVICE_REGION,_GCP_CLOUD_RUN_SERVICE_NAME1=$GCP_CLOUD_RUN_SERVICE_NAME1,_GCP_CLOUD_RUN_VPC_CONNECTOR=$GCP_CLOUD_RUN_VPC_CONNECTOR,_GCP_CLOUD_RUN_MIN_INSTANCES=$GCP_CLOUD_RUN_MIN_INSTANCES,_GCP_CLOUD_RUN_MAX_INSTANCES=$GCP_CLOUD_RUN_MAX_INSTANCES,_CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA
+deploy-main:
+  only:
+  - homolog
+  image: google/cloud-sdk
+  stage: deploy
+  script:
+    - echo $GCP_SERVICE_KEY > gcloud-service-key.json
+    - gcloud auth activate-service-account --key-file gcloud-service-key.json
+    - gcloud config set project $GCP_PROJECT_ID
+    - gcloud builds submit . --config cloudbuildh.yaml --substitutions _GCP_PROJECT_ID=$GCP_PROJECT_ID,_GCP_ARTIFACT_REGISTRY_URL=$GCP_ARTIFACT_REGISTRY_URL,_GCP_ARTIFACT_REGISTRY_NAME=$GCP_ARTIFACT_REGISTRY_NAME,_PROJECT_NAME=$PROJECT_NAME,_GCP_CLOUD_RUN_SERVICE_REGION=$GCP_CLOUD_RUN_SERVICE_REGION,_GCP_CLOUD_RUN_SERVICE_NAME2=$GCP_CLOUD_RUN_SERVICE_NAME2,_GCP_CLOUD_RUN_VPC_CONNECTOR=$GCP_CLOUD_RUN_VPC_CONNECTOR,_GCP_CLOUD_RUN_MIN_INSTANCES=$GCP_CLOUD_RUN_MIN_INSTANCES,_GCP_CLOUD_RUN_MAX_INSTANCES=$GCP_CLOUD_RUN_MAX_INSTANCES,_CI_COMMIT_SHORT_SHA=$CI_COMMIT_SHORT_SHA

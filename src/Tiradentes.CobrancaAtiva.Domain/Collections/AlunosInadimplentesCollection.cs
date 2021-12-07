@@ -42,5 +42,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public string Mae { get; set; }
         public string Pai { get; set; }
         public string NumCi { get; set; }
+        public int StatusNegociacao { get; set; }
     }
 }

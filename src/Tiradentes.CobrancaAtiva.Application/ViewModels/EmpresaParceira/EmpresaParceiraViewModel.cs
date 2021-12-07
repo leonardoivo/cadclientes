@@ -24,6 +24,11 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira
         public string Convenio { get; set; }
         public string Pix { get; set; }
         public bool Status { get; set; }
+        public string TipoEnvioArquivo { get; set; }
+        public string IpEnvioArquivo { get; set; }
+        public int? PortaEnvioArquivo { get; set; }
+        public string UsuarioEnvioArquivo { get; set; }
+        public string SenhaEnvioArquivo { get; set; }
 
         public List<ContatoEmpresaParceiraViewModel> Contatos { get; set; }
     }
