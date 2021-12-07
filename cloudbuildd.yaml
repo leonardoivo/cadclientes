@@ -1,0 +1,38 @@
+steps:
+  - id: Criando imagem.
+    name: "gcr.io/cloud-builders/docker"
+    args:
+      [
+        "build",
+        "-t",
+        "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME:$_CI_COMMIT_SHORT_SHA",
+        "-t",
+        "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME:latest",
+        ".",
+      ]
+  
+  - id: Publicando imagem.
+    name: "gcr.io/cloud-builders/docker"
+    args: [
+      "push", 
+      "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME"
+      ]
+  
+  - id: Executando imagem no Cloud Run.
+    name: 'gcr.io/cloud-builders/gcloud'
+    args: [
+        'run',
+        'deploy',
+        '$_GCP_CLOUD_RUN_SERVICE_NAME1',
+        '--image',
+        "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME:$_CI_COMMIT_SHORT_SHA",
+        '--platform',
+        'managed',
+        '--region',
+        '$_GCP_CLOUD_RUN_SERVICE_REGION',
+        '--allow-unauthenticated',
+        '--vpc-connector=$_GCP_CLOUD_RUN_VPC_CONNECTOR',
+        '--min-instances=$_GCP_CLOUD_RUN_MIN_INSTANCES',
+        '--max-instances=$_GCP_CLOUD_RUN_MAX_INSTANCES',
+        # '--service-account=$_GCP_CLOUD_RUN_SERVICE_NAME@$_GCP_PROJECT_ID.iam.gserviceaccount.com'
+    ]
