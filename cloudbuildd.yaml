@@ -23,7 +23,7 @@ steps:
     args: [
         'run',
         'deploy',
-        '$_GCP_CLOUD_RUN_SERVICE_NAME',
+        '$_GCP_CLOUD_RUN_SERVICE_NAME1',
         '--image',
         "$_GCP_ARTIFACT_REGISTRY_URL/$_GCP_PROJECT_ID/$_GCP_ARTIFACT_REGISTRY_NAME/$_PROJECT_NAME:$_CI_COMMIT_SHORT_SHA",
         '--platform',
