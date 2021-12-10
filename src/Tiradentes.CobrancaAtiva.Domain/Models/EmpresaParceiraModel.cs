@@ -34,6 +34,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public int? PortaEnvioArquivo { get; private set; }
         public string UsuarioEnvioArquivo { get; private set; }
         public string SenhaEnvioArquivo { get; private set; }
+        public string ChaveIntegracaoSap { get; set; }
 
         public ICollection<ContatoEmpresaParceiraModel> Contatos { get; private set; }
         public ICollection<HonorarioEmpresaParceiraModel> Honorarios { get; private set; }
