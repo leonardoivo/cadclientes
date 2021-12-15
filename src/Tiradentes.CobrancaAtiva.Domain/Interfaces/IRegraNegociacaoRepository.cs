@@ -12,5 +12,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
         Task<List<RegraNegociacaoModel>> ListarRegrasParaAtivar();
         Task<ModelPaginada<BuscaRegraNegociacao>> Buscar(RegraNegociacaoQueryParam queryParam);
         Task<BuscaRegraNegociacao> BuscarPorIdComRelacionamentos(int id);
+        Task<RegraNegociacaoModel> VerificarRegraConflitante(RegraNegociacaoModel model);
     }
 }

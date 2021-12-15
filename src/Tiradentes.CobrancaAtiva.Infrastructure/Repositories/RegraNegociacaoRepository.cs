@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -230,8 +230,65 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             Db.RegraNegociacaoTipoTitulo.RemoveRange(
                 Db.RegraNegociacaoTipoTitulo.Where(
                     c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)));
-                    
+
             return base.Alterar(model);
+        }
+
+        public async Task<RegraNegociacaoModel> VerificarRegraConflitante(RegraNegociacaoModel model)
+        {
+            var query = DbSet
+                            .Include(r => r.Instituicao)
+                            .Include(r => r.Modalidade)
+                            .Include(r => r.RegraNegociacaoCurso)
+                            .Include(r => r.RegraNegociacaoTituloAvulso)
+                            .Include(r => r.RegraNegociacaoSituacaoAluno)
+                            .Include(r => r.RegraNegociacaoTipoTitulo)
+                            .AsQueryable();
+
+            query = query.Where(e => e.PercentJurosMultaAVista != model.PercentJurosMultaAVista
+                                || e.PercentValorAVista != model.PercentValorAVista
+                                || e.PercentJurosMultaCartao != model.PercentJurosMultaCartao
+                                || e.PercentValorCartao != model.PercentValorCartao
+                                || e.QuantidadeParcelasCartao != model.QuantidadeParcelasCartao
+                                || e.PercentJurosMultaBoleto != model.PercentJurosMultaBoleto
+                                || e.PercentValorBoleto != model.PercentValorBoleto
+                                || e.QuantidadeParcelasBoleto != model.QuantidadeParcelasBoleto
+                                || e.PercentEntradaBoleto != model.PercentEntradaBoleto);
+
+
+            if (model.InstituicaoId != 0)
+                query = query.Where(e => e.Instituicao.Id == model.InstituicaoId);
+
+            if (model.ModalidadeId != 0)
+                query = query.Where(e => e.Modalidade.Id == model.ModalidadeId);
+
+            query = query.Where(e => (e.ValidadeInicial <= model.ValidadeInicial
+                             && e.ValidadeFinal >= model.ValidadeFinal)
+                             ||
+                             (e.ValidadeInicial >= model.ValidadeInicial
+                             && e.ValidadeInicial <= model.ValidadeFinal)
+                             ||
+                             (e.ValidadeInicial <= model.ValidadeInicial
+                             && e.ValidadeFinal <= model.ValidadeFinal)
+                             );
+
+            if (model.RegraNegociacaoCurso.Count > 0)
+                query = query.Where(e => e.RegraNegociacaoCurso.Where(c => model.RegraNegociacaoCurso.Select(x => x.Id).Contains(c.Id)).Any());
+
+            if (model.RegraNegociacaoTituloAvulso.Count > 0)
+                query = query.Where(e => e.RegraNegociacaoTituloAvulso.Where(c => model.RegraNegociacaoTituloAvulso.Select(x => x.Id).Contains(c.Id)).Any());
+
+            if (model.RegraNegociacaoSituacaoAluno.Count > 0)
+                query = query.Where(e => e.RegraNegociacaoSituacaoAluno.Where(c => model.RegraNegociacaoSituacaoAluno.Select(x => x.Id).Contains(c.Id)).Any());
+
+            if (model.RegraNegociacaoTipoTitulo.Count > 0)
+                query = query.Where(e => e.RegraNegociacaoTipoTitulo.Where(c => model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)).Any());
+
+            query = query.Where(e => e.Status == true);
+
+            var regraConflitante = await query.FirstOrDefaultAsync();
+
+            return regraConflitante;
         }
     }
 }
