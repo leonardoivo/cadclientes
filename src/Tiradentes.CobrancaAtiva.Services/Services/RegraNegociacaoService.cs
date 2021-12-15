@@ -68,13 +68,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var model = _map.Map<RegraNegociacaoModel>(viewModel);
 
-            var conflito = _repositorio.VerificarRegraConflitante(model);
-
-            if (conflito != null)
-            {
-                return _map.Map<RegraNegociacaoViewModel>(conflito);
-            }
-
             await _repositorio.Criar(model);
 
             return _map.Map<RegraNegociacaoViewModel>(model);
@@ -102,13 +95,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<RegraNegociacaoViewModel>(model);
         }
 
-        public async Task<BuscaRegraNegociacao> VerificarRegraConflitante(RegraNegociacaoViewModel viewModel)
+        public async Task<RegraNegociacaoViewModel> VerificarRegraConflitante(RegraNegociacaoViewModel viewModel)
         {
             var model = _map.Map<RegraNegociacaoModel>(viewModel);
 
             var conflito = await _repositorio.VerificarRegraConflitante(model);
 
-            return _map.Map<BuscaRegraNegociacao>(conflito);
+            return _map.Map<RegraNegociacaoViewModel>(conflito);
         }
     }
 }
