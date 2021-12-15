@@ -29,6 +29,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira
         public int? PortaEnvioArquivo { get; set; }
         public string UsuarioEnvioArquivo { get; set; }
         public string SenhaEnvioArquivo { get; set; }
+        public string ChaveIntegracaoSap { get; set; }
 
         public List<ContatoEmpresaParceiraViewModel> Contatos { get; set; }
     }

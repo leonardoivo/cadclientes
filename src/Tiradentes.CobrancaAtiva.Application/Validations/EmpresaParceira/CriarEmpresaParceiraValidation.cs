@@ -59,6 +59,10 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
                 .Must(contatos => contatos.Any()).WithMessage("Um Contato é obrigatório")
                 .Must(contatos => contatos.Count <= 3).WithMessage("No máximo 3 contatos")
                 .ForEach(contatos => contatos.SetValidator(new ContatoEmpresaParceiraValidation()));
+
+            RuleFor(e => e.ChaveIntegracaoSap)
+                .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio)
+                .MaximumLength(25).WithMessage(MensagensErroValidacao.TamanhaMaximo);
         }
     }
 }

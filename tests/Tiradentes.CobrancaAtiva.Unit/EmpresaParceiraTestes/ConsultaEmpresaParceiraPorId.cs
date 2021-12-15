@@ -51,7 +51,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 CNPJ: null,
                 NumeroContrato: null,
                 URL: null,
-                Status: true
+                Status: true,
+                ChaveIntegracaoSap: null
             );
 
             await InserirDadoNoBanco(model);
@@ -76,7 +77,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 CNPJ: null,
                 NumeroContrato: null,
                 URL: null,
-                Status: true
+                Status: true,
+                ChaveIntegracaoSap: null
             );
 
             await InserirDadoNoBanco(model);
