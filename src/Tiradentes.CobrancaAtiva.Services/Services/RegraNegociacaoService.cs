@@ -95,7 +95,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<RegraNegociacaoViewModel>(model);
         }
 
-        public async Task<RegraNegociacaoViewModel> VerificarRegraConflitante(RegraNegociacaoViewModel viewModel)
+        public async Task<RegraNegociacaoViewModel> VerificarRegraConflitante(CriarRegraNegociacaoViewModel viewModel)
         {
             var model = _map.Map<RegraNegociacaoModel>(viewModel);
 

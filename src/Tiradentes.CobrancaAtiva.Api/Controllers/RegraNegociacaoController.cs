@@ -39,7 +39,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
 
             if (conflito != null)
             {
-                //return await (conflito);
+                return await conflito;
             }
             return await _service.Criar(viewModel);
         }
