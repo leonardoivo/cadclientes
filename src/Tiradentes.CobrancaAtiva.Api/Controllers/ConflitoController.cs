@@ -18,7 +18,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<ConflitoViewModel>>> Buscar() =>
-             Ok(await _service.Buscar());
+        public async Task<ActionResult<IList<ConflitoViewModel>>> Buscar()
+        {
+            return Ok(await _service.Buscar());
+        }
     }
 }

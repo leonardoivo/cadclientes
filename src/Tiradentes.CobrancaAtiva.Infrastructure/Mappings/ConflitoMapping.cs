@@ -10,11 +10,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
         {
             builder.HasKey(ep => ep.Id);
 
-            builder.Property(ep => ep.EmpresaParceiraIn)
-              .HasColumnName("EmpresaParceiraIn");
+            builder.Property(ep => ep.EmpresaParceiraTentativa)
+              .HasColumnName("EmpresaParceiraTentativa");
 
-            builder.Property(ep => ep.EmpresaParceiraOu)
-             .HasColumnName("EmpresaParceiraIn");
+            builder.Property(ep => ep.EmpresaParceiraEnvio)
+             .HasColumnName("EmpresaParceiraTentativa");
 
             builder.Property(ep => ep.Matricula)
              .HasColumnName("Matricula");

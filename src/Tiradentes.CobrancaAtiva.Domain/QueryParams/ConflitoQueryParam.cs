@@ -3,9 +3,9 @@ namespace Tiradentes.CobrancaAtiva.Domain.QueryParams
 {
     public class ConflitoQueryParam : BasePaginacaoQueryParam
     {
-        public string EmpresaParceiraIn { get; set; }
+        public string EmpresaParceiraTentativa { get; set; }
 
-        public string EmpresaParceiraOu { get; set; }
+        public string EmpresaParceiraEnvio { get; set; }
 
         public string NomeLote { get; set; }
 

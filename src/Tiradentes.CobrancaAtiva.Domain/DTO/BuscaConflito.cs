@@ -7,9 +7,14 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
     public class BuscaConflito
     {
         public int Id { get; set; }
-        public EmpresaParceiraModel EmpresaParceiraIn { get; set; }
 
-        public EmpresaParceiraModel EmpresaParceiraOu { get; set; }
+        public int EmpresaParceiraTentativaID { get; set; }
+
+        public int EmpresaParceiraEnvioID { get; set; }
+
+        public EmpresaParceiraModel EmpresaParceiraTentativa { get; set; }
+
+        public EmpresaParceiraModel EmpresaParceiraEnvio { get; set; }
 
         public string NomeLote { get; set; }
 
@@ -30,8 +35,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public DateTime DataEnvio { get; set; }
 
 
-        //public IEnumerable<EmpresaParceiraModel> EmpresaParceirasIn { get; set; }
-        //public IEnumerable<EmpresaParceiraModel> EmpresaParceirasOn { get; set; }
+        public IEnumerable<EmpresaParceiraModel> EmpParceiraTentativa { get; set; }
+        public IEnumerable<EmpresaParceiraModel> EmpParceiraEnvio { get; set; }
 
         //public IEnumerable<ModalidadeModel> Modalidade { get; set; }
         //public IEnumerable<SituacaoAlunoModel> SituacoesAlunos { get; set; }

@@ -9,9 +9,9 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito
     public class ConflitoViewModel
     {
         public int Id { get; set; }
-        public EmpresaParceira EmpresaParceiraIn { get; set; }
+        public EmpresaParceira EmpresaParceiraTentativa { get; set; }
 
-        public EmpresaParceira EmpresaParceiraOu { get; set; }
+        public EmpresaParceira EmpresaParceiraEnvio { get; set; }
 
         public string NomeLote { get; set; }
 

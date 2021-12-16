@@ -22,8 +22,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Select(r => new BuscaConflito
                             {
                                 Id = r.Id,
-                                EmpresaParceiraIn = r.EmpresaParceiraIn,
-                                EmpresaParceiraOu = r.EmpresaParceiraOu,
+                                EmpresaParceiraTentativa = r.EmpresaPaceiraTentativa,
+                                EmpresaParceiraEnvio = (EmpresaParceiraModel)r.EmpresaParceiraEnvio,
                                 ModalidadeEnsino = r.ModalidadeEnsino,
                                 Nomealuno = r.Nomealuno,
                                 CPF = r.CPF,
@@ -40,7 +40,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             })
                             .AsQueryable();
 
-            //if (queryParams.EmpresaParceiraIn != 0)
+            //if (queryParams.EmpresaParceiraTentativa != 0)
             //    query = query.Where(e => e.EmpresaParceira.Id == queryParams.EmpresaParceiraId);
 
             //if (queryParams.InstituicaoId != 0)

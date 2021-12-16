@@ -8,13 +8,17 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
 {
   public  class ConflitoModel:BaseModel
     {
+        public readonly EmpresaParceiraModel EmpresaPaceiraTentativa;
 
         public ConflitoModel()
         { }
 
-        public EmpresaParceiraModel EmpresaParceiraIn { get; set; }
+        public int EmpresaParceiraTentativaID { get; set; }
 
-        public EmpresaParceiraModel EmpresaParceiraOu { get; set; }
+        public int EmpresaParceiraEnvioID { get; set; }
+        public EmpresaParceiraModel EmpParceiraTentativa { get; set; }
+
+        public EmpresaParceiraModel EmpParceiraEnvio { get; set; }
 
         public string  NomeLote { get; set; }
 
@@ -33,6 +37,11 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public bool SituacaoConflito { get; set; }
 
         public DateTime DataEnvio { get; set; }
+
+        public ICollection<EmpresaParceiraModel> EmpresaParceiraTentativa { get; private set; }
+
+        public ICollection<EmpresaParceiraModel> EmpresaParceiraEnvio{ get; private set; }
+
 
 
 
