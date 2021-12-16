@@ -283,7 +283,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (model.RegraNegociacaoTipoTitulo.Count > 0)
                 query = query.Where(e => e.RegraNegociacaoTipoTitulo.Where(c => model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)).Any());
 
-            //query = query.Where(e => e.Status == true);
+            query = query.Where(e => e.Status == true);
 
             var regraConflitante = await query.FirstOrDefaultAsync();
 
