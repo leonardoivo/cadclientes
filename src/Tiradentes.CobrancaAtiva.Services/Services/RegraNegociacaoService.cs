@@ -95,13 +95,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<RegraNegociacaoViewModel>(model);
         }
 
-        public async Task<RegraNegociacaoViewModel> VerificarRegraConflitante(CriarRegraNegociacaoViewModel viewModel)
+        public async Task<BuscaRegraNegociacaoViewModel> VerificarRegraConflitante(CriarRegraNegociacaoViewModel viewModel)
         {
             var model = _map.Map<RegraNegociacaoModel>(viewModel);
 
             var conflito = await _repositorio.VerificarRegraConflitante(model);
 
-            return _map.Map<RegraNegociacaoViewModel>(conflito);
+            return _map.Map<BuscaRegraNegociacaoViewModel>(conflito);
         }
     }
 }

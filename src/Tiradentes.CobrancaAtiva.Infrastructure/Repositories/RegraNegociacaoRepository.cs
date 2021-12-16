@@ -262,14 +262,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (model.ModalidadeId != 0)
                 query = query.Where(e => e.Modalidade.Id == model.ModalidadeId);
 
-            query = query.Where(e => (e.ValidadeInicial <= model.ValidadeInicial
-                             && e.ValidadeFinal >= model.ValidadeFinal)
+            query = query.Where(e => (e.ValidadeInicial <= model.ValidadeInicial && e.ValidadeFinal >= model.ValidadeFinal)
                              ||
-                             (e.ValidadeInicial >= model.ValidadeInicial
-                             && e.ValidadeInicial <= model.ValidadeFinal)
+                             (e.ValidadeInicial >= model.ValidadeInicial && e.ValidadeInicial <= model.ValidadeFinal)
                              ||
-                             (e.ValidadeInicial <= model.ValidadeInicial
-                             && e.ValidadeFinal <= model.ValidadeFinal)
+                             (e.ValidadeInicial <= model.ValidadeInicial && e.ValidadeFinal >= model.ValidadeInicial)
+                             ||
+                             (e.ValidadeFinal >= model.ValidadeFinal && e.ValidadeInicial <= model.ValidadeFinal)
                              );
 
             if (model.RegraNegociacaoCurso.Count > 0)
@@ -284,7 +283,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (model.RegraNegociacaoTipoTitulo.Count > 0)
                 query = query.Where(e => e.RegraNegociacaoTipoTitulo.Where(c => model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)).Any());
 
-            query = query.Where(e => e.Status == true);
+            //query = query.Where(e => e.Status == true);
 
             var regraConflitante = await query.FirstOrDefaultAsync();
 
