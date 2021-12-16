@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
+using System.Net;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
@@ -34,6 +35,12 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         public async Task<ActionResult<RegraNegociacaoViewModel>> Criar(
             [FromBody] CriarRegraNegociacaoViewModel viewModel)
         {
+            var conflito = _service.VerificarRegraConflitante(viewModel);
+
+            if (conflito.Result != null)
+            {
+                return StatusCode((int)HttpStatusCode.NonAuthoritativeInformation, conflito);
+            }
             return await _service.Criar(viewModel);
         }
 

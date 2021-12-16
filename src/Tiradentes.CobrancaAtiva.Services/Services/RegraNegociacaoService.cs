@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
@@ -93,6 +93,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _repositorio.Alterar(model);
 
             return _map.Map<RegraNegociacaoViewModel>(model);
+        }
+
+        public async Task<BuscaRegraNegociacaoViewModel> VerificarRegraConflitante(CriarRegraNegociacaoViewModel viewModel)
+        {
+            var model = _map.Map<RegraNegociacaoModel>(viewModel);
+
+            var conflito = await _repositorio.VerificarRegraConflitante(model);
+
+            return _map.Map<BuscaRegraNegociacaoViewModel>(conflito);
         }
     }
 }
