@@ -1,12 +1,18 @@
 ﻿using System;
+using AutoMapper;
+using System.Collections.Generic;
+using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Curso;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Instituicao;
-using Tiradentes.CobrancaAtiva.Application.ViewModels.Modalidade;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Situacao;
+using Tiradentes.CobrancaAtiva.Domain.Interfaces;
+using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 
 
 namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito
 {
-    public class ConflitoViewModel
+    public class ConflitoViewModel: IConflitoService
     {
         public int Id { get; set; }
         public EmpresaParceira EmpresaParceiraTentativa { get; set; }

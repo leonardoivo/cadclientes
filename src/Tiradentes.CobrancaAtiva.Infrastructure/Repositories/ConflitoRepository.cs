@@ -40,6 +40,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             })
                             .AsQueryable();
 
+
+
             if (!string.IsNullOrEmpty(queryParams.ModalidadeEnsino))
                 query = query.Where(e => e.ModalidadeEnsino.ToLower().Contains(queryParams.ModalidadeEnsino.ToLower()));
             if (!string.IsNullOrEmpty(queryParams.CPF))
@@ -60,8 +62,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.ValorConflito == queryParams.ValorConflito);
             if (!string.IsNullOrEmpty(queryParams.Nomealuno))
                 query = query.Where(e => e.Nomealuno.ToLower().Contains(queryParams.Nomealuno.ToLower()));
-
-
 
             query = query.Ordenar(queryParams.OrdenarPor, "DataEnvio", queryParams.SentidoOrdenacao == "desc");
 

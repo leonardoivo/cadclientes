@@ -5,6 +5,9 @@ using Tiradentes.CobrancaAtiva.Domain.Models;
 namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
     public interface IConflitoRepository : IBaseRepository<ConflitoModel>
-    {
+
+
+                Task<ModelPaginada<BuscaParametroEnvio>> Buscar(ParametroEnvioQueryParam queryParam);
+
     }
 }
