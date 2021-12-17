@@ -36,27 +36,34 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .AsQueryable();
 
 
+            if (queryParams.EmpresasParceiraEnvio.Length > 0)
+                query = query.Where(e => queryParams.EmpresasParceiraEnvio.Contains(e.Id));
+            if (queryParams.EmpresasParceiraTentativa.Length > 0)
+                query = query.Where(e => queryParams.EmpresasParceiraTentativa.Contains(e.Id));
 
-            if (!string.IsNullOrEmpty(queryParams.ModalidadeEnsino))
-                query = query.Where(e => e.ModalidadeEnsino.ToLower().Contains(queryParams.ModalidadeEnsino.ToLower()));
+
+
+            if (queryParams.Modalidades.Length > 0)
+                query = query.Where(e => queryParams.Modalidades.Contains(e.Modalidade.Id));
             if (!string.IsNullOrEmpty(queryParams.CPF))
                 query = query.Where(e => e.CPF.ToLower().Contains(queryParams.CPF.ToLower()));
 
             if (queryParams.DataEnvio.HasValue && queryParams.DataEnvio != null)
                 query = query.Where(e => e.DataEnvio == queryParams.DataEnvio);
 
-            if (queryParams.Matricula == 0 && queryParams.Matricula != null)
-                query = query.Where(e => e.Matricula == queryParams.Matricula);
+            if (queryParams.Matriculas.Length > 0)
+                query = query.Where(e => queryParams.Matriculas.Contains(e.Matricula));
 
             if (!string.IsNullOrEmpty(queryParams.NomeLote))
                 query = query.Where(e => e.NomeLote.ToLower().Contains(queryParams.NomeLote.ToLower()));
 
-            if (!string.IsNullOrEmpty(queryParams.ParcelaConflito))
-                query = query.Where(e => e.ParcelaConflito.ToLower().Contains(queryParams.ParcelaConflito.ToLower()));
-            if (queryParams.ValorConflito == 0 && queryParams.ValorConflito != null)
-                query = query.Where(e => e.ValorConflito == queryParams.ValorConflito);
-            if (!string.IsNullOrEmpty(queryParams.Nomealuno))
-                query = query.Where(e => e.Nomealuno.ToLower().Contains(queryParams.Nomealuno.ToLower()));
+            if (!string.IsNullOrEmpty(queryParams.Parcela))
+                query = query.Where(e => e.Parcela.ToLower().Contains(queryParams.Parcela.ToLower()));
+            if (queryParams.Valor == 0 && queryParams.Valor != null)
+                query = query.Where(e => e.Valor == queryParams.Valor);
+
+            if (!string.IsNullOrEmpty(queryParams.NomeAluno))
+                query = query.Where(e => e.NomeAluno.ToLower().Contains(queryParams.NomeAluno.ToLower()));
 
             query = query.Ordenar(queryParams.OrdenarPor, "DataEnvio", queryParams.SentidoOrdenacao == "desc");
 
