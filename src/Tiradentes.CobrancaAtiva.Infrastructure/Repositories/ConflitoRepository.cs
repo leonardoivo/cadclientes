@@ -40,53 +40,28 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             })
                             .AsQueryable();
 
-            //if (queryParams.EmpresaParceiraTentativa != 0)
-            //    query = query.Where(e => e.EmpresaParceira.Id == queryParams.EmpresaParceiraId);
+            if (!string.IsNullOrEmpty(queryParams.ModalidadeEnsino))
+                query = query.Where(e => e.ModalidadeEnsino.ToLower().Contains(queryParams.ModalidadeEnsino.ToLower()));
+            if (!string.IsNullOrEmpty(queryParams.CPF))
+                query = query.Where(e => e.CPF.ToLower().Contains(queryParams.CPF.ToLower()));
 
-            //if (queryParams.InstituicaoId != 0)
-            //    query = query.Where(e => e.Instituicao.Id == queryParams.InstituicaoId);
+            if (queryParams.DataEnvio.HasValue && queryParams.DataEnvio != null)
+                query = query.Where(e => e.DataEnvio == queryParams.DataEnvio);
 
-            //if (queryParams.DiaEnvio.HasValue && queryParams.DiaEnvio != 0)
-            //    query = query.Where(e => e.DiaEnvio == queryParams.DiaEnvio);
+            if (queryParams.Matricula == 0 && queryParams.Matricula != null)
+                query = query.Where(e => e.Matricula == queryParams.Matricula);
 
-            //if (queryParams.DataEnvio.HasValue)
-            //    query = query.Where(e => e.DataEnvio.Day == queryParams.DataEnvio.Value.Day &&
-            //        e.DataEnvio.Month == queryParams.DataEnvio.Value.Month &&
-            //        e.DataEnvio.Year == queryParams.DataEnvio.Value.Year);
+            if (!string.IsNullOrEmpty(queryParams.NomeLote))
+                query = query.Where(e => e.NomeLote.ToLower().Contains(queryParams.NomeLote.ToLower()));
+
+            if (!string.IsNullOrEmpty(queryParams.ParcelaConflito))
+                query = query.Where(e => e.ParcelaConflito.ToLower().Contains(queryParams.ParcelaConflito.ToLower()));
+            if (queryParams.ValorConflito == 0 && queryParams.ValorConflito != null)
+                query = query.Where(e => e.ValorConflito == queryParams.ValorConflito);
+            if (!string.IsNullOrEmpty(queryParams.Nomealuno))
+                query = query.Where(e => e.Nomealuno.ToLower().Contains(queryParams.Nomealuno.ToLower()));
 
 
-            //if (queryParams.CPF)
-            //    query = query.Where(e => e.ValidadeFinal.Day == queryParams.ValidadeFinal.Value.Day &&
-            //        e.ValidadeFinal.Month == queryParams.ValidadeFinal.Value.Month &&
-            //        e.ValidadeFinal.Year == queryParams.ValidadeFinal.Value.Year);
-
-            //if (queryParams.InadimplenciaInicial.HasValue)
-            //    query = query.Where(e => e.InadimplenciaInicial.Day == queryParams.InadimplenciaInicial.Value.Day
-            //        && e.InadimplenciaInicial.Month == queryParams.InadimplenciaInicial.Value.Month
-            //        && e.InadimplenciaInicial.Year == queryParams.InadimplenciaInicial.Value.Year);
-
-            //if (queryParams.InadimplenciaFinal.HasValue)
-            //    query = query.Where(e => e.InadimplenciaFinal.Day == queryParams.InadimplenciaFinal.Value.Day
-            //        && e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month
-            //        && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);
-
-            //if (queryParams.Modalidades.Length > 0)
-            //    query = query.Where(e => queryParams.Modalidades.Contains(e.Modalidade.Id));
-
-            //if (queryParams.Cursos.Length > 0)
-            //    query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
-
-            //if (queryParams.TitulosAvulsos.Length > 0)
-            //    query = query.Where(e => e.TitulosAvulsos.Where(c => queryParams.TitulosAvulsos.Contains(c.Id)).Any());
-
-            //if (queryParams.SituacoesAlunos.Length > 0)
-            //    query = query.Where(e => e.SituacoesAlunos.Where(c => queryParams.SituacoesAlunos.Contains(c.Id)).Any());
-
-            //if (queryParams.TiposTitulos.Length > 0)
-            //    query = query.Where(e => e.TiposTitulos.Where(c => queryParams.TiposTitulos.Contains(c.Id)).Any());
-
-            //if (queryParams.Status.HasValue)
-            //    query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
 
             query = query.Ordenar(queryParams.OrdenarPor, "DataEnvio", queryParams.SentidoOrdenacao == "desc");
 
