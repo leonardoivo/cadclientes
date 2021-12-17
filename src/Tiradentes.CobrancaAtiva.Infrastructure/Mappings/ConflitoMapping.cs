@@ -10,34 +10,40 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
         {
             builder.HasKey(ep => ep.Id);
 
-            builder.Property(ep => ep.EmpresaParceiraTentativa)
-              .HasColumnName("EmpresaParceiraTentativa");
-
-            builder.Property(ep => ep.EmpresaParceiraEnvio)
-             .HasColumnName("EmpresaParceiraTentativa");
-
-            builder.Property(ep => ep.Matricula)
-             .HasColumnName("Matricula");
-
-            builder.Property(ep => ep.ModalidadeEnsino)
-            .HasColumnName("ModalidadeEnsino");
-
-            builder.Property(ep => ep.Nomealuno)
-           .HasColumnName("Nomealuno");
+            builder.Property(ep => ep.Id)
+                .HasColumnName("COD_CONFLITO");
 
             builder.Property(ep => ep.NomeLote)
-           .HasColumnName("NomeLote");
+              .HasColumnName("NOME_LOTE");
+            
+            builder.Property(ep => ep.EmpresaParceiraTentativaId)
+              .HasColumnName("COD_EMPRESA_PARCEIRA_TENTATIVA");
 
-            builder.Property(ep => ep.ParcelaConflito)
-           .HasColumnName("ParcelaConflito");
+            builder.Property(ep => ep.EmpresaParceiraEnvioId)
+              .HasColumnName("COD_EMPRESA_PARCEIRA_ENVIO");
 
-            builder.Property(ep => ep.SituacaoConflito)
-           .HasColumnName("SituacaoConflito");
+            builder.Property(ep => ep.NomeAluno)
+              .HasColumnName("NOME_ALUNO");
 
-            builder.Property(ep => ep.ValorConflito)
-           .HasColumnName("ValorConflito");
+            builder.Property(ep => ep.Matricula)
+              .HasColumnName("MATRICULA");
 
-            builder.ToTable("Conflito");
+            builder.Property(ep => ep.CPF)
+              .HasColumnName("CPF");
+
+            builder.Property(ep => ep.ModalidadeId)
+               .HasColumnName("COD_MODALIDADE");
+
+            builder.Property(ep => ep.Parcela)
+               .HasColumnName("PARCELA");
+
+            // builder.Property(ep => ep.SituacaoConflito)
+            //.HasColumnName("SituacaoConflito");
+
+            builder.Property(ep => ep.Valor)
+               .HasColumnName("VALOR");
+
+            builder.ToTable("CONFLITOS");
         }
     }
 }

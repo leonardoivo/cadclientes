@@ -2,6 +2,7 @@
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Banco;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Curso;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Endereco;
@@ -71,6 +72,8 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<ParametroEnvioModel, ParametroEnvioViewModel>();
             CreateMap<BuscaParametroEnvio, BuscaParametroEnvioViewModel>();
+            
+            CreateMap<ConflitoModel, ConflitoViewModel>();
         }
     }
 }

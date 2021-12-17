@@ -11,17 +11,17 @@ namespace Tiradentes.CobrancaAtiva.Domain.QueryParams
 
         public int Matricula { get; set; }
 
-        public string Nomealuno { get; set; }
+        public string NomeAluno { get; set; }
 
         public string CPF { get; set; }
 
-        public string ModalidadeEnsino { get; set; }
+        public string Modalidade { get; set; }
 
-        public string ParcelaConflito { get; set; }
+        public string Parcela { get; set; }
 
-        public float ValorConflito { get; set; }
+        public float Valor { get; set; }
 
-        public bool SituacaoConflito { get; set; }
+        //public bool SituacaoConflito { get; set; }
 
         public DateTime? DataEnvio { get; set; }
     }

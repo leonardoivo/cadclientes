@@ -22,21 +22,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Select(r => new BuscaConflito
                             {
                                 Id = r.Id,
-                                EmpresaParceiraTentativa = r.EmpresaPaceiraTentativa,
-                                EmpresaParceiraEnvio = (EmpresaParceiraModel)r.EmpresaParceiraEnvio,
-                                ModalidadeEnsino = r.ModalidadeEnsino,
-                                Nomealuno = r.Nomealuno,
+                                EmpresaParceiraTentativa = r.EmpresaParceiraTentativa,
+                                EmpresaParceiraEnvio = r.EmpresaParceiraEnvio,
+                                Modalidade = r.Modalidade,
+                                NomeAluno = r.NomeAluno,
                                 CPF = r.CPF,
                                 Matricula = r.Matricula,
                                 NomeLote = r.NomeLote,
-                                ParcelaConflito = r.ParcelaConflito,
-                                SituacaoConflito = r.SituacaoConflito,
-                                ValorConflito = r.ValorConflito,
+                                Parcela = r.Parcela,
+                                Valor = r.Valor,
                                 DataEnvio = r.DataEnvio
-                                //Cursos = r.ConflitoCurso.Select(x => x.Curso),
-                                //TitulosAvulsos = r.ConflitoTituloAvulso.Select(x => x.TituloAvulso),
-                                //SituacoesAlunos = r.ConflitoSituacaoAluno.Select(x => x.SituacaoAluno),
-                                //TiposTitulos = r.ConflitoTipoTitulo.Select(x => x.TipoTitulo)
                             })
                             .AsQueryable();
 
