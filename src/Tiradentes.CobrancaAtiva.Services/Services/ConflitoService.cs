@@ -8,8 +8,9 @@ using AutoMapper;
 using System.Threading.Tasks;
 using System.Collections.Generic;
 using Tiradentes.CobrancaAtiva.Services;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
 
-namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito
+namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class ConflitoService : BaseService, IConflitoService
     {

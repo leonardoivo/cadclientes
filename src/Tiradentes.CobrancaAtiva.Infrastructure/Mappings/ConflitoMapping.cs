@@ -43,6 +43,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Valor)
                .HasColumnName("VALOR");
 
+            builder.Property(ep => ep.DataEnvio)
+               .HasColumnName("DATA_ENVIO");
+
             builder.ToTable("CONFLITOS");
         }
     }
