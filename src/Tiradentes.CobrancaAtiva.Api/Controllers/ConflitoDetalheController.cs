@@ -20,10 +20,10 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _service = service;
         }
 
-        [HttpGet("{id:int}")]
-        public async Task<ActionResult<IList<ConflitoDetalheViewModel>>> BuscarPorIdConflitoComRelacionamentos(int id)
+        [HttpGet("{idConflito:int}")]
+        public async Task<ActionResult<IList<ConflitoDetalheViewModel>>> BuscarPorIdConflitoComRelacionamentos(int idConflito)
         {
-            return Ok(await _service.BuscarPorIdConflitoComRelacionamentos(id));
+            return Ok(await _service.BuscarPorIdConflitoComRelacionamentos(idConflito));
         }
     }
 }

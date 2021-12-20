@@ -71,6 +71,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new ParametroEnvioTipoTituloModel(c))));
 
             CreateMap<ConflitoViewModel, ConflitoModel>();
+            CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();
         }
     }
 }

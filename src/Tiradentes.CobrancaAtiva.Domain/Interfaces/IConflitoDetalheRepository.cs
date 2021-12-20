@@ -9,7 +9,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     public interface IConflitoDetalheRepository : IBaseRepository<ConflitoDetalheModel>
     {
 
-        Task<ConflitoDetalheModel> BuscarPorIdConflitoComRelacionamentos(int id);
+        Task<IList<ConflitoDetalheModel>> BuscarPorIdConflitoComRelacionamentos(int idConflito);
 
     }
 }

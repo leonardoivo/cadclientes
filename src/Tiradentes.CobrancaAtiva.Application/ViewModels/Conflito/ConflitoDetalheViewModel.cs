@@ -16,6 +16,6 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito
         public string TipoConflito { get; set; }
         public DateTime DataEnvio { get; set; }
 
-        public ConflitoViewModel Conflito { get; set; }
+        public string Modalidade { get; set; }
     }
 }
