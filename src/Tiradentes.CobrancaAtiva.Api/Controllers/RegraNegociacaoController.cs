@@ -39,7 +39,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
 
             if (conflito.Result != null)
             {
-                return StatusCode((int)HttpStatusCode.NonAuthoritativeInformation, conflito);
+                return StatusCode((int)HttpStatusCode.NonAuthoritativeInformation, conflito.Result);
             }
             return await _service.Criar(viewModel);
         }
