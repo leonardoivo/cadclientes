@@ -1,7 +1,8 @@
 ﻿using System;
-namespace Tiradentes.CobrancaAtiva.Domain.QueryParams
+
+namespace Tiradentes.CobrancaAtiva.Application.QueryParams
 {
-    public class ConflitoQueryParam : BasePaginacaoQueryParam
+    public class ConsultaConflitoQueryParam : BasePaginacaoQueryParam
     {
         public int[] EmpresasParceiraTentativa { get; set; }
 
@@ -12,6 +13,5 @@ namespace Tiradentes.CobrancaAtiva.Domain.QueryParams
         public string NomeAluno { get; set; }
 
         public string CPF { get; set; }
-
     }
 }

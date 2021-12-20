@@ -31,21 +31,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.CPF)
               .HasColumnName("CPF");
 
-            builder.Property(ep => ep.ModalidadeId)
-               .HasColumnName("COD_MODALIDADE");
-
-            builder.Property(ep => ep.Parcela)
-               .HasColumnName("PARCELA");
-
-            // builder.Property(ep => ep.SituacaoConflito)
-            //.HasColumnName("SituacaoConflito");
-
-            builder.Property(ep => ep.Valor)
-               .HasColumnName("VALOR");
-
-            builder.Property(ep => ep.DataEnvio)
-               .HasColumnName("DATA_ENVIO");
-
             builder.ToTable("CONFLITOS");
         }
     }
