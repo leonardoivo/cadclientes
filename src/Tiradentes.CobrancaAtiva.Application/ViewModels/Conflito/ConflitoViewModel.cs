@@ -16,7 +16,6 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito
 
         public string Parcela { get; set; }
         public decimal Valor { get; set; }
-        //public bool Situacao { get; set; }
         public DateTime DataEnvio { get; set; }
 
         public EmpresaParceiraViewModel EmpresaParceiraTentativa { get; set; }

@@ -6,15 +6,10 @@ using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
-    public interface IConflitoRepository : IBaseRepository<ConflitoModel> {
-
+    public interface IConflitoRepository : IBaseRepository<ConflitoModel>
+    {
 
         Task<ModelPaginada<BuscaConflito>> Buscar(ConflitoQueryParam queryParam);
 
     }
-
-
-   
-
-    
 }

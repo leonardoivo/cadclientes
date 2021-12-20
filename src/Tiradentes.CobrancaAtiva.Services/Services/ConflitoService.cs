@@ -26,13 +26,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _map = map;
         }
 
-        public async Task<IList<ConflitoViewModel>> Buscar(ConflitoQueryParam queryParam)
-        {
-            var conflitos = await _repositorio.Buscar();
-
-            return _map.Map<List<ConflitoViewModel>>(conflitos);
-        }
-
         public async Task<ViewModelPaginada<ConflitoViewModel>> Buscar(ConflitoQueryParam queryParam)
         {
             var regraQueryParam = _map.Map<ConflitoQueryParam>(queryParam);

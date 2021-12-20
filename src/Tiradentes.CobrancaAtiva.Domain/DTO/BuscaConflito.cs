@@ -16,7 +16,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public string CPF { get; set; }
         public string Parcela { get; set; }
         public decimal Valor { get; set; }
-        // public bool SituacaoConflito { get; set; }
         public DateTime DataEnvio { get; set; }
     }
 }

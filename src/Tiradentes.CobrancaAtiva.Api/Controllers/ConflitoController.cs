@@ -10,7 +10,7 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
     [ApiController]
-    [Route("Conflito")]
+    [Route("conflito")]
     public class ConflitoController : ControllerBase
     {
         private readonly IConflitoService _service;
@@ -19,8 +19,6 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         {
             _service = service;
         }
-
-     
 
         [HttpGet]
         public async Task<ActionResult<IList<ConflitoViewModel>>> Buscar([FromQuery] ConflitoQueryParam queryParam)

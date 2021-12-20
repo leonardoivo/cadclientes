@@ -19,9 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.QueryParams
 
         public string Parcela { get; set; }
 
-        public decimal?  Valor { get; set; }
-
-        //public bool SituacaoConflito { get; set; }
+        public decimal? Valor { get; set; }
 
         public DateTime? DataEnvio { get; set; }
     }
