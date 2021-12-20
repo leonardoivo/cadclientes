@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
+using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 
@@ -19,11 +20,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _service = service;
         }
 
-        [HttpGet]
-        public async Task<ActionResult<IList<ConflitoViewModel>>> Buscar()
-        {
-            return Ok(await _service.Buscar());
-        }
+     
 
         [HttpGet]
         public async Task<ActionResult<IList<ConflitoViewModel>>> Buscar([FromQuery] ConflitoQueryParam queryParam)

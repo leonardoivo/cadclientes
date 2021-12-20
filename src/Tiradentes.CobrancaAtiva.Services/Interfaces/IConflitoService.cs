@@ -7,6 +7,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
     public interface IConflitoService : IDisposable
     {
-        Task<IList<ConflitoViewModel>> Buscar();
+        Task<IList<ConflitoViewModel>> Buscar(Domain.QueryParams.ConflitoQueryParam queryParam);
     }
 }
