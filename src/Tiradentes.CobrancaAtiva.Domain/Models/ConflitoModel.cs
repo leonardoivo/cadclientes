@@ -17,14 +17,10 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public int Matricula { get; set; }
         public string NomeAluno { get; set; }
         public string CPF { get; set; }
-        public int ModalidadeId { get; set; }
-
-        public string Parcela { get; set; }
-        public decimal Valor { get; set; }
-        public DateTime DataEnvio { get; set; }
 
         public EmpresaParceiraModel EmpresaParceiraTentativa { get; set; }
         public EmpresaParceiraModel EmpresaParceiraEnvio { get; set; }
-        public ModalidadeModel Modalidade { get; set; }
+
+        public ICollection<ConflitoDetalheModel> ConflitoDetalhes { get; set; }
     }
 }
