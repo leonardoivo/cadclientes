@@ -13,6 +13,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ConflitoDetalheModel> builder)
         {
+            builder.HasKey(ep => ep.Id);
+
+            builder.Property(ep => ep.Id)
+                .HasColumnName("COD_CONFLITO_DETALHE");
+
             builder.Property(cd => cd.ConflitoId)
               .HasColumnName("COD_CONFLITO");
 
@@ -24,6 +29,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 
             builder.Property(cd => cd.Valor)
                .HasColumnName("VALOR");
+
+            builder.Property(cd => cd.TipoConflito)
+               .HasColumnName("TIPO_CONFLITO")
+               .HasConversion<int>();
 
             builder.Property(cd => cd.DataEnvio)
                .HasColumnName("DATA_ENVIO");

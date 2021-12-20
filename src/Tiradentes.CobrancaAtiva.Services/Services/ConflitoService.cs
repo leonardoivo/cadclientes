@@ -12,6 +12,7 @@ using System.Collections.Generic;
 using Tiradentes.CobrancaAtiva.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
+using Tiradentes.CobrancaAtiva.Application.QueryParams;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
 {
@@ -26,14 +27,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _map = map;
         }
 
-        public async Task<ViewModelPaginada<ConflitoViewModel>> Buscar(ConflitoQueryParam queryParam)
+        public async Task<ViewModelPaginada<BuscaConflitoViewModel>> Buscar(ConsultaConflitoQueryParam queryParam)
         {
             var regraQueryParam = _map.Map<ConflitoQueryParam>(queryParam);
 
             var list = await _repositorio.Buscar(regraQueryParam);
 
-            return _map.Map<ViewModelPaginada<ConflitoViewModel>>(list);
+            return _map.Map<ViewModelPaginada<BuscaConflitoViewModel>>(list);
         }
+
         public void Dispose()
         {
             _repositorio?.Dispose();

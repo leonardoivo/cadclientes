@@ -21,7 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<ConflitoViewModel>>> Buscar([FromQuery] ConflitoQueryParam queryParam)
+        public async Task<ActionResult<IList<BuscaConflitoViewModel>>> Buscar([FromQuery] ConsultaConflitoQueryParam queryParam)
         {
             return Ok(await _service.Buscar(queryParam));
         }

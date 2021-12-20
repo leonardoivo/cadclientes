@@ -28,7 +28,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 CPF = r.CPF,
                                 Matricula = r.Matricula,
                                 NomeLote = r.NomeLote,
-                                ConflitoDetalhes = r.ConflitoDetalhes.OrderByDescending(x=>x.DataEnvio)
+                                ConflitoDetalhes = r.ConflitoDetalhes
                             })
                             .AsQueryable();
 

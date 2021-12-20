@@ -7,7 +7,7 @@ using Tiradentes.CobrancaAtiva.Domain.Enums;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Models
 {
-    public class ConflitoDetalheModel 
+    public class ConflitoDetalheModel : BaseModel
     {
         public ConflitoDetalheModel()
         { }
