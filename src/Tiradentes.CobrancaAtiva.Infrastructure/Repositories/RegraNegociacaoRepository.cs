@@ -245,13 +245,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             query = query.Where(e => e.Instituicao == null);
 
-            query = query.Where(e => (e.ValidadeInicial <= model.ValidadeInicial && e.ValidadeFinal >= model.ValidadeFinal)
+            query = query.Where(e => (e.ValidadeInicial.Date <= model.ValidadeInicial.Date && e.ValidadeFinal.Date >= model.ValidadeFinal.Date)
                              ||
-                             (e.ValidadeInicial >= model.ValidadeInicial && e.ValidadeInicial <= model.ValidadeFinal)
+                             (e.ValidadeInicial.Date >= model.ValidadeInicial.Date && e.ValidadeInicial.Date <= model.ValidadeFinal.Date)
                              ||
-                             (e.ValidadeInicial <= model.ValidadeInicial && e.ValidadeFinal >= model.ValidadeInicial)
+                             (e.ValidadeInicial.Date <= model.ValidadeInicial.Date && e.ValidadeFinal.Date >= model.ValidadeInicial.Date)
                              ||
-                             (e.ValidadeFinal >= model.ValidadeFinal && e.ValidadeInicial <= model.ValidadeFinal)
+                             (e.ValidadeFinal.Date >= model.ValidadeFinal.Date && e.ValidadeInicial.Date <= model.ValidadeFinal.Date)
                              );
 
             query = query.Where(e => e.PercentJurosMultaAVista != model.PercentJurosMultaAVista
