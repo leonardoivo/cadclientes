@@ -27,10 +27,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _map = map;
         }
 
-        public async Task<IList<ConflitoDetalheViewModel>> BuscarPorIdComRelacionamentos(int id)
+        public async Task<IList<ConflitoDetalheViewModel>> BuscarPorIdConflitoComRelacionamentos(int id)
         {
 
-            var list = await _repositorio.BuscarPorIdComRelacionamentos(id);
+            var list = await _repositorio.BuscarPorIdConflitoComRelacionamentos(id);
 
             return _map.Map<List<ConflitoDetalheViewModel>>(list);
         }

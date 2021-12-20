@@ -48,7 +48,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IRegraNegociacaoService, RegraNegociacaoService>();
             services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
             services.AddScoped<IParametroEnvioService, ParametroEnvioService>();
-            services.AddScoped<IConflitoService, ConflitoService>();]
+            services.AddScoped<IConflitoService, ConflitoService>();
             services.AddScoped<IConflitoDetalheService, ConflitoDetalheService>();
             #endregion
 

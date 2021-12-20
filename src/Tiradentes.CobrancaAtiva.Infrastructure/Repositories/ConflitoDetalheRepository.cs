@@ -16,12 +16,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public ConflitoDetalheRepository(CobrancaAtivaDbContext context) : base(context)
         { }
 
-        public async Task<ConflitoDetalheModel> BuscarPorIdComRelacionamentos(int id)
+        public async Task<ConflitoDetalheModel> BuscarPorIdConflitoComRelacionamentos(int id)
         {
             return await DbSet
                    .AsNoTracking()
                    .Include(e => e.Modalidade)
-                   .FirstOrDefaultAsync(e => e.Id == id);
+                   .FirstOrDefaultAsync(e => e.ConflitoId == id);
 
         }
     }

@@ -21,9 +21,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet("{id:int}")]
-        public async Task<ActionResult<IList<ConflitoDetalheViewModel>>> BuscarPorIdComRelacionamentos(int id)
+        public async Task<ActionResult<IList<ConflitoDetalheViewModel>>> BuscarPorIdConflitoComRelacionamentos(int id)
         {
-            return Ok(await _service.BuscarPorIdComRelacionamentos(id));
+            return Ok(await _service.BuscarPorIdConflitoComRelacionamentos(id));
         }
     }
 }

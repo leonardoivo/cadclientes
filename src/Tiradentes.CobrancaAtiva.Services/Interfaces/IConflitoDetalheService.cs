@@ -10,6 +10,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
     public interface IConflitoDetalheService : IDisposable
     {
-        Task<IList<ConflitoDetalheViewModel>> BuscarPorIdComRelacionamentos(int id);
+        Task<IList<ConflitoDetalheViewModel>> BuscarPorIdConflitoComRelacionamentos(int id);
     }
 }
