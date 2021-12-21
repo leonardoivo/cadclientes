@@ -19,12 +19,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         protected readonly IMapper _map;
 
         public RegraNegociacaoService(IRegraNegociacaoRepository repositorio, IMapper map)
-        { 
+        {
             _map = map;
             _repositorio = repositorio;
         }
 
-        public async Task InativarRegrasNegociacao() 
+        public async Task InativarRegrasNegociacao()
         {
             var regrasParaInativar = await _repositorio.ListarRegrasParaInativar();
 
@@ -35,7 +35,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
         }
 
-        public async Task AtivarRegrasNegociacao() 
+        public async Task AtivarRegrasNegociacao()
         {
             var regrasParaInativar = await _repositorio.ListarRegrasParaAtivar();
 
@@ -77,7 +77,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var modelBanco = await _repositorio.BuscarPorId(viewModel.Id);
 
-            if (modelBanco == null) 
+            if (modelBanco == null)
             {
                 EntidadeNaoEncontrada("Regra de negociação não cadastrada.");
                 return null;
@@ -96,6 +96,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         }
 
         public async Task<RegraNegociacaoViewModel> VerificarRegraConflitante(CriarRegraNegociacaoViewModel viewModel)
+        {
+            var model = _map.Map<RegraNegociacaoModel>(viewModel);
+
+            var conflito = await _repositorio.VerificarRegraConflitante(model);
+
+            return _map.Map<RegraNegociacaoViewModel>(conflito);
+        }
+        public async Task<RegraNegociacaoViewModel> VerificarRegraConflitante(AlterarRegraNegociacaoViewModel viewModel)
         {
             var model = _map.Map<RegraNegociacaoModel>(viewModel);
 

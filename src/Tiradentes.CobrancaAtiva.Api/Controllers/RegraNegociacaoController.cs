@@ -48,6 +48,13 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         public async Task<ActionResult<RegraNegociacaoViewModel>> Alterar(
             [FromBody] AlterarRegraNegociacaoViewModel viewModel)
         {
+            var conflito = _service.VerificarRegraConflitante(viewModel);
+
+            if (conflito.Result != null)
+            {
+                return StatusCode((int)HttpStatusCode.NonAuthoritativeInformation, conflito.Result);
+            }
+
             return await _service.Alterar(viewModel);
         }
     }
