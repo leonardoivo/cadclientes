@@ -243,7 +243,18 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Include(r => r.Modalidade)
                             .AsQueryable();
 
-            query = query.Where(e => e.Instituicao == null);
+            if (model.Instituicao != null)
+            {
+                query = query.Where(e => e.Instituicao == null);
+            }
+            else
+            {
+                query = query.Where(e => e.Instituicao != null);
+
+                if (model.RegraNegociacaoCurso.Count > 0)
+                    query = query.Where(e => e.RegraNegociacaoCurso.Where(c => model.RegraNegociacaoCurso.Select(x => x.Id).Contains(c.Id)).Any());
+            }
+
 
             query = query.Where(e => (e.ValidadeInicial.Date <= model.ValidadeInicial.Date && e.ValidadeFinal.Date >= model.ValidadeFinal.Date)
                              ||
