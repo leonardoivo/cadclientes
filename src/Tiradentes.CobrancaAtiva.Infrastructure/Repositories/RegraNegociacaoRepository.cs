@@ -91,11 +91,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             if (regrasCadastradas.Count > 0)
             {
-                regrasCadastradas = regrasCadastradas.AsQueryable()
-                    .Where(e => e.Instituicao.Id == model.InstituicaoId)
-                    .Where(e => e.Cursos.Where(c => model.RegraNegociacaoCurso.Select(c => c.CursoId).Contains(c.Id)).Any())
-                    .Where(e => e.TiposTitulos.Where(c => model.RegraNegociacaoTipoTitulo.Select(c => c.TipoTituloId).Contains(c.Id)).Any())
-                    .ToList();
+                regrasCadastradas = regrasCadastradas.AsQueryable().Where(e => (e.Instituicao == null ? e.Instituicao == null : (e.Instituicao.Id == model.InstituicaoId))).ToList();
+
+                 if(model.RegraNegociacaoCurso.Count > 0)    
+                     regrasCadastradas = regrasCadastradas.Where(e => e.Cursos.Where(c => model.RegraNegociacaoCurso.Select(c => c.CursoId).Contains(c.Id)).Any()).ToList();
+                 
+                 if(model.RegraNegociacaoTipoTitulo.Count > 0)   
+                     regrasCadastradas = regrasCadastradas.Where(e => e.TiposTitulos.Where(c => model.RegraNegociacaoTipoTitulo.Select(c => c.TipoTituloId).Contains(c.Id)).Any()).ToList();
 
                 if (regrasCadastradas.Count > 0)
                     throw new System.Exception("Regra já cadastrada!");
@@ -242,19 +244,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             .Include(r => r.Instituicao)
                             .Include(r => r.Modalidade)
                             .AsQueryable();
-
-            if (model.Instituicao != null)
-            {
-                query = query.Where(e => e.Instituicao == null);
-            }
-            else
-            {
-                query = query.Where(e => e.Instituicao != null);
-
-                if (model.RegraNegociacaoCurso.Count > 0)
-                    query = query.Where(e => e.RegraNegociacaoCurso.Where(c => model.RegraNegociacaoCurso.Select(x => x.Id).Contains(c.Id)).Any());
-            }
-
 
             query = query.Where(e => (e.ValidadeInicial.Date <= model.ValidadeInicial.Date && e.ValidadeFinal.Date >= model.ValidadeFinal.Date)
                              ||

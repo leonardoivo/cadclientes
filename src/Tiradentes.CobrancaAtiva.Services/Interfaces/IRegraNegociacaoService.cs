@@ -16,5 +16,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task<RegraNegociacaoViewModel> Criar(CriarRegraNegociacaoViewModel viewModel);
         Task<RegraNegociacaoViewModel> Alterar(AlterarRegraNegociacaoViewModel viewModel);
         Task<RegraNegociacaoViewModel> VerificarRegraConflitante(CriarRegraNegociacaoViewModel viewModel);
+        Task<RegraNegociacaoViewModel> VerificarRegraConflitante(AlterarRegraNegociacaoViewModel viewModel);
     }
 }
