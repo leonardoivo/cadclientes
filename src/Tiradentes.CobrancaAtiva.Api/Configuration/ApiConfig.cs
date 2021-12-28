@@ -2,7 +2,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Tiradentes.CobrancaAtiva.Application.Middlewares;
+using Tiradentes.CobrancaAtiva.Api.Middlewares;
 
 namespace Tiradentes.CobrancaAtiva.Api.Configuration
 {
@@ -39,7 +39,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
 
             app.UseAuthorization();
 
-            app.UseMiddleware<ExcpetionMiddleware>();
+            app.UseMiddleware<ExceptionMiddleware>();
 
             app.UseCors(AllowAllOrigins);
 

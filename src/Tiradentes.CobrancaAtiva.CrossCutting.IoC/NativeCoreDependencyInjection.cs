@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -29,6 +29,10 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IParametroEnvioRepository, ParametroEnvioRepository>();
             services.AddScoped<IBancoRepository, BancoRepository>();
             services.AddScoped<IAlunosInadimplentesRepository, AlunosInadimplentesRepository>();
+            services.AddScoped<IGeracaoCobrancasRepository, GeracaoCobrancasRepository>();
+            services.AddScoped<IArquivoCobrancasRepository, ArquivoCobrancasRepository>();
+            services.AddScoped<IItensGeracaoRepository, ItensGeracaoRepository>();
+            services.AddScoped<IApplicationErrorRepository, ApplicationErrorRepository>();
             services.AddScoped<IConflitoRepository, ConflitoRepository>();
             services.AddScoped<IConflitoDetalheRepository, ConflitoDetalheRepository>();
             #endregion
@@ -48,13 +52,16 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IRegraNegociacaoService, RegraNegociacaoService>();
             services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
             services.AddScoped<IParametroEnvioService, ParametroEnvioService>();
+            services.AddScoped<IApplicationErrorService, ApplicationErrorService>();
             services.AddScoped<IConflitoService, ConflitoService>();
             services.AddScoped<IConflitoDetalheService, ConflitoDetalheService>();
             #endregion
 
             services.AddScoped<MongoContext>();
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
-                options.UseOracle(configuration.GetConnectionString("Empresas")));
+                options.UseOracle(configuration.GetConnectionString("Empresas"))); 
+            services.AddDbContext<CobrancaAtivaScfDbContext>(options =>
+                options.UseOracle(configuration.GetConnectionString("EmpresasScf")));
 
             return services;
         }

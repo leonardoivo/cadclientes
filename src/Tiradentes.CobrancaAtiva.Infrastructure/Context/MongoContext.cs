@@ -17,6 +17,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
             _database = mongoClient.GetDatabase("mec");
         }
 
+        public IMongoCollection<ApplicationErrorCollection> Log
+        {
+            get
+            {
+                return _database.GetCollection<ApplicationErrorCollection>("log-geral");
+            }
+        }
+
         public IMongoCollection<AlunosInadimplentesCollection> Dados
         {
             get

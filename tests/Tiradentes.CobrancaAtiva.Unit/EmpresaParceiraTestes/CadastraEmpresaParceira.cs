@@ -13,6 +13,8 @@ using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.Utils;
 using System;
+using Microsoft.Extensions.Options;
+using Tiradentes.CobrancaAtiva.Application.Configuration;
 
 namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 {
@@ -21,6 +23,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         private EmpresaParceiraController _controller;
         private CobrancaAtivaDbContext _context;
         private IEmpresaParceiraService _service;
+        private IOptions<EncryptationConfig> _encryptationConfig;
 
         [SetUp]
         public void Setup()
@@ -29,10 +32,16 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
                     .UseInMemoryDatabase("CobrancaAtivaTests")
                     .Options;
+            _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
+            {
+                BaseUrl = "https://encrypt-service-2kcoisahga-ue.a.run.app/",
+                DecryptAuthorization = "bWVjLWVuYzpwYXNzd29yZA==",
+                EncryptAuthorization = "bWVjLWRlYzpwYXNzd29yZA=="
+            });
             _context = new CobrancaAtivaDbContext(optionsContext);
             IEmpresaParceiraRepository repository = new EmpresaParceiraRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            _service = new EmpresaParceiraService(repository, null, mapper);
+            _service = new EmpresaParceiraService(repository, mapper, _encryptationConfig);
             _controller = new EmpresaParceiraController(_service);
 
             if(_context.EmpresaParceira.CountAsync().Result > 0) 
