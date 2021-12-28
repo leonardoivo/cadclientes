@@ -1,8 +1,11 @@
+using System;
+
 namespace Tiradentes.CobrancaAtiva.Domain.Collections
 {
     public class AlunosInadimplentesCollection
     {
         public string Id { get; set; }
+        public Int64 Lote { get; set; }
         public int EmpresaId { get; set; }
         public string CnpjEmpresa { get; set; }
         public string NomeEmpresa { get; set; }

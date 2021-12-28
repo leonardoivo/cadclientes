@@ -30,6 +30,9 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IBancoRepository, BancoRepository>();
             services.AddScoped<IAlunosInadimplentesRepository, AlunosInadimplentesRepository>();
             services.AddScoped<IGeracaoCobrancasRepository, GeracaoCobrancasRepository>();
+            services.AddScoped<IArquivoCobrancasRepository, ArquivoCobrancasRepository>();
+            services.AddScoped<IItensGeracaoRepository, ItensGeracaoRepository>();
+            services.AddScoped<IApplicationErrorRepository, ApplicationErrorRepository>();
             #endregion
 
             #region Services
@@ -47,6 +50,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IRegraNegociacaoService, RegraNegociacaoService>();
             services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
             services.AddScoped<IParametroEnvioService, ParametroEnvioService>();
+            services.AddScoped<IApplicationErrorService, ApplicationErrorService>();
             #endregion
 
             services.AddScoped<MongoContext>();

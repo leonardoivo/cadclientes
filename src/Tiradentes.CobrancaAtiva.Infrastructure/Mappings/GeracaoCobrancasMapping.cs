@@ -8,7 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<GeracaoCobrancasModel> builder)
         {
-            builder.HasKey(ep => new {ep.DataGeracao, ep.DataInicio, ep.DataFim, ep.CnpjEmpresaCobranca, ep.Username, ep.DataHoraEnvio});
+            builder.HasKey(ep => new {ep.DataGeracao, ep.CnpjEmpresaCobranca});
 
             builder.Ignore(ep => ep.Id);
 

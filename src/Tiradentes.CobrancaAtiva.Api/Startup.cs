@@ -6,6 +6,7 @@ using Tiradentes.CobrancaAtiva.Api.Configuration;
 using Tiradentes.CobrancaAtiva.Api.Workers;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
 using Tiradentes.CobrancaAtiva.CrossCutting.IoC;
+using Tiradentes.CobrancaAtiva.Services.Consumers;
 
 namespace Tiradentes.CobrancaAtiva.Api
 {
@@ -37,6 +38,7 @@ namespace Tiradentes.CobrancaAtiva.Api
             services.SwaggerServiceConfig();
             
             services.AddHostedService<RegraNegociacaoWorker>();
+            services.AddHostedService<ParametroEnvioConsumer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

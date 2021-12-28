@@ -10,6 +10,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         { }
 
         public DbSet<GeracaoCobrancasModel> GeracaoCobrancas { get; set; }
+        public DbSet<ItensGeracaoModel> ItensGeracao { get; set; }
+        public DbSet<ArquivoCobrancasModel> ArquivoCobrancas { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

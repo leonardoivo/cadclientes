@@ -1,9 +1,11 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Api.Controllers;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
+using Tiradentes.CobrancaAtiva.Application.Configuration;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
@@ -18,6 +20,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         private EmpresaParceiraController _controller;
         private CobrancaAtivaDbContext _context;
         private IEmpresaParceiraService _service;
+        private IOptions<EncryptationConfig> _encryptationConfig;
 
         [SetUp]
         public void Setup()
@@ -26,10 +29,16 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
                     .UseInMemoryDatabase("CobrancaAtivaTests")
                     .Options;
+            _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
+            {
+                BaseUrl = "https://encrypt-service-2kcoisahga-ue.a.run.app/",
+                DecryptAuthorization = "bWVjLWVuYzpwYXNzd29yZA==",
+                EncryptAuthorization = "bWVjLWRlYzpwYXNzd29yZA=="
+            });
             _context = new CobrancaAtivaDbContext(optionsContext);
             IEmpresaParceiraRepository repository = new EmpresaParceiraRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            IEmpresaParceiraService service = new EmpresaParceiraService(repository, null, mapper);
+            IEmpresaParceiraService service = new EmpresaParceiraService(repository, mapper, _encryptationConfig);
             _controller = new EmpresaParceiraController(service);
 
             _context.EmpresaParceira.Remove(_context.EmpresaParceira.FirstAsync().Result);
