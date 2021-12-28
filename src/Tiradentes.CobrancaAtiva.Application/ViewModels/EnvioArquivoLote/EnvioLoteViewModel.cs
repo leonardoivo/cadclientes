@@ -5,6 +5,6 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels
     public class EnvioLoteViewModel
     {
         public int IdParametroEnvio { get; set; }
-        public Int64 Lote { get; set; }
+        public string Lote { get; set; }
     }
 }

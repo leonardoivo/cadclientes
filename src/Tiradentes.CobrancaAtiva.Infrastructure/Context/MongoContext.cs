@@ -25,6 +25,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
             }
         }
 
+        public IMongoCollection<LoteEnvioCollection> LoteEnvio
+        {
+            get 
+            {
+                return _database.GetCollection<LoteEnvioCollection>("lote-envio");
+            }
+        }
+
         public IMongoCollection<AlunosInadimplentesCollection> Dados
         {
             get

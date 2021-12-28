@@ -29,6 +29,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IParametroEnvioRepository, ParametroEnvioRepository>();
             services.AddScoped<IBancoRepository, BancoRepository>();
             services.AddScoped<IAlunosInadimplentesRepository, AlunosInadimplentesRepository>();
+            services.AddScoped<ILoteEnvioRepository, LoteEnvioRepository>();
             services.AddScoped<IGeracaoCobrancasRepository, GeracaoCobrancasRepository>();
             services.AddScoped<IArquivoCobrancasRepository, ArquivoCobrancasRepository>();
             services.AddScoped<IItensGeracaoRepository, ItensGeracaoRepository>();

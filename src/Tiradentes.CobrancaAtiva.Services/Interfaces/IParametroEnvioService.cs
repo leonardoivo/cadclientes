@@ -14,7 +14,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task<ViewModelPaginada<BuscaParametroEnvioViewModel>> Buscar(ConsultaParametroEnvioQueryParam queryParam);
         Task<BuscaParametroEnvioViewModel> BuscarPorId(int id);
         Task EnviarParametroParaConsumer(int id);
-        Task EnviarArquivoEmpresaCobranca(int id, Int64 lote);
+        Task EnviarArquivoEmpresaCobranca(int id, string lote);
         Task<ParametroEnvioViewModel> Criar(CriarParametroEnvioViewModel viewModel);
         Task<ParametroEnvioViewModel> Alterar(AlterarParametroEnvioViewModel viewModel);
         Task Deletar(int id);

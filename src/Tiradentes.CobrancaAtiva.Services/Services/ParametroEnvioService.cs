@@ -34,6 +34,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         private readonly IItensGeracaoRepository _itensGeracaoRepository;
         private readonly IArquivoCobrancasRepository _arquivosGeracaoRepository;
         protected readonly IAlunosInadimplentesRepository _repositorioAlunosInadimplentes;
+        protected readonly ILoteEnvioRepository _repositorioLoteEnvio;
         protected readonly IMapper _map;
 
         public ParametroEnvioService(
@@ -43,6 +44,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             IItensGeracaoRepository itensGeracaoRepository,
             IArquivoCobrancasRepository arquivoCobrancasRepository,
             IAlunosInadimplentesRepository repositorioAlunosInadimplentes,
+            ILoteEnvioRepository repositorioLoteEnvio,
             IMapper map,
             IOptions<RabbitMQConfig> rabbitMQConfig,
             IOptions<EncryptationConfig> encryptationConfig
@@ -55,6 +57,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _itensGeracaoRepository = itensGeracaoRepository;
             _arquivosGeracaoRepository = arquivoCobrancasRepository;
             _repositorioAlunosInadimplentes = repositorioAlunosInadimplentes;
+            _repositorioLoteEnvio = repositorioLoteEnvio;
             _rabbitMQConfig = rabbitMQConfig.Value;
 
             _factory = new ConnectionFactory
@@ -163,7 +166,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _repositorio.Deletar(id);
         }
     
-        public async Task EnviarArquivoEmpresaCobranca(int id, Int64 lote)
+        public async Task EnviarArquivoEmpresaCobranca(int id, string lote)
         {
             var parametroEnvio = await _repositorio.BuscarPorIdComRelacionamentos(id);
             var empresaParceira = parametroEnvio.EmpresaParceira;
@@ -183,7 +186,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 TipoInadimplencia = parametroEnvio.TiposTitulos.First().CodigoMagister
             };
 
-            await _geracaoCobrancaRepositorio.Criar(geracaoArquivo);
+            //await _geracaoCobrancaRepositorio.Criar(geracaoArquivo);
 
             using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value, empresaParceira.UsuarioEnvioArquivo, senhaEnvioArquivo);
             try
@@ -218,7 +221,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
         }
 
-        public async Task<List<string>> GerarArquivoCsv(BuscaParametroEnvio parametroEnvio, Int64 lote, GeracaoCobrancasModel geracaoCobrancas)
+        public async Task<List<string>> GerarArquivoCsv(BuscaParametroEnvio parametroEnvio, string lote, GeracaoCobrancasModel geracaoCobrancas)
         {
             var arquivosGerados = new List<string>();
 
@@ -230,11 +233,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var dataTemplate = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40},{41},{42},{43},{44},{45},{46},{47},{48}";
 
+            var loteEnvio = await _repositorioLoteEnvio.GetLoteEnvio(lote);
+
             var dados = await _repositorioAlunosInadimplentes.GetAlunosInadimplentes();
 
             dados = dados
-                .Where(alunos => alunos.EmpresaId == parametroEnvio.EmpresaParceira.Id)
-                .Where(alunos => alunos.Lote == lote)
+                .Where(alunos => alunos.Lote == loteEnvio.Lote)
                 .ToList();
 
             var totalLinhas = dados.Count;
@@ -257,8 +261,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             parametroEnvio.EmpresaParceira.CNPJ.Replace(",", "-"),
                             alunoInadimplente.CodModalidadeEnsino == null ? "" : alunoInadimplente.CodModalidadeEnsino.Replace(",", " "),
                             alunoInadimplente.DescricaoModalidadeEnsino == null ? "" : alunoInadimplente.DescricaoModalidadeEnsino.Replace(",", " "),
-                            alunoInadimplente.InstituicaoId.ToString(),
-                            alunoInadimplente.Instituicao == null ? "" : alunoInadimplente.Instituicao.Replace(",", " "),
+                            loteEnvio.InstituicaoId.ToString(),
+                            loteEnvio.Instituicao == null ? "" : loteEnvio.Instituicao.Replace(",", " "),
                             alunoInadimplente.CodCurso == null ? "" : alunoInadimplente.CodCurso.Replace(",", " "),
                             alunoInadimplente.NomeCurso == null ? "" : alunoInadimplente.NomeCurso.Replace(",", " "),
                             alunoInadimplente.TipoInadimplencia == null ? "" : alunoInadimplente.TipoInadimplencia.Replace(",", " "),
@@ -299,7 +303,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             alunoInadimplente.ValorPagamento == null ? "" : alunoInadimplente.ValorPagamento.Replace(".", "").Replace(",", "."),
                             alunoInadimplente.Observacao == null ? "" : alunoInadimplente.Observacao.Replace(",", " "),
                             alunoInadimplente.IdtCampus == null ? "" : alunoInadimplente.IdtCampus.Replace(",", " "),
-                            alunoInadimplente.DescircaoCampus == null ? "" : alunoInadimplente.DescircaoCampus.Replace(",", " "),
+                            alunoInadimplente.DescricaoCampus == null ? "" : alunoInadimplente.DescricaoCampus.Replace(",", " "),
                             alunoInadimplente.Mae == null ? "" : alunoInadimplente.Mae.Replace(",", " "),
                             alunoInadimplente.Pai == null ? "" : alunoInadimplente.Pai.Replace(",", " "),
                             alunoInadimplente.NumCi == null ? "" : alunoInadimplente.NumCi.Replace(",", " ")
