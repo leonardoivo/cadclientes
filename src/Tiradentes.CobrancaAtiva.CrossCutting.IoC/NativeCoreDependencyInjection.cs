@@ -1,4 +1,4 @@
-﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -33,6 +33,8 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IArquivoCobrancasRepository, ArquivoCobrancasRepository>();
             services.AddScoped<IItensGeracaoRepository, ItensGeracaoRepository>();
             services.AddScoped<IApplicationErrorRepository, ApplicationErrorRepository>();
+            services.AddScoped<IConflitoRepository, ConflitoRepository>();
+            services.AddScoped<IConflitoDetalheRepository, ConflitoDetalheRepository>();
             #endregion
 
             #region Services
@@ -51,6 +53,8 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
             services.AddScoped<IParametroEnvioService, ParametroEnvioService>();
             services.AddScoped<IApplicationErrorService, ApplicationErrorService>();
+            services.AddScoped<IConflitoService, ConflitoService>();
+            services.AddScoped<IConflitoDetalheService, ConflitoDetalheService>();
             #endregion
 
             services.AddScoped<MongoContext>();

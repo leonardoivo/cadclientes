@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System.Threading.Tasks;
@@ -68,6 +68,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 RazaoSocial = "Razao Social",
                 CNPJ = "97355899000105",
                 NumeroContrato = "NumeroContrato",
+                ChaveIntegracaoSap = "a1b2c3d4",
                 Contatos = new System.Collections.Generic.List<ContatoEmpresaParceiraViewModel> {
                     new ContatoEmpresaParceiraViewModel {
                         Contato = "Teste",
@@ -252,6 +253,31 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                         Telefone = "4444444444"
                     }
                 }
+            };
+
+            Assert.ThrowsAsync<CustomException>(async () => await _service.Criar(model));
+        }
+
+        [Test]
+        [TestCase(TestName = "Teste Cadastrar Empresa Parceira Sem Chave Integração SAP",
+                   Description = "Teste cadastrar Empresa Parceira no Banco")]
+        public void TesteCadastrarChaveIntegracaoSapNull()
+        {
+            var model = new EmpresaParceiraViewModel
+            {
+                NomeFantasia = "Nome Fantasia",
+                RazaoSocial = "Razao Social",
+                CNPJ = "28.992.700/0001-29",
+                NumeroContrato = "NumeroDoContrato",
+                ChaveIntegracaoSap = null,
+                Contatos = new System.Collections.Generic.List<ContatoEmpresaParceiraViewModel> {
+                    new ContatoEmpresaParceiraViewModel {
+                        Contato = "Teste",
+                        Email = "teste@teste.com",
+                        Telefone = "4444444444"
+                    }
+                }
+
             };
 
             Assert.ThrowsAsync<CustomException>(async () => await _service.Criar(model));

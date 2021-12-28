@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Models
 {
@@ -7,9 +7,9 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public EmpresaParceiraModel() { }
 
         public EmpresaParceiraModel(
-            string NomeFantasia, string RazaoSocial, 
+            string NomeFantasia, string RazaoSocial,
             string Sigla, string CNPJ, string NumeroContrato,
-            string URL, bool Status)
+            string URL, bool Status, string ChaveIntegracaoSap)
         {
             this.NomeFantasia = NomeFantasia;
             this.RazaoSocial = RazaoSocial;
@@ -17,7 +17,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
             this.CNPJ = CNPJ;
             this.NumeroContrato = NumeroContrato;
             this.URL = URL;
-            this.Status= Status;
+            this.Status = Status;
+            this.ChaveIntegracaoSap = ChaveIntegracaoSap;
         }
 
         public string NomeFantasia { get; private set; }
@@ -34,10 +35,14 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public int? PortaEnvioArquivo { get; private set; }
         public string UsuarioEnvioArquivo { get; private set; }
         public string SenhaEnvioArquivo { get; private set; }
+        public string ChaveIntegracaoSap { get; set; }
 
         public ICollection<ContatoEmpresaParceiraModel> Contatos { get; private set; }
         public ICollection<HonorarioEmpresaParceiraModel> Honorarios { get; private set; }
         public ICollection<ParametroEnvioModel> ParametroEnvios { get; private set; }
+        public ICollection<EmpresaParceiraModel> EmpresaParceiraTentativa{ get; private set; }
+        public ICollection<EmpresaParceiraModel> EmpresaParceiraEnvio { get; private set; }
+
         public EnderecoEmpresaParceiraModel Endereco { get; private set; }
         public ContaBancariaEmpresaParceiraModel ContaBancaria { get; private set; }
 
