@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using Tiradentes.CobrancaAtiva.Domain.Enums;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Collections
@@ -44,5 +45,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public string Pai { get; set; }
         public string NumCi { get; set; }
         public StatusNegociacao StatusNegociacao { get; set; }
+        public List<HashCode> RespostasId { get; set; }
     }
 }
