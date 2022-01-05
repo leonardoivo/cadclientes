@@ -8,7 +8,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
 {
     public class RespostasCollection
     {
-        public HashCode Id { get; set; }
         public DateTime DataResposta { get; set; } = DateTime.Now;
 
         public string TipoRegistro { get; set; }

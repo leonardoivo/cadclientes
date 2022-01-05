@@ -36,6 +36,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IApplicationErrorRepository, ApplicationErrorRepository>();
             services.AddScoped<IConflitoRepository, ConflitoRepository>();
             services.AddScoped<IConflitoDetalheRepository, ConflitoDetalheRepository>();
+            services.AddScoped<ICobrancaRepository, CobrancaRepository>();
             #endregion
 
             #region Services
@@ -56,6 +57,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IApplicationErrorService, ApplicationErrorService>();
             services.AddScoped<IConflitoService, ConflitoService>();
             services.AddScoped<IConflitoDetalheService, ConflitoDetalheService>();
+            services.AddScoped<ICobrancaService,CobrancaService>();
             #endregion
 
             services.AddScoped<MongoContext>();
