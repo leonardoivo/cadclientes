@@ -2,6 +2,7 @@
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Banco;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Curso;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
@@ -15,6 +16,7 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.Semestre;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Situacao;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.SituacaoAluno;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.TituloAvulso;
+using Tiradentes.CobrancaAtiva.Domain.Collections;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
@@ -81,6 +83,8 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<ConflitoDetalheModel, ConflitoDetalheViewModel>()
             .ForMember(dest => dest.Modalidade, opt => opt.MapFrom(src => src.Modalidade.Modalidade));
+
+            CreateMap<RespostasCollection, RespostaViewModel>();
         }
     }
 }

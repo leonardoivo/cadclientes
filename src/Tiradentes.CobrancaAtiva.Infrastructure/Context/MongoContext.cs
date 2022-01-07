@@ -40,5 +40,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
                 return _database.GetCollection<AlunosInadimplentesCollection>("alunos-inadimplentes");
             }
         }
+
+        public IMongoCollection<RespostasCollection> Respostas
+        {
+            get
+            {
+                return _database.GetCollection<RespostasCollection>("respostas-cobrancas");
+            }
+        }
     }
 }
