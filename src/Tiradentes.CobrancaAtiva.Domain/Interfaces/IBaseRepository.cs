@@ -12,5 +12,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
         Task Criar(TModel model);
         Task Alterar(TModel model);
         Task Deletar(int id);
+        Task AlterarVarios(IEnumerable<TModel> model);
     }
 }

@@ -35,6 +35,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         private readonly IArquivoCobrancasRepository _arquivosGeracaoRepository;
         protected readonly IAlunosInadimplentesRepository _repositorioAlunosInadimplentes;
         protected readonly ILoteEnvioRepository _repositorioLoteEnvio;
+        protected readonly IConflitoRepository _repositorioConflito;
         protected readonly IMapper _map;
 
         public ParametroEnvioService(
@@ -45,11 +46,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             IArquivoCobrancasRepository arquivoCobrancasRepository,
             IAlunosInadimplentesRepository repositorioAlunosInadimplentes,
             ILoteEnvioRepository repositorioLoteEnvio,
+            IConflitoRepository repositoryConflito,
             IMapper map,
             IOptions<RabbitMQConfig> rabbitMQConfig,
             IOptions<EncryptationConfig> encryptationConfig
         )
-        { 
+        {
             _map = map;
             _repositorio = repositorio;
             _repositorioEmpresaParceira = repositorioEmpresaParceira;
@@ -58,6 +60,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _arquivosGeracaoRepository = arquivoCobrancasRepository;
             _repositorioAlunosInadimplentes = repositorioAlunosInadimplentes;
             _repositorioLoteEnvio = repositorioLoteEnvio;
+            _repositorioConflito = repositoryConflito;
             _rabbitMQConfig = rabbitMQConfig.Value;
 
             _factory = new ConnectionFactory
@@ -165,7 +168,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             await _repositorio.Deletar(id);
         }
-    
+
         public async Task EnviarArquivoEmpresaCobranca(int id, string lote)
         {
             var parametroEnvio = await _repositorio.BuscarPorIdComRelacionamentos(id);
@@ -175,7 +178,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var dataGeracaoArquivo = DateTime.Now.ToString("dd/MM/yyyy");
 
-            var geracaoArquivo = new GeracaoCobrancasModel() {
+            var geracaoArquivo = new GeracaoCobrancasModel()
+            {
                 CnpjEmpresaCobranca = parametroEnvio.EmpresaParceira.CNPJ,
                 DataGeracao = dataGeracaoArquivo,
                 DataInicio = parametroEnvio.InadimplenciaInicial.ToString("dd/MM/yyyy"),
@@ -191,10 +195,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value, empresaParceira.UsuarioEnvioArquivo, senhaEnvioArquivo);
             try
             {
-                
+
                 client.Connect();
 
-                foreach(var filename in await GerarArquivoCsv(parametroEnvio, lote, geracaoArquivo))
+                foreach (var filename in await GerarArquivoCsv(parametroEnvio, lote, geracaoArquivo))
                 {
                     using var s = File.OpenRead(filename);
 
@@ -203,15 +207,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     s.Close();
                 }
             }
-            catch(Renci.SshNet.Common.SshConnectionException sexc)
+            catch (Renci.SshNet.Common.SshConnectionException sexc)
             {
                 throw sexc;
             }
-            catch(Renci.SshNet.Common.SftpPermissionDeniedException pexce)
+            catch (Renci.SshNet.Common.SftpPermissionDeniedException pexce)
             {
                 throw pexce;
             }
-            catch(Renci.SshNet.Common.SshException ssexc)
+            catch (Renci.SshNet.Common.SshException ssexc)
             {
                 throw ssexc;
             }
@@ -242,19 +246,19 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 .ToList();
 
             var totalLinhas = dados.Count;
-            var quantidadeArquivos = (int) (totalLinhas / limiteLinhas);
+            var quantidadeArquivos = (int)(totalLinhas / limiteLinhas);
 
-            if(totalLinhas > 0 && quantidadeArquivos == 0)
+            if (totalLinhas > 0 && quantidadeArquivos == 0)
                 quantidadeArquivos = 1;
 
-            for(var indexArquivoAtual = 1; indexArquivoAtual <= quantidadeArquivos; indexArquivoAtual++)
+            for (var indexArquivoAtual = 1; indexArquivoAtual <= quantidadeArquivos; indexArquivoAtual++)
             {
                 var fileContent = new StringBuilder();
                 var filename = string.Format(filenameTemplate, parametroEnvio.Instituicao.Id, parametroEnvio.Modalidade.Id, DateTime.Now.ToString("dd-MM-yyyy"), parametroEnvio.InadimplenciaInicial.ToString("dd-MM-yyyy"), parametroEnvio.InadimplenciaFinal.ToString("dd-MM-yyyy"), indexArquivoAtual.ToString(), quantidadeArquivos.ToString());
                 using StreamWriter file = new(filename);
                 await file.WriteLineAsync(cabecalhoCsv);
                 fileContent.AppendLine(cabecalhoCsv);
-                for(var indexDadosInicial = (indexArquivoAtual - 1) * limiteLinhas; indexDadosInicial <= (indexArquivoAtual * limiteLinhas) - 1 && dados.Count > indexDadosInicial; indexDadosInicial++)
+                for (var indexDadosInicial = (indexArquivoAtual - 1) * limiteLinhas; indexDadosInicial <= (indexArquivoAtual * limiteLinhas) - 1 && dados.Count > indexDadosInicial; indexDadosInicial++)
                 {
                     var alunoInadimplente = dados[indexDadosInicial];
                     var dataToWrite = string.Format(dataTemplate,
@@ -309,9 +313,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             alunoInadimplente.NumCi == null ? "" : alunoInadimplente.NumCi.Replace(",", " ")
                         );
 
-                    try 
+                    try
                     {
-                        var itemGeracao = new ItensGeracaoModel() {
+                        var itemGeracao = new ItensGeracaoModel()
+                        {
                             CnpjEmpresaCobranca = parametroEnvio.EmpresaParceira.CNPJ,
                             Controle = alunoInadimplente.MatriculaAluno + alunoInadimplente.NumeroParcela.PadLeft(3, '0'),
                             DataGeracao = geracaoCobrancas.DataGeracao,
@@ -328,7 +333,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         };
                         //await _itensGeracaoRepository.Criar(itemGeracao);
                     }
-                    catch(Exception ex)
+                    catch (Exception ex)
                     {
                         Debug.WriteLine(ex.Message);
                     }
@@ -339,13 +344,20 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 file.Close();
                 arquivosGerados.Add(filename);
 
-                var arquivoGerado = new ArquivoCobrancasModel() {
+                var arquivoGerado = new ArquivoCobrancasModel()
+                {
                     Arquivo = fileContent.ToString(),
                     CnpjEmpresaCobranca = parametroEnvio.EmpresaParceira.CNPJ,
                     DataGeracao = DateTime.Now.ToString("dd/MM/yyyy"),
                     Sequencia = indexArquivoAtual
                 };
                 //await _arquivosGeracaoRepository.Criar(arquivoGerado);
+                
+                var conflitos = await _repositorioConflito.BuscarPorLote(loteEnvio.Lote);
+
+                conflitos = conflitos.Select(x => { x.Lote = loteEnvio.Lote; return x; }).ToList();
+
+                await _repositorioConflito.AlterarVarios(conflitos);
             }
 
             return arquivosGerados;
