@@ -33,6 +33,21 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         public DbSet<ParametroEnvioTipoTituloModel> ParametroEnvioTipoTitulo { get; set; }
         public DbSet<ParametroEnvioTituloAvulsoModel> ParametroEnvioTituloAvulso { get; set; }
 
+
+        public DbSet<AcordosCobrancasModel> AcordosCobrancasModel { get; set; }
+        public DbSet<ParcelasTitulosModel> ParcelasTitulosModel { get; set; }
+        public DbSet<ParcelasAcordoModel> ParcelasAcordoModel { get; set; }
+        public DbSet<ItensBaixaTipo1Model> ItensBaixaTipo1 { get; set; }
+        public DbSet<ItensBaixaTipo2Model> ItensBaixaTipo2 { get; set; }
+        public DbSet<ItensBaixaTipo3Model> ItensBaixaTipo3 { get; set; }
+        public DbSet<ArquivoLayoutModel> ArquivoLayout { get; set; }
+        public DbSet<ErrosLayoutModel> ErrosLayout{ get; set; }
+
+        /// <summary>
+        /// Model Ficticio para validação da existencia de um aluno
+        /// </summary>
+        public DbSet<MatriculaAlunoExisteModel> MatriculaAlunoExisteModel { get; set; }
+
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.ApplyConfigurationsFromAssembly(typeof(CobrancaAtivaDbContext).Assembly);
