@@ -11,7 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public ConflitoModel()
         { }
 
-        public Guid Lote { get; set; }
+        public string Lote { get; set; }
         public string NomeLote { get; set; }
         public int EmpresaParceiraTentativaId { get; set; }
         public int EmpresaParceiraEnvioId { get; set; }

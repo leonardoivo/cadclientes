@@ -54,7 +54,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             return await query.Paginar(queryParams.Pagina, queryParams.Limite);
         }
 
-        public async Task<IEnumerable<ConflitoModel>> BuscarPorLote(Guid lote)
+        public async Task<IEnumerable<ConflitoModel>> BuscarPorLote(string lote)
         {
             return await DbSet
                 .Where(c => c.Lote == lote)

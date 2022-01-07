@@ -352,10 +352,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     Sequencia = indexArquivoAtual
                 };
                 //await _arquivosGeracaoRepository.Criar(arquivoGerado);
-                
-                var conflitos = await _repositorioConflito.BuscarPorLote(loteEnvio.Lote);
 
-                conflitos = conflitos.Select(x => { x.Lote = loteEnvio.Lote; return x; }).ToList();
+                var conflitos = await _repositorioConflito.BuscarPorLote(loteEnvio.Lote.ToString());
+
+                conflitos = conflitos.Select(x => { x.NomeLote = filename; return x; }).ToList();
 
                 await _repositorioConflito.AlterarVarios(conflitos);
             }

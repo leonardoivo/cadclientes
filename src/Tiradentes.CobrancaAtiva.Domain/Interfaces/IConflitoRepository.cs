@@ -11,7 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     {
 
         Task<ModelPaginada<BuscaConflito>> Buscar(ConflitoQueryParam queryParam);
-        Task<IEnumerable<ConflitoModel>> BuscarPorLote(Guid lote);
+        Task<IEnumerable<ConflitoModel>> BuscarPorLote(string lote);
 
     }
 }
