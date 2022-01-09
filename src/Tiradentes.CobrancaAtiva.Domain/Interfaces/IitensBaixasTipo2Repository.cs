@@ -13,6 +13,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
                   int periodo,
                   DateTime dataVencimento,
                   decimal valor,
-                  int codErro);
+                  decimal? codErro);
     }
 }

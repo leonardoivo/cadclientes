@@ -42,7 +42,11 @@ namespace Tiradentes.CobrancaAtiva.Domain.Enum
         ParcelaEnviadaAnteriormentePelaEmpresaCobranca = 12,
         
         [Description("Arquivo com layout inconsistente")]
-        LayoutInconsistente = 13
+        LayoutInconsistente = 13,
+
+        [Description("Erro Interno Servidor")]
+        ErroInternoServidor = 99
+
 
     }
 }

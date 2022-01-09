@@ -12,7 +12,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public decimal ValorTotal {get;set;}
         public decimal Mora { get; set; }
         public decimal Multa { get; set; }
-        public decimal Saldo_Devedor { get; set; }
+        public decimal SaldoDevedor { get; set; }
         public decimal? Matricula { get; set; }
         public string CPF { get; set; }
         public string Sistema { get; set; }

@@ -1,10 +1,9 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Tiradentes.CobrancaAtiva.Domain.Models;
 
-namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
+namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
-    public interface IParcelaTituloRepository : IBaseRepository<ParcelasTitulosModel>
+    public interface IParcelaTituloService : IDisposable
     {
         bool ExisteParcela(decimal matricula, decimal periodo, int parcela);
         bool ExisteParcelaInadimplente(DateTime dataBaixa);

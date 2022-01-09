@@ -1,4 +1,5 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
@@ -8,6 +9,14 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
         bool ExisteAcordo(decimal numeroAcordo);
         Task AtualizarMatriculaAcordo(decimal matricula, decimal numeroAcordo);
         Task AtualizarSaldoDevedor(decimal numeroAcordo, decimal valor);
+        Task InserirAcordoCobranca(decimal numeroAcordo,
+                           DateTime dataBaixa,
+                           DateTime dataAcordo,
+                           int totalParcelas,
+                           decimal valorTotal,
+                           decimal multa,
+                           decimal matricula,
+                           decimal saldoDevedor);
 
     }
 }

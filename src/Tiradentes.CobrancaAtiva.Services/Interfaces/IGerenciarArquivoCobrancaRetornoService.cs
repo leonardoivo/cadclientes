@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
-    public interface IGerenciarArquivoCobrancaRetorno
+    public interface IGerenciarArquivoCobrancaRetornoService
     {
-        void Gerenciar();
+        void Gerenciar(IEnumerable<dynamic> arquivos);
     }
 }

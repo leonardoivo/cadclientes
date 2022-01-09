@@ -13,6 +13,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
                   decimal juros,
                   DateTime dataVencimento,
                   decimal valorParcela,
-                  int codErro);
+                  decimal? codErro);
     }
 }

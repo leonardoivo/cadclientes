@@ -40,7 +40,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                  && P.ValorPago != null).Count() > 0;
         }
 
-        public async Task AtualizaPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago)
+        public async Task AtualizarPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago)
         {
             var parcInserir = DbSet.Where(P => P.NumeroAcordo == numeroAcordo
                                             && P.Parcela == parcela).FirstOrDefault();
@@ -53,7 +53,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
-        public decimal ObterValorParcelaAcordo(decimal parcela, decimal numeroAcordo)
+        public decimal? ObterValorParcelaAcordo(decimal parcela, decimal numeroAcordo)
         {
             return DbSet.Where(P => P.Parcela == parcela
                           && P.NumeroAcordo == numeroAcordo)
@@ -64,6 +64,24 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             // PROCESSANDO TIPO 2 K
             throw new NotImplementedException();
+        }
+
+        public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataVencimento, DateTime dataBaixa, decimal valorPago)
+        {
+            await Criar(new ParcelasAcordoModel(){
+                Parcela = parcela,
+                NumeroAcordo = numeroAcordo,
+                DataVencimento = dataVencimento,
+                DataBaixa = dataBaixa,
+                ValorPago = valorPago
+            });
+        }
+
+        public bool ParcelaPaga(decimal parcela, decimal numeroAcordo)
+        {
+            return DbSet.Where(P => P.NumeroAcordo == numeroAcordo
+                                 && P.Parcela == parcela
+                                 && P.DataPagamento != null).Count() > 0;
         }
     }
 }

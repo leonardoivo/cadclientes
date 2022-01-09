@@ -35,10 +35,24 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             var atualizarParcela = DbSet.Where(P => P.NumeroAcordo == numeroAcordo).FirstOrDefault();
 
-            atualizarParcela.Saldo_Devedor += valor;
+            atualizarParcela.SaldoDevedor += valor;
 
             await Alterar(atualizarParcela);
 
+        }
+
+        public async Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal matricula, decimal saldoDevedor)
+        {
+           await Criar(new AcordosCobrancasModel(){
+                    NumeroAcordo = numeroAcordo,
+                    DataBaixa = dataBaixa,
+                    Data = dataAcordo,
+                    TotalParcelas = totalParcelas,
+                    ValorTotal = valorTotal,
+                    Multa = multa,
+                    Matricula = matricula,
+                    SaldoDevedor = saldoDevedor
+            });
         }
     }
 }

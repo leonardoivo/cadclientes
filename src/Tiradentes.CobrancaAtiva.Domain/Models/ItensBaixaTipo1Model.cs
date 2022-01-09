@@ -7,7 +7,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
     {
         public DateTime DataBaixa { get; set; }
         public decimal Sequencia { get; set; }
-        public decimal CodigoErro { get; set; }
+        public decimal? CodigoErro { get; set; }
         public decimal NumeroLinha { get; set; }
         public decimal NumeroAcordo { get; set; }
         public decimal Matricula { get; set; }        

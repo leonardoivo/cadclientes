@@ -37,7 +37,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Multa)
                 .HasColumnName("MULTA");
 
-            builder.Property(ep => ep.Saldo_Devedor)
+            builder.Property(ep => ep.SaldoDevedor)
                 .HasColumnName("SALDO_DEVEDOR");
 
             builder.Property(ep => ep.Matricula)

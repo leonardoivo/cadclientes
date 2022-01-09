@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
@@ -13,10 +14,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             _repository = Repository;
         }
-        public void AtualizarMatriculaAcordo(decimal matricula, decimal numeroAcordo)
+        public async Task AtualizarMatriculaAcordo(decimal matricula, decimal numeroAcordo)
         {
 
-           _repository.AtualizarMatriculaAcordo(matricula, numeroAcordo);
+           await _repository.AtualizarMatriculaAcordo(matricula, numeroAcordo);
 
          
         }
@@ -26,10 +27,22 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
            return _repository.ExisteAcordo(numeroAcordo);
         }
 
+
+        public Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal matricula, decimal saldoDevedor)
+        {
+            throw new NotImplementedException();
+        }
+
+        public async Task AtualizarSaldoDevedor(decimal numeroAcordo, decimal valor)
+        {
+            await _repository.AtualizarSaldoDevedor(numeroAcordo, valor);
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();
         }
+
 
     }
 }

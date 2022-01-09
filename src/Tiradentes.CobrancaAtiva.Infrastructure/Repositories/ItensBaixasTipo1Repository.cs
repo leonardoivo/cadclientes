@@ -24,7 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await Alterar(itemBaixa);
         }
 
-        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, int numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, int codErro)
+        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, int numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, decimal? codErro)
         {            
             await Criar(new ItensBaixaTipo1Model(){ 
                 DataBaixa = dataBaixa,

@@ -42,11 +42,18 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         public DbSet<ItensBaixaTipo3Model> ItensBaixaTipo3 { get; set; }
         public DbSet<ArquivoLayoutModel> ArquivoLayout { get; set; }
         public DbSet<ErrosLayoutModel> ErrosLayout{ get; set; }
+        
+        public DbSet<BaixasCobrancasModel> BaixasCobrancas { get; set; }
 
         /// <summary>
         /// Model Ficticio para validação da existencia de um aluno
         /// </summary>
         public DbSet<MatriculaAlunoExisteModel> MatriculaAlunoExisteModel { get; set; }
+
+        /// <summary>
+        /// Model Ficticio para validação da existencia de pagamento de parcela
+        /// </summary>
+        public DbSet<ParcelaPagaAlunoInstituicaoModel> ParcelaPagaAlunoInstituicaoModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
