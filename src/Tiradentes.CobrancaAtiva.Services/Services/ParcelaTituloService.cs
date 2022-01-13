@@ -7,7 +7,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class ParcelaTituloService : IParcelaTituloService
     {
-        IParcelaTituloRepository _parcelaTituloRepository;
+        readonly IParcelaTituloRepository _parcelaTituloRepository;
         public ParcelaTituloService(IParcelaTituloRepository parcelaTituloRepository)
         {
             _parcelaTituloRepository = parcelaTituloRepository;
@@ -37,6 +37,5 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             throw new NotImplementedException();
         }
-
     }
 }

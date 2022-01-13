@@ -4,6 +4,9 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio
 {
     public class ParametroEnvioFilaViewModel
     {        
+        public int IdParametroEnvio { get; set; }
+        public Int64 Lote { get; set;}
+        public string StatusEnvio { get; set; }
         public int Instituicao { get; set; }
         public string Modalidade { get; set; }
         public int EmpresaParceira { get; set; }

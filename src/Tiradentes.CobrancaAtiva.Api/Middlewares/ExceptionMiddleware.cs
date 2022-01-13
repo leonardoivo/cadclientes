@@ -5,29 +5,36 @@ using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.Utils;
+using Tiradentes.CobrancaAtiva.Domain.Collections;
+using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
-namespace Tiradentes.CobrancaAtiva.Application.Middlewares
+namespace Tiradentes.CobrancaAtiva.Api.Middlewares
 {
-    public class ExcpetionMiddleware
+    public class ExceptionMiddleware
     {
         private readonly RequestDelegate _next;
         private readonly ILogger _logger;
-        public ExcpetionMiddleware(RequestDelegate next, ILoggerFactory loggerFactory)
+        private IApplicationErrorService _service;
+
+        public ExceptionMiddleware(
+            RequestDelegate next, 
+            ILoggerFactory loggerFactory)
         {
             _next = next;
-            _logger = loggerFactory.CreateLogger<ExcpetionMiddleware>();
+            _logger = loggerFactory.CreateLogger<ExceptionMiddleware>();
         }
 
 
-        public async Task InvokeAsync(HttpContext httpContext)
+        public async Task InvokeAsync(HttpContext httpContext, IApplicationErrorService service)
         {
+            _service = service;
             try
             {
                 await _next(httpContext);
             }
             catch (CustomException ex)
             {
-                await TratarErro(((int)ex.StatusCode), ex.Message, httpContext);
+                await TratarErro(((int)ex.StatusCode), ex.Message, ex.StackTrace, httpContext);
             }
             catch (Exception ex)
             {
@@ -36,22 +43,31 @@ namespace Tiradentes.CobrancaAtiva.Application.Middlewares
                     _logger.LogError(ex.Message);
                     await TratarErro(500, 
                                     JsonSerializer.Serialize(new { erro = ex.Message, innerException = ex.InnerException?.Message }),
+                                    ex.StackTrace,
                                     httpContext);
                 }
                 else 
                 {
-                    await TratarErro(500, JsonSerializer.Serialize(new { erro = "Erro inesperado" }), httpContext);
+                    await TratarErro(500, JsonSerializer.Serialize(new { erro = "Erro inesperado" }), ex.StackTrace, httpContext);
                 }
             }
         }
 
-        private async Task TratarErro(int statusCode, string message, HttpContext context)
+        private async Task TratarErro(int statusCode, string message, string stacktrace, HttpContext context)
         {
             var bytes = Encoding.UTF8.GetBytes(message);
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = statusCode;
             await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
+
+            await _service.LogError(new ApplicationErrorCollection() 
+            {
+                Sistema = "MEC",
+                DataHora = DateTime.Now,
+                Mensagem = message,
+                Stacktrace = stacktrace
+            });
         }
     }
 }

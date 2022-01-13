@@ -17,11 +17,35 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
             _database = mongoClient.GetDatabase("mec");
         }
 
+        public IMongoCollection<ApplicationErrorCollection> Log
+        {
+            get
+            {
+                return _database.GetCollection<ApplicationErrorCollection>("log-geral");
+            }
+        }
+
+        public IMongoCollection<LoteEnvioCollection> LoteEnvio
+        {
+            get 
+            {
+                return _database.GetCollection<LoteEnvioCollection>("lote-envio");
+            }
+        }
+
         public IMongoCollection<AlunosInadimplentesCollection> Dados
         {
             get
             {
                 return _database.GetCollection<AlunosInadimplentesCollection>("alunos-inadimplentes");
+            }
+        }
+
+        public IMongoCollection<RespostasCollection> Respostas
+        {
+            get
+            {
+                return _database.GetCollection<RespostasCollection>("respostas-cobrancas");
             }
         }
     }

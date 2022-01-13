@@ -15,7 +15,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task AtualizaPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago)
         {
-            await _parcelasAcordoRepository.AtualizaPagamentoParcelaAcordo(parcela,
+            await _parcelasAcordoRepository.AtualizarPagamentoParcelaAcordo(parcela,
                                                                            numeroAcordo,
                                                                            dataPagamento,
                                                                            dataBaixa,
@@ -43,15 +43,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _parcelasAcordoRepository.ObterValorParcelaAcordo(parcela, numeroAcordo);
         }
 
-        public async Task QuitarParcelasAcordo(decimal numeroAcordo)
-        {
-            await _parcelasAcordoRepository.QuitarParcelasAcordo(numeroAcordo);
+        public async Task QuitarParcelasAcordo(decimal numeroAcordo, decimal matricula, string sistema, DateTime dataPagamento, decimal periodo, decimal? idTitulo, int? codigoAtividade, int? numeroEvt, decimal? idPessoa, int codigobanco, int codigoAgencia, int numeroConta, decimal numeroCheque, string CpfCnpj)
+        {            
+            await _parcelasAcordoRepository.QuitarParcelasAcordo(numeroAcordo, matricula, sistema, dataPagamento, periodo, idTitulo, codigoAtividade, numeroEvt, idPessoa, codigobanco, codigoAgencia, numeroConta, numeroCheque, CpfCnpj);
         }
-        public void Dispose()
-        {
-            throw new NotImplementedException();
-        }
-
         public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataVencimento, DateTime dataBaixa, decimal valorPago)
         {
             await _parcelasAcordoRepository.InserirPagamentoParcelaAcordo(parcela,
@@ -60,5 +55,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                           dataBaixa,
                                                                           valorPago);
         }
+
+        public bool ParcelaPaga(decimal parcela, decimal numeroAcordo)
+        {
+            return _parcelasAcordoRepository.ParcelaPaga(parcela, numeroAcordo);
+        }
+
+        public void Dispose()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

@@ -18,5 +18,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
                            decimal matricula,
                            decimal saldoDevedor);
 
+        decimal ObterMatricula(decimal numeroAcordo);
+
+
     }
 }

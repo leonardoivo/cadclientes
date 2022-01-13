@@ -16,5 +16,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
                                    decimal multa,
                                    decimal matricula,
                                    decimal saldoDevedor);
+
+        decimal ObterMatricula(decimal numeroAcordo);
+
     }
 }

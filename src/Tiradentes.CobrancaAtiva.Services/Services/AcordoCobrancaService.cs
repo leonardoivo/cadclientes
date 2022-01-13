@@ -38,11 +38,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _repository.AtualizarSaldoDevedor(numeroAcordo, valor);
         }
 
+        public decimal ObterMatricula(decimal numeroAcordo)
+        {
+            return _repository.ObterMatricula(numeroAcordo);
+        }
+
         public void Dispose()
         {
             throw new NotImplementedException();
         }
-
 
     }
 }

@@ -8,16 +8,24 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
     public class ParcelaPagaAlunoInstituicaoRepository : IParcelaPagaAlunoInstituicaoRepository
     {
-        CobrancaAtivaDbContext _context;
-        public ParcelaPagaAlunoInstituicaoRepository(CobrancaAtivaDbContext context)
+        readonly IIdAlunoRepository _idAlunoRepository;
+        readonly CobrancaAtivaDbContext _context;
+        public ParcelaPagaAlunoInstituicaoRepository(IIdAlunoRepository idAlunoRepository,
+                                                     CobrancaAtivaDbContext context)
         {
+            _idAlunoRepository = idAlunoRepository;
             _context = context;
         }
-        public bool ParcelaPagaInstituicao(string tipoInadimplencia, string sistema, decimal? idAluno, int? ano, int? semestre, int? parcela, decimal? idTitulo, int? codigoAtividade, decimal? numeroEvt, decimal? idDDP, decimal? idTituloAvulso, decimal? codigoBanco, decimal? codigoAgencia, decimal? numeroConta, decimal? numeroCheque)
+        public bool ParcelaPagaInstituicao(string tipoInadimplencia, string sistema, decimal matricula, decimal periodo, int? parcela, decimal? idTitulo, int? codigoAtividade, decimal? numeroEvt, decimal? idPessoa, int? codigoBanco, int? codigoAgencia, decimal? numeroConta, decimal? numeroCheque)
         {
             ParcelaPagaAlunoInstituicaoModel parcelaAluno = new ParcelaPagaAlunoInstituicaoModel();
 
-            if(tipoInadimplencia == "P")
+            var ano = periodo.ToString().Substring(1, 4);
+            var semestre = periodo.ToString().Substring(4, 1);
+
+            var idAluno = _idAlunoRepository.ObterIdAluno(matricula);
+
+            if (tipoInadimplencia == "P")
             {
                 if(sistema == "S")
                 {
@@ -66,7 +74,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 parcelaAluno = _context.ParcelaPagaAlunoInstituicaoModel
                                        .FromSqlRaw($@"select count(idt_titulo_avu) 
                                                         from scf.sap_titulos_avulsos 
-                                                       where idt_titulo_avu = {idTituloAvulso}
+                                                       where idt_titulo_avu = {idTitulo}
                                                          and dat_pgto is not null")
                                        .FirstOrDefault();
             }
@@ -82,11 +90,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                         and dat_reg is not null")
                                        .FirstOrDefault();
             }
-            else if (tipoInadimplencia == "R")
-            {
-                throw new System.NullReferenceException("(NOVO - AGUARDANDO DEFINIÇÕES DA META)");
-            }
-
 
             return parcelaAluno.Count > 0;
         }

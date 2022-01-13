@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace Tiradentes.CobrancaAtiva.Application.ViewModels
+namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 {
     public class BaixasCobrancasViewModel
     {
@@ -13,11 +13,11 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels
         public int QuantidadeErrosTipo1 { get; set; }
         public int QuantidadeErrosTipo2 { get; set; }
         public int QuantidadeErrosTipo3 { get; set; }
-        public int TotalTipo1 { get; set; }
-        public int TotalTipo2 { get; set; }
-        public int TotalTipo3 { get; set; }
-        public int TotalErrosTipo1 { get; set; }
-        public int TotalErrosTipo2 { get; set; }
-        public int TotalErrosTipo3 { get; set; }
+        public decimal ValorTotalTipo1 { get; set; }
+        public decimal ValorTotalTipo2 { get; set; }
+        public decimal ValorTotalTipo3 { get; set; }
+        public decimal ValorTotalErrosTipo1 { get; set; }
+        public decimal ValorTotalErrosTipo2 { get; set; }
+        public decimal ValorTotalErrosTipo3 { get; set; }
     }
 }

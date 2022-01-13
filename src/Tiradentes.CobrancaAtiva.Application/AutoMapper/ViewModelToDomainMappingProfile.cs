@@ -1,9 +1,12 @@
 ﻿using AutoMapper;
 using System.Linq;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.HonorarioEmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
+using Tiradentes.CobrancaAtiva.Domain.Collections;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
@@ -27,12 +30,12 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ContatoEmpresaParceiraViewModel, ContatoEmpresaParceiraModel>();
             CreateMap<EnderecoEmpresaParceiraViewModel, EnderecoEmpresaParceiraModel>();
             CreateMap<ContaBancariaEmpresaParceiraViewModel, ContaBancariaEmpresaParceiraModel>();
-            
+
             CreateMap<HonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();
-            CreateMap<CreateHonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>(); 
-            
+            CreateMap<CreateHonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();
+
             CreateMap<CriarRegraNegociacaoViewModel, RegraNegociacaoModel>()
-                .ForMember(dest => dest.RegraNegociacaoCurso, 
+                .ForMember(dest => dest.RegraNegociacaoCurso,
                     opt => opt.MapFrom(src => src.CursoIds.Select(c => new RegraNegociacaoCursoModel(c))))
                 .ForMember(dest => dest.RegraNegociacaoTituloAvulso,
                     opt => opt.MapFrom(src => src.TitulosAvulsosId.Select(c => new RegraNegociacaoTituloAvulsoModel(c))))
@@ -41,14 +44,14 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                 .ForMember(dest => dest.RegraNegociacaoTipoTitulo,
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new RegraNegociacaoTipoTituloModel(c))));
             CreateMap<AlterarRegraNegociacaoViewModel, RegraNegociacaoModel>()
-                .ForMember(dest => dest.RegraNegociacaoCurso, 
+                .ForMember(dest => dest.RegraNegociacaoCurso,
                     opt => opt.MapFrom(src => src.CursoIds.Select(c => new RegraNegociacaoCursoModel(c))))
                 .ForMember(dest => dest.RegraNegociacaoTituloAvulso,
                     opt => opt.MapFrom(src => src.TitulosAvulsosId.Select(c => new RegraNegociacaoTituloAvulsoModel(c))))
                 .ForMember(dest => dest.RegraNegociacaoSituacaoAluno,
                     opt => opt.MapFrom(src => src.SituacaoAlunoIds.Select(c => new RegraNegociacaoSituacaoAlunoModel(c))))
                 .ForMember(dest => dest.RegraNegociacaoTipoTitulo,
-                    opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new RegraNegociacaoTipoTituloModel(c)))); 
+                    opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new RegraNegociacaoTipoTituloModel(c))));
 
             CreateMap<CriarParametroEnvioViewModel, ParametroEnvioModel>()
                 .ForMember(dest => dest.ParametroEnvioCurso,
@@ -68,6 +71,10 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                     opt => opt.MapFrom(src => src.SituacaoAlunoIds.Select(c => new ParametroEnvioSituacaoAlunoModel(c))))
                 .ForMember(dest => dest.ParametroEnvioTipoTitulo,
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new ParametroEnvioTipoTituloModel(c))));
+
+            CreateMap<ConflitoViewModel, ConflitoModel>();
+            CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();
+            CreateMap<RespostaViewModel, RespostasCollection>();
         }
     }
 }

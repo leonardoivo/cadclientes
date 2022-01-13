@@ -19,7 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                  matricula);
         }
 
-        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, int numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, int codErro)
+        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, decimal? codErro)
         {
             await _repository.InserirBaixa(dataBaixa,
                                            matricula,

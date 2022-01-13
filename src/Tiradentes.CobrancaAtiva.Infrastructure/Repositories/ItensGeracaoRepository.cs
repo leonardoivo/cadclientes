@@ -9,11 +9,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
     public class ItensGeracaoRepository : BaseRepository<ItensGeracaoModel>, IitensGeracaoRepository
     {
         public ItensGeracaoRepository(CobrancaAtivaDbContext context): base(context)
-        {
+        { 
 
         }
 
-        public bool ExisteMatricula(decimal cnpjEmpresa, decimal matricula, decimal periodo, int parcela)
+        public bool ExisteMatricula(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela)
         {
             return DbSet.Where(I => I.CnpjEmpresaCobranca == cnpjEmpresa
                                  && I.Matricula == matricula
@@ -21,7 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                  && I.Parcela == parcela).Count() > 0;
         }
 
-        public DateTime ObterDataEnvio(decimal cnpjEmpresa, decimal matricula, decimal periodo, int parcela)
+        public DateTime ObterDataEnvio(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela)
         {
             return DbSet.Where(I => I.CnpjEmpresaCobranca == cnpjEmpresa
                                  && I.Matricula == matricula
@@ -29,5 +29,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                  && I.Parcela == parcela)
                         .Select(I => I.DataGeracao).FirstOrDefault();
         }
+
     }
 }
+

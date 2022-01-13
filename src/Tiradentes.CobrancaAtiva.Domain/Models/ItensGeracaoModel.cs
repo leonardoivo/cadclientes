@@ -11,7 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public DateTime DataVencimento { get; set; }
         public decimal Valor { get; set; }
         public string Controle { get; set; }
-        public decimal CnpjEmpresaCobranca { get; set; }
+        public string CnpjEmpresaCobranca { get; set; }
         public string SituacaoAluno { get; set; }
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }

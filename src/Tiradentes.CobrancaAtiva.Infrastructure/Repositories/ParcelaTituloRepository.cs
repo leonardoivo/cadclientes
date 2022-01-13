@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -38,6 +39,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             DataVencimento = dataVencimento,
                             Valor = valorParcela
                         });
+        }
+
+        public IEnumerable<ParcelasTitulosModel> ObterParcelasPorNumeroAcordo(decimal numeroAcordo)
+        {
+            return DbSet.Where(P => P.NumeroAcordo == numeroAcordo).AsEnumerable();
         }
     }
 }

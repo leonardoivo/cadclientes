@@ -6,12 +6,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
     public class CobrancaAtivaDbContext : DbContext
     {
 
-        public CobrancaAtivaDbContext(DbContextOptions options) : base(options)
+        public CobrancaAtivaDbContext(DbContextOptions<CobrancaAtivaDbContext> options) : base(options)
         { }
 
         public DbSet<BancoModel> Banco { get; set; }
         public DbSet<EmpresaParceiraModel> EmpresaParceira { get; set; }
         public DbSet<ContatoEmpresaParceiraModel> ContatoEmpresaParceira { get; set; }
+        public DbSet<ConflitoModel> ConflitoModel { get; set; }
         public DbSet<EnderecoEmpresaParceiraModel> EnderecoEmpresaParceira { get; set; }
         public DbSet<ContaBancariaEmpresaParceiraModel> ContaBancariaEmpresaParceira { get; set; }
         public DbSet<InstituicaoModel> Instituicao { get; set; }
@@ -54,6 +55,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         /// Model Ficticio para validação da existencia de pagamento de parcela
         /// </summary>
         public DbSet<ParcelaPagaAlunoInstituicaoModel> ParcelaPagaAlunoInstituicaoModel { get; set; }
+
+        /// <summary>
+        /// Model Ficticio para busca do Id Aluno
+        /// </summary>
+        public DbSet<IdAlunoModel> IdAlunoModel { get; set; }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {

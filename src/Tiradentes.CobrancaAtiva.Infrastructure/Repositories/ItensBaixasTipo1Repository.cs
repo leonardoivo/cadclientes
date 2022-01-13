@@ -24,7 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await Alterar(itemBaixa);
         }
 
-        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, int numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, decimal? codErro)
+        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, decimal? codErro)
         {            
             await Criar(new ItensBaixaTipo1Model(){ 
                 DataBaixa = dataBaixa,
@@ -33,9 +33,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 Multa = multa,
                 Juros = juros,
                 DataVencimento = dataVencimento,
-                ValorParcela = valorParcela,
+                Valor = valorParcela,
                 CodigoErro = codErro
             });            
         }
+
     }
 }

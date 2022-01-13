@@ -4,18 +4,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     public interface IParcelaPagaAlunoInstituicaoService
     {
         bool ParcelaPagaInstituicao(string tipoInadimplencia,
-                            string sistema,
-                            decimal? idAluno,
-                            int? ano,
-                            int? semestre,
+                            string sistema,   
+                            decimal matricula,
+                            decimal periodo,
                             int? parcela,
                             decimal? idTitulo,
                             int? codigoAtividade,
                             decimal? numeroEvt,
-                            decimal? idDDP,
-                            decimal? idTituloAvulso,
-                            decimal? codigoBanco,
-                            decimal? codigoAgencia,
+                            decimal? idPessoa,                            
+                            int? codigoBanco,
+                            int? codigoAgencia,
                             decimal? numeroConta,
                             decimal? numeroCheque);
     }

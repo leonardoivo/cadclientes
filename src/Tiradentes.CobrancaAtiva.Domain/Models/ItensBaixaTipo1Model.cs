@@ -14,12 +14,12 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public decimal Parcela { get; set; }
         public decimal Multa { get; set; }
         public decimal Juros { get; set; }
-        public DateTime DataVencimento { get; set; }
-        public decimal ValorParcela { get; set; }
+        public DateTime DataVencimento { get; set; }       
 
         public string CnpjEmpresaCobranca { get; set; }
         public string SituacaoAluno { get; set; }
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }
+        public decimal Valor { get; set; }
     }
 }

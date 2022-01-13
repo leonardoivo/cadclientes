@@ -1,7 +1,8 @@
 ﻿using System;
 using System.Threading.Tasks;
-using Tiradentes.CobrancaAtiva.Application.ViewModels;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
+using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
@@ -21,6 +22,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
 
             await _baixasCobrancasRepository.Alterar(baixaCobranca);
+        }
+
+        public async Task CriarBaixasCobrancas(DateTime dataBaixa)
+        {
+            await _baixasCobrancasRepository.Criar(new BaixasCobrancasModel()
+            {
+                DataBaixa = dataBaixa
+                
+            });
         }
     }
 }

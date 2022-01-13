@@ -13,7 +13,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
-        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, int numeroAcordo, int parcela, int periodo, DateTime dataVencimento, decimal valor, decimal? codErro)
+        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, decimal? codErro)
         {
             await Criar(new ItensBaixaTipo2Model() { 
                 DataBaixa = dataBaixa,
@@ -26,5 +26,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 CodigoErro = codErro
             });
         }
+
     }
 }

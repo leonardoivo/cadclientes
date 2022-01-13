@@ -1,4 +1,4 @@
-﻿using System.Collections.Generic;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -57,7 +57,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public override Task Criar(RegraNegociacaoModel model)
         {
             var query = DbSet
-                            .Select(r  => new BuscaRegraNegociacao {
+                            .Select(r => new BuscaRegraNegociacao
+                            {
                                 Id = r.Id,
                                 Instituicao = r.Instituicao,
                                 Modalidade = r.Modalidade,
@@ -84,19 +85,21 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             query = query.Where(e => e.Status == true).Where(e => e.Modalidade.Id == model.ModalidadeId);
 
-            query = query.Where(e => e.InadimplenciaInicial <= model.InadimplenciaFinal && model.InadimplenciaInicial <= e.InadimplenciaFinal); 
+            query = query.Where(e => e.InadimplenciaInicial <= model.InadimplenciaFinal && model.InadimplenciaInicial <= e.InadimplenciaFinal);
 
             var regrasCadastradas = query.ToList();
 
-            if(regrasCadastradas.Count > 0)
+            if (regrasCadastradas.Count > 0)
             {
-                regrasCadastradas = regrasCadastradas.AsQueryable()
-                    .Where(e => e.Instituicao.Id == model.InstituicaoId)
-                    .Where(e => e.Cursos.Where(c => model.RegraNegociacaoCurso.Select(c => c.CursoId).Contains(c.Id)).Any())
-                    .Where(e => e.TiposTitulos.Where(c => model.RegraNegociacaoTipoTitulo.Select(c => c.TipoTituloId).Contains(c.Id)).Any())
-                    .ToList();
+                regrasCadastradas = regrasCadastradas.AsQueryable().Where(e => (e.Instituicao == null ? e.Instituicao == null : (e.Instituicao.Id == model.InstituicaoId))).ToList();
 
-                if(regrasCadastradas.Count > 0)
+                 if(model.RegraNegociacaoCurso.Count > 0)    
+                     regrasCadastradas = regrasCadastradas.Where(e => e.Cursos.Where(c => model.RegraNegociacaoCurso.Select(c => c.CursoId).Contains(c.Id)).Any()).ToList();
+                 
+                 if(model.RegraNegociacaoTipoTitulo.Count > 0)   
+                     regrasCadastradas = regrasCadastradas.Where(e => e.TiposTitulos.Where(c => model.RegraNegociacaoTipoTitulo.Select(c => c.TipoTituloId).Contains(c.Id)).Any()).ToList();
+
+                if (regrasCadastradas.Count > 0)
                     throw new System.Exception("Regra já cadastrada!");
             }
 
@@ -106,7 +109,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task<ModelPaginada<BuscaRegraNegociacao>> Buscar(RegraNegociacaoQueryParam queryParams)
         {
             var query = DbSet
-                            .Select(r  => new BuscaRegraNegociacao {
+                            .Select(r => new BuscaRegraNegociacao
+                            {
                                 Id = r.Id,
                                 Instituicao = r.Instituicao,
                                 Modalidade = r.Modalidade,
@@ -135,15 +139,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.Instituicao.Id == queryParams.InstituicaoId);
 
             if (queryParams.ModalidadeId != 0)
-                query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);   
+                query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);
 
             if (queryParams.ValidadeInicial.HasValue)
-                query = query.Where(e => e.ValidadeInicial.Day == queryParams.ValidadeInicial.Value.Day && 
+                query = query.Where(e => e.ValidadeInicial.Day == queryParams.ValidadeInicial.Value.Day &&
                     e.ValidadeInicial.Month == queryParams.ValidadeInicial.Value.Month &&
                     e.ValidadeInicial.Year == queryParams.ValidadeInicial.Value.Year);
 
             if (queryParams.ValidadeFinal.HasValue)
-                query = query.Where(e => e.ValidadeFinal.Day == queryParams.ValidadeFinal.Value.Day && 
+                query = query.Where(e => e.ValidadeFinal.Day == queryParams.ValidadeFinal.Value.Day &&
                     e.ValidadeFinal.Month == queryParams.ValidadeFinal.Value.Month &&
                     e.ValidadeFinal.Year == queryParams.ValidadeFinal.Value.Year);
 
@@ -151,13 +155,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.InadimplenciaInicial.Month == queryParams.InadimplenciaInicial.Value.Month && e.InadimplenciaInicial.Year == queryParams.InadimplenciaInicial.Value.Year);
 
             if (queryParams.InadimplenciaFinal.HasValue)
-                query = query.Where(e => e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);   
+                query = query.Where(e => e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);
 
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
 
             if (queryParams.TitulosAvulsos.Length > 0)
-                 query = query.Where(e => e.TitulosAvulsos.Where(c => queryParams.TitulosAvulsos.Contains(c.Id)).Any());
+                query = query.Where(e => e.TitulosAvulsos.Where(c => queryParams.TitulosAvulsos.Contains(c.Id)).Any());
 
             if (queryParams.SituacoesAlunos.Length > 0)
                 query = query.Where(e => e.SituacoesAlunos.Where(c => queryParams.SituacoesAlunos.Contains(c.Id)).Any());
@@ -230,8 +234,41 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             Db.RegraNegociacaoTipoTitulo.RemoveRange(
                 Db.RegraNegociacaoTipoTitulo.Where(
                     c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)));
-                    
+
             return base.Alterar(model);
+        }
+
+        public async Task<RegraNegociacaoModel> VerificarRegraConflitante(RegraNegociacaoModel model)
+        {
+            var query = DbSet
+                            .Include(r => r.Instituicao)
+                            .Include(r => r.Modalidade)
+                            .AsQueryable();
+
+            query = query.Where(e => (e.ValidadeInicial.Date <= model.ValidadeInicial.Date && e.ValidadeFinal.Date >= model.ValidadeFinal.Date)
+                             ||
+                             (e.ValidadeInicial.Date >= model.ValidadeInicial.Date && e.ValidadeInicial.Date <= model.ValidadeFinal.Date)
+                             ||
+                             (e.ValidadeInicial.Date <= model.ValidadeInicial.Date && e.ValidadeFinal.Date >= model.ValidadeInicial.Date)
+                             ||
+                             (e.ValidadeFinal.Date >= model.ValidadeFinal.Date && e.ValidadeInicial.Date <= model.ValidadeFinal.Date)
+                             );
+
+            query = query.Where(e => e.PercentJurosMultaAVista != model.PercentJurosMultaAVista
+                               || e.PercentValorAVista != model.PercentValorAVista
+                               || e.PercentJurosMultaCartao != model.PercentJurosMultaCartao
+                               || e.PercentValorCartao != model.PercentValorCartao
+                               || e.QuantidadeParcelasCartao != model.QuantidadeParcelasCartao
+                               || e.PercentJurosMultaBoleto != model.PercentJurosMultaBoleto
+                               || e.PercentValorBoleto != model.PercentValorBoleto
+                               || e.QuantidadeParcelasBoleto != model.QuantidadeParcelasBoleto
+                               || e.PercentEntradaBoleto != model.PercentEntradaBoleto);
+
+            query = query.Where(e => e.Status == true);
+
+            var regraConflitante = await query.FirstOrDefaultAsync();
+
+            return regraConflitante;
         }
     }
 }

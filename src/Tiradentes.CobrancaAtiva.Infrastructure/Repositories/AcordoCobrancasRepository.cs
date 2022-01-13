@@ -54,5 +54,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     SaldoDevedor = saldoDevedor
             });
         }
+
+        public decimal ObterMatricula(decimal numeroAcordo)
+        {
+            return DbSet.Where(A => A.NumeroAcordo == numeroAcordo).Select(A => A.NumeroAcordo).FirstOrDefault();
+        }
     }
 }

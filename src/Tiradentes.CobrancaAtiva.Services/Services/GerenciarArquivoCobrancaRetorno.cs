@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Enum;
 using Tiradentes.CobrancaAtiva.Domain.Exeptions;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
@@ -8,6 +10,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class GerenciarArquivoCobrancaRetorno : IGerenciarArquivoCobrancaRetornoService
     {
+        readonly ICobrancaService _cobrancaService;
         readonly IErroLayoutService _erroLayoutService;
         readonly IParcelasAcordoService _parcelasAcordoService;
         readonly IAcordoCobrancaService _acordoCobrancaService;
@@ -21,7 +24,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         readonly IBaixasCobrancasService _baixasCobrancasService;
 
         private Dictionary<int, decimal> Erros { get; set; }
-        public GerenciarArquivoCobrancaRetorno(IErroLayoutService erroLayoutService,
+        public GerenciarArquivoCobrancaRetorno(ICobrancaService cobrancaService,
+                                               IErroLayoutService erroLayoutService,
                                                IParcelasAcordoService parcelasAcordoService,
                                                IAcordoCobrancaService acordoCobrancaService,
                                                IItensBaixasTipo1Service itensBaixasTipo1Service,
@@ -33,6 +37,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                IParcelaPagaAlunoInstituicaoService parcelaPagaAlunoInstituicaoService,
                                                IBaixasCobrancasService baixasCobrancasService)
         {
+            _cobrancaService = cobrancaService;
             _erroLayoutService = erroLayoutService;            
             _parcelasAcordoService = parcelasAcordoService;
             _acordoCobrancaService = acordoCobrancaService;
@@ -49,31 +54,71 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         }
 
 
-        private void ProcessaBaixaTipo1(dynamic arquivo, ref Dictionary<int, decimal> erros)
+        private void ProcessaBaixaTipo1(DateTime dataBaixa, RespostaViewModel resposta, ref List<ErroParcelaViewModel> erros)
         {
             decimal? idErroLayout = null;
+
+            var arquivo = new
+            {
+                TipoRegistro = resposta.TipoRegistro,
+                CPF = resposta.CPF,
+                NumeroAcordo = Convert.ToDecimal(resposta.NumeroAcordo),
+                Parcela = Convert.ToInt32(resposta.Parcela),
+                CnpjEmpresaCobranca = resposta.CnpjEmpresaCobranca,
+                SituacaoAluno = resposta.SituacaoAluno,
+                Sistema = resposta.Sistema,
+                Matricula = Convert.ToDecimal(resposta.Matricula),
+                Periodo = Convert.ToDecimal(resposta.Periodo),
+                IdTitulo = Convert.ToDecimal(resposta.IdTitulo),
+                CodigoAtividade = Convert.ToInt32(resposta.CodigoAtividade),
+                NumeroEvt = Convert.ToInt32(resposta.NumeroEvt),
+                IdPessoa = Convert.ToDecimal(resposta.IdPessoa),
+                CodigoBanco = Convert.ToInt32(resposta.CodigoBanco),
+                CodigoAgencia = Convert.ToInt32(resposta.CodigoAgencia),
+                NumeroConta = Convert.ToInt32(resposta.NumeroConta),
+                NumeroCheque = Convert.ToDecimal(resposta.NumeroCheque),
+                TipoInadimplencia = resposta.TipoInadimplencia,
+                ChaveInadimplencia = resposta.ChaveInadimplencia,
+                Juros = Convert.ToDecimal(resposta.Juros),
+                Multa = Convert.ToDecimal(resposta.Multa),
+                ValorTotal = Convert.ToDecimal(resposta.ValorTotal),
+                DataFechamentoAcordo = Convert.ToDateTime(resposta.DataFechamentoAcordo),
+                TotalParcelas = Convert.ToInt32(resposta.TotalParcelas),
+                DataVencimento = Convert.ToDateTime(resposta.DataVencimento),
+                ValorParcela = Convert.ToDecimal(resposta.ValorParcela),
+                SaldoDevedorTotal = Convert.ToDecimal(resposta.SaldoDevedorTotal),
+                Produto = resposta.Produto,
+                DescricaoProduto = resposta.DescricaoProduto,
+                Fase = resposta.Fase,
+                CodigoControleCliente = resposta.CodigoControleCliente,
+                NossoNumero = resposta.NossoNumero,
+                DataPagamento = Convert.ToDateTime(resposta.DataPagamento),
+                DataBaixa = dataBaixa,
+                ValorPago = Convert.ToDecimal(resposta.ValorPago),
+                TipoPagamento = resposta.TipoPagamento
+            };
 
             try
             {
 
-                if(_parcelasAcordoService.ExisteParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo))
+                if(_parcelasAcordoService.ExisteParcelaAcordo(Convert.ToDecimal(arquivo.Parcela), Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.ParcelaJaCadastrada);
                 }                
 
-                if(!_acordoCobrancaService.ExisteAcordo(arquivo.NumeroAcordo))
+                if(!_acordoCobrancaService.ExisteAcordo(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
                     _acordoCobrancaService.InserirAcordoCobranca(arquivo.NumeroAcordo,
-                                                                    arquivo.DataBaixa, //?
-                                                                    arquivo.DataFechamentoAcordo,
-                                                                    arquivo.TotalParcelas,
-                                                                    arquivo.ValorTotal,
-                                                                    arquivo.Multa,
-                                                                    arquivo.Matricula,
-                                                                    arquivo.SaldoDevedorTotal);//? verificar se esta preenchido
+                                                                 arquivo.DataBaixa, //?
+                                                                 arquivo.DataFechamentoAcordo,
+                                                                 arquivo.TotalParcelas,
+                                                                 arquivo.ValorTotal,
+                                                                 arquivo.Multa,
+                                                                 arquivo.Matricula,
+                                                                 arquivo.SaldoDevedorTotal);//? verificar se esta preenchido
                 }
 
-                if(arquivo.Parcela != 1)
+                if(Convert.ToInt32(arquivo.Parcela) != 1)
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.AcordoNaoCadastrado);
                 }
@@ -81,43 +126,86 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 //(Se o acordo existe e é a primeira parcela) ou (se existe acordo)
                 //Apenas para a 1º parcelas ou para todas?
                 _parcelasAcordoService.InserirPagamentoParcelaAcordo(arquivo.Parcela,
-                                                                        arquivo.NumeroAcordo,
-                                                                        arquivo.DataVencimento,
-                                                                        arquivo.DataBaixa,
-                                                                        arquivo.ValorPago);
+                                                                     arquivo.NumeroAcordo,
+                                                                     arquivo.DataVencimento,
+                                                                     arquivo.DataBaixa,
+                                                                     arquivo.ValorPago);
             }
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout = _erroLayoutService.RegistrarErro(ex.Erro);
+                idErroLayout = _erroLayoutService.RegistrarErro(ex.Erro, resposta).Result;
 
-                erros.Add(1, idErroLayout ?? 0);
+                erros.Add(new ErroParcelaViewModel() { 
+                    Etapa = 1,
+                    ValorParcela = arquivo.ValorParcela,
+                    IdErro = idErroLayout ?? 0
+                } );
             }
 
 
             _itensBaixasTipo1Service.InserirBaixa(arquivo.DataBaixa,
-                                                    arquivo.Matricula,
-                                                    arquivo.NumeroAcordo,
-                                                    arquivo.Multa,
-                                                    arquivo.Juros,
-                                                    arquivo.DataVencimento,
-                                                    arquivo.ValorParcela,
-                                                    idErroLayout
-                                                    );
+                                                  arquivo.Matricula,
+                                                  arquivo.NumeroAcordo,
+                                                  arquivo.Multa,
+                                                  arquivo.Juros,
+                                                  arquivo.DataVencimento,
+                                                  arquivo.ValorParcela,
+                                                  idErroLayout);
 
 
         }
 
-        private void ProcessaBaixaTipo2(dynamic arquivo, ref Dictionary<int, decimal> erros)
+        private void ProcessaBaixaTipo2(DateTime dataBaixa, RespostaViewModel resposta, ref List<ErroParcelaViewModel> erros)
         {
             decimal? idErroLayout = null;
+
+            var arquivo = new
+            {
+                TipoRegistro = resposta.TipoRegistro,
+                CPF = resposta.CPF,
+                NumeroAcordo = Convert.ToDecimal(resposta.NumeroAcordo),
+                Parcela = Convert.ToInt32(resposta.Parcela),
+                CnpjEmpresaCobranca = resposta.CnpjEmpresaCobranca,
+                SituacaoAluno = resposta.SituacaoAluno,
+                Sistema = resposta.Sistema,
+                Matricula = Convert.ToDecimal(resposta.Matricula),
+                Periodo = Convert.ToDecimal(resposta.Periodo),
+                IdTitulo = Convert.ToDecimal(resposta.IdTitulo),
+                CodigoAtividade = Convert.ToInt32(resposta.CodigoAtividade),
+                NumeroEvt = Convert.ToInt32(resposta.NumeroEvt),
+                IdPessoa = Convert.ToDecimal(resposta.IdPessoa),
+                CodigoBanco = Convert.ToInt32(resposta.CodigoBanco),
+                CodigoAgencia = Convert.ToInt32(resposta.CodigoAgencia),
+                NumeroConta = Convert.ToInt32(resposta.NumeroConta),
+                NumeroCheque = Convert.ToDecimal(resposta.NumeroCheque),
+                TipoInadimplencia = resposta.TipoInadimplencia,
+                ChaveInadimplencia = resposta.ChaveInadimplencia,
+                Juros = Convert.ToDecimal(resposta.Juros),
+                Multa = Convert.ToDecimal(resposta.Multa),
+                ValorTotal = Convert.ToDecimal(resposta.ValorTotal),
+                DataFechamentoAcordo = Convert.ToDateTime(resposta.DataFechamentoAcordo),
+                TotalParcelas = Convert.ToInt32(resposta.TotalParcelas),
+                DataVencimento = Convert.ToDateTime(resposta.DataVencimento),
+                ValorParcela = Convert.ToDecimal(resposta.ValorParcela),
+                SaldoDevedorTotal = Convert.ToDecimal(resposta.SaldoDevedorTotal),
+                Produto = resposta.Produto,
+                DescricaoProduto = resposta.DescricaoProduto,
+                Fase = resposta.Fase,
+                CodigoControleCliente = resposta.CodigoControleCliente,
+                NossoNumero = resposta.NossoNumero,
+                DataPagamento = Convert.ToDateTime(resposta.DataPagamento),
+                DataBaixa = dataBaixa,
+                ValorPago = Convert.ToDecimal(resposta.ValorPago),
+                TipoPagamento = resposta.TipoPagamento
+            };
 
             try
             {
 
                 if (!_matriculaAlunoExisteService.MatriculaAlunoExiste(arquivo.TipoInadimplencia,
-                                                                  arquivo.Sistema,
-                                                                  arquivo.Matricula))
+                                                                       arquivo.Sistema,
+                                                                       arquivo.Matricula))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.MatriculaInexistente);
                 }
@@ -127,7 +215,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                    arquivo.Periodo,
                                                                    arquivo.Parcela);
 
-                if(dataEnvio != arquivo.DataVencimento)
+                if(dataEnvio != Convert.ToDateTime(arquivo.DataVencimento))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.DataInconsistente);
                 }
@@ -137,25 +225,38 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.ParcelaEnviadaAnteriormentePelaEmpresaCobranca);
                 }
 
-                if(_parcelaPagaAlunoInstituicao.ParcelaPagaInstituicao())
+                if(_parcelaPagaAlunoInstituicao.ParcelaPagaInstituicao(tipoInadimplencia: arquivo.TipoInadimplencia,
+                                                                       sistema: arquivo.Sistema, 
+                                                                       matricula: arquivo.Matricula,
+                                                                       periodo: arquivo.Periodo,
+                                                                       parcela: arquivo.Parcela,
+                                                                       idTitulo: arquivo.IdTitulo,
+                                                                       codigoAtividade: arquivo.CodigoAtividade,
+                                                                       numeroEvt: arquivo.NumeroEvt,
+                                                                       idPessoa: arquivo.IdPessoa,
+                                                                       codigoBanco: arquivo.CodigoBanco,
+                                                                       codigoAgencia: arquivo.CodigoAgencia,
+                                                                       numeroConta: arquivo.NumeroConta,
+                                                                       numeroCheque: arquivo.NumeroCheque
+                                                                       ))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.ParcelaPagaInstituicao);
                 }
 
                 if(_itensGeracaoService.ExisteMatricula(arquivo.CnpjEmpresaCobranca,
-                                                                   arquivo.Matricula,
-                                                                   arquivo.Periodo,
-                                                                   arquivo.Parcela))
+                                                        arquivo.Matricula,
+                                                        arquivo.Periodo,
+                                                        arquivo.Parcela))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.GeracaoInconsistente);
                 }
 
                 //Doc fala Se existe, fluxograma fala Se Não existe
-                if(!_acordoCobrancaService.ExisteAcordo(arquivo.NumeroAcordo))
+                if(!_acordoCobrancaService.ExisteAcordo(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
                     _acordoCobrancaService.AtualizarMatriculaAcordo(arquivo.Matricula, arquivo.NumeroAcordo);
 
-                    _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, arquivo.NumeroAcordo, arquivo.Matricula);
+                    _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, Convert.ToDecimal(arquivo.NumeroAcordo), arquivo.Matricula);
                 }
 
                 //Doc fala apenas se não deu erro, fluxograma diz sem validação.
@@ -164,37 +265,97 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                      arquivo.Periodo,
                                                      arquivo.Parcela,
                                                      arquivo.DataBaixa,
-                                                     arquivo.DataEnvio,
+                                                     dataEnvio,
                                                      arquivo.DataVencimento,
                                                      arquivo.ValorParcela);
 
-                if(_parcelasAcordoService.ExisteParcelaPaga(arquivo.NumeroAcordo))
+                if(_parcelasAcordoService.ExisteParcelaPaga(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
                     //Ainda não implementado
-                    _parcelasAcordoService.QuitarParcelasAcordo(arquivo.NumeroAcordo);
+                    _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: arquivo.NumeroAcordo,
+                                                                matricula: arquivo.Matricula,
+                                                                sistema: arquivo.Sistema,
+                                                                dataPagamento: arquivo.DataPagamento,
+                                                                periodo: arquivo.Periodo,
+                                                                idTitulo: arquivo.IdTitulo,
+                                                                codigoAtividade: arquivo.CodigoAtividade,
+                                                                numeroEvt: arquivo.NumeroEvt,
+                                                                idPessoa: arquivo.IdPessoa,
+                                                                codigobanco: arquivo.CodigoBanco,
+                                                                codigoAgencia: arquivo.CodigoAgencia,
+                                                                numeroConta: arquivo.NumeroConta,
+                                                                numeroCheque: arquivo.NumeroCheque,
+                                                                CpfCnpj: arquivo.CPF
+                                                                );
                 }
             }
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout = _erroLayoutService.RegistrarErro(ex.Erro);
+                idErroLayout =  _erroLayoutService.RegistrarErro(ex.Erro, resposta).Result;
 
-                erros.Add(2, idErroLayout ?? 0);
+                erros.Add(new ErroParcelaViewModel()
+                {
+                    Etapa = 2,
+                    ValorParcela = arquivo.ValorParcela,
+                    IdErro = idErroLayout ?? 0
+                });
             }
 
 
             _itensBaixasTipo2Service.InserirBaixa(arquivo.DataBaixa,
-                                                    arquivo.Matricula,
-                                                    arquivo.NumeroAcordo,
-                                                    arquivo.Parcela,
-                                                    arquivo.Periodo,
-                                                    arquivo.DataVencimento,
-                                                    arquivo.Valor,
-                                                    idErroLayout);
+                                                  arquivo.Matricula,
+                                                  arquivo.NumeroAcordo,
+                                                  arquivo.Parcela,
+                                                  arquivo.Periodo,
+                                                  arquivo.DataVencimento,
+                                                  arquivo.ValorPago,
+                                                  idErroLayout);
         }
-        private void ProcessaBaixaTipo3(dynamic arquivo, ref Dictionary<int, decimal> erros)
+
+        private void ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta, ref List<ErroParcelaViewModel> erros)
         {
             decimal? idErroLayout = null;
+
+            var arquivo = new
+            {
+                TipoRegistro = resposta.TipoRegistro,
+                CPF = resposta.CPF,
+                NumeroAcordo = Convert.ToDecimal(resposta.NumeroAcordo),
+                Parcela = Convert.ToInt32(resposta.Parcela),
+                CnpjEmpresaCobranca = resposta.CnpjEmpresaCobranca,
+                SituacaoAluno = resposta.SituacaoAluno,
+                Sistema = resposta.Sistema,
+                Matricula = Convert.ToDecimal(resposta.Matricula),
+                Periodo = Convert.ToDecimal(resposta.Periodo),
+                IdTitulo = Convert.ToDecimal(resposta.IdTitulo),
+                CodigoAtividade = Convert.ToInt32(resposta.CodigoAtividade),
+                NumeroEvt = Convert.ToInt32(resposta.NumeroEvt),
+                IdPessoa = Convert.ToDecimal(resposta.IdPessoa),
+                CodigoBanco = Convert.ToInt32(resposta.CodigoBanco),
+                CodigoAgencia = Convert.ToInt32(resposta.CodigoAgencia),
+                NumeroConta = Convert.ToInt32(resposta.NumeroConta),
+                NumeroCheque = Convert.ToDecimal(resposta.NumeroCheque),
+                TipoInadimplencia = resposta.TipoInadimplencia,
+                ChaveInadimplencia = resposta.ChaveInadimplencia,
+                Juros = Convert.ToDecimal(resposta.Juros),
+                Multa = Convert.ToDecimal(resposta.Multa),
+                ValorTotal = Convert.ToDecimal(resposta.ValorTotal),
+                DataFechamentoAcordo = Convert.ToDateTime(resposta.DataFechamentoAcordo),
+                TotalParcelas = Convert.ToInt32(resposta.TotalParcelas),
+                DataVencimento = Convert.ToDateTime(resposta.DataVencimento),
+                ValorParcela = Convert.ToDecimal(resposta.ValorParcela),
+                SaldoDevedorTotal = Convert.ToDecimal(resposta.SaldoDevedorTotal),
+                Produto = resposta.Produto,
+                DescricaoProduto = resposta.DescricaoProduto,
+                Fase = resposta.Fase,
+                CodigoControleCliente = resposta.CodigoControleCliente,
+                NossoNumero = resposta.NossoNumero,
+                DataPagamento = Convert.ToDateTime(resposta.DataPagamento),
+                DataBaixa = dataBaixa,
+                ValorPago = Convert.ToDecimal(resposta.ValorPago),
+                TipoPagamento = resposta.TipoPagamento
+            };
 
             try
             {
@@ -237,14 +398,28 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     {
                         try
                         {
-                            _parcelasAcordoService.QuitarParcelasAcordo(arquivo.NumeroAcordo);
+                            _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: arquivo.NumeroAcordo,
+                                                                        matricula: arquivo.Matricula,
+                                                                        sistema: arquivo.Sistema,
+                                                                        dataPagamento: arquivo.DataPagamento,
+                                                                        periodo: arquivo.Periodo,
+                                                                        idTitulo: arquivo.IdTitulo,
+                                                                        codigoAtividade: arquivo.CodigoAtividade,
+                                                                        numeroEvt: arquivo.NumeroEvt,
+                                                                        idPessoa: arquivo.IdPessoa,
+                                                                        codigobanco: arquivo.CodigoBanco,
+                                                                        codigoAgencia: arquivo.CodigoAgencia,
+                                                                        numeroConta: arquivo.NumeroConta,
+                                                                        numeroCheque: arquivo.NumeroCheque,
+                                                                        CpfCnpj: arquivo.CPF
+                                                                        );
                         }
                         catch (Exception)
                         {
 
                             var saldoAdicao = _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
 
-                            _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, saldoAdicao);
+                            _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, saldoAdicao ?? 0);
 
                             throw;
                         }
@@ -261,9 +436,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout = _erroLayoutService.RegistrarErro(ex.Erro);
+                idErroLayout = _erroLayoutService.RegistrarErro(ex.Erro, resposta).Result;
 
-                erros.Add(3, idErroLayout ?? 0);
+                erros.Add(new ErroParcelaViewModel()
+                {
+                    Etapa = 3,
+                    ValorParcela = arquivo.ValorParcela,
+                    IdErro = idErroLayout ?? 0
+                });
             }
 
             _itensBaixasTipo3Service.InserirBaixa(arquivo.DataBaixa,
@@ -275,70 +455,58 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   idErroLayout);
         }
 
-        public void Gerenciar(IEnumerable<dynamic> arquivos)
+        public async void Gerenciar()
         {
-            Dictionary<int, decimal> ErrosContabilizados = new Dictionary<int, decimal>();
+            List<ErroParcelaViewModel> ErrosContabilizados = new List<ErroParcelaViewModel>();
+
+            var arquivos = await _cobrancaService.BuscarRepostaNaoIntegrada();
+
+            var DataBaixa = DateTime.Now;
+
+            await _baixasCobrancasService.CriarBaixasCobrancas(DataBaixa);
 
             foreach (var arquivo in arquivos)
             {
 
-                if(arquivo.Tipo == "ArquivoTipo1")
+                if(arquivo.TipoRegistro == "1")
                 {
-                    ProcessaBaixaTipo1(arquivo, ref ErrosContabilizados);
+                    ProcessaBaixaTipo1(DataBaixa, arquivo, ref ErrosContabilizados);
                 }
-                else if(arquivo.Tipo == "ArquivoTipo2")
+                else if(arquivo.TipoRegistro == "2")
                 {
-                    ProcessaBaixaTipo2(arquivo, ref ErrosContabilizados);
+                    ProcessaBaixaTipo2(DataBaixa, arquivo, ref ErrosContabilizados);
                 }
-                else if(arquivo.Tipo == "ArquivoTipo3")
+                else if(arquivo.TipoRegistro == "3")
                 {
-                    ProcessaBaixaTipo3(arquivo, ref ErrosContabilizados);
+                    ProcessaBaixaTipo3(DataBaixa, arquivo, ref ErrosContabilizados);
                 }
                 else
                 {
                     //Preciso tratar os erros adequadamente
-                    _erroLayoutService.RegistrarErro(ErrosBaixaPagamento.LayoutInconsistente);
+                    await _erroLayoutService.RegistrarErro(ErrosBaixaPagamento.LayoutInconsistente, arquivo);
                 }
             }
 
-            _baixasCobrancasService.AtualizarBaixasCobrancas();
+            await _baixasCobrancasService.AtualizarBaixasCobrancas(new BaixasCobrancasViewModel() {
+                        DataBaixa = DataBaixa,
+                        Etapa = 3,
+                        QuantidadeTipo1 = arquivos.Count(A => A.TipoRegistro == "1"),
+                        QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == "2"),
+                        QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == "3"),
+
+                        ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == "1").Sum(A => Convert.ToDecimal(A.ValorParcela)),
+                        ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == "2").Sum(A => Convert.ToDecimal(A.ValorParcela)),
+                        ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3").Sum(A => Convert.ToDecimal(A.ValorParcela)),
+
+                        QuantidadeErrosTipo1 = ErrosContabilizados.Count(E => E.Etapa == 1),
+                        QuantidadeErrosTipo2 = ErrosContabilizados.Count(E => E.Etapa == 2),
+                        QuantidadeErrosTipo3 = ErrosContabilizados.Count(E => E.Etapa == 3),
+
+                        ValorTotalErrosTipo1 = ErrosContabilizados.Where(E => E.Etapa == 1).Sum(E => E.ValorParcela),
+                        ValorTotalErrosTipo2 = ErrosContabilizados.Where(E => E.Etapa == 2).Sum(E => E.ValorParcela),
+                        ValorTotalErrosTipo3 = ErrosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
+                        UserName = ""
+                    });
         }
     }
 }
-/*
-        public string TipoRegistro { get; set; }
-        public string CPF { get; set; }
-        public string NumeroAcordo { get; set; }
-        public string Parcela { get; set; }
-        public string CnpjEmpresaCobranca { get; set; }
-        public string SituacaoAluno { get; set; }
-        public string Sistema { get; set; }
-        public string TipoInadimplencia { get; set; }
-        public string ChaveInadimplencia { get; set; }
-
-        //tipo 1
-        public string Juros { get; set; }
-        public string Multa { get; set; }
-        public string ValorTotal { get; set; }
-        public string DataFechamentoAcordo { get; set; }
-        public string TotalParcelas { get; set; }
-
-        //tipo 1 e tipo 2
-        public string DataVencimento { get; set; }
-        public string ValorParcela { get; set; }
-
-        //tipo 2
-        public string SaldoDevedorTotal { get; set; }
-        public string Produto { get; set; }
-        public string DescricaoProduto { get; set; }
-        public string Fase { get; set; }
-        public string CodigoControleCliente { get; set; }
-
-        //tipo 3
-        public string NossoNumero { get; set; }
-        public string DataPagamento { get; set; }
-        public string DataBaixa { get; set; }
-        public string ValorPago { get; set; }
-        public string TipoPagamento { get; set; }
-
- */

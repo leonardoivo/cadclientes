@@ -7,7 +7,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     {
         Task InserirBaixa(DateTime dataBaixa,
                           decimal matricula,
-                          int numeroAcordo,
+                          decimal numeroAcordo,
                           int parcela,
                           DateTime dataPagamento,
                           decimal valorPago,

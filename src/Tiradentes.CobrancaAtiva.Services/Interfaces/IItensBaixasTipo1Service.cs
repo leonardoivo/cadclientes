@@ -8,7 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task AtualizarMatricula(DateTime dataBaixa, decimal numeroAcordo, decimal matricula);
         Task InserirBaixa(DateTime dataBaixa,
                   decimal matricula,
-                  int numeroAcordo,
+                  decimal numeroAcordo,
                   decimal multa,
                   decimal juros,
                   DateTime dataVencimento,
