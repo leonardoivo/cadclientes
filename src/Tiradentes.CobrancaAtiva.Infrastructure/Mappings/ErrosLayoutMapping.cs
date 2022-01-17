@@ -8,6 +8,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ErrosLayoutModel> builder)
         {
+            builder.Ignore(ep => ep.Id);
+
             builder.HasKey(ep => new { ep.DataHora, ep.Sequencia });
 
             builder.Property(ep => ep.DataHora)
@@ -20,7 +22,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
               .HasColumnName("DSC_ERRO");
             
 
-            builder.ToTable("ERROS_LAYOUT");
+            builder.ToTable("ERROS_LAYOUT", "SCF");
         }
     }
 }

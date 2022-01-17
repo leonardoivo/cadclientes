@@ -8,6 +8,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ArquivoLayoutModel> builder)
         {
+            builder.Ignore(ep => ep.Id);
+
             builder.HasKey(ep => ep.DataHora);
 
             builder.Property(ep => ep.DataHora)
@@ -22,7 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Conteudo)
                .HasColumnName("CONTEUDO");            
 
-            builder.ToTable("ARQUIVO_LAYOUT");
+            builder.ToTable("ARQUIVO_LAYOUT", "SCF");
         }
     }
 }

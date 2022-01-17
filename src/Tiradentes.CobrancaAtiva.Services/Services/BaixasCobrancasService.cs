@@ -47,6 +47,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var baixaCobranca = await _baixasCobrancasRepository.BuscarPorDataBaixa(dataBaixa);
 
+            if (baixaCobranca == null)
+                return null;
+
             var viewModel = _mapper.Map<BaixasCobrancasViewModel>(baixaCobranca);
             viewModel.ArquivoLayout = _arquivoLayoutService.BuscarPorDataHora(dataBaixa);
 
