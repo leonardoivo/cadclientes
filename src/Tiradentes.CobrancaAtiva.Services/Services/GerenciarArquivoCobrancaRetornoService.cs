@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Enum;
 using Tiradentes.CobrancaAtiva.Domain.Exeptions;
@@ -10,8 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class GerenciarArquivoCobrancaRetornoService : IGerenciarArquivoCobrancaRetornoService
     {
-        readonly ICobrancaService _cobrancaService;
-        readonly IErroLayoutService _erroLayoutService;
+        readonly ICobrancaService _cobrancaService;        
         readonly IParcelasAcordoService _parcelasAcordoService;
         readonly IAcordoCobrancaService _acordoCobrancaService;
         readonly IItensBaixasTipo1Service _itensBaixasTipo1Service;
@@ -22,10 +22,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         readonly IParcelaTituloService _parcelaTituloService;
         readonly IParcelaPagaAlunoInstituicaoService _parcelaPagaAlunoInstituicao;
         readonly IBaixasCobrancasService _baixasCobrancasService;
+        readonly IArquivoLayoutService _arquivolayoutService;
 
         private Dictionary<int, decimal> Erros { get; set; }
-        public GerenciarArquivoCobrancaRetornoService(ICobrancaService cobrancaService,
-                                               IErroLayoutService erroLayoutService,
+        public GerenciarArquivoCobrancaRetornoService(ICobrancaService cobrancaService,                                               
                                                IParcelasAcordoService parcelasAcordoService,
                                                IAcordoCobrancaService acordoCobrancaService,
                                                IItensBaixasTipo1Service itensBaixasTipo1Service,
@@ -35,10 +35,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                IItensGeracaoService itensGeracaoService,
                                                IParcelaTituloService parcelaTituloService,
                                                IParcelaPagaAlunoInstituicaoService parcelaPagaAlunoInstituicaoService,
-                                               IBaixasCobrancasService baixasCobrancasService)
+                                               IBaixasCobrancasService baixasCobrancasService,
+                                               IArquivoLayoutService arquivolayoutService)
         {
-            _cobrancaService = cobrancaService;
-            _erroLayoutService = erroLayoutService;            
+            _cobrancaService = cobrancaService;                   
             _parcelasAcordoService = parcelasAcordoService;
             _acordoCobrancaService = acordoCobrancaService;
             _itensBaixasTipo1Service = itensBaixasTipo1Service;
@@ -49,6 +49,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _parcelaTituloService = parcelaTituloService;
             _parcelaPagaAlunoInstituicao = parcelaPagaAlunoInstituicaoService;
             _baixasCobrancasService = baixasCobrancasService;
+            _arquivolayoutService = arquivolayoutService;
 
             Erros = new Dictionary<int, decimal>();
         }
@@ -134,7 +135,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout = _erroLayoutService.RegistrarErro(ex.Erro, resposta).Result;
+                idErroLayout = _arquivolayoutService.RegistrarErro(dataBaixa, ex.Message, ex.Erro, JsonSerializer.Serialize(resposta)).Result;
 
                 erros.Add(new ErroParcelaViewModel() { 
                     Etapa = 1,
@@ -292,7 +293,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout =  _erroLayoutService.RegistrarErro(ex.Erro, resposta).Result;
+                idErroLayout =  _arquivolayoutService.RegistrarErro(dataBaixa, ex.Message, ex.Erro, JsonSerializer.Serialize(resposta)).Result;
 
                 erros.Add(new ErroParcelaViewModel()
                 {
@@ -436,7 +437,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout = _erroLayoutService.RegistrarErro(ex.Erro, resposta).Result;
+                idErroLayout = _arquivolayoutService.RegistrarErro(dataBaixa, ex.Message, ex.Erro, JsonSerializer.Serialize(resposta)).Result;
 
                 erros.Add(new ErroParcelaViewModel()
                 {
@@ -481,9 +482,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     ProcessaBaixaTipo3(DataBaixa, arquivo, ref ErrosContabilizados);
                 }
                 else
-                {
-                    //Preciso tratar os erros adequadamente
-                    await _erroLayoutService.RegistrarErro(ErrosBaixaPagamento.LayoutInconsistente, arquivo);
+                {                    
+                    await _arquivolayoutService.RegistrarErro(DataBaixa, "", ErrosBaixaPagamento.LayoutInconsistente, JsonSerializer.Serialize(arquivo));
                 }
             }
 

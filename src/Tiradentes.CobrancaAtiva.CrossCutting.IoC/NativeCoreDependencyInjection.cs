@@ -45,10 +45,10 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IErrosLayoutRepository, ErrosLayoutRepository>();
             services.AddScoped<IGeracaoCobrancasRepository, GeracaoCobrancasRepository>();
             services.AddScoped<IIdAlunoRepository, IdAlunoRepository>();
-            services.AddScoped<IitensBaixasTipo1Repository, ItensBaixasTipo1Repository>();
-            services.AddScoped<IitensBaixasTipo2Repository, ItensBaixasTipo2Repository>();
-            services.AddScoped<IitensBaixasTipo3Repository, ItensBaixasTipo3Repository>();
-            services.AddScoped<IitensGeracaoRepository, ItensGeracaoRepository>();
+            services.AddScoped<IItensBaixasTipo1Repository, ItensBaixasTipo1Repository>();
+            services.AddScoped<IItensBaixasTipo2Repository, ItensBaixasTipo2Repository>();
+            services.AddScoped<IItensBaixasTipo3Repository, ItensBaixasTipo3Repository>();
+            services.AddScoped<IItensGeracaoRepository, ItensGeracaoRepository>();
             services.AddScoped<IMatriculaAlunoExisteRepository, MatriculaAlunoExisteRepository>();
             services.AddScoped<IParcelaPagaAlunoInstituicaoRepository, ParcelaPagaAlunoInstituicaoRepository>();
             services.AddScoped<IParcelasAcordoRepository, ParcelasAcordoRepository>();

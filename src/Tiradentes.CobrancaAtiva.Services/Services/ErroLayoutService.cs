@@ -13,36 +13,34 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class ErroLayoutService : IErroLayoutService
     {
-        readonly IErrosLayoutRepository _ErroLayout;
-        readonly IArquivoLayoutService _ArquivoLayout;
+        readonly IErrosLayoutRepository _ErroLayout;        
         readonly IMapper _mapper;
-        public ErroLayoutService(IErrosLayoutRepository erroLayout,
-                                 IArquivoLayoutService arquivoLayoutService,
+        public ErroLayoutService(IErrosLayoutRepository erroLayout,                                 
                                  IMapper mapper)
         {
-            _ErroLayout = erroLayout;
-            _ArquivoLayout = arquivoLayoutService;
+            _ErroLayout = erroLayout;            
             _mapper = mapper;
         }
-        public async Task<decimal?> RegistrarErro(ErrosBaixaPagamento erro, RespostaViewModel conteudo)
-        {
-            var dateTime = await _ArquivoLayout.SalvarLayoutArquivo("E", conteudo);
 
-            var erroModel = new ErrosLayoutModel() {
-
-                DataHora = dateTime,
-                Descricao = Application.Utils.Utils.GetDescricaoEnum(erro)
-            };
-
-            await _ErroLayout.Criar(erroModel);
-
-            return erroModel.Sequencia;
-        }
         public List<ErroLayoutViewModel> BuscarPorDataHora(DateTime dataHora)
         {
             var model = _ErroLayout.BuscarPorDataHora(dataHora);
 
             return model.Select(E => _mapper.Map<ErroLayoutViewModel>(E)).ToList();
+        }
+
+        public async Task<decimal?> CriarErroLayoutService(DateTime dataHora, ErrosBaixaPagamento erro, string descricao)
+        {
+            var model = new ErrosLayoutModel
+            {
+                DataHora = dataHora,
+                Descricao = string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao
+
+            };
+
+            await _ErroLayout.Criar(model);
+
+            return model.Sequencia;
         }
 
         public void Dispose()

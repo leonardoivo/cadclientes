@@ -7,8 +7,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class ItensBaixasTipo3Service : IItensBaixasTipo3Service
     {
-        IitensBaixasTipo3Repository _repository;
-        public ItensBaixasTipo3Service(IitensBaixasTipo3Repository repository)
+        IItensBaixasTipo3Repository _repository;
+        public ItensBaixasTipo3Service(IItensBaixasTipo3Repository repository)
         {
             _repository = repository;
         }

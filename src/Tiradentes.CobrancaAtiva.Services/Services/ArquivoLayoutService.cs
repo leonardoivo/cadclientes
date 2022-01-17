@@ -3,6 +3,7 @@ using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
+using Tiradentes.CobrancaAtiva.Domain.Enum;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
@@ -23,13 +24,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _mapper = mapper;
         }
 
-
-        public async Task<DateTime> SalvarLayoutArquivo(string status, RespostaViewModel arquivoResposta)
+        public async Task<DateTime> SalvarLayoutArquivo(DateTime dataBaixa, string status, string arquivoResposta)
         {
             var layoutArquivo = new ArquivoLayoutModel()
             {
-                DataHora = DateTime.Now,
-                Conteudo = JsonSerializer.Serialize(arquivoResposta),
+                DataHora = dataBaixa,
+                Conteudo = arquivoResposta,
                 Status = status
             };
 
@@ -54,6 +54,18 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             viewModel.ErrosLayout = _erroLayoutService.BuscarPorDataHora(dataHora);
 
             return viewModel;
+        }
+
+        public async Task<decimal?> RegistrarErro(DateTime dataBaixa, string conteudo, ErrosBaixaPagamento erro, string erroDescricao)
+        {
+            var arquivoLayout = BuscarPorDataHora(dataBaixa);
+
+            if(arquivoLayout == null)
+            {
+                await SalvarLayoutArquivo(dataBaixa, "E", conteudo);
+            }
+
+            return await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);            
         }
     }
 }

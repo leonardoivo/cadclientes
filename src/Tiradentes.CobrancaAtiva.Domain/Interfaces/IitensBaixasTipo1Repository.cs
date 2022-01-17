@@ -4,7 +4,7 @@ using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
-    public interface IitensBaixasTipo1Repository : IBaseRepository<ItensBaixaTipo1Model>
+    public interface IItensBaixasTipo1Repository : IBaseRepository<ItensBaixaTipo1Model>
     {
         Task AtualizarMatricula(DateTime dataBaixa, decimal numeroAcordo, decimal matricula );
         Task InserirBaixa(DateTime dataBaixa,

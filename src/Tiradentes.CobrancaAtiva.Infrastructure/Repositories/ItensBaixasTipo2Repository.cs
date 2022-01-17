@@ -6,7 +6,7 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
-    public class ItensBaixasTipo2Repository : BaseRepository<ItensBaixaTipo2Model>, IitensBaixasTipo2Repository
+    public class ItensBaixasTipo2Repository : BaseRepository<ItensBaixaTipo2Model>, IItensBaixasTipo2Repository
     {
         public ItensBaixasTipo2Repository(CobrancaAtivaDbContext context) : base(context)
         {

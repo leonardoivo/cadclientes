@@ -6,8 +6,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class ItensGeracaoService : IItensGeracaoService
     {
-        readonly IitensGeracaoRepository _repository;
-        public ItensGeracaoService(IitensGeracaoRepository repository)
+        readonly IItensGeracaoRepository _repository;
+        public ItensGeracaoService(IItensGeracaoRepository repository)
         {
             _repository = repository;
         }

@@ -31,7 +31,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         private readonly IParametroEnvioRepository _repositorio;
         private readonly IEmpresaParceiraRepository _repositorioEmpresaParceira;
         private readonly IGeracaoCobrancasRepository _geracaoCobrancaRepositorio;
-        private readonly IitensGeracaoRepository _itensGeracaoRepository;
+        private readonly IItensGeracaoRepository _itensGeracaoRepository;
         private readonly IArquivoCobrancasRepository _arquivosGeracaoRepository;
         protected readonly IAlunosInadimplentesRepository _repositorioAlunosInadimplentes;
         protected readonly ILoteEnvioRepository _repositorioLoteEnvio;
@@ -41,7 +41,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             IParametroEnvioRepository repositorio,
             IEmpresaParceiraRepository repositorioEmpresaParceira,
             IGeracaoCobrancasRepository geracaoCobrancaRepositorio,
-            IitensGeracaoRepository itensGeracaoRepository,
+            IItensGeracaoRepository itensGeracaoRepository,
             IArquivoCobrancasRepository arquivoCobrancasRepository,
             IAlunosInadimplentesRepository repositorioAlunosInadimplentes,
             ILoteEnvioRepository repositorioLoteEnvio,
