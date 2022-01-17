@@ -19,5 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public decimal ValorTotalErrosTipo1 { get; set; }
         public decimal ValorTotalErrosTipo2 { get; set; }
         public decimal ValorTotalErrosTipo3 { get; set; }
+
+        public ArquivoLayoutViewModel ArquivoLayout { get; set; }
     }
 }

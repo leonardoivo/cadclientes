@@ -5,10 +5,10 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
 {
-    public class ItemBaixaTipo1Service : IItensBaixasTipo1Service
+    public class ItensBaixasTipo1Service : IItensBaixasTipo1Service
     {
         readonly IitensBaixasTipo1Repository _repository;
-        public ItemBaixaTipo1Service(IitensBaixasTipo1Repository repository)
+        public ItensBaixasTipo1Service(IitensBaixasTipo1Repository repository)
         {
             _repository = repository;
         }

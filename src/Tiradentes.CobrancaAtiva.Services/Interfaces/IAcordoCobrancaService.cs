@@ -19,5 +19,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 
         decimal ObterMatricula(decimal numeroAcordo);
 
+
     }
 }

@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AutoMapper;
+using System;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
@@ -11,9 +12,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
     public class ArquivoLayoutService : IArquivoLayoutService
     {
         readonly IArquivoLayoutRepository _repository;
-        public ArquivoLayoutService(IArquivoLayoutRepository repository)
+        readonly IErroLayoutService _erroLayoutService;
+        readonly IMapper _mapper;
+        public ArquivoLayoutService(IArquivoLayoutRepository repository,
+                                    IErroLayoutService erroLayoutService,
+                                    IMapper mapper)
         {
             _repository = repository;
+            _erroLayoutService = erroLayoutService;
+            _mapper = mapper;
         }
 
 
@@ -37,6 +44,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             model.Status = status;
 
             await _repository.Alterar(model);
+        }
+
+        public ArquivoLayoutViewModel BuscarPorDataHora(DateTime dataHora)
+        {
+            var model =  _repository.BuscarPorDataHora(dataHora);
+
+            var viewModel = _mapper.Map<ArquivoLayoutViewModel>(model);
+            viewModel.ErrosLayout = _erroLayoutService.BuscarPorDataHora(dataHora);
+
+            return viewModel;
         }
     }
 }

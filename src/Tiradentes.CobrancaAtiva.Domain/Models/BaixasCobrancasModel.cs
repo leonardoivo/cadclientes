@@ -5,7 +5,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
     public class BaixasCobrancasModel : BaseModel
     {
         public DateTime DataBaixa { get; set; }
-        public string? UserName { get; set; }
+        public string UserName { get; set; }
         public int Etapa { get; set; } = 0;
         public int QuantidadeTipo1 { get; set; } = 0;
         public int QuantidadeTipo2 { get; set; } = 0;

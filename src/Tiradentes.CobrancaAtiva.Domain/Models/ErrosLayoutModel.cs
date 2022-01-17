@@ -5,6 +5,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
     {
         public DateTime DataHora { get; set; }
         public decimal Sequencia { get; set; }
-        public string Descricao { get; set; }
+        public string Descricao { get; set; }        
     }
 }

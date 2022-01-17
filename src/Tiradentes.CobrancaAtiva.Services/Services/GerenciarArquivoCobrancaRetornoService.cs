@@ -8,7 +8,7 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
 {
-    public class GerenciarArquivoCobrancaRetorno : IGerenciarArquivoCobrancaRetornoService
+    public class GerenciarArquivoCobrancaRetornoService : IGerenciarArquivoCobrancaRetornoService
     {
         readonly ICobrancaService _cobrancaService;
         readonly IErroLayoutService _erroLayoutService;
@@ -24,7 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         readonly IBaixasCobrancasService _baixasCobrancasService;
 
         private Dictionary<int, decimal> Erros { get; set; }
-        public GerenciarArquivoCobrancaRetorno(ICobrancaService cobrancaService,
+        public GerenciarArquivoCobrancaRetornoService(ICobrancaService cobrancaService,
                                                IErroLayoutService erroLayoutService,
                                                IParcelasAcordoService parcelasAcordoService,
                                                IAcordoCobrancaService acordoCobrancaService,

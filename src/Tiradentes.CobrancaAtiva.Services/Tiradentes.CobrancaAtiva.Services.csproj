@@ -13,6 +13,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Application\Tiradentes.CobrancaAtiva.Application.csproj" />
+    <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Infrastructure\Tiradentes.CobrancaAtiva.Infrastructure.csproj" />
   </ItemGroup>
 
 </Project>
