@@ -10,6 +10,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     {
         List<ErroLayoutViewModel> BuscarPorDataHora(DateTime dataHora);
 
-        Task<decimal?> CriarErroLayoutService(DateTime dataHora, ErrosBaixaPagamento erro, string conteudo);
+        Task<decimal?> CriarErroLayoutService(DateTime dataHora, ErrosBaixaPagamento erro, string descricao);
     }
 }

@@ -25,8 +25,13 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return Ok(await _cobrancaService.Criar(resposta));
         }
 
-        [HttpGet("resultado")]
-        public async Task<IActionResult> BuscarResultadoCobranca(string dataBaixa)
+        /// <summary>
+        /// Retorna o Historico do processamnento de arquivos.
+        /// </summary>
+        /// <param name="dataBaixa">dd-mm-yyyy</param>
+        /// <returns></returns>
+        [HttpGet("resultado/{dataBaixa}")]
+        public async Task<IActionResult> BuscarhistriocoProcessamentoCobranca(string dataBaixa)
         {
             return Ok(await _baixasCobrancaService.Buscar(Convert.ToDateTime(dataBaixa)));
         }

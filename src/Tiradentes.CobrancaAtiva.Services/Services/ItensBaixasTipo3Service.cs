@@ -7,7 +7,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class ItensBaixasTipo3Service : IItensBaixasTipo3Service
     {
-        IItensBaixasTipo3Repository _repository;
+        readonly IItensBaixasTipo3Repository _repository;
         public ItensBaixasTipo3Service(IItensBaixasTipo3Repository repository)
         {
             _repository = repository;
@@ -24,7 +24,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         }
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _repository?.Dispose();
+            }
         }
 
     }

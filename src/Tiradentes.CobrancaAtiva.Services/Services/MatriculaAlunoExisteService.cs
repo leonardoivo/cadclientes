@@ -6,7 +6,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class MatriculaAlunoExisteService : IMatriculaAlunoExisteService
     {
-        IMatriculaAlunoExisteRepository _repository;
+        readonly IMatriculaAlunoExisteRepository _repository;
         public MatriculaAlunoExisteService(IMatriculaAlunoExisteRepository repository)
         {
             _repository = repository;
@@ -16,6 +16,20 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _repository.MatriculaAlunoExiste(tipoInadimplencia,
                                                     sistema,
                                                     matricula);
+        }
+
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _repository?.Dispose();
+            }
         }
     }
 }

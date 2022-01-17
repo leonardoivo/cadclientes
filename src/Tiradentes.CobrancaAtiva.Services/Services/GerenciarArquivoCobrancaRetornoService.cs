@@ -458,55 +458,66 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async void Gerenciar()
         {
-            List<ErroParcelaViewModel> ErrosContabilizados = new List<ErroParcelaViewModel>();
-
-            var arquivos = await _cobrancaService.BuscarRepostaNaoIntegrada();
-
             var DataBaixa = DateTime.Now;
 
-            await _baixasCobrancasService.CriarBaixasCobrancas(DataBaixa);
-
-            foreach (var arquivo in arquivos)
+            try
             {
 
-                if(arquivo.TipoRegistro == "1")
+
+                List<ErroParcelaViewModel> ErrosContabilizados = new List<ErroParcelaViewModel>();
+
+                var arquivos = await _cobrancaService.BuscarRepostaNaoIntegrada();
+
+
+                await _baixasCobrancasService.CriarBaixasCobrancas(DataBaixa);
+
+                foreach (var arquivo in arquivos)
                 {
-                    ProcessaBaixaTipo1(DataBaixa, arquivo, ref ErrosContabilizados);
+
+                    if(arquivo.TipoRegistro == "1")
+                    {
+                        ProcessaBaixaTipo1(DataBaixa, arquivo, ref ErrosContabilizados);
+                    }
+                    else if(arquivo.TipoRegistro == "2")
+                    {
+                        ProcessaBaixaTipo2(DataBaixa, arquivo, ref ErrosContabilizados);
+                    }
+                    else if(arquivo.TipoRegistro == "3")
+                    {
+                        ProcessaBaixaTipo3(DataBaixa, arquivo, ref ErrosContabilizados);
+                    }
+                    else
+                    {                    
+                        await _arquivolayoutService.RegistrarErro(DataBaixa, "", ErrosBaixaPagamento.LayoutInconsistente, JsonSerializer.Serialize(arquivo));
+                    }
                 }
-                else if(arquivo.TipoRegistro == "2")
-                {
-                    ProcessaBaixaTipo2(DataBaixa, arquivo, ref ErrosContabilizados);
-                }
-                else if(arquivo.TipoRegistro == "3")
-                {
-                    ProcessaBaixaTipo3(DataBaixa, arquivo, ref ErrosContabilizados);
-                }
-                else
-                {                    
-                    await _arquivolayoutService.RegistrarErro(DataBaixa, "", ErrosBaixaPagamento.LayoutInconsistente, JsonSerializer.Serialize(arquivo));
-                }
+
+                await _baixasCobrancasService.AtualizarBaixasCobrancas(new BaixasCobrancasViewModel() {
+                            DataBaixa = DataBaixa,
+                            Etapa = 3,
+                            QuantidadeTipo1 = arquivos.Count(A => A.TipoRegistro == "1"),
+                            QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == "2"),
+                            QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == "3"),
+
+                            ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == "1").Sum(A => Convert.ToDecimal(A.ValorParcela)),
+                            ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == "2").Sum(A => Convert.ToDecimal(A.ValorParcela)),
+                            ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3").Sum(A => Convert.ToDecimal(A.ValorParcela)),
+
+                            QuantidadeErrosTipo1 = ErrosContabilizados.Count(E => E.Etapa == 1),
+                            QuantidadeErrosTipo2 = ErrosContabilizados.Count(E => E.Etapa == 2),
+                            QuantidadeErrosTipo3 = ErrosContabilizados.Count(E => E.Etapa == 3),
+
+                            ValorTotalErrosTipo1 = ErrosContabilizados.Where(E => E.Etapa == 1).Sum(E => E.ValorParcela),
+                            ValorTotalErrosTipo2 = ErrosContabilizados.Where(E => E.Etapa == 2).Sum(E => E.ValorParcela),
+                            ValorTotalErrosTipo3 = ErrosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
+                            UserName = ""
+                        });
             }
+            catch (Exception ex)
+            {
 
-            await _baixasCobrancasService.AtualizarBaixasCobrancas(new BaixasCobrancasViewModel() {
-                        DataBaixa = DataBaixa,
-                        Etapa = 3,
-                        QuantidadeTipo1 = arquivos.Count(A => A.TipoRegistro == "1"),
-                        QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == "2"),
-                        QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == "3"),
-
-                        ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == "1").Sum(A => Convert.ToDecimal(A.ValorParcela)),
-                        ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == "2").Sum(A => Convert.ToDecimal(A.ValorParcela)),
-                        ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3").Sum(A => Convert.ToDecimal(A.ValorParcela)),
-
-                        QuantidadeErrosTipo1 = ErrosContabilizados.Count(E => E.Etapa == 1),
-                        QuantidadeErrosTipo2 = ErrosContabilizados.Count(E => E.Etapa == 2),
-                        QuantidadeErrosTipo3 = ErrosContabilizados.Count(E => E.Etapa == 3),
-
-                        ValorTotalErrosTipo1 = ErrosContabilizados.Where(E => E.Etapa == 1).Sum(E => E.ValorParcela),
-                        ValorTotalErrosTipo2 = ErrosContabilizados.Where(E => E.Etapa == 2).Sum(E => E.ValorParcela),
-                        ValorTotalErrosTipo3 = ErrosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
-                        UserName = ""
-                    });
+                await _arquivolayoutService.RegistrarErro(DataBaixa, ex.Message + " | " + ex.InnerException.Message, ErrosBaixaPagamento.LayoutInconsistente, JsonSerializer.Serialize(ex));
+            }
         }
     }
 }

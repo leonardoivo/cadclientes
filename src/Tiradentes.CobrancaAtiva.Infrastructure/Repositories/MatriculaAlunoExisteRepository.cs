@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
@@ -13,7 +14,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             _context = context;
         }
-        
+
+
         public bool MatriculaAlunoExiste(string tipoInadimplencia, string sistema, decimal matricula)
         {
             MatriculaAlunoExisteModel matriculaAluno = new MatriculaAlunoExisteModel();
@@ -71,6 +73,19 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             }
 
             return matriculaAluno.Count > 0;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context?.Dispose();
+            }
         }
     }
 }

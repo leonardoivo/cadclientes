@@ -25,7 +25,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         }
         public void Dispose()
         {
-            throw new NotImplementedException();
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _repository?.Dispose();
+            }
         }
 
     }

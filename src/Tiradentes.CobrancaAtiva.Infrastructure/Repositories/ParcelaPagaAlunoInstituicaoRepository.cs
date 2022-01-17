@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
@@ -16,6 +17,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             _idAlunoRepository = idAlunoRepository;
             _context = context;
         }
+
+
         public bool ParcelaPagaInstituicao(string tipoInadimplencia, string sistema, decimal matricula, decimal periodo, int? parcela, decimal? idTitulo, int? codigoAtividade, decimal? numeroEvt, decimal? idPessoa, int? codigoBanco, int? codigoAgencia, decimal? numeroConta, decimal? numeroCheque)
         {
             ParcelaPagaAlunoInstituicaoModel parcelaAluno = new ParcelaPagaAlunoInstituicaoModel();
@@ -68,6 +71,17 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                               and dat_pgto is not null")
                                             .FirstOrDefault();
                 }
+                else if (sistema == "X")
+                {
+                    parcelaAluno = _context.ParcelaPagaAlunoInstituicaoModel
+                        .FromSqlRaw($@"select count(idt_ddp)
+                                         from extensao.pagamentos
+                                        where cod_atv = {codigoAtividade}
+                                        and num_evt = {numeroEvt}
+                                        and idt_ddp = {idPessoa}
+                                        and dat_pgto is not null")
+                        .FirstOrDefault();
+                }
             }
             else if (tipoInadimplencia == "T")
             {
@@ -92,6 +106,19 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             }
 
             return parcelaAluno.Count > 0;
+        }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+            if (disposing)
+            {
+                _context?.Dispose();
+            }
         }
 
     }

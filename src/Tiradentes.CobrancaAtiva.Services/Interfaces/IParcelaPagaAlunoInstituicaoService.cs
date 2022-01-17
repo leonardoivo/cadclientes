@@ -1,7 +1,9 @@
 ﻿
+using System;
+
 namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
-    public interface IParcelaPagaAlunoInstituicaoService
+    public interface IParcelaPagaAlunoInstituicaoService : IDisposable
     {
         bool ParcelaPagaInstituicao(string tipoInadimplencia,
                             string sistema,   
