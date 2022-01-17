@@ -7,5 +7,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     public interface IItensGeracaoRepository
     {
         Task Criar(ItensGeracaoModel model);
+        Task CriarVarios(List<ItensGeracaoModel> models);
     }
 }

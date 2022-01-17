@@ -19,7 +19,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
              .HasColumnName("CNPJ_EMPRESA_COBRANCA");
 
             builder.Property(ep => ep.Arquivo)
-             .HasColumnName("ARQUIVO");
+             .HasColumnName("ARQUIVO")
+             .HasColumnType("CLOB");
 
             builder.Property(ep => ep.Sequencia)
              .HasColumnName("SEQ");
