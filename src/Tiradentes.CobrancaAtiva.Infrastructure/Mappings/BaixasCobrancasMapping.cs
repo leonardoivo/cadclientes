@@ -56,7 +56,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.TotalErrosTipo3)
                 .HasColumnName("TOTAL_ERROS_TIPO3");
 
-            builder.ToTable("BAIXAS_COBRANCAS");
+            builder.ToTable("BAIXAS_COBRANCAS", "scf");
         }
     }
 }
