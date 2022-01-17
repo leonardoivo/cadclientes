@@ -3,6 +3,7 @@ using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
+using System;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
@@ -10,6 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     {
 
         Task<ModelPaginada<BuscaConflito>> Buscar(ConflitoQueryParam queryParam);
+        Task<IEnumerable<ConflitoModel>> BuscarPorLote(string lote);
 
     }
 }

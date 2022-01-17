@@ -13,9 +13,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Id)
                 .HasColumnName("COD_CONFLITO");
 
+            builder.Property(ep => ep.Lote)
+              .HasColumnName("LOTE");
+
             builder.Property(ep => ep.NomeLote)
               .HasColumnName("NOME_LOTE");
-            
+
             builder.Property(ep => ep.EmpresaParceiraTentativaId)
               .HasColumnName("COD_EMPRESA_PARCEIRA_TENTATIVA");
 

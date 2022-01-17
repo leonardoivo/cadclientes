@@ -1,10 +1,12 @@
 ﻿using AutoMapper;
 using System.Linq;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.HonorarioEmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
+using Tiradentes.CobrancaAtiva.Domain.Collections;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
@@ -72,6 +74,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<ConflitoViewModel, ConflitoModel>();
             CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();
+            CreateMap<RespostaViewModel, RespostasCollection>();
         }
     }
 }
