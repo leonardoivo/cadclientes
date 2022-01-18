@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
@@ -16,6 +17,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task<BaixasCobrancasModel> BuscarPorDataBaixa(DateTime dataBaixa)
         {
             return await DbSet.FindAsync(dataBaixa);
+        }
+
+        public void HabilitarAlteracaoBaixaCobranca(bool status)
+        {
+            Db.Database.ExecuteSqlRawAsync($@"set_pode_alt_baix_cob( {status} );");
         }
     }
 }

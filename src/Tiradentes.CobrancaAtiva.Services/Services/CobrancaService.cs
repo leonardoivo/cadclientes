@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -37,6 +38,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             Validate(new CriarRespostaCobrancaValidation(), viewModel);
 
+
             var model = _map.Map<RespostasCollection>(viewModel);
 
             await _repositorio.Criar(model);
@@ -44,7 +46,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<RespostaViewModel>(model);
         }
 
-        public void Dispose() { }
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
+
+        protected virtual void Dispose(bool disposing)
+        {
+
+        }
 
     }
 }

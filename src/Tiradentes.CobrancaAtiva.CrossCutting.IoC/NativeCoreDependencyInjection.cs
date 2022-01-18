@@ -91,8 +91,10 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             #endregion
 
             services.AddScoped<MongoContext>();
+
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
                 options.UseOracle(configuration.GetConnectionString("Empresas"))); 
+
             services.AddDbContext<CobrancaAtivaScfDbContext>(options =>
                 options.UseOracle(configuration.GetConnectionString("EmpresasScf")));
 

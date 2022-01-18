@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Enum;
 using Tiradentes.CobrancaAtiva.Domain.Exeptions;
@@ -456,7 +457,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   idErroLayout);
         }
 
-        public async void Gerenciar()
+        public async Task Gerenciar()
         {
             var DataBaixa = DateTime.Now;
 

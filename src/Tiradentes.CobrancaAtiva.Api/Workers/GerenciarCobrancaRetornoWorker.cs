@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
+using System;
 using System.Threading;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
@@ -16,23 +17,15 @@ namespace Tiradentes.CobrancaAtiva.Api.Workers
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {
-            await Task.Run(() => Process());            
+        {            
 
-            //do
-            //{
-            //    int hourSpan = DateTime.Now.Hour;
-            //    int numberOfHours = hourSpan;
+            do
+            {
+                Process();
 
-            //    if (hourSpan == 9)
-            //    {
-            //        Process();
-            //        numberOfHours = 9;
-            //    }
-
-            //    await Task.Delay(TimeSpan.FromHours(numberOfHours), stoppingToken);
-            //}
-            //while (!stoppingToken.IsCancellationRequested);
+                await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
+            }
+            while (!stoppingToken.IsCancellationRequested);
         }
 
         private void Process()

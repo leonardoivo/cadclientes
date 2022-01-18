@@ -7,5 +7,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     public interface IBaixasCobrancasRepository : IBaseRepository<BaixasCobrancasModel>
     {
         Task<BaixasCobrancasModel> BuscarPorDataBaixa(DateTime dataBaixa);
+        void HabilitarAlteracaoBaixaCobranca(bool status);
     }
 }

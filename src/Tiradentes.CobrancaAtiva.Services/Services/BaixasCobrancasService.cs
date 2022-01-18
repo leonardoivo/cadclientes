@@ -36,11 +36,17 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task CriarBaixasCobrancas(DateTime dataBaixa)
         {
-            await _baixasCobrancasRepository.Criar(new BaixasCobrancasModel()
+            _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(true);
+
+            var model = new BaixasCobrancasModel()
             {
                 DataBaixa = dataBaixa
-                
-            });
+
+            };
+
+            await _baixasCobrancasRepository.Criar(model);
+
+            _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(false);
         }
 
         public async Task<BaixasCobrancasViewModel> Buscar(DateTime dataBaixa)
