@@ -467,7 +467,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 List<ErroParcelaViewModel> ErrosContabilizados = new List<ErroParcelaViewModel>();
 
-                var arquivos = await _cobrancaService.BuscarRepostaNaoIntegrada();
+                var arquivos = _cobrancaService.BuscarRepostaNaoIntegrada().Result;
 
 
                 await _baixasCobrancasService.CriarBaixasCobrancas(DataBaixa);
