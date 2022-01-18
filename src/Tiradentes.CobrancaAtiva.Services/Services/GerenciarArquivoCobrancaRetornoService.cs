@@ -516,7 +516,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (Exception ex)
             {
 
-                await _arquivolayoutService.RegistrarErro(DataBaixa, ex.Message + " | " + ex.InnerException.Message, ErrosBaixaPagamento.LayoutInconsistente, JsonSerializer.Serialize(ex));
+                await _arquivolayoutService.RegistrarErro(DataBaixa, ex.Message + " | " + ex?.InnerException?.Message, ErrosBaixaPagamento.ErroInternoServidor, JsonSerializer.Serialize(ex.StackTrace));
             }
         }
     }

@@ -19,6 +19,54 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _baixasCobrancaService = baixasCobrancaService;
         }
 
+        /// <summary>
+        /// Cria um registro de Resposta cobrnaça.
+        /// </summary>
+        /// <param name="resposta">Objeto recebido como Json</param>
+        /// <remarks>
+        /// Sample request:
+        ///
+        ///     POST               
+        ///     {
+        ///        "tipoRegistro": "string", Obrigatorio 
+        ///        "cpf": "string", Obrigatorio
+        ///        "numeroAcordo": "string", Obrigatorio
+        ///        "parcela": "string", Obrigatorio
+        ///        "cnpjEmpresaCobranca": "string", Obrigatorio
+        ///        "situacaoAluno": "string",
+        ///        "sistema": "string", Obrigatorio
+        ///        "tipoInadimplencia": "string", Obrigatorio
+        ///        "chaveInadimplencia": "string",
+        ///        "matricula": "string", Obrigatorio
+        ///        "periodo": "202103"(2021 - ANO, 03 - Semestre),  Obrigatorio
+        ///        "idTitulo": "string", Necessario em Titulos Avulsos
+        ///        "codigoAtividade": "string",
+        ///        "numeroEvt": "string",
+        ///        "idPessoa": "string", Obrigatorio
+        ///        "codigoBanco": "string",
+        ///        "codigoAgencia": "string",
+        ///        "numeroConta": "string",
+        ///        "numeroCheque": "string",
+        ///        "juros": "string",
+        ///        "multa": "string",
+        ///        "valorTotal": "string",
+        ///        "dataFechamentoAcordo": "string",
+        ///        "totalParcelas": "string",
+        ///        "dataVencimento": "string",
+        ///        "valorParcela": "string",
+        ///        "saldoDevedorTotal": "string",
+        ///        "produto": "string",
+        ///        "descricaoProduto": "string",
+        ///        "fase": "string",
+        ///        "codigoControleCliente": "string",
+        ///        "nossoNumero": "string",
+        ///        "dataPagamento": "string",
+        ///        "dataBaixa": "string",
+        ///        "valorPago": "string",
+        ///        "tipoPagamento": "string"
+        ///     }
+        /// </remarks>
+        /// <returns></returns>
         [HttpPost]
         public async Task<IActionResult> Criar([FromBody] RespostaViewModel resposta)
         {
@@ -31,7 +79,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         /// <param name="dataBaixa">dd-mm-yyyy</param>
         /// <returns></returns>
         [HttpGet("resultado/{dataBaixa}")]
-        public async Task<IActionResult> BuscarhistriocoProcessamentoCobranca(string dataBaixa)
+        public async Task<IActionResult> BuscarHistoricoProcessamentoCobranca(string dataBaixa)
         {
             return Ok(await _baixasCobrancaService.Buscar(Convert.ToDateTime(dataBaixa)));
         }

@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using MongoDB.Bson;
+using System;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Collections
 {
     public class RespostasCollection
     {
+        public ObjectId _id { get; set; }
         public DateTime DataResposta { get; set; } = DateTime.Now;
 
         public string TipoRegistro { get; set; }

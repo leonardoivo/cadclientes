@@ -36,7 +36,8 @@ namespace Tiradentes.CobrancaAtiva.Api
             services.ApiServiceConfig();
             services.AutoMapperServiceConfig();
             services.SwaggerServiceConfig();
-            
+
+            services.AddHostedService<GerenciarCobrancaRetornoWorker>();
             services.AddHostedService<RegraNegociacaoWorker>();
             services.AddHostedService<ParametroEnvioConsumer>();
         }
