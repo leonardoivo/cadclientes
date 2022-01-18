@@ -8,6 +8,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ItensBaixaTipo1Model> builder)
         {
+            builder.Ignore(ep => ep.Id);
+
             builder.HasKey(ep => new { ep.DataBaixa, ep.Sequencia });
 
             builder.Property(ep => ep.DataBaixa)
@@ -59,7 +61,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasColumnName("TIPO_INADIMPLENCIA")
                 .HasColumnType("CHAR(1)");
 
-            builder.ToTable("ITENS_BAIXAS_TIPO1");
+            builder.ToTable("ITENS_BAIXAS_TIPO1", "SCF");
         }
     }
 }

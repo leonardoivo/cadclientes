@@ -8,6 +8,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ParcelasTitulosModel> builder)
         {
+            builder.Ignore(ep => ep.Id);
+
             builder.HasKey(ep => new { ep.NumeroAcordo, ep.Matricula, ep.Periodo, ep.Parcela });
 
             builder.Property(ep => ep.NumeroAcordo)
@@ -56,7 +58,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 
 
 
-            builder.ToTable("PARCELAS_TITULOS");
+            builder.ToTable("PARCELAS_TITULOS", "SCF");
         }
     }
 }

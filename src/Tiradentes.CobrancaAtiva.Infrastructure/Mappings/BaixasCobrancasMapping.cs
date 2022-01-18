@@ -9,6 +9,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<BaixasCobrancasModel> builder)
         {
+            builder.Ignore(ep => ep.Id);
+
             builder.HasKey(ep => ep.DataBaixa);
 
             builder.Property(ep => ep.DataBaixa)

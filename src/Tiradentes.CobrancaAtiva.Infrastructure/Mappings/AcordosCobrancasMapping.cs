@@ -13,6 +13,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<AcordosCobrancasModel> builder)
         {
+            builder.Ignore(ep => ep.Id);
+
             builder.HasKey(ep => new { ep.NumeroAcordo });
 
             builder.Property(ep => ep.NumeroAcordo)
@@ -60,7 +62,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                .HasColumnType("CHAR(1)");
 
 
-            builder.ToTable("ACORDOS_COBRANCAS");
+            builder.ToTable("ACORDOS_COBRANCAS", "SCF");
         }
     }
 }

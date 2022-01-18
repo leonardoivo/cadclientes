@@ -50,6 +50,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var model =  _repository.BuscarPorDataHora(dataHora);
 
+            if (model == null)
+                return null;
+
             var viewModel = _mapper.Map<ArquivoLayoutViewModel>(model);
             viewModel.ErrosLayout = _erroLayoutService.BuscarPorDataHora(dataHora);
 

@@ -75,6 +75,10 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ConflitoViewModel, ConflitoModel>();
             CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();
             CreateMap<RespostaViewModel, RespostasCollection>();
+
+            CreateMap<BaixasCobrancasModel, BaixasCobrancasViewModel>();
+            CreateMap<ArquivoLayoutModel, ArquivoLayoutViewModel>();
+            CreateMap<ErrosLayoutModel, ErroLayoutViewModel>();
         }
     }
 }

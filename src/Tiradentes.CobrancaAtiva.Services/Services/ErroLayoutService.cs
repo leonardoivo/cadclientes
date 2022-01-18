@@ -26,6 +26,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var model = _ErroLayout.BuscarPorDataHora(dataHora);
 
+            if (model == null)
+                return null;
+
             return model.Select(E => _mapper.Map<ErroLayoutViewModel>(E)).ToList();
         }
 

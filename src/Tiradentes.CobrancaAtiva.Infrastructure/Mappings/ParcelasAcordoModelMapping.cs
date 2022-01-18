@@ -8,6 +8,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ParcelasAcordoModel> builder)
         {
+            builder.Ignore(ep => ep.Id);
+
             builder.HasKey(ep => new { ep.NumeroAcordo, ep.Parcela });
 
             builder.Property(ep => ep.NumeroAcordo)
@@ -46,7 +48,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasColumnName("TIPO_INADIMPLENCIA")
                 .HasColumnType("CHAR(1)");
 
-            builder.ToTable("PARCELAS_ACORDO");
+            builder.ToTable("PARCELAS_ACORDO", "SCF");
         }
     }
 }
