@@ -21,7 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public void HabilitarAlteracaoBaixaCobranca(bool status)
         {
-            Db.Database.ExecuteSqlRawAsync($@"set_pode_alt_baix_cob( {status} );");
+            Db.Database.ExecuteSqlRawAsync($@"exec scf.COBRANCAS_PKG.set_pode_alt_baix_cob({status});");
         }
     }
 }
