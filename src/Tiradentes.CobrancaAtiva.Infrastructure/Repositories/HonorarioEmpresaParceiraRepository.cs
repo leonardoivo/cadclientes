@@ -18,19 +18,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task<ModelPaginada<HonorarioEmpresaParceiraModel>> Buscar(HonorarioEmpresaParceiraQueryParam queryParams)
         {
             var query = DbSet
-                        .Include(e => e.Modalidade)
-                        .Include(e => e.Instituicao)
+                        .Include(h => h.Faixas)
                         .AsQueryable();
-
 
             if (queryParams.EmpresaParceiraId > 0)
                 query = query.Where(e => e.EmpresaParceiraId == queryParams.EmpresaParceiraId);
-
-            if (queryParams.InstituicaoId > 0)
-                query = query.Where(e => e.InstituicaoId == queryParams.InstituicaoId);
-
-            if (queryParams.ModalidadeId > 0)
-                query = query.Where(e => e.ModalidadeId == queryParams.ModalidadeId);
 
             return await query.OrderBy(e => e.Id).Paginar(queryParams.Pagina, queryParams.Limite);
         }

@@ -55,6 +55,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<EnderecoEmpresaParceiraModel, EnderecoEmpresaParceiraViewModel>();
             CreateMap<ContaBancariaEmpresaParceiraModel, ContaBancariaEmpresaParceiraViewModel>();
             CreateMap<HonorarioEmpresaParceiraModel, HonorarioEmpresaParceiraViewModel>();
+            CreateMap<HonorarioFaixaEmpresaParceiraModel, HonorarioFaixaEmpresaParceiraViewModel>();
 
             CreateMap<InstituicaoModel, InstituicaoViewModel>();
             CreateMap<ModalidadeModel, ModalidadeViewModel>();

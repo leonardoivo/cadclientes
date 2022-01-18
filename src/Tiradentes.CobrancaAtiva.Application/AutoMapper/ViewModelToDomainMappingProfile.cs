@@ -33,6 +33,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<HonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();
             CreateMap<CreateHonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();
+            CreateMap<CreateHonorarioFaixaEmpresaParceiraViewModel, HonorarioFaixaEmpresaParceiraModel>();
 
             CreateMap<CriarRegraNegociacaoViewModel, RegraNegociacaoModel>()
                 .ForMember(dest => dest.RegraNegociacaoCurso,
