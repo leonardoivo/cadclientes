@@ -41,7 +41,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             };
 
+            _ErroLayout.HabilitarAlteracaoErroLayout(true);
+
             await _ErroLayout.Criar(model);
+
+            _ErroLayout.HabilitarAlteracaoErroLayout(false);
 
             return model.Sequencia;
         }

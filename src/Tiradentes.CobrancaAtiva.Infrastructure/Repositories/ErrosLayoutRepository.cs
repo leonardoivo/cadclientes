@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -17,6 +18,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public List<ErrosLayoutModel> BuscarPorDataHora(DateTime dataHora)
         {
             return DbSet.Where(E => E.DataHora == dataHora).ToList();
+        }
+
+        public void HabilitarAlteracaoErroLayout(bool status)
+        {
+            Db.Database.ExecuteSqlRaw($@"begin
+                                         scf.COBRANCAS_PKG.set_pode_alt_erros_layout({status.ToString().ToLower()});
+                                         end;");
         }
     }
 }

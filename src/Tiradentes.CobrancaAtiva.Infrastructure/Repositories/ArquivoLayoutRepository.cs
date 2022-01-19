@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
@@ -16,6 +17,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public ArquivoLayoutModel BuscarPorDataHora(DateTime dataHora)
         {
             return DbSet.Where(A => A.DataHora == dataHora).FirstOrDefault();
+        }
+
+        public void HabilitarAlteracaoArquivoLayout(bool status)
+        {
+            Db.Database.ExecuteSqlRaw($@"begin
+                                         scf.COBRANCAS_PKG.set_pode_alt_arq_layout({status.ToString().ToLower()});
+                                         end;");
         }
     }
 }

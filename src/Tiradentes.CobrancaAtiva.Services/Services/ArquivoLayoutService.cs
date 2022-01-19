@@ -65,7 +65,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             if(arquivoLayout == null)
             {
+                _repository.HabilitarAlteracaoArquivoLayout(true);
+
                 await SalvarLayoutArquivo(dataBaixa, "E", conteudo);
+
+                _repository.HabilitarAlteracaoArquivoLayout(true);
             }
 
             return await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);            
