@@ -504,14 +504,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             ProcessaBaixaTipo3(DataBaixa, arquivo, ref ErrosContabilizados);
                         }
                         else
-                        {                    
-                            await _arquivolayoutService.RegistrarErro(DataBaixa, "", ErrosBaixaPagamento.LayoutInconsistente, JsonSerializer.Serialize(arquivo));
+                        {
+                            await _arquivolayoutService.RegistrarErro(DataBaixa, JsonSerializer.Serialize(arquivo), ErrosBaixaPagamento.ErroInternoServidor, "");
                         }
                     }
                     catch (Exception ex)
                     {
 
-                        await _arquivolayoutService.RegistrarErro(DataBaixa, ex.Message + " | " + ex?.InnerException?.Message, ErrosBaixaPagamento.ErroInternoServidor, JsonSerializer.Serialize(ex.StackTrace));
+                        await _arquivolayoutService.RegistrarErro(DataBaixa, JsonSerializer.Serialize(ex.StackTrace), ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
                     }
                 }
 
@@ -539,7 +539,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (Exception ex)
             {
 
-                await _arquivolayoutService.RegistrarErro(DataBaixa, ex.Message + " | " + ex?.InnerException?.Message, ErrosBaixaPagamento.ErroInternoServidor, JsonSerializer.Serialize(ex.StackTrace));
+                await _arquivolayoutService.RegistrarErro(DataBaixa, JsonSerializer.Serialize(ex.StackTrace), ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
             }
         }
     }

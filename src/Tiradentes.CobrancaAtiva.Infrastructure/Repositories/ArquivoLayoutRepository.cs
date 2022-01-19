@@ -16,7 +16,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public ArquivoLayoutModel BuscarPorDataHora(DateTime dataHora)
         {
-            return DbSet.Where(A => A.DataHora == dataHora).FirstOrDefault();
+            return DbSet.FirstOrDefault(A => A.DataHora.Year == dataHora.Year
+                                          && A.DataHora.Month == dataHora.Month
+                                          && A.DataHora.Day == dataHora.Day);
         }
 
         public void HabilitarAlteracaoArquivoLayout(bool status)

@@ -24,7 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<DateTime> SalvarLayoutArquivo(DateTime dataBaixa, string status, string arquivoResposta)
+        public async Task SalvarLayoutArquivo(DateTime dataBaixa, string status, string arquivoResposta)
         {
             var layoutArquivo = new ArquivoLayoutModel()
             {
@@ -33,9 +33,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 Status = status
             };
 
-            await _repository.Criar(layoutArquivo);
-
-            return layoutArquivo.DataHora;
+            await _repository.Criar(layoutArquivo);            
         }
         public async Task AtualizarStatusLayoutArquivo(DateTime dataHora, string status)
         {
@@ -72,7 +70,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 _repository.HabilitarAlteracaoArquivoLayout(true);
             }
 
-            return await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);            
+            return  await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);            
         }
     }
 }
