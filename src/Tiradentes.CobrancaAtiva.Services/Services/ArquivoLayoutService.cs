@@ -39,7 +39,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var layoutArquivo = new ArquivoLayoutModel()
             {
-                DataHora = dataBaixa,
+                //DataHora = dataBaixa,
                 Conteudo = arquivoResposta,
                 Status = status
             };
