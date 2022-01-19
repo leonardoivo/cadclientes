@@ -134,6 +134,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 await _parcelasAcordoService.InserirPagamentoParcelaAcordo(arquivo.Parcela,
                                                                            arquivo.NumeroAcordo,
                                                                            arquivo.Sistema,
+                                                                           arquivo.DataBaixa,
                                                                            arquivo.DataVencimento,
                                                                            arquivo.ValorParcela,
                                                                            arquivo.CnpjEmpresaCobranca,
@@ -142,7 +143,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout = await _arquivolayoutService.RegistrarErro(dataBaixa, ex.Message, ex.Erro, JsonSerializer.Serialize(resposta));
+                idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, ex.Message, ex.Erro, JsonSerializer.Serialize(resposta));
 
                 erros.Add(new ErroParcelaViewModel() { 
                     Etapa = 1,
@@ -395,6 +396,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     _parcelasAcordoService.InserirPagamentoParcelaAcordo(arquivo.Parcela,
                                                                          arquivo.NumeroAcordo,
                                                                          arquivo.Sistema,
+                                                                         arquivo.DataBaixa,
                                                                          arquivo.DataVencimento,                                                                         
                                                                          arquivo.ValorParcela,
                                                                          arquivo.CnpjEmpresaCobranca,

@@ -66,21 +66,20 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         .Select(P => P.Valor).FirstOrDefault();
         }
 
-        public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia)
-        {            
-            await Criar(new ParcelasAcordoModel() {
-                Parcela = parcela,
-                NumeroAcordo = numeroAcordo,
-                DataVencimento = dataVencimento,
-                Valor = valorParcela,
-                Sistema = sistema,
-                CnpjEmpresaCobranca = cnpjEmpresaCobranca,
-                TipoInadimplencia = tipoInadimplencia,
-                DataBaixa = null,
-                DataBaixaPagamento = null,
-                DataPagamento = null,
-                ValorPago = null
-            });
+        public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataBaixa, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia)
+        {
+            await Db.Database.ExecuteSqlRawAsync($@"insert into scf.PARCELAS_ACORDO(NUM_ACORDO, PARCELA, DAT_BAIXA, VALOR, DAT_VENC, CNPJ_EMPRESA_COBRANCA, SISTEMA, TIPO_INADIMPLENCIA)
+                                                    values({numeroAcordo}, {parcela}, '{dataBaixa.ToString("dd/MM/yyyy")}', {valorParcela}, '{dataVencimento.ToString("dd/MM/yyyy")}', '{cnpjEmpresaCobranca}', '{sistema}', '{tipoInadimplencia}')");
+
+            //await Criar(new ParcelasAcordoModel() {
+            //    Parcela = parcela,
+            //    NumeroAcordo = numeroAcordo,
+            //    DataVencimento = dataVencimento,
+            //    Valor = valorParcela,
+            //    Sistema = sistema,
+            //    CnpjEmpresaCobranca = cnpjEmpresaCobranca,
+            //    TipoInadimplencia = tipoInadimplencia,
+            //});
         }
 
         public bool ParcelaPaga(decimal parcela, decimal numeroAcordo)
