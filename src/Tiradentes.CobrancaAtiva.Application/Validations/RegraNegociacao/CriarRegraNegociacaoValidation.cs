@@ -14,25 +14,25 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.HonorarioEmpresaParce
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 
              RuleFor(e => e.PercentJurosMultaAVista)
-                .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
+                .NotNull().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 
              RuleFor(e => e.PercentValorAVista)
-                .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
+                .NotNull().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 
              RuleFor(e => e.PercentJurosMultaCartao)
-                .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
+                .NotNull().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 
              RuleFor(e => e.PercentValorCartao)
-                .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
+                .NotNull().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 
              RuleFor(e => e.QuantidadeParcelasCartao)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 
              RuleFor(e => e.PercentJurosMultaBoleto)
-                .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
+                .NotNull().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 
              RuleFor(e => e.PercentValorBoleto)
-                .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
+                .NotNull().WithMessage(MensagensErroValidacao.CampoObrigatorio);
 
              RuleFor(e => e.PercentEntradaBoleto)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio);
