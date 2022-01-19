@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Models
 {
@@ -9,5 +10,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string Status { get; set; }
         public string Conteudo { get; set; }
 
+        public List<ErrosLayoutModel> ErrosLayout { get; set; }
     }
 }

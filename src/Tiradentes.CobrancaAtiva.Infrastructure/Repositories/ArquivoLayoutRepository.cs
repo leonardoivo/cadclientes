@@ -20,8 +20,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                           && A.DataHora.Month == dataHora.Month
                                           && A.DataHora.Day == dataHora.Day
                                           && A.DataHora.Hour == dataHora.Hour
-                                          && A.DataHora.Minute == dataHora.Minute
-                                          && A.DataHora.Second == dataHora.Second);
+                                          && A.DataHora.Minute == dataHora.Minute);
         }
 
         public void HabilitarAlteracaoArquivoLayout(bool status)
