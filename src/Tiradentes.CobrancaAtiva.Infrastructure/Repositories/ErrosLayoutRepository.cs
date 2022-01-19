@@ -25,7 +25,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public List<ErrosLayoutModel> BuscarPorDataHora(DateTime dataHora)
         {
-            return DbSet.Where(E => E.DataHora == dataHora).ToList();
+            return DbSet.Where(E => E.DataHora.ToString("dd/MM/yyyy HH:mm:ss") == dataHora.ToString("dd/MM/yyyy HH:mm:ss")).ToList();
         }
         
 

@@ -26,7 +26,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Conteudo)
                .HasColumnName("CONTEUDO");
 
-            builder.HasMany(b => b.ErrosLayout).WithOne();
+            //builder.HasMany(b => b.ErrosLayout).WithOne();
 
         }
     }

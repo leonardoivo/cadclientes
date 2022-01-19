@@ -10,6 +10,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string Status { get; set; }
         public string Conteudo { get; set; }
 
-        public List<ErrosLayoutModel> ErrosLayout { get; set; }
+        //public List<ErrosLayoutModel> ErrosLayout { get; set; }
     }
 }
