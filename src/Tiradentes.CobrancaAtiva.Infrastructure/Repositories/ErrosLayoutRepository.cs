@@ -17,10 +17,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
-        public async Task CriarErrosLayout(DateTime dataHora, ErrosBaixaPagamento erro, string descricao)
+        public async Task CriarErrosLayout(DateTime dataHora, string descricao)
         {
             await Db.Database.ExecuteSqlRawAsync($@"insert into scf.erros_layout( dat_hora, dsc_erro )
-                                                    values(p_dat_hora, p_dsc_erro); ");
+                                                    values({dataHora.ToString("dd/MM/yyyy HH:mm:ss")}, {descricao});");
         }
 
         public List<ErrosLayoutModel> BuscarPorDataHora(DateTime dataHora)

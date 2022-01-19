@@ -13,94 +13,54 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
     public class ArquivoLayoutService : IArquivoLayoutService
     {
         readonly IArquivoLayoutRepository _repository;
-        readonly IErrosLayoutRepository _erroLayoutRepository;
         readonly IErroLayoutService _erroLayoutService;
         readonly IMapper _mapper;
-        public ArquivoLayoutService(IArquivoLayoutRepository repository,                                    
-                                    IErrosLayoutRepository erroLayoutRepository,
+        public ArquivoLayoutService(IArquivoLayoutRepository repository,
                                     IErroLayoutService erroLayoutService,
                                     IMapper mapper)
         {
             _repository = repository;
-            _erroLayoutRepository = erroLayoutRepository;
             _erroLayoutService = erroLayoutService;
             _mapper = mapper;
         }
 
-        private async Task AtualizarLayoutArquivo(DateTime dataBaixa, string conteudo, string status, ErrosBaixaPagamento erro, string erroDescricao)
+        private async Task AtualizarLayoutArquivo(DateTime dataBaixa, string status, string arquivoResposta)
         {
             var model = _repository.BuscarPorDataHora(dataBaixa);
 
             model.Status = status;
-            model.Conteudo = conteudo;
+            model.Conteudo = arquivoResposta;
 
-            if (model.ErrosLayout == null)
-                model.ErrosLayout = new System.Collections.Generic.List<ErrosLayoutModel>();
-
-            model.ErrosLayout.Add(new ErrosLayoutModel() {
-                DataHora = dataBaixa,
-                Descricao = string.IsNullOrEmpty(erroDescricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + erroDescricao
-            }                 
-            );
-
-            try
-            {
-                _repository.HabilitarAlteracaoArquivoLayout(true);
-                _erroLayoutRepository.HabilitarAlteracaoErroLayout(true);
-
-                await _repository.Alterar(model);
-
-            }
-            finally
-            {
-
-                _erroLayoutRepository.HabilitarAlteracaoErroLayout(false);
-                _repository.HabilitarAlteracaoArquivoLayout(false);
-            }
+            await _repository.Alterar(model);
 
         }
 
-        public async Task SalvarLayoutArquivo(DateTime dataBaixa, string conteudo, string status, ErrosBaixaPagamento erro, string erroDescricao)
+        public async Task SalvarLayoutArquivo(DateTime dataBaixa, string status, string arquivoResposta)
         {
-
             var layoutArquivo = new ArquivoLayoutModel()
             {
                 DataHora = dataBaixa,
-                Conteudo = conteudo,
-                Status = status,
-                ErrosLayout = new System.Collections.Generic.List<ErrosLayoutModel>() { new ErrosLayoutModel() { 
-                    DataHora = dataBaixa,
-                    Descricao =  string.IsNullOrEmpty(erroDescricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + erroDescricao
-                } }
+                Conteudo = arquivoResposta,
+                Status = status
             };
 
-            try
-            {
-                _repository.HabilitarAlteracaoArquivoLayout(true);
-                _erroLayoutRepository.HabilitarAlteracaoErroLayout(true);
+            _repository.HabilitarAlteracaoArquivoLayout(true);
 
-                await _repository.Criar(layoutArquivo);
+            await _repository.Criar(layoutArquivo);
 
-            }
-            finally
-            {
-
-                _erroLayoutRepository.HabilitarAlteracaoErroLayout(false);
-                _repository.HabilitarAlteracaoArquivoLayout(false);
-            }
-
+            _repository.HabilitarAlteracaoArquivoLayout(false);
         }
         public async Task AtualizarStatusLayoutArquivo(DateTime dataHora, string status)
         {
-            _repository.HabilitarAlteracaoArquivoLayout(true);
-            
             var model = _repository.BuscarPorDataHora(dataHora);
 
             model.Status = status;
 
+            _repository.HabilitarAlteracaoArquivoLayout(true);
+
             await _repository.Alterar(model);
 
-            _repository.HabilitarAlteracaoArquivoLayout(false);            
+            _repository.HabilitarAlteracaoArquivoLayout(false);
         }
 
         public ArquivoLayoutViewModel BuscarPorDataHora(DateTime dataHora)
@@ -123,20 +83,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             if(arquivoLayout == null)
             {
 
-
-                await SalvarLayoutArquivo(dataBaixa, conteudo, "E", erro, erroDescricao);
-                
+                await SalvarLayoutArquivo(dataBaixa, "E", conteudo);                
             }
             else
             {
-                _repository.HabilitarAlteracaoArquivoLayout(true);
 
-                await AtualizarLayoutArquivo(dataBaixa, conteudo, "E", erro, erroDescricao);
-
-                _repository.HabilitarAlteracaoArquivoLayout(false);
+                await AtualizarLayoutArquivo(dataBaixa, "E", conteudo);
+                
             }
 
-            return  -99999;            
+            return  await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);            
         }
     }
 }

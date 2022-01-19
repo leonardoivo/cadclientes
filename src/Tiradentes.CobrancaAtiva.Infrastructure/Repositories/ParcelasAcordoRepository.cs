@@ -69,7 +69,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataBaixa, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia)
         {
             await Db.Database.ExecuteSqlRawAsync($@"insert into scf.PARCELAS_ACORDO(NUM_ACORDO, PARCELA, DAT_BAIXA, VALOR, DAT_VENC, CNPJ_EMPRESA_COBRANCA, SISTEMA, TIPO_INADIMPLENCIA)
-                                                    values({numeroAcordo}, {parcela}, '{dataBaixa.ToString("dd/MM/yyyy")}', {valorParcela}, '{dataVencimento.ToString("dd/MM/yyyy")}', '{cnpjEmpresaCobranca}', '{sistema}', '{tipoInadimplencia}')");
+                                                    values({numeroAcordo}, {parcela}, '{dataBaixa.ToString("dd/MM/yyyy HH:mm:ss")}', {valorParcela}, '{dataVencimento.ToString("dd/MM/yyyy")}', '{cnpjEmpresaCobranca}', '{sistema}', '{tipoInadimplencia}')");
 
             //await Criar(new ParcelasAcordoModel() {
             //    Parcela = parcela,

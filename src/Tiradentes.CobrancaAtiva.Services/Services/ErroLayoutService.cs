@@ -34,20 +34,22 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<decimal?> CriarErroLayoutService(DateTime dataHora, ErrosBaixaPagamento erro, string descricao)
         {
-            var model = new ErrosLayoutModel
-            {
-                DataHora = dataHora,
-                Descricao = string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao
+            //var model = new ErrosLayoutModel
+            //{
+            //    DataHora = dataHora,
+            //    Descricao = string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao
 
-            };
+            //};
 
             _ErroLayout.HabilitarAlteracaoErroLayout(true);
 
-            await _ErroLayout.Criar(model);
+            //await _ErroLayout.Criar(model);
+
+            await _ErroLayout.CriarErrosLayout(dataHora, string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao);
 
             _ErroLayout.HabilitarAlteracaoErroLayout(false);
 
-            return model.Sequencia;
+            return _ErroLayout.BuscarPorDataHora(dataHora).LastOrDefault().Sequencia;
         }
 
         public void Dispose()
