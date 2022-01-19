@@ -41,7 +41,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
-        public async Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal matricula, decimal saldoDevedor)
+        public async Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal matricula, decimal saldoDevedor, string cpf, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia)
         {
            await Criar(new AcordosCobrancasModel(){
                     NumeroAcordo = numeroAcordo,
@@ -51,7 +51,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     ValorTotal = valorTotal,
                     Multa = multa,
                     Matricula = matricula,
-                    SaldoDevedor = saldoDevedor
+                    SaldoDevedor = saldoDevedor,
+                    CPF = cpf,
+                    CnpjEmpresaCobranca = cnpjEmpresaCobranca,
+                    Sistema = sistema,
+                    TipoInadimplencia = tipoInadimplencia
             });
         }
 

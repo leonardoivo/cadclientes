@@ -8,14 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         bool ExisteAcordo(decimal numeroAcordo);
         Task AtualizarSaldoDevedor(decimal numeroAcordo, decimal valor);
         Task AtualizarMatriculaAcordo(decimal matricula, decimal numeroAcordo);
-        Task InserirAcordoCobranca(decimal numeroAcordo,
-                                   DateTime dataBaixa,
-                                   DateTime dataAcordo,
-                                   int totalParcelas,
-                                   decimal valorTotal,
-                                   decimal multa,
-                                   decimal matricula,
-                                   decimal saldoDevedor);
+        Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal matricula, decimal saldoDevedor, string cpf, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia);
 
         decimal ObterMatricula(decimal numeroAcordo);
 

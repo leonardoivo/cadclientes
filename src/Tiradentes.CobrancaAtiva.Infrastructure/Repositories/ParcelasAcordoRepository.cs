@@ -66,14 +66,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         .Select(P => P.Valor).FirstOrDefault();
         }
 
-        public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataVencimento, DateTime dataBaixa, decimal valorPago)
+        public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia)
         {
             await Criar(new ParcelasAcordoModel(){
                 Parcela = parcela,
                 NumeroAcordo = numeroAcordo,
                 DataVencimento = dataVencimento,
-                DataBaixa = dataBaixa,
-                ValorPago = valorPago
+                Valor = valorParcela,
+                Sistema = sistema,
+                CnpjEmpresaCobranca = cnpjEmpresaCobranca,
+                TipoInadimplencia = tipoInadimplencia
             });
         }
 
