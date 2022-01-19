@@ -486,22 +486,30 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 foreach (var arquivo in arquivos)
                 {
+                    try
+                    {
 
-                    if(arquivo.TipoRegistro == "1")
-                    {
-                        await ProcessaBaixaTipo1(DataBaixa, arquivo, ErrosContabilizados);
+                        if(arquivo.TipoRegistro == "1")
+                        {
+                            await ProcessaBaixaTipo1(DataBaixa, arquivo, ErrosContabilizados);
+                        }
+                        else if(arquivo.TipoRegistro == "2")
+                        {
+                            ProcessaBaixaTipo2(DataBaixa, arquivo, ref ErrosContabilizados);
+                        }
+                        else if(arquivo.TipoRegistro == "3")
+                        {
+                            ProcessaBaixaTipo3(DataBaixa, arquivo, ref ErrosContabilizados);
+                        }
+                        else
+                        {                    
+                            await _arquivolayoutService.RegistrarErro(DataBaixa, "", ErrosBaixaPagamento.LayoutInconsistente, JsonSerializer.Serialize(arquivo));
+                        }
                     }
-                    else if(arquivo.TipoRegistro == "2")
+                    catch (Exception ex)
                     {
-                        ProcessaBaixaTipo2(DataBaixa, arquivo, ref ErrosContabilizados);
-                    }
-                    else if(arquivo.TipoRegistro == "3")
-                    {
-                        ProcessaBaixaTipo3(DataBaixa, arquivo, ref ErrosContabilizados);
-                    }
-                    else
-                    {                    
-                        await _arquivolayoutService.RegistrarErro(DataBaixa, "", ErrosBaixaPagamento.LayoutInconsistente, JsonSerializer.Serialize(arquivo));
+
+                        await _arquivolayoutService.RegistrarErro(DataBaixa, ex.Message + " | " + ex?.InnerException?.Message, ErrosBaixaPagamento.ErroInternoServidor, JsonSerializer.Serialize(ex.StackTrace));
                     }
                 }
 

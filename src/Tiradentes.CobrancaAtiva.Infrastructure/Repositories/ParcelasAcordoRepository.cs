@@ -67,15 +67,19 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         }
 
         public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia)
-        {
-            await Criar(new ParcelasAcordoModel(){
+        {            
+            await Criar(new ParcelasAcordoModel() {
                 Parcela = parcela,
                 NumeroAcordo = numeroAcordo,
                 DataVencimento = dataVencimento,
                 Valor = valorParcela,
                 Sistema = sistema,
                 CnpjEmpresaCobranca = cnpjEmpresaCobranca,
-                TipoInadimplencia = tipoInadimplencia
+                TipoInadimplencia = tipoInadimplencia,
+                DataBaixa = null,
+                DataBaixaPagamento = null,
+                DataPagamento = null,
+                ValorPago = null
             });
         }
 
