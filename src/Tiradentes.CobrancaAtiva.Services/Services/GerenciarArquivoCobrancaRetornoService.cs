@@ -143,7 +143,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, ex.Message, ex.Erro, JsonSerializer.Serialize(resposta));
+                idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
 
                 erros.Add(new ErroParcelaViewModel() { 
                     Etapa = 1,
@@ -301,7 +301,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout =  _arquivolayoutService.RegistrarErro(dataBaixa, ex.Message, ex.Erro, JsonSerializer.Serialize(resposta)).Result;
+                idErroLayout =  _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message).Result;
 
                 erros.Add(new ErroParcelaViewModel()
                 {
@@ -448,8 +448,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout = _arquivolayoutService.RegistrarErro(dataBaixa, ex.Message, ex.Erro, JsonSerializer.Serialize(resposta)).Result;
-
+                idErroLayout =  _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message).Result;
                 erros.Add(new ErroParcelaViewModel()
                 {
                     Etapa = 3,

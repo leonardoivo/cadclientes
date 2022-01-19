@@ -35,8 +35,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public bool ExisteParcelaAcordo(decimal parcela, decimal numeroAcordo)
         {
-            return this.DbSet.Where(P => P.Parcela == parcela
-                                    && P.NumeroAcordo == numeroAcordo).Count() > 1;
+            return DbSet.Where(P => P.Parcela == parcela
+                                    && P.NumeroAcordo == numeroAcordo).Count() > 0;
         }
 
         public bool ExisteParcelaPaga(decimal numeroAcordo)
