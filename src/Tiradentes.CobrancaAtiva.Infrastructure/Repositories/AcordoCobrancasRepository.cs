@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -43,6 +44,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal matricula, decimal saldoDevedor, string cpf, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia)
         {
+
+            HabilitarAlteracaoBaixaCobranca(true);
+
            await Criar(new AcordosCobrancasModel(){
                     NumeroAcordo = numeroAcordo,
                     DataBaixa = dataBaixa,
@@ -57,11 +61,20 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     Sistema = sistema,
                     TipoInadimplencia = tipoInadimplencia
             });
+
+            HabilitarAlteracaoBaixaCobranca(false);
         }
 
         public decimal ObterMatricula(decimal numeroAcordo)
         {
             return DbSet.Where(A => A.NumeroAcordo == numeroAcordo).Select(A => A.NumeroAcordo).FirstOrDefault();
+        }
+
+        private void HabilitarAlteracaoBaixaCobranca(bool status)
+        {
+            Db.Database.ExecuteSqlRaw($@"begin
+                                         scf.COBRANCAS_PKG.set_pode_alt_arq_cob({status.ToString().ToLower()});
+                                         end;");
         }
     }
 }

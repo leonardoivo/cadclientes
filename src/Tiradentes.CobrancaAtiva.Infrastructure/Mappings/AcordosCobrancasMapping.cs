@@ -43,7 +43,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasColumnName("SALDO_DEVEDOR");
 
             builder.Property(ep => ep.Matricula)
-               .HasColumnName("MATRICLA");
+               .HasColumnName("MATRICULA");
 
 
             builder.Property(ep => ep.CnpjEmpresaCobranca)
