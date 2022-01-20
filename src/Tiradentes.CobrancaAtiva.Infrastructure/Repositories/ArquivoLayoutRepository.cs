@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
@@ -14,6 +15,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
+        public async Task CriarArquivoLayout(ArquivoLayoutModel model)
+        {
+            var arquivoDbSet = Db.Set<ArquivoLayoutModel>();
+
+            arquivoDbSet.Add(model);
+            await SaveChanges();
+
+        }
         public ArquivoLayoutModel BuscarPorDataHora(DateTime dataHora)
         {
             return DbSet.FirstOrDefault(A => A.DataHora.Year == dataHora.Year

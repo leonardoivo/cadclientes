@@ -34,8 +34,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             };
 
             _repository.HabilitarAlteracaoArquivoLayout(true);
-
-            await _repository.Criar(layoutArquivo);
+            
+            await _repository.CriarArquivoLayout(layoutArquivo);
 
             _repository.HabilitarAlteracaoArquivoLayout(false);
 
