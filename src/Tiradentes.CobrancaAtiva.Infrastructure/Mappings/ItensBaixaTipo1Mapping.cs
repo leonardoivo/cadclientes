@@ -50,7 +50,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasColumnName("CNPJ_EMPRESA_COBRANCA");
 
             builder.Property(ep => ep.SituacaoAluno)
-                .HasColumnName("STA_ALU ")
+                .HasColumnName("STA_ALU")
                 .HasColumnType("CHAR(1)");
 
             builder.Property(ep => ep.Sistema)

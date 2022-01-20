@@ -19,7 +19,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             return await DbSet.Where(B => B.DataBaixa.Year == dataBaixa.Year
                                        && B.DataBaixa.Month == dataBaixa.Month
-                                       && B.DataBaixa.Day == dataBaixa.Day).FirstOrDefaultAsync();
+                                       && B.DataBaixa.Day == dataBaixa.Day
+                                       && B.DataBaixa.Hour == dataBaixa.Hour
+                                       && B.DataBaixa.Minute == dataBaixa.Minute
+                                       && B.DataBaixa.Second == dataBaixa.Second).FirstOrDefaultAsync();
         }
 
         public void HabilitarAlteracaoBaixaCobranca(bool status)

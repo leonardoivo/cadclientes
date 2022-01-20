@@ -42,7 +42,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 Parcela = parcela,
                 Sistema = sistema,
                 SituacaoAluno = situacaoAluno,
-                TipoInadimplencia = tipoInadimplencia             
+                TipoInadimplencia = tipoInadimplencia,
+                NumeroLinha = 1
             });
 
             HabilitarAlteracaoBaixaCobranca(false);
