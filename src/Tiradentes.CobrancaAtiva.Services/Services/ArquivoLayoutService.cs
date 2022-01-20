@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using System.Linq;
 using System.Text.Json;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
@@ -43,7 +44,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         }
         public async Task AtualizarStatusLayoutArquivo(DateTime dataHora, string status)
         {
-            var model = _repository.BuscarLayoutSucessoPorData(dataHora);
+            var model = _repository.BuscarPorDataHora(dataHora).FirstOrDefault();
 
             if(model != null)
             {
@@ -59,7 +60,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public ArquivoLayoutViewModel BuscarPorDataHora(DateTime dataHora)
         {
-            var model =  _repository.BuscarLayoutSucessoPorData(dataHora);
+            var model =  _repository.BuscarPorDataHora(dataHora).FirstOrDefault();
 
             if (model == null)
                 return null;
@@ -72,16 +73,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<decimal?> RegistrarErro(DateTime dataBaixa, string conteudo, ErrosBaixaPagamento erro, string erroDescricao)
         {
-            var arquivoLayout = BuscarPorDataHora(dataBaixa);
+            var model =  BuscarPorDataHora(dataBaixa);
 
-            if(arquivoLayout == null)
+            if(model != null)
             {
-                await SalvarLayoutArquivo("E", erroDescricao);
-            }
-            else
-            {
-                if (arquivoLayout.Status != "E")
-                    await AtualizarStatusLayoutArquivo(dataBaixa, "E");            
+                await AtualizarStatusLayoutArquivo(dataBaixa, "E");            
             }
 
             return await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);

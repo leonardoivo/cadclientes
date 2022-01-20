@@ -26,7 +26,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             return DbSet.Where(A => A.DataHora.Year == dataHora.Year
                                           && A.DataHora.Month == dataHora.Month
-                                          && A.DataHora.Day == dataHora.Day).ToList();
+                                          && A.DataHora.Day == dataHora.Day
+                                          && A.DataHora.Hour == dataHora.Hour
+                                          && A.DataHora.Minute == dataHora.Minute
+                                          && A.DataHora.Second == dataHora.Second).ToList();
         }
 
         public ArquivoLayoutModel BuscarLayoutSucessoPorData(DateTime dataHora)

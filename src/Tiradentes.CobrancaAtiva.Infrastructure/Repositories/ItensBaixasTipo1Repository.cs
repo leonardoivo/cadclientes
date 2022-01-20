@@ -30,7 +30,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             HabilitarAlteracaoBaixaCobranca(true);
 
             await Criar(new ItensBaixaTipo1Model(){ 
-                DataBaixa = dataBaixa,
+                DataBaixa = dataBaixa.Date,
                 Matricula = matricula,
                 NumeroAcordo = numeroAcordo,
                 Multa = multa,

@@ -40,7 +40,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var model = new BaixasCobrancasModel()
             {
-                DataBaixa = dataBaixa
+                DataBaixa = dataBaixa.Date,
+                Etapa = 0
 
             };
 
