@@ -552,7 +552,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch(ArgumentNullException ex)
             {
                 var dataErro = await _arquivolayoutService.SalvarLayoutArquivo("E", "Arquivo ja processado com a data de hoje");
-                await _arquivolayoutService.RegistrarErro(dataErro, JsonSerializer.Serialize(ex), ErrosBaixaPagamento.OutrosErros, ex.Message);
+                await _arquivolayoutService.RegistrarErro(dataErro, JsonSerializer.Serialize(ex.StackTrace), ErrosBaixaPagamento.OutrosErros, ex.Message);
             }
             catch (Exception ex)
             {

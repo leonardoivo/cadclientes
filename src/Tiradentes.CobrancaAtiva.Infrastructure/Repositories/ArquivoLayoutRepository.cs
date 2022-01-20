@@ -17,10 +17,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task CriarArquivoLayout(ArquivoLayoutModel model)
         {
-            var arquivoDbSet = Db.Set<ArquivoLayoutModel>();
-
-            arquivoDbSet.Add(model);
-            await SaveChanges();
+            DbSet.Local.Clear();
+            await Criar(model);
 
         }
         public ArquivoLayoutModel BuscarPorDataHora(DateTime dataHora)
