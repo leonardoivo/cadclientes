@@ -286,22 +286,22 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             {
                 var validadeInicial = queryParams.ValidadeInicial.Value;
                 var validadeFinal = queryParams.ValidadeFinal.Value;
-                return query.Where(r => (r.ValidadeInicial.Date >= validadeInicial.Date
-                                         && r.ValidadeFinal.Date <= validadeInicial.Date)
-                                        || (r.ValidadeInicial.Date >= validadeFinal.Date
-                                            && r.ValidadeFinal.Date <= validadeFinal.Date));
+                return query.Where(r => (r.ValidadeInicial.Date <= validadeInicial.Date
+                                         && r.ValidadeFinal.Date >= validadeInicial.Date)
+                                        || (r.ValidadeInicial.Date <= validadeFinal.Date
+                                            && r.ValidadeFinal.Date >= validadeFinal.Date));
             }
 
             if (queryParams.ValidadeInicial.HasValue)
             {
                 var validadeInicial = queryParams.ValidadeInicial.Value;
-                return query.Where(r => r.ValidadeInicial.Date >= validadeInicial.Date
-                                        && r.ValidadeFinal.Date <= validadeInicial.Date);
+                return query.Where(r => r.ValidadeInicial.Date <= validadeInicial.Date
+                                        && r.ValidadeFinal.Date >= validadeInicial.Date);
             }
 
             var validade = queryParams.ValidadeFinal.Value;
-            return query.Where(r => r.ValidadeInicial.Date >= validade.Date
-                                    && r.ValidadeFinal.Date <= validade.Date);
+            return query.Where(r => r.ValidadeInicial.Date <= validade.Date
+                                    && r.ValidadeFinal.Date >= validade.Date);
         }
 
         private static IQueryable<BuscaRegraNegociacao> TrataFiltroDataInadimplencia(
@@ -313,22 +313,22 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             {
                 var inadimplenciaInicial = RetornaDataInicial(queryParams.InadimplenciaInicial.Value);
                 var inadimplenciaFinal = RetornaDataFinal(queryParams.InadimplenciaFinal.Value);
-                return query.Where(r => (r.InadimplenciaInicial.Date >= inadimplenciaInicial.Date
-                                         && r.InadimplenciaFinal.Date <= inadimplenciaInicial.Date)
-                                        || (r.InadimplenciaInicial.Date >= inadimplenciaFinal.Date
-                                            && r.InadimplenciaFinal.Date <= inadimplenciaFinal.Date));
+                return query.Where(r => (r.InadimplenciaInicial.Date <= inadimplenciaInicial.Date
+                                         && r.InadimplenciaFinal.Date >= inadimplenciaInicial.Date)
+                                        || (r.InadimplenciaInicial.Date <= inadimplenciaFinal.Date
+                                            && r.InadimplenciaFinal.Date >= inadimplenciaFinal.Date));
             }
 
             if (queryParams.InadimplenciaInicial.HasValue)
             {
                 var inadimplenciaInicial = RetornaDataInicial(queryParams.InadimplenciaInicial.Value);
-                return query.Where(r => r.InadimplenciaInicial.Date >= inadimplenciaInicial.Date
-                                        && r.InadimplenciaFinal.Date <= inadimplenciaInicial.Date);
+                return query.Where(r => r.InadimplenciaInicial.Date <= inadimplenciaInicial.Date
+                                        && r.InadimplenciaFinal.Date >= inadimplenciaInicial.Date);
             }
 
             var inadimplencia = RetornaDataFinal(queryParams.InadimplenciaFinal.Value);
-            return query.Where(r => r.InadimplenciaInicial.Date >= inadimplencia.Date
-                                    && r.InadimplenciaFinal.Date <= inadimplencia.Date);
+            return query.Where(r => r.InadimplenciaInicial.Date <= inadimplencia.Date
+                                    && r.InadimplenciaFinal.Date >= inadimplencia.Date);
         }
 
         private static DateTime RetornaDataInicial(DateTime data)
