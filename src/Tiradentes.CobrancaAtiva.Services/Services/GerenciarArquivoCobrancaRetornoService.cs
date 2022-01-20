@@ -160,7 +160,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   arquivo.Juros,
                                                   arquivo.DataVencimento,
                                                   arquivo.ValorParcela,
-                                                  idErroLayout);
+                                                  idErroLayout,
+                                                  arquivo.CnpjEmpresaCobranca,
+                                                  arquivo.Parcela,
+                                                  arquivo.Sistema,
+                                                  arquivo.SituacaoAluno,
+                                                  arquivo.TipoInadimplencia
+                                                  );
 
 
         }
