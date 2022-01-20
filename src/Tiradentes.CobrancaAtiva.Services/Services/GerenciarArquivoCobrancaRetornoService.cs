@@ -58,7 +58,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         private async Task ProcessaBaixaTipo1(DateTime dataBaixa, RespostaViewModel resposta, List<ErroParcelaViewModel> erros)
         {
-            decimal? idErroLayout = null;
+            int? codErro = null;
 
             var arquivo = new
             {
@@ -143,13 +143,17 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
+                var idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
 
-                erros.Add(new ErroParcelaViewModel() { 
+                codErro = (int)ex.Erro;
+
+                erros.Add(new ErroParcelaViewModel()
+                {
                     Etapa = 1,
                     ValorParcela = arquivo.ValorParcela,
-                    IdErro = idErroLayout ?? 0
-                } );
+                    IdErro = codErro ?? 0,
+                    CodErro = codErro
+                });
             }
 
 
@@ -160,7 +164,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   arquivo.Juros,
                                                   arquivo.DataVencimento,
                                                   arquivo.ValorParcela,
-                                                  idErroLayout,
+                                                  codErro,
                                                   arquivo.CnpjEmpresaCobranca,
                                                   arquivo.Parcela,
                                                   arquivo.Sistema,
@@ -313,7 +317,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     Etapa = 2,
                     ValorParcela = arquivo.ValorParcela,
-                    IdErro = idErroLayout ?? 0
+                    IdErro = idErroLayout ?? 0,
+                    CodErro = (int)ex.Erro
                 });
             }
 
@@ -459,7 +464,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     Etapa = 3,
                     ValorParcela = arquivo.ValorParcela,
-                    IdErro = idErroLayout ?? 0
+                    IdErro = idErroLayout ?? 0,
+                    CodErro = (int)ex.Erro
                 });
             }
 
