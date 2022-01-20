@@ -152,41 +152,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.ModalidadeId != 0)
                 query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);
 
-            if (queryParams.ValidadeInicial.HasValue || queryParams.ValidadeFinal.HasValue)
-            {
-                if (queryParams.ValidadeInicial.HasValue && queryParams.ValidadeFinal.HasValue)
-                {
-                    var validadeInicial = RetornaDataInicial(queryParams.ValidadeInicial.Value);
-                    var validadeFinal = RetornaDataFinal(queryParams.ValidadeFinal.Value);
-                    query = query.Where(r => (r.ValidadeInicial.Date >= validadeInicial.Date
-                                              && r.ValidadeFinal.Date <= validadeInicial.Date)
-                                             || (r.ValidadeInicial.Date >= validadeFinal.Date
-                                                 && r.ValidadeFinal.Date <= validadeFinal.Date));
-                }
-
-                if (queryParams.ValidadeInicial.HasValue)
-                {
-                    var validadeInicial = RetornaDataInicial(queryParams.ValidadeInicial.Value);
-                    query = query.Where(r => r.ValidadeInicial.Date >= validadeInicial.Date
-                                              && r.ValidadeFinal.Date <= validadeInicial.Date);
-                }
-                else
-                {
-                    var validadeFinal = RetornaDataFinal(queryParams.ValidadeFinal.Value);
-                    query = query.Where(r => r.ValidadeInicial.Date >= validadeFinal.Date
-                                             && r.ValidadeFinal.Date <= validadeFinal.Date);
-                }
-            }
-
-            if (queryParams.InadimplenciaInicial.HasValue)
-                query = query.Where(e =>
-                    e.InadimplenciaInicial.Month == queryParams.InadimplenciaInicial.Value.Month &&
-                    e.InadimplenciaInicial.Year == queryParams.InadimplenciaInicial.Value.Year);
-
-            if (queryParams.InadimplenciaFinal.HasValue)
-                query = query.Where(e =>
-                    e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month &&
-                    e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);
+            query = TrataFiltroDataValidade(query, queryParams);
+            query = TrataFiltroDataInadimplencia(query, queryParams);
 
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
@@ -311,15 +278,68 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             return regraConflitante;
         }
 
-        private DateTime RetornaDataInicial(DateTime validadeInicial)
+        private static IQueryable<BuscaRegraNegociacao> TrataFiltroDataValidade(IQueryable<BuscaRegraNegociacao> query,
+            RegraNegociacaoQueryParam queryParams)
         {
-            return new DateTime(validadeInicial.Year, validadeInicial.Month, 1);
+            if (!queryParams.ValidadeInicial.HasValue && !queryParams.ValidadeFinal.HasValue) return query;
+            if (queryParams.ValidadeInicial.HasValue && queryParams.ValidadeFinal.HasValue)
+            {
+                var validadeInicial = queryParams.ValidadeInicial.Value;
+                var validadeFinal = queryParams.ValidadeFinal.Value;
+                return query.Where(r => (r.ValidadeInicial.Date >= validadeInicial.Date
+                                         && r.ValidadeFinal.Date <= validadeInicial.Date)
+                                        || (r.ValidadeInicial.Date >= validadeFinal.Date
+                                            && r.ValidadeFinal.Date <= validadeFinal.Date));
+            }
+
+            if (queryParams.ValidadeInicial.HasValue)
+            {
+                var validadeInicial = queryParams.ValidadeInicial.Value;
+                return query.Where(r => r.ValidadeInicial.Date >= validadeInicial.Date
+                                        && r.ValidadeFinal.Date <= validadeInicial.Date);
+            }
+
+            var validade = queryParams.ValidadeFinal.Value;
+            return query.Where(r => r.ValidadeInicial.Date >= validade.Date
+                                    && r.ValidadeFinal.Date <= validade.Date);
         }
 
-        private DateTime RetornaDataFinal(DateTime validadeFinal)
+        private static IQueryable<BuscaRegraNegociacao> TrataFiltroDataInadimplencia(
+            IQueryable<BuscaRegraNegociacao> query,
+            RegraNegociacaoQueryParam queryParams)
         {
-            var ultimoDiaMes = DateTime.DaysInMonth(validadeFinal.Year, validadeFinal.Month);
-            return new DateTime(validadeFinal.Year, validadeFinal.Month, ultimoDiaMes);
+            if (!queryParams.InadimplenciaInicial.HasValue && !queryParams.InadimplenciaFinal.HasValue) return query;
+            if (queryParams.InadimplenciaInicial.HasValue && queryParams.InadimplenciaFinal.HasValue)
+            {
+                var inadimplenciaInicial = RetornaDataInicial(queryParams.InadimplenciaInicial.Value);
+                var inadimplenciaFinal = RetornaDataFinal(queryParams.InadimplenciaFinal.Value);
+                return query.Where(r => (r.InadimplenciaInicial.Date >= inadimplenciaInicial.Date
+                                         && r.InadimplenciaFinal.Date <= inadimplenciaInicial.Date)
+                                        || (r.InadimplenciaInicial.Date >= inadimplenciaFinal.Date
+                                            && r.InadimplenciaFinal.Date <= inadimplenciaFinal.Date));
+            }
+
+            if (queryParams.InadimplenciaInicial.HasValue)
+            {
+                var inadimplenciaInicial = RetornaDataInicial(queryParams.InadimplenciaInicial.Value);
+                return query.Where(r => r.InadimplenciaInicial.Date >= inadimplenciaInicial.Date
+                                        && r.InadimplenciaFinal.Date <= inadimplenciaInicial.Date);
+            }
+
+            var inadimplencia = RetornaDataFinal(queryParams.InadimplenciaFinal.Value);
+            return query.Where(r => r.InadimplenciaInicial.Date >= inadimplencia.Date
+                                    && r.InadimplenciaFinal.Date <= inadimplencia.Date);
+        }
+
+        private static DateTime RetornaDataInicial(DateTime data)
+        {
+            return new DateTime(data.Year, data.Month, 1);
+        }
+
+        private static DateTime RetornaDataFinal(DateTime data)
+        {
+            var ultimoDiaMes = DateTime.DaysInMonth(data.Year, data.Month);
+            return new DateTime(data.Year, data.Month, ultimoDiaMes);
         }
     }
 }
