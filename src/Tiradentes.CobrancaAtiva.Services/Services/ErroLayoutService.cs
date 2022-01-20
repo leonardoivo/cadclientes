@@ -51,22 +51,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             return model.Sequencia;
 
-            ////var model = new ErrosLayoutModel
-            ////{
-            ////    DataHora = dataHora,
-            ////    Descricao = string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao
-
-            ////};
-
-            //_ErroLayout.HabilitarAlteracaoErroLayout(true);
-
-            ////await _ErroLayout.Criar(model);
-
-            //await _ErroLayout.CriarErrosLayout(dataHora, string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao);
-
-            //_ErroLayout.HabilitarAlteracaoErroLayout(false);
-
-            //return _ErroLayout.BuscarPorDataHora(dataHora).LastOrDefault().Sequencia;
         }
 
 

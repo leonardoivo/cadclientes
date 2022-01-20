@@ -11,6 +11,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
                           int parcela,
                           DateTime dataPagamento,
                           decimal valorPago,
-                          decimal? codErro);
+                          int? codErro);
     }
 }

@@ -151,8 +151,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     Etapa = 1,
                     ValorParcela = arquivo.ValorParcela,
-                    IdErro = codErro ?? 0,
-                    CodErro = codErro
+                    IdErro = idErroLayout ?? 0,
+                    CodErro = codErro ?? 0
                 });
             }
 
@@ -175,9 +175,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         }
 
-        private void ProcessaBaixaTipo2(DateTime dataBaixa, RespostaViewModel resposta, ref List<ErroParcelaViewModel> erros)
+        private async Task ProcessaBaixaTipo2(DateTime dataBaixa, RespostaViewModel resposta, List<ErroParcelaViewModel> erros)
         {
-            decimal? idErroLayout = null;
+            int? codErro = null;
 
             var arquivo = new
             {
@@ -273,13 +273,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 //Doc fala Se existe, fluxograma fala Se Não existe
                 if(!_acordoCobrancaService.ExisteAcordo(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
-                    _acordoCobrancaService.AtualizarMatriculaAcordo(arquivo.Matricula, arquivo.NumeroAcordo);
+                    await _acordoCobrancaService.AtualizarMatriculaAcordo(arquivo.Matricula, arquivo.NumeroAcordo);
 
-                    _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, Convert.ToDecimal(arquivo.NumeroAcordo), arquivo.Matricula);
+                    await _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, Convert.ToDecimal(arquivo.NumeroAcordo), arquivo.Matricula);
                 }
 
                 //Doc fala apenas se não deu erro, fluxograma diz sem validação.
-                _parcelaTituloService.InserirParcela(arquivo.NumeroAcordo,
+                await _parcelaTituloService.InserirParcela(arquivo.NumeroAcordo,
                                                      arquivo.Matricula,
                                                      arquivo.Periodo,
                                                      arquivo.Parcela,
@@ -291,7 +291,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 if(_parcelasAcordoService.ExisteParcelaPaga(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
                     //Ainda não implementado
-                    _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: arquivo.NumeroAcordo,
+                    await _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: arquivo.NumeroAcordo,
                                                                 matricula: arquivo.Matricula,
                                                                 sistema: arquivo.Sistema,
                                                                 dataPagamento: arquivo.DataPagamento,
@@ -311,31 +311,33 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout =  _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message).Result;
+                var idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
+
+                codErro = (int)ex.Erro;
 
                 erros.Add(new ErroParcelaViewModel()
                 {
                     Etapa = 2,
                     ValorParcela = arquivo.ValorParcela,
                     IdErro = idErroLayout ?? 0,
-                    CodErro = (int)ex.Erro
+                    CodErro = codErro ?? 0
                 });
             }
 
 
-            _itensBaixasTipo2Service.InserirBaixa(arquivo.DataBaixa,
+            await _itensBaixasTipo2Service.InserirBaixa(arquivo.DataBaixa,
                                                   arquivo.Matricula,
                                                   arquivo.NumeroAcordo,
                                                   arquivo.Parcela,
                                                   arquivo.Periodo,
                                                   arquivo.DataVencimento,
                                                   arquivo.ValorPago,
-                                                  idErroLayout);
+                                                  codErro);
         }
 
-        private void ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta, ref List<ErroParcelaViewModel> erros)
+        private async Task ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta,  List<ErroParcelaViewModel> erros)
         {
-            decimal? idErroLayout = null;
+            int? codErro = null;
 
             var arquivo = new
             {
@@ -404,7 +406,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 try
                 {
 
-                    _parcelasAcordoService.InserirPagamentoParcelaAcordo(arquivo.Parcela,
+                    await _parcelasAcordoService.InserirPagamentoParcelaAcordo(arquivo.Parcela,
                                                                          arquivo.NumeroAcordo,
                                                                          arquivo.Sistema,
                                                                          arquivo.DataBaixa,
@@ -415,13 +417,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                     var saldoDecremendo = _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
 
-                    _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, saldoDecremendo ?? 0 * -1);
+                    await _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, saldoDecremendo ?? 0 * -1);
 
                     if(arquivo.Parcela == 1)
                     {
                         try
                         {
-                            _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: arquivo.NumeroAcordo,
+                            await _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: arquivo.NumeroAcordo,
                                                                         matricula: arquivo.Matricula,
                                                                         sistema: arquivo.Sistema,
                                                                         dataPagamento: arquivo.DataPagamento,
@@ -442,7 +444,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                             var saldoAdicao = _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
 
-                            _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, saldoAdicao ?? 0);
+                            await _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, saldoAdicao ?? 0);
 
                             throw;
                         }
@@ -451,7 +453,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 catch (Exception)
                 {
 
-                    _parcelasAcordoService.EstornarParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
+                    await _parcelasAcordoService.EstornarParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
 
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.OutrosErros);
                 }
@@ -459,23 +461,26 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ErroArquivoCobrancaException ex)
             {
 
-                idErroLayout =  _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message).Result;
+                var idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
+
+                codErro = (int)ex.Erro;
+
                 erros.Add(new ErroParcelaViewModel()
                 {
                     Etapa = 3,
                     ValorParcela = arquivo.ValorParcela,
                     IdErro = idErroLayout ?? 0,
-                    CodErro = (int)ex.Erro
+                    CodErro = codErro ?? 0
                 });
             }
 
-            _itensBaixasTipo3Service.InserirBaixa(arquivo.DataBaixa,
+            await _itensBaixasTipo3Service.InserirBaixa(arquivo.DataBaixa,
                                                   arquivo.Matricula,
                                                   arquivo.NumeroAcordo,
                                                   arquivo.Parcela,
                                                   arquivo.DataPagamento,
                                                   arquivo.ValorPago,
-                                                  idErroLayout);
+                                                  codErro);
         }
 
         public async Task Gerenciar()
@@ -522,11 +527,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         }
                         else if(arquivo.TipoRegistro == "2")
                         {
-                            ProcessaBaixaTipo2(DataBaixa, arquivo, ref ErrosContabilizados);
+                            await ProcessaBaixaTipo2(DataBaixa, arquivo, ErrosContabilizados);
                         }
                         else if(arquivo.TipoRegistro == "3")
                         {
-                            ProcessaBaixaTipo3(DataBaixa, arquivo, ref ErrosContabilizados);
+                            await ProcessaBaixaTipo3(DataBaixa, arquivo, ErrosContabilizados);
                         }
                         else
                         {
