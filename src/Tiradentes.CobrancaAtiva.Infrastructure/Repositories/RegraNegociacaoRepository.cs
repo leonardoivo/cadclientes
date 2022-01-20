@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
@@ -14,18 +15,19 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
     public class RegraNegociacaoRepository : BaseRepository<RegraNegociacaoModel>, IRegraNegociacaoRepository
     {
         public RegraNegociacaoRepository(CobrancaAtivaDbContext context) : base(context)
-        { }
+        {
+        }
 
         public async Task<List<RegraNegociacaoModel>> ListarRegrasParaInativar()
         {
             var query = DbSet
-                            .Include(r => r.Instituicao)
-                            .Include(r => r.Modalidade)
-                            .Include(r => r.RegraNegociacaoCurso)
-                            .Include(r => r.RegraNegociacaoTituloAvulso)
-                            .Include(r => r.RegraNegociacaoSituacaoAluno)
-                            .Include(r => r.RegraNegociacaoTipoTitulo)
-                            .AsQueryable();
+                .Include(r => r.Instituicao)
+                .Include(r => r.Modalidade)
+                .Include(r => r.RegraNegociacaoCurso)
+                .Include(r => r.RegraNegociacaoTituloAvulso)
+                .Include(r => r.RegraNegociacaoSituacaoAluno)
+                .Include(r => r.RegraNegociacaoTipoTitulo)
+                .AsQueryable();
 
             query = query.Where(e => e.Status == true);
             query = query.Where(e => e.ValidadeFinal <= System.DateTime.Now);
@@ -38,16 +40,17 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task<List<RegraNegociacaoModel>> ListarRegrasParaAtivar()
         {
             var query = DbSet
-                            .Include(r => r.Instituicao)
-                            .Include(r => r.Modalidade)
-                            .Include(r => r.RegraNegociacaoCurso)
-                            .Include(r => r.RegraNegociacaoTituloAvulso)
-                            .Include(r => r.RegraNegociacaoSituacaoAluno)
-                            .Include(r => r.RegraNegociacaoTipoTitulo)
-                            .AsQueryable();
+                .Include(r => r.Instituicao)
+                .Include(r => r.Modalidade)
+                .Include(r => r.RegraNegociacaoCurso)
+                .Include(r => r.RegraNegociacaoTituloAvulso)
+                .Include(r => r.RegraNegociacaoSituacaoAluno)
+                .Include(r => r.RegraNegociacaoTipoTitulo)
+                .AsQueryable();
 
             query = query.Where(e => e.Status == false);
-            query = query.Where(e => e.ValidadeInicial <= System.DateTime.Now && e.ValidadeFinal >= System.DateTime.Now);
+            query = query.Where(e =>
+                e.ValidadeInicial <= System.DateTime.Now && e.ValidadeFinal >= System.DateTime.Now);
 
             var regrasCadastradas = await query.ToListAsync();
 
@@ -57,47 +60,55 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public override Task Criar(RegraNegociacaoModel model)
         {
             var query = DbSet
-                            .Select(r => new BuscaRegraNegociacao
-                            {
-                                Id = r.Id,
-                                Instituicao = r.Instituicao,
-                                Modalidade = r.Modalidade,
-                                PercentJurosMultaAVista = r.PercentJurosMultaAVista,
-                                PercentValorAVista = r.PercentValorAVista,
-                                PercentJurosMultaCartao = r.PercentJurosMultaCartao,
-                                PercentValorCartao = r.PercentValorCartao,
-                                QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
-                                PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
-                                PercentValorBoleto = r.PercentValorBoleto,
-                                QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
-                                PercentEntradaBoleto = r.PercentEntradaBoleto,
-                                Status = r.Status,
-                                InadimplenciaInicial = r.InadimplenciaInicial,
-                                InadimplenciaFinal = r.InadimplenciaFinal,
-                                ValidadeInicial = r.ValidadeInicial,
-                                ValidadeFinal = r.ValidadeFinal,
-                                Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
-                                TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
-                                SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
-                                TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
-                            })
-                            .AsQueryable();
+                .Select(r => new BuscaRegraNegociacao
+                {
+                    Id = r.Id,
+                    Instituicao = r.Instituicao,
+                    Modalidade = r.Modalidade,
+                    PercentJurosMultaAVista = r.PercentJurosMultaAVista,
+                    PercentValorAVista = r.PercentValorAVista,
+                    PercentJurosMultaCartao = r.PercentJurosMultaCartao,
+                    PercentValorCartao = r.PercentValorCartao,
+                    QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
+                    PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
+                    PercentValorBoleto = r.PercentValorBoleto,
+                    QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
+                    PercentEntradaBoleto = r.PercentEntradaBoleto,
+                    Status = r.Status,
+                    InadimplenciaInicial = r.InadimplenciaInicial,
+                    InadimplenciaFinal = r.InadimplenciaFinal,
+                    ValidadeInicial = r.ValidadeInicial,
+                    ValidadeFinal = r.ValidadeFinal,
+                    Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
+                    TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
+                    SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
+                    TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
+                })
+                .AsQueryable();
 
             query = query.Where(e => e.Status == true).Where(e => e.Modalidade.Id == model.ModalidadeId);
 
-            query = query.Where(e => e.InadimplenciaInicial <= model.InadimplenciaFinal && model.InadimplenciaInicial <= e.InadimplenciaFinal);
+            query = query.Where(e =>
+                e.InadimplenciaInicial <= model.InadimplenciaFinal &&
+                model.InadimplenciaInicial <= e.InadimplenciaFinal);
 
             var regrasCadastradas = query.ToList();
 
             if (regrasCadastradas.Count > 0)
             {
-                regrasCadastradas = regrasCadastradas.AsQueryable().Where(e => (e.Instituicao == null ? e.Instituicao == null : (e.Instituicao.Id == model.InstituicaoId))).ToList();
+                regrasCadastradas = regrasCadastradas.AsQueryable().Where(e =>
+                        (e.Instituicao == null ? e.Instituicao == null : (e.Instituicao.Id == model.InstituicaoId)))
+                    .ToList();
 
-                 if(model.RegraNegociacaoCurso.Count > 0)    
-                     regrasCadastradas = regrasCadastradas.Where(e => e.Cursos.Where(c => model.RegraNegociacaoCurso.Select(c => c.CursoId).Contains(c.Id)).Any()).ToList();
-                 
-                 if(model.RegraNegociacaoTipoTitulo.Count > 0)   
-                     regrasCadastradas = regrasCadastradas.Where(e => e.TiposTitulos.Where(c => model.RegraNegociacaoTipoTitulo.Select(c => c.TipoTituloId).Contains(c.Id)).Any()).ToList();
+                if (model.RegraNegociacaoCurso.Count > 0)
+                    regrasCadastradas = regrasCadastradas.Where(e =>
+                            e.Cursos.Where(c => model.RegraNegociacaoCurso.Select(c => c.CursoId).Contains(c.Id)).Any())
+                        .ToList();
+
+                if (model.RegraNegociacaoTipoTitulo.Count > 0)
+                    regrasCadastradas = regrasCadastradas.Where(e =>
+                        e.TiposTitulos.Where(c =>
+                            model.RegraNegociacaoTipoTitulo.Select(c => c.TipoTituloId).Contains(c.Id)).Any()).ToList();
 
                 if (regrasCadastradas.Count > 0)
                     throw new System.Exception("Regra já cadastrada!");
@@ -109,31 +120,31 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task<ModelPaginada<BuscaRegraNegociacao>> Buscar(RegraNegociacaoQueryParam queryParams)
         {
             var query = DbSet
-                            .Select(r => new BuscaRegraNegociacao
-                            {
-                                Id = r.Id,
-                                Instituicao = r.Instituicao,
-                                Modalidade = r.Modalidade,
-                                PercentJurosMultaAVista = r.PercentJurosMultaAVista,
-                                PercentValorAVista = r.PercentValorAVista,
-                                PercentJurosMultaCartao = r.PercentJurosMultaCartao,
-                                PercentValorCartao = r.PercentValorCartao,
-                                QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
-                                PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
-                                PercentValorBoleto = r.PercentValorBoleto,
-                                QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
-                                PercentEntradaBoleto = r.PercentEntradaBoleto,
-                                Status = r.Status,
-                                InadimplenciaInicial = r.InadimplenciaInicial,
-                                InadimplenciaFinal = r.InadimplenciaFinal,
-                                ValidadeInicial = r.ValidadeInicial,
-                                ValidadeFinal = r.ValidadeFinal,
-                                Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
-                                TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
-                                SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
-                                TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
-                            })
-                            .AsQueryable();
+                .Select(r => new BuscaRegraNegociacao
+                {
+                    Id = r.Id,
+                    Instituicao = r.Instituicao,
+                    Modalidade = r.Modalidade,
+                    PercentJurosMultaAVista = r.PercentJurosMultaAVista,
+                    PercentValorAVista = r.PercentValorAVista,
+                    PercentJurosMultaCartao = r.PercentJurosMultaCartao,
+                    PercentValorCartao = r.PercentValorCartao,
+                    QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
+                    PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
+                    PercentValorBoleto = r.PercentValorBoleto,
+                    QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
+                    PercentEntradaBoleto = r.PercentEntradaBoleto,
+                    Status = r.Status,
+                    InadimplenciaInicial = r.InadimplenciaInicial,
+                    InadimplenciaFinal = r.InadimplenciaFinal,
+                    ValidadeInicial = r.ValidadeInicial,
+                    ValidadeFinal = r.ValidadeFinal,
+                    Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
+                    TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
+                    SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
+                    TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
+                })
+                .AsQueryable();
 
             if (queryParams.InstituicaoId != 0)
                 query = query.Where(e => e.Instituicao.Id == queryParams.InstituicaoId);
@@ -141,21 +152,41 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.ModalidadeId != 0)
                 query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);
 
-            if (queryParams.ValidadeInicial.HasValue)
-                query = query.Where(e => e.ValidadeInicial.Day == queryParams.ValidadeInicial.Value.Day &&
-                    e.ValidadeInicial.Month == queryParams.ValidadeInicial.Value.Month &&
-                    e.ValidadeInicial.Year == queryParams.ValidadeInicial.Value.Year);
+            if (queryParams.ValidadeInicial.HasValue || queryParams.ValidadeFinal.HasValue)
+            {
+                if (queryParams.ValidadeInicial.HasValue && queryParams.ValidadeFinal.HasValue)
+                {
+                    var validadeInicial = RetornaDataInicial(queryParams.ValidadeInicial.Value);
+                    var validadeFinal = RetornaDataFinal(queryParams.ValidadeFinal.Value);
+                    query = query.Where(r => (r.ValidadeInicial.Date >= validadeInicial.Date
+                                              && r.ValidadeFinal.Date <= validadeInicial.Date)
+                                             || (r.ValidadeInicial.Date >= validadeFinal.Date
+                                                 && r.ValidadeFinal.Date <= validadeFinal.Date));
+                }
 
-            if (queryParams.ValidadeFinal.HasValue)
-                query = query.Where(e => e.ValidadeFinal.Day == queryParams.ValidadeFinal.Value.Day &&
-                    e.ValidadeFinal.Month == queryParams.ValidadeFinal.Value.Month &&
-                    e.ValidadeFinal.Year == queryParams.ValidadeFinal.Value.Year);
+                if (queryParams.ValidadeInicial.HasValue)
+                {
+                    var validadeInicial = RetornaDataInicial(queryParams.ValidadeInicial.Value);
+                    query = query.Where(r => r.ValidadeInicial.Date >= validadeInicial.Date
+                                              && r.ValidadeFinal.Date <= validadeInicial.Date);
+                }
+                else
+                {
+                    var validadeFinal = RetornaDataFinal(queryParams.ValidadeFinal.Value);
+                    query = query.Where(r => r.ValidadeInicial.Date >= validadeFinal.Date
+                                             && r.ValidadeFinal.Date <= validadeFinal.Date);
+                }
+            }
 
             if (queryParams.InadimplenciaInicial.HasValue)
-                query = query.Where(e => e.InadimplenciaInicial.Month == queryParams.InadimplenciaInicial.Value.Month && e.InadimplenciaInicial.Year == queryParams.InadimplenciaInicial.Value.Year);
+                query = query.Where(e =>
+                    e.InadimplenciaInicial.Month == queryParams.InadimplenciaInicial.Value.Month &&
+                    e.InadimplenciaInicial.Year == queryParams.InadimplenciaInicial.Value.Year);
 
             if (queryParams.InadimplenciaFinal.HasValue)
-                query = query.Where(e => e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);
+                query = query.Where(e =>
+                    e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month &&
+                    e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);
 
             if (queryParams.Cursos.Length > 0)
                 query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
@@ -164,7 +195,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(e => e.TitulosAvulsos.Where(c => queryParams.TitulosAvulsos.Contains(c.Id)).Any());
 
             if (queryParams.SituacoesAlunos.Length > 0)
-                query = query.Where(e => e.SituacoesAlunos.Where(c => queryParams.SituacoesAlunos.Contains(c.Id)).Any());
+                query = query.Where(e =>
+                    e.SituacoesAlunos.Where(c => queryParams.SituacoesAlunos.Contains(c.Id)).Any());
 
             if (queryParams.TiposTitulos.Length > 0)
                 query = query.Where(e => e.TiposTitulos.Where(c => queryParams.TiposTitulos.Contains(c.Id)).Any());
@@ -180,60 +212,64 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public Task<BuscaRegraNegociacao> BuscarPorIdComRelacionamentos(int id)
         {
             return DbSet
-                    .Where(r => r.Id.Equals(id))
-                    .Select(r => new BuscaRegraNegociacao
-                    {
-                        Id = r.Id,
-                        Instituicao = r.Instituicao,
-                        Modalidade = r.Modalidade,
-                        PercentJurosMultaAVista = r.PercentJurosMultaAVista,
-                        PercentValorAVista = r.PercentValorAVista,
-                        PercentJurosMultaCartao = r.PercentJurosMultaCartao,
-                        PercentValorCartao = r.PercentValorCartao,
-                        QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
-                        PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
-                        PercentValorBoleto = r.PercentValorBoleto,
-                        QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
-                        PercentEntradaBoleto = r.PercentEntradaBoleto,
-                        Status = r.Status,
-                        InadimplenciaInicial = r.InadimplenciaInicial,
-                        InadimplenciaFinal = r.InadimplenciaFinal,
-                        ValidadeInicial = r.ValidadeInicial,
-                        ValidadeFinal = r.ValidadeFinal,
-                        Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
-                        TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
-                        SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
-                        TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
-                    })
-                    .AsNoTracking()
-                    .FirstOrDefaultAsync();
+                .Where(r => r.Id.Equals(id))
+                .Select(r => new BuscaRegraNegociacao
+                {
+                    Id = r.Id,
+                    Instituicao = r.Instituicao,
+                    Modalidade = r.Modalidade,
+                    PercentJurosMultaAVista = r.PercentJurosMultaAVista,
+                    PercentValorAVista = r.PercentValorAVista,
+                    PercentJurosMultaCartao = r.PercentJurosMultaCartao,
+                    PercentValorCartao = r.PercentValorCartao,
+                    QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
+                    PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
+                    PercentValorBoleto = r.PercentValorBoleto,
+                    QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
+                    PercentEntradaBoleto = r.PercentEntradaBoleto,
+                    Status = r.Status,
+                    InadimplenciaInicial = r.InadimplenciaInicial,
+                    InadimplenciaFinal = r.InadimplenciaFinal,
+                    ValidadeInicial = r.ValidadeInicial,
+                    ValidadeFinal = r.ValidadeFinal,
+                    Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
+                    TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
+                    SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
+                    TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
+                })
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
 
         public override Task<RegraNegociacaoModel> BuscarPorId(int id)
         {
             return DbSet.Include(r => r.RegraNegociacaoCurso)
-                         .Include(r => r.RegraNegociacaoTituloAvulso)
-                         .Include(r => r.RegraNegociacaoSituacaoAluno)
-                         .Include(r => r.RegraNegociacaoTipoTitulo)
-                         .Where(r => r.Id.Equals(id))
-                         .AsNoTracking()
-                         .FirstOrDefaultAsync();
+                .Include(r => r.RegraNegociacaoTituloAvulso)
+                .Include(r => r.RegraNegociacaoSituacaoAluno)
+                .Include(r => r.RegraNegociacaoTipoTitulo)
+                .Where(r => r.Id.Equals(id))
+                .AsNoTracking()
+                .FirstOrDefaultAsync();
         }
 
         public override Task Alterar(RegraNegociacaoModel model)
         {
             Db.RegraNegociacaoCurso.RemoveRange(
                 Db.RegraNegociacaoCurso.Where(
-                    c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoCurso.Select(x => x.Id).Contains(c.Id)));
+                    c => c.RegraNegociacaoId == model.Id &&
+                         !model.RegraNegociacaoCurso.Select(x => x.Id).Contains(c.Id)));
             Db.RegraNegociacaoTituloAvulso.RemoveRange(
                 Db.RegraNegociacaoTituloAvulso.Where(
-                    c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoTituloAvulso.Select(x => x.Id).Contains(c.Id)));
+                    c => c.RegraNegociacaoId == model.Id &&
+                         !model.RegraNegociacaoTituloAvulso.Select(x => x.Id).Contains(c.Id)));
             Db.RegraNegociacaoSituacaoAluno.RemoveRange(
                 Db.RegraNegociacaoSituacaoAluno.Where(
-                    c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoSituacaoAluno.Select(x => x.Id).Contains(c.Id)));
+                    c => c.RegraNegociacaoId == model.Id &&
+                         !model.RegraNegociacaoSituacaoAluno.Select(x => x.Id).Contains(c.Id)));
             Db.RegraNegociacaoTipoTitulo.RemoveRange(
                 Db.RegraNegociacaoTipoTitulo.Where(
-                    c => c.RegraNegociacaoId == model.Id && !model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)));
+                    c => c.RegraNegociacaoId == model.Id &&
+                         !model.RegraNegociacaoTipoTitulo.Select(x => x.Id).Contains(c.Id)));
 
             return base.Alterar(model);
         }
@@ -241,34 +277,49 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task<RegraNegociacaoModel> VerificarRegraConflitante(RegraNegociacaoModel model)
         {
             var query = DbSet
-                            .Include(r => r.Instituicao)
-                            .Include(r => r.Modalidade)
-                            .AsQueryable();
+                .Include(r => r.Instituicao)
+                .Include(r => r.Modalidade)
+                .AsQueryable();
 
-            query = query.Where(e => (e.ValidadeInicial.Date <= model.ValidadeInicial.Date && e.ValidadeFinal.Date >= model.ValidadeFinal.Date)
-                             ||
-                             (e.ValidadeInicial.Date >= model.ValidadeInicial.Date && e.ValidadeInicial.Date <= model.ValidadeFinal.Date)
-                             ||
-                             (e.ValidadeInicial.Date <= model.ValidadeInicial.Date && e.ValidadeFinal.Date >= model.ValidadeInicial.Date)
-                             ||
-                             (e.ValidadeFinal.Date >= model.ValidadeFinal.Date && e.ValidadeInicial.Date <= model.ValidadeFinal.Date)
-                             );
+            query = query.Where(e =>
+                (e.ValidadeInicial.Date <= model.ValidadeInicial.Date &&
+                 e.ValidadeFinal.Date >= model.ValidadeFinal.Date)
+                ||
+                (e.ValidadeInicial.Date >= model.ValidadeInicial.Date &&
+                 e.ValidadeInicial.Date <= model.ValidadeFinal.Date)
+                ||
+                (e.ValidadeInicial.Date <= model.ValidadeInicial.Date &&
+                 e.ValidadeFinal.Date >= model.ValidadeInicial.Date)
+                ||
+                (e.ValidadeFinal.Date >= model.ValidadeFinal.Date && e.ValidadeInicial.Date <= model.ValidadeFinal.Date)
+            );
 
             query = query.Where(e => e.PercentJurosMultaAVista != model.PercentJurosMultaAVista
-                               || e.PercentValorAVista != model.PercentValorAVista
-                               || e.PercentJurosMultaCartao != model.PercentJurosMultaCartao
-                               || e.PercentValorCartao != model.PercentValorCartao
-                               || e.QuantidadeParcelasCartao != model.QuantidadeParcelasCartao
-                               || e.PercentJurosMultaBoleto != model.PercentJurosMultaBoleto
-                               || e.PercentValorBoleto != model.PercentValorBoleto
-                               || e.QuantidadeParcelasBoleto != model.QuantidadeParcelasBoleto
-                               || e.PercentEntradaBoleto != model.PercentEntradaBoleto);
+                                     || e.PercentValorAVista != model.PercentValorAVista
+                                     || e.PercentJurosMultaCartao != model.PercentJurosMultaCartao
+                                     || e.PercentValorCartao != model.PercentValorCartao
+                                     || e.QuantidadeParcelasCartao != model.QuantidadeParcelasCartao
+                                     || e.PercentJurosMultaBoleto != model.PercentJurosMultaBoleto
+                                     || e.PercentValorBoleto != model.PercentValorBoleto
+                                     || e.QuantidadeParcelasBoleto != model.QuantidadeParcelasBoleto
+                                     || e.PercentEntradaBoleto != model.PercentEntradaBoleto);
 
             query = query.Where(e => e.Status == true);
 
             var regraConflitante = await query.FirstOrDefaultAsync();
 
             return regraConflitante;
+        }
+
+        private DateTime RetornaDataInicial(DateTime validadeInicial)
+        {
+            return new DateTime(validadeInicial.Year, validadeInicial.Month, 1);
+        }
+
+        private DateTime RetornaDataFinal(DateTime validadeFinal)
+        {
+            var ultimoDiaMes = DateTime.DaysInMonth(validadeFinal.Year, validadeFinal.Month);
+            return new DateTime(validadeFinal.Year, validadeFinal.Month, ultimoDiaMes);
         }
     }
 }
