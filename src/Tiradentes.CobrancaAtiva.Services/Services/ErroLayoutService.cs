@@ -38,6 +38,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var model = new ErrosLayoutModel
             {
                 DataHora = dataHora,
+                Descricao = string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao
 
             };
 

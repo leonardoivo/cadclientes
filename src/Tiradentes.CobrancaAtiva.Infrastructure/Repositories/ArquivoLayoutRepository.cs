@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -21,11 +22,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await Criar(model);
 
         }
-        public ArquivoLayoutModel BuscarPorDataHora(DateTime dataHora)
+        public List<ArquivoLayoutModel> BuscarPorDataHora(DateTime dataHora)
         {
-            return DbSet.FirstOrDefault(A => A.DataHora.Year == dataHora.Year
+            return DbSet.Where(A => A.DataHora.Year == dataHora.Year
                                           && A.DataHora.Month == dataHora.Month
-                                          && A.DataHora.Day == dataHora.Day);
+                                          && A.DataHora.Day == dataHora.Day).ToList();
         }
 
         public ArquivoLayoutModel BuscarLayoutSucessoPorData(DateTime dataHora)

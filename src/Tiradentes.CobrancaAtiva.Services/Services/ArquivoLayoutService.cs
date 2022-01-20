@@ -43,7 +43,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         }
         public async Task AtualizarStatusLayoutArquivo(DateTime dataHora, string status)
         {
-            var model = _repository.BuscarPorDataHora(dataHora);
+            var model = _repository.BuscarLayoutSucessoPorData(dataHora);
 
             if(model != null)
             {
@@ -59,7 +59,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public ArquivoLayoutViewModel BuscarPorDataHora(DateTime dataHora)
         {
-            var model =  _repository.BuscarPorDataHora(dataHora);
+            var model =  _repository.BuscarLayoutSucessoPorData(dataHora);
 
             if (model == null)
                 return null;
@@ -80,7 +80,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
             else
             {
-                await AtualizarStatusLayoutArquivo(dataBaixa, "E");            
+                if (arquivoLayout.Status != "E")
+                    await AtualizarStatusLayoutArquivo(dataBaixa, "E");            
             }
 
             return await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);
