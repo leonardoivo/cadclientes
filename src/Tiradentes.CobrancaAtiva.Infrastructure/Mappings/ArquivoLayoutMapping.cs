@@ -14,7 +14,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 
 
             builder.HasKey(ep => ep.DataHora);
-
+                        
             builder.Property(ep => ep.DataHora)
                 .HasColumnName("DAT_HORA");
 

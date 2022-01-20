@@ -24,22 +24,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _mapper = mapper;
         }
 
-        private async Task AtualizarLayoutArquivo(DateTime dataBaixa, string status, string arquivoResposta)
-        {
-            var model = _repository.BuscarPorDataHora(dataBaixa);
-
-            model.Status = status;
-            model.Conteudo = arquivoResposta;
-
-            await _repository.Alterar(model);
-
-        }
-
-        public async Task SalvarLayoutArquivo(DateTime dataBaixa, string status, string arquivoResposta)
+        public async Task<DateTime> SalvarLayoutArquivo(string status, string arquivoResposta)
         {
             var layoutArquivo = new ArquivoLayoutModel()
-            {
-                //DataHora = dataBaixa,
+            {                
                 Conteudo = arquivoResposta,
                 Status = status
             };
@@ -49,18 +37,23 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _repository.Criar(layoutArquivo);
 
             _repository.HabilitarAlteracaoArquivoLayout(false);
+
+            return layoutArquivo.DataHora;
         }
         public async Task AtualizarStatusLayoutArquivo(DateTime dataHora, string status)
         {
             var model = _repository.BuscarPorDataHora(dataHora);
 
-            model.Status = status;
+            if(model != null)
+            {
+                model.Status = status;
 
-            _repository.HabilitarAlteracaoArquivoLayout(true);
+                _repository.HabilitarAlteracaoArquivoLayout(true);
 
-            await _repository.Alterar(model);
+                await _repository.Alterar(model);
 
-            _repository.HabilitarAlteracaoArquivoLayout(false);
+                _repository.HabilitarAlteracaoArquivoLayout(false);
+            }
         }
 
         public ArquivoLayoutViewModel BuscarPorDataHora(DateTime dataHora)
@@ -78,21 +71,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<decimal?> RegistrarErro(DateTime dataBaixa, string conteudo, ErrosBaixaPagamento erro, string erroDescricao)
         {
-            var arquivoLayout = BuscarPorDataHora(dataBaixa);
+            await AtualizarStatusLayoutArquivo(dataBaixa, "E");            
 
-            if(arquivoLayout == null)
-            {
-
-                await SalvarLayoutArquivo(dataBaixa, "E", conteudo);                
-            }
-            else
-            {
-
-                await AtualizarLayoutArquivo(dataBaixa, "E", conteudo);
-                
-            }
-
-            return  await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);            
+            return await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);
         }
     }
 }

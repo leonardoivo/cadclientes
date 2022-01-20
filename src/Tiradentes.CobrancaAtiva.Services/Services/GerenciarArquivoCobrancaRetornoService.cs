@@ -468,15 +468,20 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task Gerenciar()
         {
-            var DataBaixa = DateTime.Now;
+
+            DateTime DataBaixa = DateTime.MinValue;
 
             try
             {
 
 
+
                 List<ErroParcelaViewModel> ErrosContabilizados = new List<ErroParcelaViewModel>();
 
+
                 var arquivos = _cobrancaService.BuscarRepostaNaoIntegrada().Result;
+
+                DataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S", JsonSerializer.Serialize(arquivos));
 
                 var model = await _baixasCobrancasService.Buscar(DataBaixa);
 

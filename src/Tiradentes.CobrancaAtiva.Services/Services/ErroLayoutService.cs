@@ -27,30 +27,47 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var model = _ErroLayout.BuscarPorDataHora(dataHora);
 
             if (model == null)
-                return null;
+                return new List<ErroLayoutViewModel>();
 
             return model.Select(E => _mapper.Map<ErroLayoutViewModel>(E)).ToList();
         }
 
         public async Task<decimal?> CriarErroLayoutService(DateTime dataHora, ErrosBaixaPagamento erro, string descricao)
         {
-            //var model = new ErrosLayoutModel
-            //{
-            //    DataHora = dataHora,
-            //    Descricao = string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao
 
-            //};
+            var model = new ErrosLayoutModel
+            {
+                DataHora = dataHora,
+
+            };
 
             _ErroLayout.HabilitarAlteracaoErroLayout(true);
 
-            //await _ErroLayout.Criar(model);
+            await _ErroLayout.Criar(model);
 
-            await _ErroLayout.CriarErrosLayout(dataHora, string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao);
 
             _ErroLayout.HabilitarAlteracaoErroLayout(false);
 
-            return _ErroLayout.BuscarPorDataHora(dataHora).LastOrDefault().Sequencia;
+            return model.Sequencia;
+
+            ////var model = new ErrosLayoutModel
+            ////{
+            ////    DataHora = dataHora,
+            ////    Descricao = string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao
+
+            ////};
+
+            //_ErroLayout.HabilitarAlteracaoErroLayout(true);
+
+            ////await _ErroLayout.Criar(model);
+
+            //await _ErroLayout.CriarErrosLayout(dataHora, string.IsNullOrEmpty(descricao) ? Application.Utils.Utils.GetDescricaoEnum(erro) : Application.Utils.Utils.GetDescricaoEnum(erro) + " => " + descricao);
+
+            //_ErroLayout.HabilitarAlteracaoErroLayout(false);
+
+            //return _ErroLayout.BuscarPorDataHora(dataHora).LastOrDefault().Sequencia;
         }
+
 
         public void Dispose()
         {
