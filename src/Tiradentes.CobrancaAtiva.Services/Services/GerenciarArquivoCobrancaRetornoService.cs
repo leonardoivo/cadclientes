@@ -64,12 +64,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             {
                 TipoRegistro = resposta.TipoRegistro,
                 CPF = resposta.CPF,
-                NumeroAcordo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
+                NumeroAcordo = Convert.ToInt64(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
                 Parcela = Convert.ToInt32(!string.IsNullOrEmpty(resposta.Parcela) ? resposta.Parcela : "0"),
                 CnpjEmpresaCobranca = resposta.CnpjEmpresaCobranca,
                 SituacaoAluno = resposta.SituacaoAluno,
                 Sistema = resposta.Sistema,
-                Matricula = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
+                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
                 Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
@@ -275,7 +275,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     await _acordoCobrancaService.AtualizarMatriculaAcordo(arquivo.Matricula, arquivo.NumeroAcordo);
 
-                    await _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, Convert.ToDecimal(arquivo.NumeroAcordo), arquivo.Matricula);
+                    await _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, (Int64)arquivo.NumeroAcordo, (Int64)arquivo.Matricula);
                 }
 
                 //Doc fala apenas se não deu erro, fluxograma diz sem validação.

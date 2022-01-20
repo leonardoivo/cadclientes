@@ -15,7 +15,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
-        public async Task AtualizarMatricula(DateTime dataBaixa, decimal numeroAcordo, decimal matricula)
+        public async Task AtualizarMatricula(DateTime dataBaixa, Int64 numeroAcordo, Int64 matricula)
         {
             var itemBaixa = DbSet.Where(I => I.DataBaixa == dataBaixa
                                         && I.NumeroAcordo == numeroAcordo).FirstOrDefault();
@@ -25,7 +25,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await Alterar(itemBaixa);
         }
 
-        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, int? codErro, string cnpjEmpresaCobranca, int parcela, string sistema, string situacaoAluno, string tipoInadimplencia)
+        public async Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, int? codErro, string cnpjEmpresaCobranca, int parcela, string sistema, string situacaoAluno, string tipoInadimplencia)
         {
             HabilitarAlteracaoBaixaCobranca(true);
 

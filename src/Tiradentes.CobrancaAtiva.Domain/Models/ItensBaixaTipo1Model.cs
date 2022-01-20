@@ -7,11 +7,11 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
     {
         public DateTime DataBaixa { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public decimal Sequencia { get; set; }
+        public Int64 Sequencia { get; set; }
         public int? CodigoErro { get; set; }
         public decimal NumeroLinha { get; set; }
-        public decimal NumeroAcordo { get; set; }
-        public decimal Matricula { get; set; }        
+        public Int64 NumeroAcordo { get; set; }
+        public Int64 Matricula { get; set; }        
         public int Parcela { get; set; }
         public decimal Multa { get; set; }
         public decimal Juros { get; set; }

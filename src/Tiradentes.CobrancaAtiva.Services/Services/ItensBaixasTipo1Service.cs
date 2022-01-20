@@ -12,14 +12,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             _repository = repository;
         }
-        public async Task AtualizarMatricula(DateTime dataBaixa, decimal numeroAcordo, decimal matricula)
+        public async Task AtualizarMatricula(DateTime dataBaixa, Int64 numeroAcordo, Int64 matricula)
         {
             await _repository.AtualizarMatricula(dataBaixa,
                                                  numeroAcordo,
                                                  matricula);
         }
 
-        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, int? codErro, string cnpjEmpresaCobranca, int parcela, string sistema, string situacaoAluno, string tipoInadimplencia)
+        public async Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, int? codErro, string cnpjEmpresaCobranca, int parcela, string sistema, string situacaoAluno, string tipoInadimplencia)
         {
             await _repository.InserirBaixa(dataBaixa,
                                            matricula,
