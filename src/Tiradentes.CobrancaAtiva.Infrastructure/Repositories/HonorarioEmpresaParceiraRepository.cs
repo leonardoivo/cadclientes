@@ -15,6 +15,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public HonorarioEmpresaParceiraRepository(CobrancaAtivaDbContext context) : base(context)
         { }
 
+        public override Task Alterar(HonorarioEmpresaParceiraModel model)
+        {
+            Db.HonorarioFaixaEmpresaParceiras.RemoveRange(
+                Db.HonorarioFaixaEmpresaParceiras.Where(
+                    c => c.HonorarioEmpresaParceiraId == model.Id && !model.Faixas.Select(x => x.Id).Contains(c.Id)));
+
+            return base.Alterar(model);
+        }
+
         public async Task<ModelPaginada<HonorarioEmpresaParceiraModel>> Buscar(HonorarioEmpresaParceiraQueryParam queryParams)
         {
             var query = DbSet
