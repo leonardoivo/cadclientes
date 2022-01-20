@@ -8,10 +8,13 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
 {
     public class RespostasCollection
     {
+        public string Id { get; set; }
         public DateTime DataResposta { get; set; } = DateTime.Now;
 
         public string TipoRegistro { get; set; }
+        public string InstituicaoEnsino { get; set; }
         public string CPF { get; set; }
+        public string NomeAluno { get; set; }
         public string NumeroAcordo { get; set; }
         public string Parcela { get; set; }
         public string CnpjEmpresaCobranca { get; set; }
@@ -19,6 +22,19 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }
         public string ChaveInadimplencia { get; set; }
+        public string Matricula { get; set; }
+        public string Periodo { get; set; }
+
+
+
+        public string IdTitulo { get; set; }
+        public string CodigoAtividade { get; set; }
+        public string NumeroEvt { get; set; }
+        public string IdPessoa { get; set; }
+        public string CodigoBanco { get; set; }
+        public string CodigoAgencia { get; set; }
+        public string NumeroConta { get; set; }
+        public string NumeroCheque { get; set; }
 
         //tipo 1
         public string Juros { get; set; }

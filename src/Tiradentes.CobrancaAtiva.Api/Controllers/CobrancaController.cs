@@ -24,5 +24,11 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         {
             return Ok(await _cobrancaService.Criar(resposta));
         }
+
+        [HttpGet]
+        public async Task<IActionResult> Listar([FromQuery] RespostaViewModel resposta)
+        {
+            return Ok(await _cobrancaService.Listar(resposta));
+        }
     }
 }

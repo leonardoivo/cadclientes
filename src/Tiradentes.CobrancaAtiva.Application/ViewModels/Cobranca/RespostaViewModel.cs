@@ -9,7 +9,9 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
     public class RespostaViewModel
     {
         public string TipoRegistro { get; set; }
+        public string InstituicaoEnsino { get; set; }
         public string CPF { get; set; }
+        public string NomeAluno { get; set; }
         public string NumeroAcordo { get; set; }
         public string Parcela { get; set; }
         public string CnpjEmpresaCobranca { get; set; }
@@ -31,8 +33,6 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string NumeroConta { get; set; }
         public string NumeroCheque { get; set; }
 
-
-
         //tipo 1
         public string Juros { get; set; }
         public string Multa { get; set; }
@@ -40,13 +40,9 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string DataFechamentoAcordo { get; set; }
         public string TotalParcelas { get; set; }
 
-
-
         //tipo 1 e tipo 2
         public string DataVencimento { get; set; }
         public string ValorParcela { get; set; }
-
-
 
         //tipo 2
         public string SaldoDevedorTotal { get; set; }
@@ -54,8 +50,6 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string DescricaoProduto { get; set; }
         public string Fase { get; set; }
         public string CodigoControleCliente { get; set; }
-
-
 
         //tipo 3
         public string NossoNumero { get; set; }
