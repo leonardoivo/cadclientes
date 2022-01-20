@@ -481,7 +481,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 var arquivos = _cobrancaService.BuscarRepostaNaoIntegrada().Result;
 
-                DataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S", JsonSerializer.Serialize(arquivos));
+                try
+                {
+
+                    DataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S", JsonSerializer.Serialize(arquivos));
+                }
+                catch (Exception ex)
+                {
+
+                    throw new ArgumentNullException("Arquivo Layout existente", ex);
+                }
 
                 var model = await _baixasCobrancasService.Buscar(DataBaixa);
 
@@ -539,6 +548,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             ValorTotalErrosTipo3 = ErrosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
                             UserName = ""
                         });
+            }
+            catch(ArgumentNullException ex)
+            {
+                var dataErro = await _arquivolayoutService.SalvarLayoutArquivo("E", "Arquivo ja processado com a data de hoje");
+                await _arquivolayoutService.RegistrarErro(dataErro, JsonSerializer.Serialize(ex), ErrosBaixaPagamento.OutrosErros, ex.Message);
             }
             catch (Exception ex)
             {

@@ -27,8 +27,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         public async Task<DateTime> SalvarLayoutArquivo(string status, string arquivoResposta)
         {
             var layoutArquivo = new ArquivoLayoutModel()
-            {                
-                Conteudo = arquivoResposta,
+            {
+                //Conteudo = arquivoResposta,
+                Conteudo = "Conteudo indisponivel",
                 Status = status
             };
 
@@ -71,7 +72,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<decimal?> RegistrarErro(DateTime dataBaixa, string conteudo, ErrosBaixaPagamento erro, string erroDescricao)
         {
-            await AtualizarStatusLayoutArquivo(dataBaixa, "E");            
+            var arquivoLayout = BuscarPorDataHora(dataBaixa);
+
+            if(arquivoLayout == null)
+            {
+                await SalvarLayoutArquivo("E", erroDescricao);
+            }
+            else
+            {
+                await AtualizarStatusLayoutArquivo(dataBaixa, "E");            
+            }
 
             return await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);
         }

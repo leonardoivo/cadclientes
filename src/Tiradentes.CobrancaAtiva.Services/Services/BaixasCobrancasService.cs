@@ -27,7 +27,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var baixaCobranca = await _baixasCobrancasRepository.BuscarPorDataBaixa(baixasCobrancas.DataBaixa);
 
             if (baixaCobranca == null)
-                throw new NullReferenceException("Baixa Cobrança não encontrado");
+                return;
 
             var model = _mapper.Map<BaixasCobrancasModel>(baixasCobrancas);
 
