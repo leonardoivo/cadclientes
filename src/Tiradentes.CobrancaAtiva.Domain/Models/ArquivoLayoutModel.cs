@@ -8,6 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
     {
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public DateTime DataHora { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public string NomeUsuario {get;set;}
         public string Status { get; set; }
         public string Conteudo { get; set; }
