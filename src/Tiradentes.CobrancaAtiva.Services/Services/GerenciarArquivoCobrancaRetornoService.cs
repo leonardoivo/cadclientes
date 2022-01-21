@@ -70,7 +70,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "M",
                 Sistema = resposta.Sistema,
                 Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "1167147836"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
+                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "8"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
                 NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
@@ -81,14 +81,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NumeroCheque = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.NumeroCheque) ? resposta.NumeroCheque : "0"),
                 TipoInadimplencia = resposta.TipoInadimplencia,
                 ChaveInadimplencia = resposta.ChaveInadimplencia,
-                Juros = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Juros) ? resposta.Juros : "0"),
-                Multa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Multa) ? resposta.Multa : "0"),
-                ValorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorTotal) ? resposta.ValorTotal : "0"),
+                Juros = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Juros) ? resposta.Juros : "0") / 100,
+                Multa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Multa) ? resposta.Multa : "0") / 100,
+                ValorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorTotal) ? resposta.ValorTotal : "0") / 100,
                 DataFechamentoAcordo = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataFechamentoAcordo) ? DateTime.ParseExact(resposta.DataFechamentoAcordo, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
                 TotalParcelas = Convert.ToInt32(!string.IsNullOrEmpty(resposta.TotalParcelas) ? resposta.TotalParcelas : "0"),
                 DataVencimento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataVencimento) ? DateTime.ParseExact(resposta.DataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
-                ValorParcela = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorParcela) ? resposta.ValorParcela : "0"),
-                SaldoDevedorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.SaldoDevedorTotal) ? resposta.SaldoDevedorTotal : "0"),
+                ValorParcela = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorParcela) ? resposta.ValorParcela : "0") / 100,
+                SaldoDevedorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.SaldoDevedorTotal) ? resposta.SaldoDevedorTotal : "0") / 100,
                 Produto = resposta.Produto,
                 DescricaoProduto = resposta.DescricaoProduto,
                 Fase = resposta.Fase,
@@ -96,7 +96,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NossoNumero = resposta.NossoNumero,
                 DataPagamento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataPagamento) ? DateTime.ParseExact(resposta.DataPagamento, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
                 DataBaixa = dataBaixa,
-                ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0"),
+                ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0") / 100,
                 TipoPagamento = resposta.TipoPagamento
             };
 
@@ -201,14 +201,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NumeroCheque = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.NumeroCheque) ? resposta.NumeroCheque : "0"),
                 TipoInadimplencia = resposta.TipoInadimplencia,
                 ChaveInadimplencia = resposta.ChaveInadimplencia,
-                Juros = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Juros) ? resposta.Juros : "0"),
-                Multa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Multa) ? resposta.Multa : "0"),
-                ValorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorTotal) ? resposta.ValorTotal : "0"),
+                Juros = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Juros) ? resposta.Juros : "0") / 100,
+                Multa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Multa) ? resposta.Multa : "0") / 100,
+                ValorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorTotal) ? resposta.ValorTotal : "0") / 100,
                 DataFechamentoAcordo = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataFechamentoAcordo) ? DateTime.ParseExact(resposta.DataFechamentoAcordo, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
                 TotalParcelas = Convert.ToInt32(!string.IsNullOrEmpty(resposta.TotalParcelas) ? resposta.TotalParcelas : "0"),
                 DataVencimento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataVencimento) ? DateTime.ParseExact(resposta.DataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
-                ValorParcela = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorParcela) ? resposta.ValorParcela : "0"),
-                SaldoDevedorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.SaldoDevedorTotal) ? resposta.SaldoDevedorTotal : "0"),
+                ValorParcela = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorParcela) ? resposta.ValorParcela : "0") / 100,
+                SaldoDevedorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.SaldoDevedorTotal) ? resposta.SaldoDevedorTotal : "0") / 100,
                 Produto = resposta.Produto,
                 DescricaoProduto = resposta.DescricaoProduto,
                 Fase = resposta.Fase,
@@ -216,7 +216,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NossoNumero = resposta.NossoNumero,
                 DataPagamento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataPagamento) ? DateTime.ParseExact(resposta.DataPagamento, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
                 DataBaixa = dataBaixa,
-                ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0"),
+                ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0") / 100,
                 TipoPagamento = resposta.TipoPagamento
             };
 
@@ -263,7 +263,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.ParcelaPagaInstituicao);
                 }
 
-                if(_itensGeracaoService.ExisteMatricula(arquivo.CnpjEmpresaCobranca,
+                if(!_itensGeracaoService.ExisteMatricula(arquivo.CnpjEmpresaCobranca,
                                                         arquivo.Matricula,
                                                         arquivo.Periodo,
                                                         arquivo.Parcela))
@@ -355,7 +355,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "M",
                 Sistema = resposta.Sistema,
                 Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "1167147836"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
+                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "8"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
                 NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
@@ -366,14 +366,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NumeroCheque = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.NumeroCheque) ? resposta.NumeroCheque : "0"),
                 TipoInadimplencia = resposta.TipoInadimplencia,
                 ChaveInadimplencia = resposta.ChaveInadimplencia,
-                Juros = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Juros) ? resposta.Juros : "0"),
-                Multa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Multa) ? resposta.Multa : "0"),
-                ValorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorTotal) ? resposta.ValorTotal : "0"),
+                Juros = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Juros) ? resposta.Juros : "0") / 100,
+                Multa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Multa) ? resposta.Multa : "0") / 100,
+                ValorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorTotal) ? resposta.ValorTotal : "0") / 100,
                 DataFechamentoAcordo = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataFechamentoAcordo) ? DateTime.ParseExact(resposta.DataFechamentoAcordo, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
                 TotalParcelas = Convert.ToInt32(!string.IsNullOrEmpty(resposta.TotalParcelas) ? resposta.TotalParcelas : "0"),
                 DataVencimento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataVencimento) ? DateTime.ParseExact(resposta.DataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
-                ValorParcela = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorParcela) ? resposta.ValorParcela : "0"),
-                SaldoDevedorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.SaldoDevedorTotal) ? resposta.SaldoDevedorTotal : "0"),
+                ValorParcela = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorParcela) ? resposta.ValorParcela : "0") / 100,
+                SaldoDevedorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.SaldoDevedorTotal) ? resposta.SaldoDevedorTotal : "0") / 100,
                 Produto = resposta.Produto,
                 DescricaoProduto = resposta.DescricaoProduto,
                 Fase = resposta.Fase,
@@ -381,7 +381,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NossoNumero = resposta.NossoNumero,
                 DataPagamento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataPagamento) ? DateTime.ParseExact(resposta.DataPagamento, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
                 DataBaixa = dataBaixa,
-                ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0"),
+                ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0") / 100,
                 TipoPagamento = resposta.TipoPagamento
             };
 
@@ -522,7 +522,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     await _baixasCobrancasService.CriarBaixasCobrancas(DataBaixa);
                 }
 
-                foreach (var arquivo in arquivos.OrderBy(A => A.TipoRegistro))
+                foreach (var arquivo in arquivos.OrderBy(A => A.TipoRegistro).ThenBy(A => A.Parcela))
                 {
                     try
                     {
