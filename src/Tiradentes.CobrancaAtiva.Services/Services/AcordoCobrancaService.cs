@@ -26,7 +26,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         }
 
 
-        public async Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal matricula, decimal saldoDevedor, string cpf, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia)
+        public async Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal juros, decimal matricula, decimal saldoDevedor, string cpf, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia)
         {
             await _repository.InserirAcordoCobranca(numeroAcordo,
                                                     dataBaixa,
@@ -34,6 +34,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                     totalParcelas,
                                                     valorTotal,
                                                     multa,
+                                                    juros,
                                                     matricula,
                                                     saldoDevedor,
                                                     cpf,

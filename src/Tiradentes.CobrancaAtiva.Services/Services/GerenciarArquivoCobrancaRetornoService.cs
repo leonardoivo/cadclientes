@@ -116,6 +116,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                        arquivo.TotalParcelas,
                                                                        arquivo.ValorTotal,
                                                                        arquivo.Multa,
+                                                                       arquivo.Juros,
                                                                        arquivo.Matricula,
                                                                        arquivo.SaldoDevedorTotal, //? verificar se esta preenchido
                                                                        arquivo.CPF,

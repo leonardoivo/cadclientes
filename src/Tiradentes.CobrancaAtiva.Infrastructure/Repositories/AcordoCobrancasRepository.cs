@@ -42,7 +42,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
-        public async Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal matricula, decimal saldoDevedor, string cpf, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia)
+        public async Task InserirAcordoCobranca(decimal numeroAcordo, DateTime dataBaixa, DateTime dataAcordo, int totalParcelas, decimal valorTotal, decimal multa, decimal juros, decimal matricula, decimal saldoDevedor, string cpf, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia)
         {
 
             HabilitarAlteracaoBaixaCobranca(true);
@@ -59,8 +59,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     CPF = cpf,
                     CnpjEmpresaCobranca = cnpjEmpresaCobranca,
                     Sistema = sistema,
-                    TipoInadimplencia = tipoInadimplencia
-            });
+                    TipoInadimplencia = tipoInadimplencia,
+                    Mora = juros
+           });
 
             HabilitarAlteracaoBaixaCobranca(false);
         }
