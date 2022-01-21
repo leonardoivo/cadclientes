@@ -1,12 +1,15 @@
 ﻿using AutoMapper;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.Validations.RespostaCobranca;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Collections;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
+using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
@@ -35,40 +38,41 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<RespostaViewModel>(model);
         }
 
-        public async Task<IEnumerable<string>> ListarFiltrosMatricula()
+        public async Task<IEnumerable<string>> ListarFiltrosMatricula(string matricula)
         {
-            var baixas = await _repositorio.Listar(new RespostasCollection());
+            var baixas = await _repositorio.ListarFiltroPorMatricula(matricula);
 
             return baixas.GroupBy(b => b.Matricula).Select(b => b.Key);
         }
 
-        public async Task<IEnumerable<string>> ListarFiltrosAcordo()
+        public async Task<IEnumerable<string>> ListarFiltrosAcordo(string acordo)
         {
-            var baixas = await _repositorio.Listar(new RespostasCollection());
+            var baixas = await _repositorio.ListarFiltroPorAcordo(acordo);
 
             return baixas.GroupBy(b => b.NumeroAcordo).Select(b => b.Key);
         }
 
-        public async Task<IEnumerable<string>> ListarFiltroCpf()
+        public async Task<IEnumerable<string>> ListarFiltroCpf(string cpf)
         {
-            var baixas = await _repositorio.Listar(new RespostasCollection());
+            var baixas = await _repositorio.ListarFiltroPorCpf(cpf);
 
             return baixas.GroupBy(b => b.CPF).Select(b => b.Key);
         }
 
-        public async Task<IEnumerable<string>> ListarFiltroNomeAluno()
+        public async Task<IEnumerable<string>> ListarFiltroNomeAluno(string nomeAluno)
         {
-            var baixas = await _repositorio.Listar(new RespostasCollection());
+            var baixas = await _repositorio.ListarFiltroPorAluno(nomeAluno);
 
             return baixas.GroupBy(b => b.NomeAluno).Select(b => b.Key);
         }
 
-        public async Task<ICollection<BaixaPagamento>> Listar(RespostaViewModel viewModel)
+        public async Task<ModelPaginada<BaixaPagamento>> Listar(ConsultaBaixaPagamentoQueryParam queryParam)
         {
             var resultadoBaixas = new List<BaixaPagamento>();
-            var model = _map.Map<RespostasCollection>(viewModel);
 
-            var baixas = await _repositorio.Listar(model);
+            var queryParams = _map.Map<BaixaPagamentoQueryParam>(queryParam);
+
+            var baixas = await _repositorio.Listar(queryParams);
 
             var agrupadoPorAcordo = baixas.GroupBy(b => b.NumeroAcordo);
 
@@ -133,7 +137,24 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 resultadoBaixas.Add(baixaPagamento);
             }
 
-            return resultadoBaixas;
+            var modelPaginada = new ModelPaginada<BaixaPagamento>();
+
+            modelPaginada.TotalItems = resultadoBaixas.Count();
+
+
+            var pagina = (queryParam.Pagina < 1) ? 1 : queryParam.Pagina;
+            var limite = (queryParam.Limite < 1) ? 10 : queryParam.Limite;
+            var paginaInicial = (pagina - 1) * limite;
+
+            modelPaginada.PaginaAtual = pagina;
+            modelPaginada.TamanhoPagina = limite;
+            modelPaginada.TotalPaginas = (int)Math.Ceiling(modelPaginada.TotalItems / (double)limite);
+            modelPaginada.Items = resultadoBaixas
+                                    .Skip(paginaInicial)
+                                    .Take(limite)
+                                    .ToList();
+
+            return modelPaginada;
         }
 
         public void Dispose() { }

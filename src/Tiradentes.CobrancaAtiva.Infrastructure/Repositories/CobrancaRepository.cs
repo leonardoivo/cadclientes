@@ -6,6 +6,8 @@ using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using System.Collections.Generic;
+using Tiradentes.CobrancaAtiva.Domain.QueryParams;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
@@ -26,23 +28,63 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             return model;
         }
 
-        public async Task<ICollection<RespostasCollection>> Listar(RespostasCollection model)
+        public async Task<ICollection<RespostasCollection>> Listar(BaixaPagamentoQueryParam queryParam)
         {
             var query = _repository.AsQueryable();
 
-            if(!string.IsNullOrEmpty(model.Matricula))
-                query.Where(c => c.Matricula.Equals(model.Matricula));
+            if(!string.IsNullOrEmpty(queryParam.Matricula))
+                query.Where(c => c.Matricula.Equals(queryParam.Matricula));
 
-            if(!string.IsNullOrEmpty(model.CPF))
-                query.Where(c => c.CPF == model.CPF);
+            if(!string.IsNullOrEmpty(queryParam.Cpf))
+                query.Where(c => c.CPF == queryParam.Cpf);
 
-            if(!string.IsNullOrEmpty(model.NumeroAcordo))
-                query.Where(c => c.NumeroAcordo == model.NumeroAcordo);
+            if(!string.IsNullOrEmpty(queryParam.Acordo))
+                query.Where(c => c.NumeroAcordo == queryParam.Acordo);
 
-            if(!string.IsNullOrEmpty(model.NomeAluno))
-                query.Where(c => c.NomeAluno.Equals(model.NomeAluno));
+            if(!string.IsNullOrEmpty(queryParam.NomeAluno))
+                query.Where(c => c.NomeAluno.Equals(queryParam.NomeAluno));
 
             return await query.ToListAsync();
         }
+
+        public async Task<ICollection<RespostasCollection>> ListarFiltroPorMatricula(string matricula)
+        {
+            var query = _repository.AsQueryable();
+
+            query.Where(b => b.Matricula.Contains(matricula));
+            query.Take(25);
+
+            return await query.ToListAsync();
+        }      
+
+        public async Task<ICollection<RespostasCollection>> ListarFiltroPorAluno(string aluno)
+        {
+            var query = _repository.AsQueryable();
+
+            query.Where(b => b.NomeAluno.Contains(aluno));
+            query.Take(25);
+
+            return await query.ToListAsync();
+        } 
+
+        public async Task<ICollection<RespostasCollection>> ListarFiltroPorCpf(string cpf)
+        {
+            var query = _repository.AsQueryable();
+
+            query.Where(b => b.CPF.Contains(cpf));
+            query.Take(25);
+
+            return await query.ToListAsync();
+        }      
+
+        public async Task<ICollection<RespostasCollection>> ListarFiltroPorAcordo(string acordo)
+        {
+            var query = _repository.AsQueryable();
+
+            query.Where(b => b.NumeroAcordo.Contains(acordo));
+            query.Take(25);
+
+            return await query.ToListAsync();
+        }     
     }
 }
