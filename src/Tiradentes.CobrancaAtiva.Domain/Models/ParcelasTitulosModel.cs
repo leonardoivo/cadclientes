@@ -6,8 +6,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
     public class ParcelasTitulosModel : BaseModel
     {
         public string CnpjEmpresaCobranca { get; set; }
-        public decimal NumeroAcordo { get; set; }        
-        public decimal Matricula { get; set; }        
+        public Int64 NumeroAcordo { get; set; }
+        public Int64 Matricula { get; set; }
         public decimal Periodo { get; set; }        
         public decimal PeriodoChequeDevolvido { get; set; }        
         public decimal Parcela { get; set; }        

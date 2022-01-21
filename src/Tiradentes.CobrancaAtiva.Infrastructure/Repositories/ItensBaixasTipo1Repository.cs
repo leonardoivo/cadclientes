@@ -17,7 +17,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task AtualizarMatricula(DateTime dataBaixa, Int64 numeroAcordo, Int64 matricula)
         {
-            var itemBaixa = DbSet.Where(I => I.DataBaixa == dataBaixa
+            var itemBaixa = DbSet.Where(I => I.DataBaixa.Date == dataBaixa.Date
                                         && I.NumeroAcordo == numeroAcordo).FirstOrDefault();
 
             if (itemBaixa == null)

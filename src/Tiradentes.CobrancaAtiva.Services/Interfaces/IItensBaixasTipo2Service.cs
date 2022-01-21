@@ -5,6 +5,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
     public interface IItensBaixasTipo2Service : IDisposable
     {
-        Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int codErro);
+        Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int codErro, string cnpjEmpresaCobranca, string sistema, string situacaoAluno, string tipoInadimplencia, string periodoChequeDevolvido);
     }
 }

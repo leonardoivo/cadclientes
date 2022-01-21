@@ -28,7 +28,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             return DbSet.Where(P => P.DataBaixa == dataBaixa).Count() > 0;
         }
 
-        public async Task InserirParcela(decimal numeroAcordo, decimal matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela)
+        public async Task InserirParcela(Int64 numeroAcordo, Int64 matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela)
         {
 
             HabilitarAlteracaoParcelaTitulo(true);

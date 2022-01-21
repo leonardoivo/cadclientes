@@ -17,7 +17,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _parcelaTituloRepository.ExisteParcela(matricula, periodo, parcela);
         }
 
-        public async Task InserirParcela(decimal numeroAcordo, decimal matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela)
+        public async Task InserirParcela(Int64 numeroAcordo, Int64 matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela)
         {
             await _parcelaTituloRepository.InserirParcela(numeroAcordo,
                                                           matricula,
