@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -29,6 +30,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task InserirParcela(decimal numeroAcordo, decimal matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela)
         {
+
+            HabilitarAlteracaoParcelaTitulo(true);
+
            await  Criar(new ParcelasTitulosModel(){
                             NumeroAcordo = numeroAcordo,
                             Matricula = matricula,
@@ -39,11 +43,20 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                             DataVencimento = dataVencimento,
                             Valor = valorParcela
                         });
+
+            HabilitarAlteracaoParcelaTitulo(false);
         }
 
         public IEnumerable<ParcelasTitulosModel> ObterParcelasPorNumeroAcordo(decimal numeroAcordo)
         {
             return DbSet.Where(P => P.NumeroAcordo == numeroAcordo).AsEnumerable();
+        }
+
+        private void HabilitarAlteracaoParcelaTitulo(bool status)
+        {
+            Db.Database.ExecuteSqlRaw($@"begin
+                                         scf.COBRANCAS_PKG.set_pode_alt_parc_tit({status.ToString().ToLower()});
+                                         end;");
         }
     }
 }

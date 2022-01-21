@@ -20,6 +20,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             
             var acordo = DbSet.Where(A => A.NumeroAcordo == numeroAcordo && A.Matricula == null).FirstOrDefault();
 
+            if (acordo == null)
+                return;
+
             acordo.Matricula = matricula;
 
             HabilitarAlteracaoBaixaCobranca(true);

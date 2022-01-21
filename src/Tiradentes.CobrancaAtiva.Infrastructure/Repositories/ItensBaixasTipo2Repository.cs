@@ -17,7 +17,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int codErro)
         {
 
-            HabilitarAlteracaoBaixaCobranca(true);
+            HabilitarAlteracaoBaixasTipo2(true);
 
             await Criar(new ItensBaixaTipo2Model() { 
                 DataBaixa = dataBaixa,
@@ -30,10 +30,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 CodigoErro = codErro
             });
 
-            HabilitarAlteracaoBaixaCobranca(false);
+            HabilitarAlteracaoBaixasTipo2(false);
         }
 
-        private void HabilitarAlteracaoBaixaCobranca(bool status)
+        private void HabilitarAlteracaoBaixasTipo2(bool status)
         {
             Db.Database.ExecuteSqlRaw($@"begin
                                          scf.COBRANCAS_PKG.set_pode_alt_it_bx_tp2({status.ToString().ToLower()});

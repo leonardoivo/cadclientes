@@ -21,10 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public bool ParcelaPagaInstituicao(string tipoInadimplencia, string sistema, decimal matricula, decimal periodo, int? parcela, decimal? idTitulo, int? codigoAtividade, decimal? numeroEvt, decimal? idPessoa, int? codigoBanco, int? codigoAgencia, decimal? numeroConta, decimal? numeroCheque)
         {
-            ParcelaPagaAlunoInstituicaoModel parcelaAluno = new ParcelaPagaAlunoInstituicaoModel();
-
-            var ano = periodo.ToString().Substring(1, 4);
-            var semestre = periodo.ToString().Substring(4, 1);
+            ParcelaPagaAlunoInstituicaoModel parcelaAluno = new ParcelaPagaAlunoInstituicaoModel();            
 
             var idAluno = _idAlunoRepository.ObterIdAluno(matricula);
 
@@ -36,8 +33,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                             .FromSqlRaw($@"select count(idt_alu) as PARCELAPAGACOUNT
                                                              from sca.pgto_alunos
                                                             where idt_alu = {idAluno}
-                                                              and ano = {ano}
-                                                              and semestre = {semestre}
+                                                              and ano = {periodo.ToString().Substring(0, 4)}
+                                                              and semestre = {periodo.ToString().Substring(4, 1)}
                                                               and parcela = {parcela}
                                                               and sta_pgto <> 'N'")
                                             .FirstOrDefault();

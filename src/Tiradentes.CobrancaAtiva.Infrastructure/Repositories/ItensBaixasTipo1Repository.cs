@@ -20,6 +20,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             var itemBaixa = DbSet.Where(I => I.DataBaixa == dataBaixa
                                         && I.NumeroAcordo == numeroAcordo).FirstOrDefault();
 
+            if (itemBaixa == null)
+                return;
+
             itemBaixa.Matricula = matricula;
 
             HabilitarAlteracaoBaixaCobranca(true);

@@ -190,7 +190,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "M",
                 Sistema = resposta.Sistema,
                 Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "1167147836"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "20198"),
+                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "8"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
                 NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
