@@ -58,7 +58,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         private async Task ProcessaBaixaTipo1(DateTime dataBaixa, RespostaViewModel resposta, List<ErroParcelaViewModel> erros)
         {
-            int? codErro = null;
+            int codErro = 0;
 
             var arquivo = new
             {
@@ -153,7 +153,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     Etapa = 1,
                     ValorParcela = arquivo.ValorParcela,
                     IdErro = idErroLayout ?? 0,
-                    CodErro = codErro ?? 0
+                    CodErro = codErro
                 });
             }
 
@@ -178,18 +178,18 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         private async Task ProcessaBaixaTipo2(DateTime dataBaixa, RespostaViewModel resposta, List<ErroParcelaViewModel> erros)
         {
-            int? codErro = null;
+            int codErro = 0;
 
             var arquivo = new
             {
                 TipoRegistro = resposta.TipoRegistro,
                 CPF = resposta.CPF,
-                NumeroAcordo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
+                NumeroAcordo = Convert.ToInt64(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
                 Parcela = Convert.ToInt32(!string.IsNullOrEmpty(resposta.Parcela) ? resposta.Parcela : "0"),
                 CnpjEmpresaCobranca = resposta.CnpjEmpresaCobranca,
-                SituacaoAluno = resposta.SituacaoAluno,
+                SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "M",
                 Sistema = resposta.Sistema,
-                Matricula = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
+                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "1167147836"),
                 Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
@@ -276,7 +276,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     await _acordoCobrancaService.AtualizarMatriculaAcordo(arquivo.Matricula, arquivo.NumeroAcordo);
 
-                    await _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, (Int64)arquivo.NumeroAcordo, (Int64)arquivo.Matricula);
+                    await _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, arquivo.NumeroAcordo, arquivo.Matricula);
                 }
 
                 //Doc fala apenas se não deu erro, fluxograma diz sem validação.
@@ -321,7 +321,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     Etapa = 2,
                     ValorParcela = arquivo.ValorParcela,
                     IdErro = idErroLayout ?? 0,
-                    CodErro = codErro ?? 0
+                    CodErro = codErro
                 });
             }
 
@@ -338,18 +338,18 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         private async Task ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta,  List<ErroParcelaViewModel> erros)
         {
-            int? codErro = null;
+            int codErro = 0;
 
             var arquivo = new
             {
                 TipoRegistro = resposta.TipoRegistro,
                 CPF = resposta.CPF,
-                NumeroAcordo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
+                NumeroAcordo = Convert.ToInt64(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
                 Parcela = Convert.ToInt32(!string.IsNullOrEmpty(resposta.Parcela) ? resposta.Parcela : "0"),
                 CnpjEmpresaCobranca = resposta.CnpjEmpresaCobranca,
-                SituacaoAluno = resposta.SituacaoAluno,
+                SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "M",
                 Sistema = resposta.Sistema,
-                Matricula = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
+                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "1167147836"),
                 Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
@@ -471,7 +471,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     Etapa = 3,
                     ValorParcela = arquivo.ValorParcela,
                     IdErro = idErroLayout ?? 0,
-                    CodErro = codErro ?? 0
+                    CodErro = codErro
                 });
             }
 

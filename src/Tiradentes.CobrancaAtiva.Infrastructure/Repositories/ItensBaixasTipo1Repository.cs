@@ -22,10 +22,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             itemBaixa.Matricula = matricula;
 
+            HabilitarAlteracaoBaixaCobranca(true);
+
             await Alterar(itemBaixa);
+
+            HabilitarAlteracaoBaixaCobranca(false);
         }
 
-        public async Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, int? codErro, string cnpjEmpresaCobranca, int parcela, string sistema, string situacaoAluno, string tipoInadimplencia)
+        public async Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, int codErro, string cnpjEmpresaCobranca, int parcela, string sistema, string situacaoAluno, string tipoInadimplencia)
         {
             HabilitarAlteracaoBaixaCobranca(true);
 

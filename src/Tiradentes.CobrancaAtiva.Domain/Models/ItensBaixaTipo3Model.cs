@@ -1,11 +1,12 @@
 ﻿using System;
-
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Models
 {
     public class ItensBaixaTipo3Model : BaseModel
     {
         public DateTime DataBaixa { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public decimal Sequencia { get; set; }
         public decimal? CodigoErro { get; set; }
         public decimal NumeroLinha { get; set; }

@@ -56,7 +56,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasColumnType("CHAR(1)");
 
             builder.Property(ep => ep.SituacaoAluno)
-                .HasColumnName("STA_ALU ")
+                .HasColumnName("STA_ALU")
                 .HasColumnType("CHAR(1)");
 
             builder.ToTable("ITENS_BAIXAS_TIPO3", "SCF");

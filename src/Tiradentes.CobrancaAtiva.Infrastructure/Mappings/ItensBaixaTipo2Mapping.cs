@@ -50,15 +50,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasColumnType("NUMBER(5)");
 
             builder.Property(ep => ep.SituacaoAluno)
-                .HasColumnName("STA_ALU ")
+                .HasColumnName("STA_ALU")
                 .HasColumnType("CHAR(1)");
 
             builder.Property(ep => ep.Sistema)
-                .HasColumnName("SISTEMA ")
+                .HasColumnName("SISTEMA")
                 .HasColumnType("CHAR(1)");
 
             builder.Property(ep => ep.TipoInadimplencia)
-                .HasColumnName("TIPO_INADIMPLENCIA ")
+                .HasColumnName("TIPO_INADIMPLENCIA")
                 .HasColumnType("CHAR(1)");
 
             builder.ToTable("ITENS_BAIXAS_TIPO2", "SCF");

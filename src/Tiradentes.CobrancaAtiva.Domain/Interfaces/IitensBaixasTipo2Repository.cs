@@ -6,6 +6,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
     public interface IItensBaixasTipo2Repository : IBaseRepository<ItensBaixaTipo2Model>
     {
-        Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int? codErro);
+        Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int codErro);
     }
 }

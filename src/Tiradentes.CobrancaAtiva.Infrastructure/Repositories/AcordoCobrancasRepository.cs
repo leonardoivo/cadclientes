@@ -22,8 +22,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             acordo.Matricula = matricula;
 
+            HabilitarAlteracaoBaixaCobranca(true);
+
             await Alterar(acordo);
-            
+
+            HabilitarAlteracaoBaixaCobranca(false);
 
         }
 

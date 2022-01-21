@@ -28,7 +28,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                .HasColumnName("DAT_PGTO");
 
             builder.Property(ep => ep.DataBaixaPagamento)
-               .HasColumnName("DATA_BAIXA_PGTO");
+               .HasColumnName("DAT_BAIXA_PGTO");
 
             builder.Property(ep => ep.Valor)
               .HasColumnName("VALOR");
