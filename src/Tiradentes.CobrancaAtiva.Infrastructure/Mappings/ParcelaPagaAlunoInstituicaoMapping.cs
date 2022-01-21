@@ -10,6 +10,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
         public void Configure(EntityTypeBuilder<ParcelaPagaAlunoInstituicaoModel> builder)
         {
             builder.HasNoKey();
+
+            builder.Property(P => P.Count)
+                .HasColumnName("PARCELAPAGACOUNT");
         }
     }
 }

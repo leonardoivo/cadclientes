@@ -33,7 +33,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 if(sistema == "S")
                 {
                     parcelaAluno = _context.ParcelaPagaAlunoInstituicaoModel
-                                            .FromSqlRaw($@"select count(idt_alu) as Count
+                                            .FromSqlRaw($@"select count(idt_alu) as PARCELAPAGACOUNT
                                                              from sca.pgto_alunos
                                                             where idt_alu = {idAluno}
                                                               and ano = {ano}
@@ -45,7 +45,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 else if (sistema == "E")
                 {
                     parcelaAluno = _context.ParcelaPagaAlunoInstituicaoModel
-                                            .FromSqlRaw($@"select count(idt_alu) 
+                                            .FromSqlRaw($@"select count(idt_alu) as PARCELAPAGACOUNT
                                                              from profope.pgto_alunos 
                                                             where idt_alu = {idAluno}
                                                               and parcela = {parcela}
@@ -55,7 +55,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 else if (sistema == "P")
                 {
                     parcelaAluno = _context.ParcelaPagaAlunoInstituicaoModel
-                                            .FromSqlRaw($@"select count(idt_alu) 
+                                            .FromSqlRaw($@"select count(idt_alu) as PARCELAPAGACOUNT
                                                              from spgl.pgto_alunos 
                                                             where idt_alu = {idAluno}
                                                               and parcela = {parcela}
@@ -65,7 +65,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 else if (sistema == "I")
                 {
                     parcelaAluno = _context.ParcelaPagaAlunoInstituicaoModel
-                                            .FromSqlRaw($@"select count(id_alu)
+                                            .FromSqlRaw($@"select count(id_alu) as PARCELAPAGACOUNT
                                                              from SCF.v_pgt_titulos
                                                             where idt_titulo = {idTitulo}
                                                               and dat_pgto is not null")
@@ -74,7 +74,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 else if (sistema == "X")
                 {
                     parcelaAluno = _context.ParcelaPagaAlunoInstituicaoModel
-                        .FromSqlRaw($@"select count(idt_ddp)
+                        .FromSqlRaw($@"select count(idt_ddp) as PARCELAPAGACOUNT
                                          from extensao.pagamentos
                                         where cod_atv = {codigoAtividade}
                                         and num_evt = {numeroEvt}
@@ -86,7 +86,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             else if (tipoInadimplencia == "T")
             {
                 parcelaAluno = _context.ParcelaPagaAlunoInstituicaoModel
-                                       .FromSqlRaw($@"select count(idt_titulo_avu) 
+                                       .FromSqlRaw($@"select count(idt_titulo_avu) as PARCELAPAGACOUNT
                                                         from scf.sap_titulos_avulsos 
                                                        where idt_titulo_avu = {idTitulo}
                                                          and dat_pgto is not null")
@@ -95,7 +95,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             else if (tipoInadimplencia == "C")
             {
                 parcelaAluno = _context.ParcelaPagaAlunoInstituicaoModel
-                                       .FromSqlRaw($@"select count(num_cheque) 
+                                       .FromSqlRaw($@"select count(num_cheque) as PARCELAPAGACOUNT
                                                       from SCF.cheques 
                                                       where cod_banco   = {codigoBanco}
                                                         and cod_agencia = {codigoAgencia}

@@ -190,7 +190,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "M",
                 Sistema = resposta.Sistema,
                 Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "1167147836"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
+                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "20198"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
                 NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
@@ -235,7 +235,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                    arquivo.Periodo,
                                                                    arquivo.Parcela);
 
-                if(dataEnvio != Convert.ToDateTime(arquivo.DataVencimento))
+                if (dataEnvio.Date != Convert.ToDateTime(arquivo.DataVencimento).Date)
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.DataInconsistente);
                 }
@@ -272,7 +272,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 }
 
                 //Doc fala Se existe, fluxograma fala Se Não existe
-                if(!_acordoCobrancaService.ExisteAcordo(Convert.ToDecimal(arquivo.NumeroAcordo)))
+                if(_acordoCobrancaService.ExisteAcordo(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
                     await _acordoCobrancaService.AtualizarMatriculaAcordo(arquivo.Matricula, arquivo.NumeroAcordo);
 
