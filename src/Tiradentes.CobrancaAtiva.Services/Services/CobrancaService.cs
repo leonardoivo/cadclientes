@@ -35,6 +35,34 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _map.Map<RespostaViewModel>(model);
         }
 
+        public async Task<IEnumerable<string>> ListarFiltrosMatricula()
+        {
+            var baixas = await _repositorio.Listar(new RespostasCollection());
+
+            return baixas.GroupBy(b => b.Matricula).Select(b => b.Key);
+        }
+
+        public async Task<IEnumerable<string>> ListarFiltrosAcordo()
+        {
+            var baixas = await _repositorio.Listar(new RespostasCollection());
+
+            return baixas.GroupBy(b => b.NumeroAcordo).Select(b => b.Key);
+        }
+
+        public async Task<IEnumerable<string>> ListarFiltroCpf()
+        {
+            var baixas = await _repositorio.Listar(new RespostasCollection());
+
+            return baixas.GroupBy(b => b.CPF).Select(b => b.Key);
+        }
+
+        public async Task<IEnumerable<string>> ListarFiltroNomeAluno()
+        {
+            var baixas = await _repositorio.Listar(new RespostasCollection());
+
+            return baixas.GroupBy(b => b.NomeAluno).Select(b => b.Key);
+        }
+
         public async Task<ICollection<BaixaPagamento>> Listar(RespostaViewModel viewModel)
         {
             var resultadoBaixas = new List<BaixaPagamento>();

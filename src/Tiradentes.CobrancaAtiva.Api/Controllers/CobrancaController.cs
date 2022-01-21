@@ -30,5 +30,29 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         {
             return Ok(await _cobrancaService.Listar(resposta));
         }
+
+        [HttpGet("listar-filtros-matricula")]
+        public async Task<IActionResult> ListarFiltrosMatricula()
+        {
+            return Ok(await _cobrancaService.ListarFiltrosMatricula());
+        }
+
+        [HttpGet("listar-filtros-acordo")]
+        public async Task<IActionResult> ListarFiltrosAcordo()
+        {
+            return Ok(await _cobrancaService.ListarFiltrosAcordo());
+        }
+
+        [HttpGet("listar-filtros-cpf")]
+        public async Task<IActionResult> ListarFiltroCpf()
+        {
+            return Ok(await _cobrancaService.ListarFiltroCpf());
+        }
+
+        [HttpGet("listar-filtros-nome-aluno")]
+        public async Task<IActionResult> ListarFiltroNomeAluno()
+        {
+            return Ok(await _cobrancaService.ListarFiltroNomeAluno());
+        }        
     }
 }

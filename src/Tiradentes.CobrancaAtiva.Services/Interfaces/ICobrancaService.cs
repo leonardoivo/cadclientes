@@ -10,5 +10,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     {
         Task<RespostaViewModel> Criar(RespostaViewModel model);
         Task<ICollection<BaixaPagamento>> Listar(RespostaViewModel viewModel);
+        Task<IEnumerable<string>> ListarFiltrosMatricula();
+        Task<IEnumerable<string>> ListarFiltrosAcordo();
+        Task<IEnumerable<string>> ListarFiltroCpf();
+        Task<IEnumerable<string>> ListarFiltroNomeAluno();
     }
 }
