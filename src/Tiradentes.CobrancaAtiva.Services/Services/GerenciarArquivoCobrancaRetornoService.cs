@@ -56,6 +56,18 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             Erros = new Dictionary<int, decimal>();
         }
 
+        private int? GetPeriodoChequeDevolvido(string periodo)
+        {
+            if(string.IsNullOrEmpty(periodo))
+            {
+                return null;
+            }
+            else
+            {
+                return Convert.ToInt32(periodo);
+            }
+        }
+
         private async Task ProcessaBaixaTipo1(DateTime dataBaixa, RespostaViewModel resposta, List<ErroParcelaViewModel> erros)
         {
             int codErro = 0;
@@ -217,7 +229,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 DataPagamento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataPagamento) ? DateTime.ParseExact(resposta.DataPagamento, "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
                 DataBaixa = dataBaixa,
                 ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0") / 100,
-                TipoPagamento = resposta.TipoPagamento
+                TipoPagamento = resposta.TipoPagamento,
+                PeriodoChequeDevolvido = GetPeriodoChequeDevolvido(resposta.PeriodoChequeDevolvido)
             };
 
             try
@@ -338,7 +351,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   arquivo.Sistema,
                                                   arquivo.SituacaoAluno,
                                                   arquivo.TipoInadimplencia,
-                                                  arquivo.Periodo.ToString());
+                                                  arquivo.PeriodoChequeDevolvido);
         }
 
         private async Task ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta,  List<ErroParcelaViewModel> erros)

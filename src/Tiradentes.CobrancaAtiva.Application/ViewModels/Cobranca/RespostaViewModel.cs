@@ -42,6 +42,8 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string Fase { get; set; }
         public string CodigoControleCliente { get; set; }
 
+        public string PeriodoChequeDevolvido { get; set; }
+
         //tipo 3
         public string NossoNumero { get; set; }
         public string DataPagamento { get; set; }
