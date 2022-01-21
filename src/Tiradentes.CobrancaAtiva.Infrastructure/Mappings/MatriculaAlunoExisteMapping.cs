@@ -10,6 +10,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
         public void Configure(EntityTypeBuilder<MatriculaAlunoExisteModel> builder)
         {
             builder.HasNoKey();
+
+            builder.Property(P => P.Count)
+                   .HasColumnName("ALUNOCOUNT");
         }
     }
 }

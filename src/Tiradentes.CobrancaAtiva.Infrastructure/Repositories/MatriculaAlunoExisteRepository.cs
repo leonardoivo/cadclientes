@@ -25,50 +25,50 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 if(sistema == "S")
                 {
                     matriculaAluno = _context.MatriculaAlunoExisteModel
-                        .FromSqlRaw($@"select count(idt_alu) as Count
+                        .FromSqlRaw($@"select count(idt_alu) as ALUNOCOUNT
                                          from sca.v_alunos where mat_alu = {matricula}").FirstOrDefault();
                 }
                 else if(sistema == "E")
                 {
                     matriculaAluno = _context.MatriculaAlunoExisteModel
-                        .FromSqlRaw($@"select count(idt_alu) as Count
+                        .FromSqlRaw($@"select count(idt_alu) as ALUNOCOUNT
                                          from profope.v_alunos where mat_alu = {matricula}").FirstOrDefault();
                 }
                 else if (sistema == "P")
                 {
                     matriculaAluno = _context.MatriculaAlunoExisteModel
-                        .FromSqlRaw($@"select count(idt_alu) as Count
+                        .FromSqlRaw($@"select count(idt_alu) as ALUNOCOUNT
                                          from spgl.v_alunos where mat_alu = {matricula}").FirstOrDefault();
                 }
                 else if (sistema == "I")
                 {
                     matriculaAluno = _context.MatriculaAlunoExisteModel
-                        .FromSqlRaw($@"select count(idt_alu) as Count
+                        .FromSqlRaw($@"select count(idt_alu) as ALUNOCOUNT
                                         from sip.v_alunos where mat_alu = {matricula}").FirstOrDefault();
                 }
                 else if (sistema == "X")
                 {
                     matriculaAluno = _context.MatriculaAlunoExisteModel
-                        .FromSqlRaw($@"select count(idt_ddp) as Count
+                        .FromSqlRaw($@"select count(idt_ddp) as ALUNOCOUNT
                                         from extensao.v_pre_inscricoes where cpf = {matricula}").FirstOrDefault();
                 }
             }
             else if(tipoInadimplencia == "T")
             {
                 matriculaAluno = _context.MatriculaAlunoExisteModel
-                        .FromSqlRaw($@"select count(idt_titulo_avu) as Count
+                        .FromSqlRaw($@"select count(idt_titulo_avu) as ALUNOCOUNT
                                         from scf.sap_titulos_avulsos where cpf_cnpj = {matricula}").FirstOrDefault();
             }
             else if(tipoInadimplencia == "C")
             {
                 matriculaAluno = _context.MatriculaAlunoExisteModel
-                        .FromSqlRaw($@"select count(num_cheque) as Count
+                        .FromSqlRaw($@"select count(num_cheque) as ALUNOCOUNT
                                         from SCF.cheques where cpf_cgc = {matricula}").FirstOrDefault();
             }
             else if(tipoInadimplencia == "R")
             {
                 matriculaAluno = _context.MatriculaAlunoExisteModel
-                        .FromSqlRaw($@"select count(*) as Count
+                        .FromSqlRaw($@"select count(*) as ALUNOCOUNT
                                         from scf.itens_geracao where matricula = {matricula}").FirstOrDefault();
             }
 
