@@ -32,7 +32,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 Sistema = sistema,
                 SituacaoAluno = situacaoAluno,
                 TipoInadimplencia = tipoInadimplencia,
-                PeriodoChequeDevolvido = periodoChequeDevolvido
+                PeriodoChequeDevolvido = periodoChequeDevolvido,
                 NumeroLinha = 1,
             });
 

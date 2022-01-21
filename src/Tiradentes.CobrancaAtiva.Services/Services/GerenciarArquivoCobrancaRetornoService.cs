@@ -333,7 +333,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   arquivo.Periodo,
                                                   arquivo.DataVencimento,
                                                   arquivo.ValorPago,
-                                                  codErro);
+                                                  codErro,
+                                                  arquivo.CnpjEmpresaCobranca,
+                                                  arquivo.Sistema,
+                                                  arquivo.SituacaoAluno,
+                                                  arquivo.TipoInadimplencia,
+                                                  arquivo.Periodo.ToString());
         }
 
         private async Task ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta,  List<ErroParcelaViewModel> erros)
@@ -517,7 +522,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     await _baixasCobrancasService.CriarBaixasCobrancas(DataBaixa);
                 }
 
-                foreach (var arquivo in arquivos)
+                foreach (var arquivo in arquivos.OrderBy(A => A.TipoRegistro))
                 {
                     try
                     {

@@ -13,24 +13,19 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasKey(ep => new { ep.NumeroAcordo, ep.Matricula, ep.Periodo, ep.Parcela });
 
             builder.Property(ep => ep.NumeroAcordo)
-              .HasColumnName("NUM_ACORDO")
-              .HasColumnType("NUMBER(10)");
+              .HasColumnName("NUM_ACORDO");
 
             builder.Property(ep => ep.Matricula)
-                .HasColumnName("MATRICULA")
-                .HasColumnType("NUMBER(11)");
+                .HasColumnName("MATRICULA");
 
             builder.Property(ep => ep.Periodo)
-                .HasColumnName("PERIODO")
-                .HasColumnType("NUMBER(5)");
+                .HasColumnName("PERIODO");
 
             builder.Property(ep => ep.PeriodoChequeDevolvido)
-                .HasColumnName("PERIODO_CHEQUE_DEVOLVIDO")
-                .HasColumnType("NUMBER(5)");
+                .HasColumnName("PERIODO_CHEQUE_DEVOLVIDO");
 
             builder.Property(ep => ep.Parcela)
-                .HasColumnName("PARCELA")
-                .HasColumnType("NUMBER(3)");
+                .HasColumnName("PARCELA");
 
             builder.Property(ep => ep.CnpjEmpresaCobranca)
                 .HasColumnName("CNPJ_EMPRESA_COBRANCA");
@@ -45,8 +40,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasColumnName("DAT_VENC");
 
             builder.Property(ep => ep.Valor)
-                 .HasColumnName("VALOR")
-                 .HasColumnType("NUMBER(15,2)");
+                 .HasColumnName("VALOR");
 
             builder.Property(ep => ep.Sistema)
                  .HasColumnName("SISTEMA")
