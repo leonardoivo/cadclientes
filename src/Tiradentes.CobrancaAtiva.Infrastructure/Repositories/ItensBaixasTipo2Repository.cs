@@ -20,7 +20,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             HabilitarAlteracaoBaixasTipo2(true);
 
             await Criar(new ItensBaixaTipo2Model() { 
-                DataBaixa = dataBaixa,
+                DataBaixa = dataBaixa.Date,
                 Matricula = matricula,
                 NumeroAcordo = numeroAcordo,
                 Parcela = parcela,

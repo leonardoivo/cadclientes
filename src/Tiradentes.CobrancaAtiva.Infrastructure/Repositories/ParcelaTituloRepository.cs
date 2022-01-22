@@ -25,7 +25,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public bool ExisteParcelaInadimplente(DateTime dataBaixa)
         {
-            return DbSet.Where(P => P.DataBaixa == dataBaixa).Count() > 0;
+            return DbSet.Where(P => P.DataBaixa.Date == dataBaixa.Date).Count() > 0;
         }
 
         public async Task InserirParcela(Int64 numeroAcordo, Int64 matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela)

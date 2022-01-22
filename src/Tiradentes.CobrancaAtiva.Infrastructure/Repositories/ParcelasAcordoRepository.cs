@@ -21,7 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         }
 
 
-        private void HabilitarAlteracaoBaixaCobranca(bool status)
+        private void HabilitarAlteracaoParcelasAcordo(bool status)
         {
             Db.Database.ExecuteSqlRaw($@"begin
                                          scf.COBRANCAS_PKG.set_pode_alt_parc_acord({status.ToString().ToLower()});
@@ -34,11 +34,18 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             var parcAcordo = DbSet.Where(P => P.Parcela == parcela
                                            && P.NumeroAcordo == numeroAcordo).FirstOrDefault();
 
+            if (parcAcordo == null)
+                return;
+
             parcAcordo.DataPagamento = null;
             parcAcordo.DataBaixaPagamento = null;
             parcAcordo.ValorPago = null;
 
+            HabilitarAlteracaoParcelasAcordo(true);
+
             await Alterar(parcAcordo);
+
+            HabilitarAlteracaoParcelasAcordo(false);
 
         }
 
@@ -64,7 +71,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             parcInserir.ValorPago = valorPago;
             parcInserir.DataBaixaPagamento = dataPagamento;
 
+            HabilitarAlteracaoParcelasAcordo(true);
+
             await Alterar(parcInserir);
+
+            HabilitarAlteracaoParcelasAcordo(false);
 
         }
 
@@ -77,7 +88,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataBaixa, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia)
         {
-            HabilitarAlteracaoBaixaCobranca(true);
+            HabilitarAlteracaoParcelasAcordo(true);
 
             await Criar(new ParcelasAcordoModel()
             {
@@ -91,7 +102,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 TipoInadimplencia = tipoInadimplencia,
             });
 
-            HabilitarAlteracaoBaixaCobranca(false);
+            HabilitarAlteracaoParcelasAcordo(false);
         }
 
         public bool ParcelaPaga(decimal parcela, decimal numeroAcordo)

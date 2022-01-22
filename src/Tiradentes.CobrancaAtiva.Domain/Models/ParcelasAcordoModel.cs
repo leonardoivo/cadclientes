@@ -8,7 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public decimal NumeroAcordo { get; set; }        
         public decimal Parcela { get; set; }
         public DateTime? DataBaixa { get; set; }
-        public DateTime? DataVencimento { get; set; }
+        public DateTime DataVencimento { get; set; }
         public DateTime? DataPagamento { get; set; }
         public DateTime? DataBaixaPagamento { get; set; }
         public decimal Valor { get; set; }

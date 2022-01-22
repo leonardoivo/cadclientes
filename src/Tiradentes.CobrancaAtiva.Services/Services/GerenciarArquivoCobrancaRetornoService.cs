@@ -425,14 +425,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 try
                 {
 
-                    await _parcelasAcordoService.InserirPagamentoParcelaAcordo(arquivo.Parcela,
+                    await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(arquivo.Parcela,
                                                                          arquivo.NumeroAcordo,
-                                                                         arquivo.Sistema,
+                                                                         arquivo.DataPagamento,
                                                                          arquivo.DataBaixa,
-                                                                         arquivo.DataVencimento,                                                                         
-                                                                         arquivo.ValorParcela,
-                                                                         arquivo.CnpjEmpresaCobranca,
-                                                                         arquivo.TipoInadimplencia);
+                                                                         arquivo.ValorPago);
 
                     var saldoDecremendo = _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
 
