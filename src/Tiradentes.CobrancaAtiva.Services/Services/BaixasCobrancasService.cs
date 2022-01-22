@@ -24,14 +24,30 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         public async Task AtualizarBaixasCobrancas(BaixasCobrancasViewModel baixasCobrancas)
         {
             //Update do doc n faz sentido
-            var baixaCobranca = await _baixasCobrancasRepository.BuscarPorDataBaixa(baixasCobrancas.DataBaixa);
+            var model = await _baixasCobrancasRepository.BuscarPorDataBaixa(baixasCobrancas.DataBaixa);
 
-            if (baixaCobranca == null)
-                return;
+            if (model == null)
+                return;            
 
-            var model = _mapper.Map<BaixasCobrancasModel>(baixasCobrancas);
+            model.Etapa = baixasCobrancas.Etapa;
+            model.QuantidadeErrosTipo1 = baixasCobrancas.QuantidadeErrosTipo1;
+            model.QuantidadeErrosTipo2 = baixasCobrancas.QuantidadeErrosTipo2;
+            model.QuantidadeErrosTipo3 = baixasCobrancas.QuantidadeErrosTipo3;
+            model.QuantidadeTipo1 = baixasCobrancas.QuantidadeTipo1;
+            model.QuantidadeTipo2 = baixasCobrancas.QuantidadeTipo2;
+            model.QuantidadeTipo3 = baixasCobrancas.QuantidadeTipo3;
+            model.TotalErrosTipo1 = baixasCobrancas.ValorTotalErrosTipo1;
+            model.TotalErrosTipo2 = baixasCobrancas.ValorTotalErrosTipo2;
+            model.TotalErrosTipo3 = baixasCobrancas.ValorTotalErrosTipo3;
+            model.TotalTipo1 = baixasCobrancas.ValorTotalTipo1;
+            model.TotalTipo2 = baixasCobrancas.ValorTotalTipo2;
+            model.TotalTipo3 = baixasCobrancas.ValorTotalTipo3;            
+
+            _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(true);
 
             await _baixasCobrancasRepository.Alterar(model);
+
+            _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(false);
         }
 
         public async Task CriarBaixasCobrancas(DateTime dataBaixa)

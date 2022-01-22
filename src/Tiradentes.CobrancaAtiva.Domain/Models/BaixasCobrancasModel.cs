@@ -13,11 +13,11 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public int QuantidadeErrosTipo1 { get; set; } = 0;
         public int QuantidadeErrosTipo2 { get; set; } = 0;
         public int QuantidadeErrosTipo3 { get; set; } = 0;
-        public int TotalTipo1 { get; set; } = 0;
-        public int TotalTipo2 { get; set; } = 0;
-        public int TotalTipo3 { get; set; } = 0;
-        public int TotalErrosTipo1 { get; set; } = 0;
-        public int TotalErrosTipo2 { get; set; } = 0;
-        public int TotalErrosTipo3 { get; set; } = 0;
+        public decimal TotalTipo1 { get; set; } = 0;
+        public decimal TotalTipo2 { get; set; } = 0;
+        public decimal TotalTipo3 { get; set; } = 0;
+        public decimal TotalErrosTipo1 { get; set; } = 0;
+        public decimal TotalErrosTipo2 { get; set; } = 0;
+        public decimal TotalErrosTipo3 { get; set; } = 0;
     }
 }
