@@ -300,7 +300,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                      arquivo.DataBaixa,
                                                      dataEnvio,
                                                      arquivo.DataVencimento,
-                                                     arquivo.ValorParcela);
+                                                     arquivo.ValorParcela,
+                                                     arquivo.CnpjEmpresaCobranca,
+                                                     arquivo.Sistema,
+                                                     arquivo.TipoInadimplencia,
+                                                     arquivo.PeriodoChequeDevolvido);
 
                 if(_parcelasAcordoService.ExisteParcelaPaga(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
