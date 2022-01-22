@@ -17,7 +17,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _parcelaTituloRepository.ExisteParcela(matricula, periodo, parcela);
         }
 
-        public async Task InserirParcela(Int64 numeroAcordo, Int64 matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela)
+        public async Task InserirParcela(Int64 numeroAcordo, Int64 matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia, decimal periodoChequeDevolvido)
         {
             await _parcelaTituloRepository.InserirParcela(numeroAcordo,
                                                           matricula,
@@ -26,7 +26,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                           dataBaixa,
                                                           dataEnvio,
                                                           dataVencimento,
-                                                          valorParcela);
+                                                          valorParcela,
+                                                          cnpjEmpresaCobranca,
+                                                          sistema,
+                                                          tipoInadimplencia,
+                                                          periodoChequeDevolvido);
         }
         public bool ExisteParcelaInadimplente(DateTime dataBaixa)
         {

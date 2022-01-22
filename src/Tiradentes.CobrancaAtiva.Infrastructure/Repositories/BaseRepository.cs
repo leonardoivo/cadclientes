@@ -26,31 +26,18 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public virtual async Task Criar(TModel model)
         {
-            try
-            {
-                DbSet.Add(model);
-                await SaveChanges();
-            }
-            finally
-            {
-                if (DbSet.Local.Count > 0)
-                    DbSet.Local.Clear();
-            }
+
+            DbSet.Add(model);
+            await SaveChanges();
+
         }
 
         public virtual async Task Alterar(TModel model)
         {
 
-            try
-            {
-                DbSet.Update(model);
-                await SaveChanges();
-            }
-            finally
-            {
-                if (DbSet.Local.Count > 0)
-                    DbSet.Local.Clear();
-            }
+            DbSet.Update(model);
+            await SaveChanges();
+
         }
 
         public virtual async Task Deletar(int id)
