@@ -44,7 +44,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             atualizarParcela.SaldoDevedor += valor;
 
+            HabilitarAlteracaoBaixaCobranca(true);
+
             await Alterar(atualizarParcela);
+
+            HabilitarAlteracaoBaixaCobranca(false);
 
         }
 

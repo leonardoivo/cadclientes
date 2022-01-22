@@ -431,9 +431,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                          arquivo.DataBaixa,
                                                                          arquivo.ValorPago);
 
-                    var saldoDecremendo = _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
+                    var valorParcela = _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
 
-                    await _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, saldoDecremendo ?? 0 * -1);
+                    await _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, (valorParcela ?? 0) * -1);
 
                     if(arquivo.Parcela == 1)
                     {
@@ -456,11 +456,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                         );
                         }
                         catch (Exception)
-                        {
+                        {                            
 
-                            var saldoAdicao = _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
-
-                            await _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, saldoAdicao ?? 0);
+                            await _acordoCobrancaService.AtualizarSaldoDevedor(arquivo.NumeroAcordo, valorParcela ?? 0);
 
                             throw;
                         }
