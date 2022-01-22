@@ -14,7 +14,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
-        public async Task InserirBaixa(DateTime dataBaixa, decimal matricula, decimal numeroAcordo, int parcela, DateTime dataPagamento, decimal valorPago, int codErro)
+        public async Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, int parcela, DateTime dataPagamento, decimal valorPago, int codErro, string cnpjEmpresaCobranca, string sistema, string situacaoAluno, string tipoInadimplencia, string tipo_Pagamento)
         {
             HabilitarAlteracaoBaixaCobranca(true);
 
@@ -25,7 +25,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 Parcela = parcela,
                 DataPagamento = dataPagamento,
                 ValorPago = valorPago,
-                CodigoErro = codErro
+                CodigoErro = codErro,
+                CnpjEmpresaCobranca = cnpjEmpresaCobranca,
+                Sistema = sistema,
+                SituacaoAluno = situacaoAluno,
+                TipoInadimplencia = tipoInadimplencia,
+                Tipo_Pagamento = tipo_Pagamento,
+                NumeroLinha = 3
             });
 
             HabilitarAlteracaoBaixaCobranca(false);

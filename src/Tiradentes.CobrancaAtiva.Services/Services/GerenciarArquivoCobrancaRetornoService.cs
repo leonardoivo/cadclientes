@@ -498,7 +498,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   arquivo.Parcela,
                                                   arquivo.DataPagamento,
                                                   arquivo.ValorPago,
-                                                  codErro);
+                                                  codErro,
+                                                  arquivo.CnpjEmpresaCobranca,
+                                                  arquivo.Sistema,
+                                                  arquivo.SituacaoAluno,
+                                                  arquivo.TipoInadimplencia,
+                                                  arquivo.TipoPagamento);
         }
 
         public async Task Gerenciar()

@@ -129,7 +129,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         var semestre = periodo.ToString().Substring(4, 1);
 
                         await Db.Database.ExecuteSqlRawAsync(@"update sca.pgto_alunos set sta_pgto = 'R',
-                                                                               dat_pgto = {0}
+                                                                               dat_pgto = '{0}'
                                                                 where sta_pgto = 'N'
                                                                   and idt_alu = {1}
                                                                   and ano = {2}
@@ -144,7 +144,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
                         
                         await Db.Database.ExecuteSqlRawAsync(@"insert into sca.obs_reg_pgto( ano, semestre, idt_alu, parcela, tpo_pgto, dat_hora, username, texto )
-                                                      values( {0}, v_semestre{1}, {2}, {3}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, Regularização automática através do processamento da baixa da empresa de cobrança' );", periodo.ToString().Substring(0, 4), semestre, idAluno, parcela.Parcela);
+                                                      values( {0}, {1}, {2}, {3}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, Regularização automática através do processamento da baixa da empresa de cobrança' );", periodo.ToString().Substring(0, 4), semestre, idAluno, parcela.Parcela);
                     }
                     else if(parcela.Sistema == "E")
                     {
@@ -165,7 +165,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
 
                         await Db.Database.ExecuteSqlRawAsync(@"insert into profope.obs_reg_pgto( idt_alu,parcela,tpo_pgto,dat_hora,username,texto)
-      	                                                       values( {{0}, {1}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do  processamento da baixa da empresa de cobrança');", idAluno, parcela.Parcela);
+      	                                                       values( {0}, {1}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do  processamento da baixa da empresa de cobrança');", idAluno, parcela.Parcela);
                     }
                     else if (parcela.Sistema == "P")
                     {
@@ -202,7 +202,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
 
                         await Db.Database.ExecuteSqlRawAsync(@"insert into scf.pgt_obs_reg_tit(idt_titulo,tpo_pgto,dat_hora,username,texto)
-                                                               values( :p_idt_titulo, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do processamento da baixa da empresa de cobrança')", idAluno);
+                                                               values( {0}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do processamento da baixa da empresa de cobrança')", idAluno);
                     }
                     else if (parcela.Sistema == "X")
                     {
@@ -242,7 +242,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
 
                     await Db.Database.ExecuteSqlRawAsync(@"insert into scf.sap_tit_obs_pgto(idt_titulo_avu,username,dat_hora,texto,tpo_pgto)
-                                                           values( :p_idt_titulo_avu, sec#_.usuarios_pkg.obter_username, sysdate, 'Regularização automática através do processamento da baixa da empresa de cobrança', 'P')", idTitulo);
+                                                           values( {0}, sec#_.usuarios_pkg.obter_username, sysdate, 'Regularização automática através do processamento da baixa da empresa de cobrança', 'P')", idTitulo);
                 }
                 else if (parcela.TipoInadimplencia == "C")
                 {
@@ -255,9 +255,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                               and pgto.cpf_cgc     = {5}
                                                               and exists ( select 1
                                                                              from scf.itens_geracao ig
-                                                                           where ig.matricula = :p_matricula
-                                                                             and ig.periodo  = :p_periodo
-                                                                             and ig.parcela  = :p_parcela )", dataPagamento, codigobanco, codigoAgencia, numeroConta, numeroCheque, CpfCnpj);
+                                                                           where ig.matricula = {6}
+                                                                             and ig.periodo  = {7}
+                                                                             and ig.parcela  = {8} )", dataPagamento, codigobanco, codigoAgencia, numeroConta, numeroCheque, CpfCnpj , matricula, periodo, parcela.Parcela);
 
 
                 }
