@@ -111,5 +111,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             return _map.Map<RegraNegociacaoViewModel>(conflito);
         }
+
+        //public async Task<RegraNegociacaoModel> BuscarRegraPorParametros()
     }
 }

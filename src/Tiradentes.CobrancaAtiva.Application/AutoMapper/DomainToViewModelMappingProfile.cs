@@ -51,6 +51,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ModelPaginada<ParametroEnvioModel>, ViewModelPaginada<ParametroEnvioViewModel>>();
             CreateMap<ModelPaginada<BuscaRegraNegociacao>, ViewModelPaginada<BuscaRegraNegociacaoViewModel>>();
             CreateMap<ModelPaginada<BuscaParametroEnvio>, ViewModelPaginada<BuscaParametroEnvioViewModel>>();
+            CreateMap<ModalidadeModel, ModalidadeViewModel>();
             CreateMap<ContatoEmpresaParceiraModel, ContatoEmpresaParceiraViewModel>();
             CreateMap<EnderecoEmpresaParceiraModel, EnderecoEmpresaParceiraViewModel>();
             CreateMap<ContaBancariaEmpresaParceiraModel, ContaBancariaEmpresaParceiraViewModel>();

@@ -7,5 +7,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     public interface IModalidadeRepository : IBaseRepository<ModalidadeModel>
     {
         Task<IList<ModalidadeModel>> BuscarPorInstituicao(int instituicaoId);
+        Task<ModalidadeModel> BuscarPorCodigo(string codigo);
     }
 }

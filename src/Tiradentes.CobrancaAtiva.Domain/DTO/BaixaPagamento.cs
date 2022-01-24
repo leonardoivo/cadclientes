@@ -9,6 +9,8 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public string NumeroAcordo { get; set; }
         public string EmpresaParceira { get; set; }
         public string InstituicaoEnsino { get; set; }
+        public InstituicaoModel InstituicaoModel { get; set;}
+        public ModalidadeModel ModalidadeModel { get; set;}
         public string Matricula { get; set; }
         public string ModalidadeEnsino { get; set; }
         public string DataNegociacao { get; set; }

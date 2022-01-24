@@ -20,5 +20,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public string Cheque { get; set; }
 
         public string AcordoOriginal { get; set; }
+
+        public decimal ValorDebitoOriginal { get; set; }
     }
 }

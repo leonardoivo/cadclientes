@@ -18,6 +18,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _map = map;
         }
 
+        public async Task<ModalidadeViewModel> BuscarPorCodigo(string modalidade)
+        {
+            return _map.Map<ModalidadeViewModel>(await _repositorio.BuscarPorCodigo(modalidade));
+        }
+
         public async Task<IList<ModalidadeViewModel>> BuscarPorInstituicao(int instituicaoId)
         {
             var modalidades = await _repositorio.BuscarPorInstituicao(instituicaoId);
