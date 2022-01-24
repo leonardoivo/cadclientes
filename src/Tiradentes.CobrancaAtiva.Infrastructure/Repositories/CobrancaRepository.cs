@@ -8,6 +8,7 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using System.Collections.Generic;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
+using MongoDB.Driver.Linq;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
@@ -51,8 +52,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             var query = _repository.AsQueryable();
 
-            query.Where(b => b.Matricula.Contains(matricula));
-            query.Take(25);
+            query = query.Where(b => b.Matricula.Contains(matricula));
+            query = query.Take(25);
 
             return await query.ToListAsync();
         }      
@@ -61,8 +62,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             var query = _repository.AsQueryable();
 
-            query.Where(b => b.NomeAluno.Contains(aluno));
-            query.Take(25);
+            query = query.Where(b => b.NomeAluno.ToLower().Contains(aluno.ToLower()));
+            query = query.Take(25);
 
             return await query.ToListAsync();
         } 
@@ -71,8 +72,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             var query = _repository.AsQueryable();
 
-            query.Where(b => b.CPF.Contains(cpf));
-            query.Take(25);
+            query = query.Where(b => b.CPF.Contains(cpf));
+            query = query.Take(25);
 
             return await query.ToListAsync();
         }      
@@ -81,8 +82,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             var query = _repository.AsQueryable();
 
-            query.Where(b => b.NumeroAcordo.Contains(acordo));
-            query.Take(25);
+            query = query.Where(b => b.NumeroAcordo.Contains(acordo));
+            query = query.Take(25);
 
             return await query.ToListAsync();
         }     
