@@ -19,6 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public string Matricula { get; set; }
         public string TipoInadimplencia { get; set; }
         public string ChaveInadimplencia { get; set; }
+        public string Periodo { get; set; }
 
         //tipo 1
         public string Juros { get; set; }
