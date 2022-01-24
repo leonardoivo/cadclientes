@@ -62,7 +62,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var model = _repository.BuscarPorData(data);
 
-            if (model.Count() > 0)
+            if (model.Count() == 0)
                 return new List<ArquivoLayoutViewModel>();
 
             var listViewModel = _mapper.Map<List<ArquivoLayoutViewModel>>(model);
