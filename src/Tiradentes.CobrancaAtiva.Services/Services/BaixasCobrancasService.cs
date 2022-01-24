@@ -74,7 +74,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 return null;
 
             var viewModel = _mapper.Map<BaixasCobrancasViewModel>(baixaCobranca);
-            viewModel.ArquivoLayout = _arquivoLayoutService.BuscarPorDataHora(dataBaixa);
+            viewModel.ArquivoLayout = _arquivoLayoutService.BuscarPorData(dataBaixa);
 
             return viewModel;
         }

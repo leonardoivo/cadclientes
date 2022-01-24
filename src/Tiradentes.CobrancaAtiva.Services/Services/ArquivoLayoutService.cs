@@ -1,7 +1,7 @@
 ﻿using AutoMapper;
 using System;
+using System.Collections.Generic;
 using System.Linq;
-using System.Text.Json;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Enum;
@@ -56,6 +56,25 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 _repository.HabilitarAlteracaoArquivoLayout(false);
             }
+        }
+
+        public List<ArquivoLayoutViewModel> BuscarPorData(DateTime data)
+        {
+            var model = _repository.BuscarPorData(data);
+
+            if (model.Count() > 0)
+                return new List<ArquivoLayoutViewModel>();
+
+            var listViewModel = _mapper.Map<List<ArquivoLayoutViewModel>>(model);
+
+            foreach (var item in listViewModel)
+            {
+
+                item.ErrosLayout = _erroLayoutService.BuscarPorDataHora(data);
+            }
+
+
+            return listViewModel;
         }
 
         public ArquivoLayoutViewModel BuscarPorDataHora(DateTime dataHora)

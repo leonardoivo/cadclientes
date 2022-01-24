@@ -7,6 +7,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
     public interface IArquivoLayoutRepository : IBaseRepository<ArquivoLayoutModel>
     {
+        List<ArquivoLayoutModel> BuscarPorData(DateTime data);
         List<ArquivoLayoutModel> BuscarPorDataHora(DateTime dataHora);
         ArquivoLayoutModel BuscarLayoutSucessoPorData(DateTime dataHora);
         void HabilitarAlteracaoArquivoLayout(bool status);

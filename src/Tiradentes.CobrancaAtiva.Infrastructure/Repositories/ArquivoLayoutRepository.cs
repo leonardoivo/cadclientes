@@ -22,6 +22,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await Criar(model);
 
         }
+
+        public List<ArquivoLayoutModel> BuscarPorData(DateTime data)
+        {
+            return DbSet.Where(A => A.DataHora.Date == data.Date).ToList();
+        }
+
         public List<ArquivoLayoutModel> BuscarPorDataHora(DateTime dataHora)
         {
             return DbSet.Where(A => A.DataHora.Year == dataHora.Year

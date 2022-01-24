@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 {
@@ -20,6 +21,6 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public decimal ValorTotalErrosTipo2 { get; set; }
         public decimal ValorTotalErrosTipo3 { get; set; }
 
-        public ArquivoLayoutViewModel ArquivoLayout { get; set; }
+        public List<ArquivoLayoutViewModel> ArquivoLayout { get; set; }
     }
 }
