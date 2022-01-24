@@ -1,8 +1,11 @@
 ﻿
+using MongoDB.Bson;
+
 namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 {
     public class RespostaViewModel
     {
+        public ObjectId? MongoId { get; set; }
         public string TipoRegistro { get; set; }
         public string CPF { get; set; }
         public string NumeroAcordo { get; set; }
@@ -50,5 +53,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string DataBaixa { get; set; }
         public string ValorPago { get; set; }
         public string TipoPagamento { get; set; }
+
+        public bool Integrado { get; set; }
     }
 }

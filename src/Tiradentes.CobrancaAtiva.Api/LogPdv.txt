@@ -1,0 +1,3 @@
+
+22/01/2022 12:04:53 - "testando excepsdkjfslkdfhskjdfhskjdjfhskjdfh =\u003E   at Tiradentes.CobrancaAtiva.Api.Workers.GerenciarCobrancaRetornoWorker.Process() in C:\\Meta\\Fontes\\mec-backend\\src\\Tiradentes.CobrancaAtiva.Api\\Workers\\GerenciarCobrancaRetornoWorker.cs:line 41"
+22/01/2022 12:06:49 - "testando excepsdkjfslkdfhskjdfhskjdjfhskjdfh =\u003E System.Exception: testando excepsdkjfslkdfhskjdfhskjdjfhskjdfh\r\n   at Tiradentes.CobrancaAtiva.Api.Workers.GerenciarCobrancaRetornoWorker.Process() in C:\\Meta\\Fontes\\mec-backend\\src\\Tiradentes.CobrancaAtiva.Api\\Workers\\GerenciarCobrancaRetornoWorker.cs:line 41"

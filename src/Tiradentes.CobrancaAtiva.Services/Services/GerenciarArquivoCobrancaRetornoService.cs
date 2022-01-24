@@ -79,10 +79,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NumeroAcordo = Convert.ToInt64(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
                 Parcela = Convert.ToInt32(!string.IsNullOrEmpty(resposta.Parcela) ? resposta.Parcela : "0"),
                 CnpjEmpresaCobranca = resposta.CnpjEmpresaCobranca,
-                SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "M",
+                SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "",
                 Sistema = resposta.Sistema,
-                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "1167147836"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "8"),
+                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
+                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
                 NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
@@ -123,24 +123,20 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 if(!_acordoCobrancaService.ExisteAcordo(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
                     await _acordoCobrancaService.InserirAcordoCobranca(arquivo.NumeroAcordo,
-                                                                       arquivo.DataBaixa, //?
+                                                                       arquivo.DataBaixa,
                                                                        arquivo.DataFechamentoAcordo,
                                                                        arquivo.TotalParcelas,
                                                                        arquivo.ValorTotal,
                                                                        arquivo.Multa,
                                                                        arquivo.Juros,
                                                                        arquivo.Matricula,
-                                                                       arquivo.SaldoDevedorTotal, //? verificar se esta preenchido
+                                                                       arquivo.SaldoDevedorTotal, 
                                                                        arquivo.CPF,
                                                                        arquivo.CnpjEmpresaCobranca,
                                                                        arquivo.Sistema,
                                                                        arquivo.TipoInadimplencia);
                 }
 
-                //if(Convert.ToInt32(arquivo.Parcela) != 1)
-                //{
-                //    throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.AcordoNaoCadastrado);
-                //}
 
                 //(Se o acordo existe e é a primeira parcela) ou (se existe acordo)
                 //Apenas para a 1º parcelas ou para todas?
@@ -199,10 +195,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NumeroAcordo = Convert.ToInt64(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
                 Parcela = Convert.ToInt32(!string.IsNullOrEmpty(resposta.Parcela) ? resposta.Parcela : "0"),
                 CnpjEmpresaCobranca = resposta.CnpjEmpresaCobranca,
-                SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "M",
+                SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "",
                 Sistema = resposta.Sistema,
-                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "1167147836"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "8"),
+                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
+                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
                 NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
@@ -283,16 +279,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.GeracaoInconsistente);
                 }
-
-                //Doc fala Se existe, fluxograma fala Se Não existe
+                
                 if(_acordoCobrancaService.ExisteAcordo(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
                     await _acordoCobrancaService.AtualizarMatriculaAcordo(arquivo.Matricula, arquivo.NumeroAcordo);
 
                     await _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, arquivo.NumeroAcordo, arquivo.Matricula);
                 }
-
-                //Doc fala apenas se não deu erro, fluxograma diz sem validação.
+                
                 await _parcelaTituloService.InserirParcela(arquivo.NumeroAcordo,
                                                      arquivo.Matricula,
                                                      arquivo.Periodo,
@@ -308,7 +302,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 if(_parcelasAcordoService.ExisteParcelaPaga(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
-                    //Ainda não implementado
+                    
                     await _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: arquivo.NumeroAcordo,
                                                                 matricula: arquivo.Matricula,
                                                                 sistema: arquivo.Sistema,
@@ -369,10 +363,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NumeroAcordo = Convert.ToInt64(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
                 Parcela = Convert.ToInt32(!string.IsNullOrEmpty(resposta.Parcela) ? resposta.Parcela : "0"),
                 CnpjEmpresaCobranca = resposta.CnpjEmpresaCobranca,
-                SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "M",
+                SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "",
                 Sistema = resposta.Sistema,
-                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "1167147836"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "8"),
+                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
+                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
                 IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
                 CodigoAtividade = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
                 NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
@@ -521,6 +515,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 var arquivos = _cobrancaService.BuscarRepostaNaoIntegrada().Result;
 
+                if (arquivos.Count() == 0)
+                    return;
+
                 try
                 {
 
@@ -534,7 +531,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 var model = await _baixasCobrancasService.Buscar(DataBaixa);
 
-                if(model == null)
+                if (model == null)
                 {
                     await _baixasCobrancasService.CriarBaixasCobrancas(DataBaixa);
                 }
@@ -544,15 +541,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     try
                     {
 
-                        if(arquivo.TipoRegistro == "1")
+                        if (arquivo.TipoRegistro == "1")
                         {
                             await ProcessaBaixaTipo1(DataBaixa, arquivo, ErrosContabilizados);
                         }
-                        else if(arquivo.TipoRegistro == "2")
+                        else if (arquivo.TipoRegistro == "2")
                         {
                             await ProcessaBaixaTipo2(DataBaixa, arquivo, ErrosContabilizados);
                         }
-                        else if(arquivo.TipoRegistro == "3")
+                        else if (arquivo.TipoRegistro == "3")
                         {
                             await ProcessaBaixaTipo3(DataBaixa, arquivo, ErrosContabilizados);
                         }
@@ -560,6 +557,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         {
                             await _arquivolayoutService.RegistrarErro(DataBaixa, JsonSerializer.Serialize(arquivo), ErrosBaixaPagamento.ErroInternoServidor, "");
                         }
+
+                        arquivo.Integrado = true;
+                        _cobrancaService.AlterarStatus(arquivo);
                     }
                     catch (Exception ex)
                     {
@@ -575,9 +575,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == "2"),
                             QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == "3"),
 
-                            ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == "1").Sum(A => Convert.ToDecimal(A.ValorParcela)),
-                            ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == "2").Sum(A => Convert.ToDecimal(A.ValorParcela)),
-                            ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3").Sum(A => Convert.ToDecimal(A.ValorParcela)),
+                            ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == "1").Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
+                            ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == "2").Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
+                            ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3").Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
 
                             QuantidadeErrosTipo1 = ErrosContabilizados.Count(E => E.Etapa == 1),
                             QuantidadeErrosTipo2 = ErrosContabilizados.Count(E => E.Etapa == 2),

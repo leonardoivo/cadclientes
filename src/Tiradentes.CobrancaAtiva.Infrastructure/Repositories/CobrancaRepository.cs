@@ -28,6 +28,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task<RespostasCollection> Criar(RespostasCollection model)
         {
             await _repository.InsertOneAsync(model);
+            
+            return model;
+        }
+
+        public async Task<RespostasCollection> AlterarStatus(RespostasCollection model)
+        {
+            await _repository.UpdateOneAsync(Builders<RespostasCollection>.Filter.Eq("_id", model._id), Builders<RespostasCollection>.Update.Set("Integrado", model.Integrado));
+            
             return model;
         }
     }
