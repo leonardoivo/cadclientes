@@ -30,6 +30,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         .Select(I => I.DataGeracao).FirstOrDefault();
         }
 
+
+
     }
 }
 
