@@ -178,7 +178,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     if(baixaPagamento.Politica)
                         await RegraContemplada(baixaPagamento, parcelaBaixa);
                 }
-                baixaPagamento.Percentual = (float) (baixaPagamento.ParcelasAcordadas.Sum(p => 100 - (p.ValorDebitoOriginal * ((decimal) p.ValorPago / 100))) / baixaPagamento.ParcelasAcordadas.Count);
+                baixaPagamento.Percentual = (float) (baixaPagamento.ParcelasNegociadas.Sum(p => 100 - (100 * ((decimal) p.ValorPago / p.ValorDebitoOriginal))) / baixaPagamento.ParcelasAcordadas.Count);
                 resultadoBaixas.Add(baixaPagamento);
             }
 
