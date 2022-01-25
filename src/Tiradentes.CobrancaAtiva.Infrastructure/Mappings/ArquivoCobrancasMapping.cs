@@ -8,9 +8,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ArquivoCobrancasModel> builder)
         {
-            builder.HasKey(ep => new {ep.DataGeracao, ep.CnpjEmpresaCobranca, ep.Sequencia});
-
             builder.Ignore(ep => ep.Id);
+
+            builder.HasKey(ep => new {ep.DataGeracao, ep.CnpjEmpresaCobranca, ep.Sequencia});
 
             builder.Property(ep => ep.DataGeracao)
              .HasColumnName("DAT_GERACAO");
@@ -28,7 +28,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.NomeLote)
              .HasColumnName("NOME_LOTE");
 
-            builder.ToTable("ARQUIVO_COBRANCAS");
+            builder.ToTable("ARQUIVO_COBRANCAS", "SCF");
         }
     }
 }

@@ -10,6 +10,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     public interface ICobrancaService : IDisposable
     {
         Task<RespostaViewModel> Criar(RespostaViewModel model);
+
+        Task<IEnumerable<RespostaViewModel>> BuscarRepostaNaoIntegrada();
+
+        RespostaViewModel AlterarStatus(RespostaViewModel viewModel);
         Task<ModelPaginada<BaixaPagamento>> Listar(ConsultaBaixaPagamentoQueryParam queryParam);
         Task<IEnumerable<string>> ListarFiltrosMatricula(string matricula);
         Task<IEnumerable<string>> ListarFiltrosAcordo(string acordo);

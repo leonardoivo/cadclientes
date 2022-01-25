@@ -44,9 +44,30 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _map = map;
         }
 
+        public RespostaViewModel AlterarStatus(RespostaViewModel viewModel)
+        {
+            var model = _map.Map<RespostasCollection>(viewModel);
+
+            var returnModel = _repositorio.AlterarStatus(model).Result;
+
+            return _map.Map<RespostaViewModel>(returnModel);
+            
+        }
+
+        public async Task<IEnumerable<RespostaViewModel>> BuscarRepostaNaoIntegrada()
+        {
+            var arquivosResposta = await _repositorio.Buscar(C => !C.Integrado);
+
+            var viewModelList = from arq in arquivosResposta
+                                select _map.Map <RespostaViewModel>(arq);
+
+            return viewModelList;
+        }
+
         public async Task<RespostaViewModel> Criar(RespostaViewModel viewModel)
         {
             Validate(new CriarRespostaCobrancaValidation(), viewModel);
+
 
             var model = _map.Map<RespostasCollection>(viewModel);
 
@@ -229,8 +250,17 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 baixaPagamento.Politica = ((decimal) percentual) <= regrasAtivas.PercentValorBoleto;
             }            
         }
+        
+        public void Dispose()
+        {
+            Dispose(true);
+            GC.SuppressFinalize(this);
+        }
 
-        public void Dispose() { }
+        protected virtual void Dispose(bool disposing)
+        {
+
+        }
 
     }
 }

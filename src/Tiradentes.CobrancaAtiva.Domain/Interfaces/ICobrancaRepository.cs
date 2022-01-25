@@ -1,4 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Collections;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
@@ -15,5 +17,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
         Task<ICollection<RespostasCollection>> ListarFiltroPorAluno(string aluno);
         Task<ICollection<RespostasCollection>> ListarFiltroPorCpf(string cpf);
         Task<ICollection<RespostasCollection>> ListarFiltroPorAcordo(string acordo);
+        Task<List<RespostasCollection>> Buscar(Expression<Func<RespostasCollection, bool>> query);
+        Task<RespostasCollection> AlterarStatus(RespostasCollection model);
     }
 }

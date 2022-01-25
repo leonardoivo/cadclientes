@@ -74,8 +74,15 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new ParametroEnvioTipoTituloModel(c))));
 
             CreateMap<ConflitoViewModel, ConflitoModel>();
-            CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();
-            CreateMap<RespostaViewModel, RespostasCollection>();
+            CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();            
+
+            CreateMap<RespostasCollection, RespostaViewModel>()
+                .ForMember(R => R.MongoId, opt => opt.MapFrom(scr => scr.Id)).ReverseMap();
+
+            CreateMap<BaixasCobrancasModel, BaixasCobrancasViewModel>().ReverseMap();
+            CreateMap<ArquivoLayoutModel, ArquivoLayoutViewModel>();
+            CreateMap<ErrosLayoutModel, ErroLayoutViewModel>();
+
         }
     }
 }

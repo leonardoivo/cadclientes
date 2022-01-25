@@ -6,6 +6,8 @@ using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using System.Collections.Generic;
+using System.Linq.Expressions;
+using System;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using MongoDB.Driver.Linq;
@@ -21,11 +23,24 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             _repository = context.Respostas;
         }
 
+        public async Task<List<RespostasCollection>> Buscar(Expression<Func<RespostasCollection, bool>> query)
+        {
+            return await _repository.Find<RespostasCollection>(query).ToListAsync();
+        }
+
         public async Task<RespostasCollection> Criar(RespostasCollection model)
         {
             model.Id = System.Guid.NewGuid().ToString();
 
             await _repository.InsertOneAsync(model);
+            
+            return model;
+        }
+
+        public async Task<RespostasCollection> AlterarStatus(RespostasCollection model)
+        {
+            await _repository.UpdateOneAsync(Builders<RespostasCollection>.Filter.Eq("_id", model.Id), Builders<RespostasCollection>.Update.Set("Integrado", model.Integrado));
+            
             return model;
         }
 

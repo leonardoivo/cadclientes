@@ -1,13 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿
+using MongoDB.Bson;
 
 namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 {
     public class RespostaViewModel
     {
+        public string MongoId { get; set; }
         public string TipoRegistro { get; set; }
         public string InstituicaoEnsino { get; set; }
         public string CPF { get; set; }
@@ -20,14 +18,12 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }
         public string ChaveInadimplencia { get; set; }
-        public string Matricula { get; set; }
+        public string Matricula { get; set; }     
         public string Periodo { get; set; }
-
-
 
         public string IdTitulo { get; set; }
         public string CodigoAtividade { get; set; }
-        public string NumeroEvt { get; set; }
+        public string NumeroEvt { get; set;  }
         public string IdPessoa { get; set; }
         public string CodigoBanco { get; set; }
         public string CodigoAgencia { get; set; }
@@ -52,11 +48,15 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string Fase { get; set; }
         public string CodigoControleCliente { get; set; }
 
+        public string PeriodoChequeDevolvido { get; set; }
+
         //tipo 3
         public string NossoNumero { get; set; }
         public string DataPagamento { get; set; }
         public string DataBaixa { get; set; }
         public string ValorPago { get; set; }
         public string TipoPagamento { get; set; }
+
+        public bool Integrado { get; set; }
     }
 }

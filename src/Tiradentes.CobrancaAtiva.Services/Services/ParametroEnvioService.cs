@@ -320,21 +320,21 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         {
                             CnpjEmpresaCobranca = parametroEnvio.EmpresaParceira.CNPJ,
                             Controle = alunoInadimplente.MatriculaAluno + alunoInadimplente.NumeroParcela.PadLeft(3, '0'),
-                            DataGeracao = geracaoCobrancas.DataGeracao,
-                            DataVencimento = alunoInadimplente.DataVencimento.ToString("dd/MM/yyyy"),
+                            DataGeracao = Convert.ToDateTime(geracaoCobrancas.DataGeracao),
+                            DataVencimento = alunoInadimplente.DataVencimento,
                             DescricaoInadimplencia = alunoInadimplente.DescricaoInadimplencia,
-                            Matricula = alunoInadimplente.MatriculaAluno,
+                            Matricula = Convert.ToDecimal(alunoInadimplente.MatriculaAluno),
                             Parcela = int.Parse(alunoInadimplente.NumeroParcela),
                             Sistema = parametroEnvio.Modalidade.CodigoMagister,
                             SituacaoAluno = alunoInadimplente.StatusAluno,
                             TipoInadimplencia = alunoInadimplente.TipoInadimplencia,
-                            Valor = ((float)Double.Parse(alunoInadimplente.ValorPagamento))
+                            Valor = decimal.Parse(alunoInadimplente.ValorPagamento)
                         };
 
                         var periodo = -1;
 
                         if(Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 5) {
-                            itemGeracao.Periodo = alunoInadimplente.Periodo;
+                            itemGeracao.Periodo = Convert.ToDecimal(alunoInadimplente.Periodo);
                         } else {
                             itemGeracao.PeriodoChequeDevolvido = alunoInadimplente.Periodo;
                         }
