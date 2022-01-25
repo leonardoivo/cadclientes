@@ -213,10 +213,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SentidoOrdenacao = "ASC"
             }));
             var regrasAtivas = _regrasAtivas.Items
-                .Where(r => DateTime.Parse(parcela.DataVencimento) >= r.InadimplenciaInicial.Date
+                /*.Where(r => DateTime.Parse(parcela.DataVencimento) >= r.InadimplenciaInicial.Date
                     && DateTime.Parse(parcela.DataVencimento) <= r.InadimplenciaFinal.Date)
                 .Where(r => DateTime.Parse(baixaPagamento.DataNegociacao) >= r.ValidadeInicial.Date
-                    && DateTime.Parse(baixaPagamento.DataNegociacao) <= r.ValidadeFinal.Date)
+                    && DateTime.Parse(baixaPagamento.DataNegociacao) <= r.ValidadeFinal.Date)*/
                 .First();
 
             var percentual = 100 - (100 * ((decimal) parcela.ValorPago / parcela.ValorDebitoOriginal));
