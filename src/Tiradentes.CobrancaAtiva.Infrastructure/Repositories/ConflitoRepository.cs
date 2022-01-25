@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
@@ -51,6 +52,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             query = query.Ordenar(queryParams.OrdenarPor, "Id", queryParams.SentidoOrdenacao == "desc");
 
             return await query.Paginar(queryParams.Pagina, queryParams.Limite);
+        }
+
+        public async Task<IEnumerable<ConflitoModel>> BuscarPorLote(string lote)
+        {
+            return await DbSet
+                .Where(c => c.Lote == lote)
+                .ToListAsync();
         }
     }
 }
