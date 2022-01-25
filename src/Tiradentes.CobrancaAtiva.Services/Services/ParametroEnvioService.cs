@@ -319,18 +319,19 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         {
                             CnpjEmpresaCobranca = parametroEnvio.EmpresaParceira.CNPJ,
                             Controle = alunoInadimplente.MatriculaAluno + alunoInadimplente.NumeroParcela.PadLeft(3, '0'),
-                            DataGeracao = geracaoCobrancas.DataGeracao,
-                            DataVencimento = alunoInadimplente.DataVencimento.ToString("dd/MM/yyyy"),
+                            DataGeracao = Convert.ToDateTime(geracaoCobrancas.DataGeracao),
+                            DataVencimento = alunoInadimplente.DataVencimento,
                             DescricaoInadimplencia = alunoInadimplente.DescricaoInadimplencia,
-                            Matricula = alunoInadimplente.MatriculaAluno,
+                            Matricula = Convert.ToDecimal(alunoInadimplente.MatriculaAluno),
                             Parcela = int.Parse(alunoInadimplente.NumeroParcela),
-                            Periodo = alunoInadimplente.Periodo.Replace("#", ""),
+                            Periodo = Convert.ToDecimal(alunoInadimplente.Periodo.Replace("#", "")),
                             PeriodoChequeDevolvido = alunoInadimplente.Periodo.Replace("#", ""),
                             Sistema = parametroEnvio.Modalidade.CodigoMagister,
                             SituacaoAluno = alunoInadimplente.StatusAluno,
                             TipoInadimplencia = alunoInadimplente.TipoInadimplencia,
-                            Valor = ((float)Double.Parse(alunoInadimplente.ValorPagamento))
+                            Valor = decimal.Parse(alunoInadimplente.ValorPagamento)
                         };
+
                         //await _itensGeracaoRepository.Criar(itemGeracao);
                     }
                     catch (Exception ex)
