@@ -1,4 +1,5 @@
-﻿using System.Collections.Generic;
+﻿using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
@@ -13,6 +14,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task<ViewModelPaginada<BuscaParametroEnvioViewModel>> Buscar(ConsultaParametroEnvioQueryParam queryParam);
         Task<BuscaParametroEnvioViewModel> BuscarPorId(int id);
         Task EnviarParametroParaConsumer(int id);
+        Task EnviarArquivoEmpresaCobranca(int id, string lote);
         Task<ParametroEnvioViewModel> Criar(CriarParametroEnvioViewModel viewModel);
         Task<ParametroEnvioViewModel> Alterar(AlterarParametroEnvioViewModel viewModel);
         Task Deletar(int id);

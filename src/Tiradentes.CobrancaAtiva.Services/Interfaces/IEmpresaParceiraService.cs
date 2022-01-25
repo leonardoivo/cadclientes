@@ -14,7 +14,5 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task<EmpresaParceiraViewModel> Atualizar(EmpresaParceiraViewModel viewModel);
         Task Deletar(int id);
         Task<EmpresaParceiraViewModel> BuscarPorId(int Id);
-
-        Task EnviarArquivoSftp(int id);
     }
 }

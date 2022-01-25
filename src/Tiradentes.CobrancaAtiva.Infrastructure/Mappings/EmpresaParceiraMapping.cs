@@ -66,6 +66,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasOne(c => c.ContaBancaria)
                 .WithOne(e => e.Empresa);
 
+            builder.Property(ep => ep.ChaveIntegracaoSap)
+                .HasColumnName("CHAVE_INTEGRACAO_SAP")
+                .HasDefaultValue("");
+
             builder.ToTable("EMPRESAS");
         }
     }

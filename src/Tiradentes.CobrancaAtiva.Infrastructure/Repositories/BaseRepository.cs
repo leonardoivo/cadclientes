@@ -42,6 +42,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await SaveChanges();
         }
 
+        public virtual async Task AlterarVarios(IEnumerable<TModel> model)
+        {
+            DbSet.UpdateRange(model);
+            await SaveChanges();
+        }
+
         public async Task<int> SaveChanges()
         {
             return await Db.SaveChangesAsync();

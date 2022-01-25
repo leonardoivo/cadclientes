@@ -1,11 +1,13 @@
+using System;
+using System.Collections.Generic;
+using Tiradentes.CobrancaAtiva.Domain.Enums;
+
 namespace Tiradentes.CobrancaAtiva.Domain.Collections
 {
     public class AlunosInadimplentesCollection
     {
         public string Id { get; set; }
-        public int EmpresaId { get; set; }
-        public string CnpjEmpresa { get; set; }
-        public string NomeEmpresa { get; set; }
+        public System.Guid Lote { get; set; }
         public string CodModalidadeEnsino { get; set; }
         public string DescricaoModalidadeEnsino { get; set; }
         public string TipoInadimplencia { get; set; }
@@ -14,6 +16,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public string CodCurso { get; set; }
         public string NomeCurso { get; set; }
         public string IdtTipoTitulo { get; set; }
+        public string TipoTituloAvulso { get; set; }
         public string DescricaoInadimplencia { get; set; }
         public string CpfAluno { get; set; }
         public string MatriculaAluno { get; set; }
@@ -38,10 +41,11 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public string ValorPagamento { get; set; }
         public string DescontoIncondicional { get; set; }
         public string IdtCampus { get; set; }
-        public string DescircaoCampus { get; set; }
+        public string DescricaoCampus { get; set; }
         public string Mae { get; set; }
         public string Pai { get; set; }
         public string NumCi { get; set; }
-        public int StatusNegociacao { get; set; }
+        public StatusNegociacao StatusNegociacao { get; set; }
+        public List<HashCode> RespostasId { get; set; }
     }
 }

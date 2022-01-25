@@ -9,6 +9,8 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao
         public decimal PercentJurosMulta { get; set; }
         public decimal PercentValor { get; set; }
         public bool Status { get; set; }
-        public DateTime Validade { get; set; }
+
+        public DateTime ValidadeInicial { get; private set; }
+        public DateTime ValidadeFinal { get; private set; }
     }
 }
