@@ -21,5 +21,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     .Any())
                 .ToListAsync();
         }
+
+        public async Task<ModalidadeModel> BuscarPorCodigo(string codigo)
+        {
+            return await DbSet
+                .Where(i => i.CodigoMagister == codigo)
+                .FirstAsync();
+        }
     }
 }

@@ -33,6 +33,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<HonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();
             CreateMap<CreateHonorarioEmpresaParceiraViewModel, HonorarioEmpresaParceiraModel>();
+            CreateMap<CreateHonorarioFaixaEmpresaParceiraViewModel, HonorarioFaixaEmpresaParceiraModel>();
 
             CreateMap<CriarRegraNegociacaoViewModel, RegraNegociacaoModel>()
                 .ForMember(dest => dest.RegraNegociacaoCurso,
@@ -76,7 +77,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();            
 
             CreateMap<RespostasCollection, RespostaViewModel>()
-                .ForMember(R => R.MongoId, opt => opt.MapFrom(scr => scr._id)).ReverseMap();
+                .ForMember(R => R.MongoId, opt => opt.MapFrom(scr => scr.Id)).ReverseMap();
 
             CreateMap<BaixasCobrancasModel, BaixasCobrancasViewModel>().ReverseMap();
             CreateMap<ArquivoLayoutModel, ArquivoLayoutViewModel>();

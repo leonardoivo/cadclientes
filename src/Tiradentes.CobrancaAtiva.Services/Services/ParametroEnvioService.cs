@@ -190,7 +190,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 TipoInadimplencia = parametroEnvio.TiposTitulos.First().CodigoMagister
             };
 
-            //await _geracaoCobrancaRepositorio.Criar(geracaoArquivo);
+            await _geracaoCobrancaRepositorio.Criar(geracaoArquivo);
 
             using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value, empresaParceira.UsuarioEnvioArquivo, senhaEnvioArquivo);
             try
@@ -228,6 +228,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         public async Task<List<string>> GerarArquivoCsv(BuscaParametroEnvio parametroEnvio, string lote, GeracaoCobrancasModel geracaoCobrancas)
         {
             var arquivosGerados = new List<string>();
+            var linhasGeradas = new List<ItensGeracaoModel>();
 
             var limiteLinhas = 999999;
 
@@ -271,7 +272,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             alunoInadimplente.NomeCurso == null ? "" : alunoInadimplente.NomeCurso.Replace(",", " "),
                             alunoInadimplente.TipoInadimplencia == null ? "" : alunoInadimplente.TipoInadimplencia.Replace(",", " "),
                             alunoInadimplente.DescricaoTipoInadimplencia == null ? "" : alunoInadimplente.DescricaoTipoInadimplencia.Replace(",", " "),
-                            alunoInadimplente.IdtTipoTitulo == null ? "" : alunoInadimplente.IdtTipoTitulo.Replace(",", " "),
+                            alunoInadimplente.TipoTituloAvulso == null ? "" : alunoInadimplente.TipoTituloAvulso.Replace(",", " "),
                             alunoInadimplente.DescricaoInadimplencia == null ? "" : alunoInadimplente.DescricaoInadimplencia.Replace(",", " "),
                             alunoInadimplente.StatusAluno == null ? "" : alunoInadimplente.StatusAluno.Replace(",", " "),
                             alunoInadimplente.CpfAluno == null ? "" : alunoInadimplente.CpfAluno.Replace(",", " "),
@@ -312,7 +313,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             alunoInadimplente.Pai == null ? "" : alunoInadimplente.Pai.Replace(",", " "),
                             alunoInadimplente.NumCi == null ? "" : alunoInadimplente.NumCi.Replace(",", " ")
                         );
-
+                        
                     try
                     {
                         var itemGeracao = new ItensGeracaoModel()
@@ -324,15 +325,21 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             DescricaoInadimplencia = alunoInadimplente.DescricaoInadimplencia,
                             Matricula = Convert.ToDecimal(alunoInadimplente.MatriculaAluno),
                             Parcela = int.Parse(alunoInadimplente.NumeroParcela),
-                            Periodo = Convert.ToDecimal(alunoInadimplente.Periodo.Replace("#", "")),
-                            PeriodoChequeDevolvido = alunoInadimplente.Periodo.Replace("#", ""),
                             Sistema = parametroEnvio.Modalidade.CodigoMagister,
                             SituacaoAluno = alunoInadimplente.StatusAluno,
                             TipoInadimplencia = alunoInadimplente.TipoInadimplencia,
                             Valor = decimal.Parse(alunoInadimplente.ValorPagamento)
                         };
 
-                        //await _itensGeracaoRepository.Criar(itemGeracao);
+                        var periodo = -1;
+
+                        if(Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 5) {
+                            itemGeracao.Periodo = Convert.ToDecimal(alunoInadimplente.Periodo);
+                        } else {
+                            itemGeracao.PeriodoChequeDevolvido = alunoInadimplente.Periodo;
+                        }
+
+                        linhasGeradas.Add(itemGeracao);
                     }
                     catch (Exception ex)
                     {
@@ -342,6 +349,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     await file.WriteLineAsync(dataToWrite);
                     fileContent.AppendLine(dataToWrite);
                 }
+
+                await _itensGeracaoRepository.CriarVarios(linhasGeradas);
+
                 file.Close();
                 arquivosGerados.Add(filename);
 
@@ -349,7 +359,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     Arquivo = fileContent.ToString(),
                     CnpjEmpresaCobranca = parametroEnvio.EmpresaParceira.CNPJ,
-                    DataGeracao = DateTime.Now.ToString("dd/MM/yyyy"),
+                    DataGeracao = geracaoCobrancas.DataGeracao,
                     Sequencia = indexArquivoAtual
                 };
                 //await _arquivosGeracaoRepository.Criar(arquivoGerado);

@@ -8,6 +8,9 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using System.Collections.Generic;
 using System.Linq.Expressions;
 using System;
+using Tiradentes.CobrancaAtiva.Domain.QueryParams;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
+using MongoDB.Driver.Linq;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
@@ -27,6 +30,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task<RespostasCollection> Criar(RespostasCollection model)
         {
+            model.Id = System.Guid.NewGuid().ToString();
+
             await _repository.InsertOneAsync(model);
             
             return model;
@@ -34,9 +39,74 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task<RespostasCollection> AlterarStatus(RespostasCollection model)
         {
-            await _repository.UpdateOneAsync(Builders<RespostasCollection>.Filter.Eq("_id", model._id), Builders<RespostasCollection>.Update.Set("Integrado", model.Integrado));
+            await _repository.UpdateOneAsync(Builders<RespostasCollection>.Filter.Eq("_id", model.Id), Builders<RespostasCollection>.Update.Set("Integrado", model.Integrado));
             
             return model;
         }
+
+        public async Task<ICollection<RespostasCollection>> Listar(BaixaPagamentoQueryParam queryParam)
+        {
+            var query = _repository.AsQueryable();
+
+            if(!string.IsNullOrEmpty(queryParam.Matricula))
+                query = query.Where(c => c.Matricula.Equals(queryParam.Matricula));
+
+            if(!string.IsNullOrEmpty(queryParam.Cpf))
+                query = query.Where(c => c.CPF == queryParam.Cpf);
+
+            if(!string.IsNullOrEmpty(queryParam.Acordo))
+                query = query.Where(c => c.NumeroAcordo == queryParam.Acordo);
+
+            if(!string.IsNullOrEmpty(queryParam.NomeAluno))
+                query = query.Where(c => c.NomeAluno.Equals(queryParam.NomeAluno));
+
+            return await query.ToListAsync();
+        }
+
+        public async Task<ICollection<RespostasCollection>> ListarFiltroPorMatricula(string matricula)
+        {
+            var query = _repository.AsQueryable();
+
+            if(!string.IsNullOrEmpty(matricula))
+                query = query.Where(b => b.Matricula.Contains(matricula));
+
+            query = query.Take(25);
+
+            return await query.ToListAsync();
+        }      
+
+        public async Task<ICollection<RespostasCollection>> ListarFiltroPorAluno(string aluno)
+        {
+            var query = _repository.AsQueryable();
+
+            if(!string.IsNullOrEmpty(aluno))
+                query = query.Where(b => b.NomeAluno.ToLower().Contains(aluno.ToLower()));
+            query = query.Take(25);
+
+            return await query.ToListAsync();
+        } 
+
+        public async Task<ICollection<RespostasCollection>> ListarFiltroPorCpf(string cpf)
+        {
+            var query = _repository.AsQueryable();
+
+            if(!string.IsNullOrEmpty(cpf))
+                query = query.Where(b => b.CPF.Contains(cpf));
+
+            query = query.Take(25);
+
+            return await query.ToListAsync();
+        }      
+
+        public async Task<ICollection<RespostasCollection>> ListarFiltroPorAcordo(string acordo)
+        {
+            var query = _repository.AsQueryable();
+
+            if(!string.IsNullOrEmpty(acordo))
+                query = query.Where(b => b.NumeroAcordo.Contains(acordo));
+            query = query.Take(25);
+
+            return await query.ToListAsync();
+        }     
     }
 }

@@ -5,9 +5,12 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 {
     public class RespostaViewModel
     {
-        public ObjectId? MongoId { get; set; }
+        public string MongoId { get; set; }
         public string TipoRegistro { get; set; }
+        public string InstituicaoEnsino { get; set; }
         public string CPF { get; set; }
+        public string Curso { get; set; }
+        public string NomeAluno { get; set; }
         public string NumeroAcordo { get; set; }
         public string Parcela { get; set; }
         public string CnpjEmpresaCobranca { get; set; }

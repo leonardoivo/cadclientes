@@ -13,6 +13,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         public DbSet<EmpresaParceiraModel> EmpresaParceira { get; set; }
         public DbSet<ContatoEmpresaParceiraModel> ContatoEmpresaParceira { get; set; }
         public DbSet<ConflitoModel> ConflitoModel { get; set; }
+        public DbSet<HonorarioEmpresaParceiraModel> HonorarioEmpresaParceiras { get; set; }
+        public DbSet<HonorarioFaixaEmpresaParceiraModel> HonorarioFaixaEmpresaParceiras { get; set; }
         public DbSet<EnderecoEmpresaParceiraModel> EnderecoEmpresaParceira { get; set; }
         public DbSet<ContaBancariaEmpresaParceiraModel> ContaBancariaEmpresaParceira { get; set; }
         public DbSet<InstituicaoModel> Instituicao { get; set; }

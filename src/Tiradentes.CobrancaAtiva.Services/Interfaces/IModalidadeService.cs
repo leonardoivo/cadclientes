@@ -8,5 +8,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     public interface IModalidadeService : IDisposable
     {
         Task<IList<ModalidadeViewModel>> BuscarPorInstituicao(int instituicaoId);
+        Task<ModalidadeViewModel> BuscarPorCodigo(string modalidade);
     }
 }
