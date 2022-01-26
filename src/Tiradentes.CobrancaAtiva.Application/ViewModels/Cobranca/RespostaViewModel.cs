@@ -84,8 +84,8 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public DateTime? DataBaixa { get; set; }
         public decimal ValorPago { get; set; }
         public string TipoPagamento { get; set; }
-
         public bool Integrado { get; set; }
+        public int Erro { get; set; } 
 
         public decimal ObterPeriodo()
         {
