@@ -1,4 +1,4 @@
-﻿using System;
+﻿﻿using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
@@ -63,15 +63,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             if (!respostas.Any())
                 return;
 
-            var respostasAgrupadas = respostas.GroupBy(a => new {a.CnpjEmpresaCobranca, a.InstituicaoEnsino});
+            var respostasAgrupadas = respostas.GroupBy(a => new {a.CnpjEmpresaCobranca, a.CodigoInstituicaoEnsino});
 
             foreach (var resp in respostasAgrupadas)
             {
-                await GerenciaArquivos(resp.ToList(), resp.Key.CnpjEmpresaCobranca, resp.Key.InstituicaoEnsino);
+                await GerenciaArquivos(resp.ToList(), resp.Key.CnpjEmpresaCobranca, resp.Key.CodigoInstituicaoEnsino);
             }
         }
 
-        private async Task GerenciaArquivos(IList<RespostaViewModel> arquivos, string cnpjEmpresa, string ies)
+        private async Task GerenciaArquivos(IList<RespostaViewModel> arquivos, string cnpjEmpresa, int ies)
         {
             var dataBaixa = DateTime.MinValue;
             try
@@ -80,7 +80,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 try
                 {
                     dataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S",
-                        JsonSerializer.Serialize(arquivos), cnpjEmpresa, Convert.ToInt32(ies));
+                        JsonSerializer.Serialize(arquivos), cnpjEmpresa, ies);
                 }
                 catch (Exception ex)
                 {
@@ -100,13 +100,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     {
                         switch (arquivo.TipoRegistro)
                         {
-                            case "1":
+                            case 1:
                                 await ProcessaBaixaTipo1(dataBaixa, arquivo, errosContabilizados);
                                 break;
-                            case "2":
+                            case 2:
                                 await ProcessaBaixaTipo2(dataBaixa, arquivo, errosContabilizados);
                                 break;
-                            case "3":
+                            case 3:
                                 await ProcessaBaixaTipo3(dataBaixa, arquivo, errosContabilizados);
                                 break;
                             default:
@@ -129,15 +129,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     DataBaixa = dataBaixa,
                     Etapa = 3,
-                    QuantidadeTipo1 = arquivos.Count(A => A.TipoRegistro == "1"),
-                    QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == "2"),
-                    QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == "3"),
+                    QuantidadeTipo1 = arquivos.Count(A => A.TipoRegistro == 1),
+                    QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == 2),
+                    QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == 3),
 
-                    ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == "1")
+                    ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == 1)
                         .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-                    ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == "2")
+                    ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == 2)
                         .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-                    ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3")
+                    ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == 3)
                         .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
 
                     QuantidadeErrosTipo1 = errosContabilizados.Count(E => E.Etapa == 1),
@@ -153,7 +153,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             catch (ArgumentNullException ex)
             {
                 var dataErro =
-                    await _arquivolayoutService.SalvarLayoutArquivo("E", "Arquivo ja processado com a data de hoje");
+                    await _arquivolayoutService.SalvarLayoutArquivo("E", "Arquivo ja processado com a data de hoje",
+                        cnpjEmpresa, ies);
                 await _arquivolayoutService.RegistrarErro(dataErro, JsonSerializer.Serialize(ex.StackTrace),
                     ErrosBaixaPagamento.OutrosErros, ex.Message);
             }
@@ -187,56 +188,38 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             {
                 resposta.TipoRegistro,
                 resposta.CPF,
-                NumeroAcordo =
-                    Convert.ToInt64(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
-                Parcela = Convert.ToInt32(!string.IsNullOrEmpty(resposta.Parcela) ? resposta.Parcela : "0"),
+                resposta.NumeroAcordo,
+                resposta.Parcela,
                 resposta.CnpjEmpresaCobranca,
                 SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "",
                 resposta.Sistema,
-                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
-                IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
-                CodigoAtividade =
-                    Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
-                NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
-                IdPessoa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdPessoa) ? resposta.IdPessoa : "0"),
-                CodigoBanco = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoBanco) ? resposta.CodigoBanco : "0"),
-                CodigoAgencia =
-                    Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAgencia) ? resposta.CodigoAgencia : "0"),
-                NumeroConta = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroConta) ? resposta.NumeroConta : "0"),
-                NumeroCheque =
-                    Convert.ToDecimal(!string.IsNullOrEmpty(resposta.NumeroCheque) ? resposta.NumeroCheque : "0"),
+                resposta.Matricula,
+                Periodo = resposta.ObterPeriodo(),
+                resposta.IdTitulo,
+                resposta.CodigoAtividade,
+                resposta.NumeroEvt,
+                resposta.IdPessoa,
+                resposta.CodigoBanco,
+                resposta.CodigoAgencia,
+                resposta.NumeroConta,
+                resposta.NumeroCheque,
                 resposta.TipoInadimplencia,
                 resposta.ChaveInadimplencia,
-                Juros = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Juros) ? resposta.Juros : "0") / 100,
-                Multa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Multa) ? resposta.Multa : "0") / 100,
-                ValorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorTotal) ? resposta.ValorTotal : "0") /
-                             100,
-                DataFechamentoAcordo = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataFechamentoAcordo)
-                    ? DateTime.ParseExact(resposta.DataFechamentoAcordo, "ddMMyyyy", CultureInfo.InvariantCulture)
-                    : "01-01-0001"),
-                TotalParcelas =
-                    Convert.ToInt32(!string.IsNullOrEmpty(resposta.TotalParcelas) ? resposta.TotalParcelas : "0"),
-                DataVencimento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataVencimento)
-                    ? DateTime.ParseExact(resposta.DataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture)
-                    : "01-01-0001"),
-                ValorParcela =
-                    Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorParcela) ? resposta.ValorParcela : "0") / 100,
-                SaldoDevedorTotal =
-                    Convert.ToDecimal(!string.IsNullOrEmpty(resposta.SaldoDevedorTotal)
-                        ? resposta.SaldoDevedorTotal
-                        : "0") / 100,
+                Juros = resposta.JurosParcela,
+                Multa = resposta.MultaParcela / 100,
+                ValorTotal = resposta.ValorTotalParcela / 100,
+                resposta.DataFechamentoAcordo,
+                TotalParcelas = resposta.TotalParcelasAcordo,
+                DataVencimento = resposta.DataVencimentoParcela,
+                ValorParcela = resposta.ValorParcela / 100,
+                SaldoDevedorTotal = resposta.SaldoDevedorTotal / 100,
                 resposta.Produto,
                 resposta.DescricaoProduto,
-                resposta.Fase,
                 resposta.CodigoControleCliente,
                 resposta.NossoNumero,
-                DataPagamento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataPagamento)
-                    ? DateTime.ParseExact(resposta.DataPagamento, "ddMMyyyy", CultureInfo.InvariantCulture)
-                    : "01-01-0001"),
+                resposta.DataPagamento,
                 DataBaixa = dataBaixa,
-                ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0") /
-                            100,
+                resposta.ValorPago,
                 resposta.TipoPagamento
             };
 
@@ -320,58 +303,40 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             {
                 resposta.TipoRegistro,
                 resposta.CPF,
-                NumeroAcordo =
-                    Convert.ToInt64(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
-                Parcela = Convert.ToInt32(!string.IsNullOrEmpty(resposta.Parcela) ? resposta.Parcela : "0"),
+                resposta.NumeroAcordo,
+                resposta.Parcela,
                 resposta.CnpjEmpresaCobranca,
                 SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "",
                 resposta.Sistema,
-                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
-                IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
-                CodigoAtividade =
-                    Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
-                NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
-                IdPessoa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdPessoa) ? resposta.IdPessoa : "0"),
-                CodigoBanco = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoBanco) ? resposta.CodigoBanco : "0"),
-                CodigoAgencia =
-                    Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAgencia) ? resposta.CodigoAgencia : "0"),
-                NumeroConta = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroConta) ? resposta.NumeroConta : "0"),
-                NumeroCheque =
-                    Convert.ToDecimal(!string.IsNullOrEmpty(resposta.NumeroCheque) ? resposta.NumeroCheque : "0"),
+                resposta.Matricula,
+                Periodo = resposta.ObterPeriodo(),
+                resposta.IdTitulo,
+                resposta.CodigoAtividade,
+                resposta.NumeroEvt,
+                resposta.IdPessoa,
+                resposta.CodigoBanco,
+                resposta.CodigoAgencia,
+                resposta.NumeroConta,
+                resposta.NumeroCheque,
                 resposta.TipoInadimplencia,
                 resposta.ChaveInadimplencia,
-                Juros = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Juros) ? resposta.Juros : "0") / 100,
-                Multa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Multa) ? resposta.Multa : "0") / 100,
-                ValorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorTotal) ? resposta.ValorTotal : "0") /
-                             100,
-                DataFechamentoAcordo = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataFechamentoAcordo)
-                    ? DateTime.ParseExact(resposta.DataFechamentoAcordo, "ddMMyyyy", CultureInfo.InvariantCulture)
-                    : "01-01-0001"),
-                TotalParcelas =
-                    Convert.ToInt32(!string.IsNullOrEmpty(resposta.TotalParcelas) ? resposta.TotalParcelas : "0"),
-                DataVencimento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataVencimento)
-                    ? DateTime.ParseExact(resposta.DataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture)
-                    : "01-01-0001"),
-                ValorParcela =
-                    Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorParcela) ? resposta.ValorParcela : "0") / 100,
-                SaldoDevedorTotal =
-                    Convert.ToDecimal(!string.IsNullOrEmpty(resposta.SaldoDevedorTotal)
-                        ? resposta.SaldoDevedorTotal
-                        : "0") / 100,
+                Juros = resposta.JurosParcela,
+                Multa = resposta.MultaParcela,
+                ValorTotal = resposta.ValorTotalParcela,
+                resposta.DataFechamentoAcordo,
+                TotalParcelas = resposta.TotalParcelasAcordo,
+                DataVencimento = resposta.DataVencimentoParcela,
+                resposta.ValorParcela,
+                resposta.SaldoDevedorTotal,
                 resposta.Produto,
                 resposta.DescricaoProduto,
-                resposta.Fase,
                 resposta.CodigoControleCliente,
                 resposta.NossoNumero,
-                DataPagamento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataPagamento)
-                    ? DateTime.ParseExact(resposta.DataPagamento, "ddMMyyyy", CultureInfo.InvariantCulture)
-                    : "01-01-0001"),
+                resposta.DataPagamento,
                 DataBaixa = dataBaixa,
-                ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0") /
-                            100,
+                resposta.ValorPago,
                 resposta.TipoPagamento,
-                PeriodoChequeDevolvido = GetPeriodoChequeDevolvido(resposta.PeriodoChequeDevolvido)
+                PeriodoOutros = resposta.ObterPeriodoOutros()
             };
 
             try
@@ -386,14 +351,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 var dataEnvio = _itensGeracaoService.ObterDataEnvio(arquivo.CnpjEmpresaCobranca,
                     arquivo.Matricula,
                     arquivo.Periodo,
-                    arquivo.Parcela);
+                    arquivo.Parcela,
+                    arquivo.PeriodoOutros);
 
                 if (dataEnvio.Date != Convert.ToDateTime(arquivo.DataVencimento).Date)
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.DataInconsistente);
                 }
 
-                if (_parcelaTituloService.ExisteParcela(arquivo.Matricula, arquivo.Periodo, arquivo.Parcela))
+                if (_parcelaTituloService.ExisteParcela(arquivo.Matricula, arquivo.Periodo, arquivo.Parcela,
+                        arquivo.PeriodoOutros))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento
                         .ParcelaEnviadaAnteriormentePelaEmpresaCobranca);
@@ -420,7 +387,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 if (!_itensGeracaoService.ExisteMatricula(arquivo.CnpjEmpresaCobranca,
                         arquivo.Matricula,
                         arquivo.Periodo,
-                        arquivo.Parcela))
+                        arquivo.Parcela,
+                        arquivo.PeriodoOutros))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.GeracaoInconsistente);
                 }
@@ -444,7 +412,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     arquivo.CnpjEmpresaCobranca,
                     arquivo.Sistema,
                     arquivo.TipoInadimplencia,
-                    arquivo.PeriodoChequeDevolvido);
+                    arquivo.PeriodoOutros);
 
                 if (_parcelasAcordoService.ExisteParcelaPaga(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
@@ -495,7 +463,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 arquivo.Sistema,
                 arquivo.SituacaoAluno,
                 arquivo.TipoInadimplencia,
-                arquivo.PeriodoChequeDevolvido);
+                arquivo.PeriodoOutros);
         }
 
         private async Task ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta,
@@ -507,57 +475,40 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             {
                 resposta.TipoRegistro,
                 resposta.CPF,
-                NumeroAcordo =
-                    Convert.ToInt64(!string.IsNullOrEmpty(resposta.NumeroAcordo) ? resposta.NumeroAcordo : "0"),
-                Parcela = Convert.ToInt32(!string.IsNullOrEmpty(resposta.Parcela) ? resposta.Parcela : "0"),
+                resposta.NumeroAcordo,
+                resposta.Parcela,
                 resposta.CnpjEmpresaCobranca,
                 SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "",
                 resposta.Sistema,
-                Matricula = Convert.ToInt64(!string.IsNullOrEmpty(resposta.Matricula) ? resposta.Matricula : "0"),
-                Periodo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Periodo) ? resposta.Periodo : "0"),
-                IdTitulo = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdTitulo) ? resposta.IdTitulo : "0"),
-                CodigoAtividade =
-                    Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAtividade) ? resposta.CodigoAtividade : "0"),
-                NumeroEvt = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroEvt) ? resposta.NumeroEvt : "0"),
-                IdPessoa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.IdPessoa) ? resposta.IdPessoa : "0"),
-                CodigoBanco = Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoBanco) ? resposta.CodigoBanco : "0"),
-                CodigoAgencia =
-                    Convert.ToInt32(!string.IsNullOrEmpty(resposta.CodigoAgencia) ? resposta.CodigoAgencia : "0"),
-                NumeroConta = Convert.ToInt32(!string.IsNullOrEmpty(resposta.NumeroConta) ? resposta.NumeroConta : "0"),
-                NumeroCheque =
-                    Convert.ToDecimal(!string.IsNullOrEmpty(resposta.NumeroCheque) ? resposta.NumeroCheque : "0"),
+                resposta.Matricula,
+                Periodo = resposta.ObterPeriodo(),
+                resposta.IdTitulo,
+                resposta.CodigoAtividade,
+                resposta.NumeroEvt,
+                resposta.IdPessoa,
+                resposta.CodigoBanco,
+                resposta.CodigoAgencia,
+                resposta.NumeroConta,
+                resposta.NumeroCheque,
                 resposta.TipoInadimplencia,
                 resposta.ChaveInadimplencia,
-                Juros = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Juros) ? resposta.Juros : "0") / 100,
-                Multa = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.Multa) ? resposta.Multa : "0") / 100,
-                ValorTotal = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorTotal) ? resposta.ValorTotal : "0") /
-                             100,
-                DataFechamentoAcordo = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataFechamentoAcordo)
-                    ? DateTime.ParseExact(resposta.DataFechamentoAcordo, "ddMMyyyy", CultureInfo.InvariantCulture)
-                    : "01-01-0001"),
-                TotalParcelas =
-                    Convert.ToInt32(!string.IsNullOrEmpty(resposta.TotalParcelas) ? resposta.TotalParcelas : "0"),
-                DataVencimento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataVencimento)
-                    ? DateTime.ParseExact(resposta.DataVencimento, "ddMMyyyy", CultureInfo.InvariantCulture)
-                    : "01-01-0001"),
-                ValorParcela =
-                    Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorParcela) ? resposta.ValorParcela : "0") / 100,
-                SaldoDevedorTotal =
-                    Convert.ToDecimal(!string.IsNullOrEmpty(resposta.SaldoDevedorTotal)
-                        ? resposta.SaldoDevedorTotal
-                        : "0") / 100,
+                Juros = resposta.JurosParcela,
+                Multa = resposta.MultaParcela,
+                ValorTotal = resposta.ValorTotalParcela,
+                resposta.DataFechamentoAcordo,
+                TotalParcelas = resposta.TotalParcelasAcordo,
+                DataVencimento = resposta.DataVencimentoParcela,
+                resposta.ValorParcela,
+                resposta.SaldoDevedorTotal,
                 resposta.Produto,
                 resposta.DescricaoProduto,
-                resposta.Fase,
                 resposta.CodigoControleCliente,
                 resposta.NossoNumero,
-                DataPagamento = Convert.ToDateTime(!string.IsNullOrEmpty(resposta.DataPagamento)
-                    ? DateTime.ParseExact(resposta.DataPagamento, "ddMMyyyy", CultureInfo.InvariantCulture)
-                    : "01-01-0001"),
+                resposta.DataPagamento,
                 DataBaixa = dataBaixa,
-                ValorPago = Convert.ToDecimal(!string.IsNullOrEmpty(resposta.ValorPago) ? resposta.ValorPago : "0") /
-                            100,
-                resposta.TipoPagamento
+                resposta.ValorPago,
+                resposta.TipoPagamento,
+                PeriodoOutros = resposta.ObterPeriodoOutros()
             };
 
             try
@@ -591,7 +542,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         arquivo.NumeroAcordo,
                         arquivo.DataPagamento,
                         arquivo.DataBaixa,
-                        arquivo.ValorPago);
+                        arquivo.ValorPago,
+                        null);
 
                     var valorParcela =
                         _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
@@ -663,117 +615,5 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 arquivo.TipoInadimplencia,
                 arquivo.TipoPagamento);
         }
-<<<<<<< HEAD
-
-        public async Task Gerenciar()
-        {
-            var dataBaixa = DateTime.MinValue;
-            var arquivos = await _cobrancaService.BuscarRepostaNaoIntegrada();
-            if (!arquivos.Any())
-                return;
-
-            var teste = arquivos.GroupBy(a => new {a.CnpjEmpresaCobranca, a.InstituicaoEnsino});
-
-            foreach (var t in teste)
-            {
-                var r = t.ToList();
-            }
-
-            try
-            {
-                var errosContabilizados = new List<ErroParcelaViewModel>();
-                try
-                {
-                    dataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S",
-                        JsonSerializer.Serialize(arquivos));
-                }
-                catch (Exception ex)
-                {
-                    throw new ArgumentNullException("Arquivo Layout existente", ex);
-                }
-
-                var model = await _baixasCobrancasService.Buscar(dataBaixa);
-
-                if (model == null)
-                {
-                    await _baixasCobrancasService.CriarBaixasCobrancas(dataBaixa);
-                }
-
-                foreach (var arquivo in arquivos.OrderBy(A => A.TipoRegistro).ThenBy(A => A.Parcela))
-                {
-                    try
-                    {
-                        switch (arquivo.TipoRegistro)
-                        {
-                            case "1":
-                                await ProcessaBaixaTipo1(dataBaixa, arquivo, errosContabilizados);
-                                break;
-                            case "2":
-                                await ProcessaBaixaTipo2(dataBaixa, arquivo, errosContabilizados);
-                                break;
-                            case "3":
-                                await ProcessaBaixaTipo3(dataBaixa, arquivo, errosContabilizados);
-                                break;
-                            default:
-                                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(arquivo),
-                                    ErrosBaixaPagamento.ErroInternoServidor, "");
-                                break;
-                        }
-
-                        arquivo.Integrado = true;
-                        _cobrancaService.AlterarStatus(arquivo);
-                    }
-                    catch (Exception ex)
-                    {
-                        await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
-                            ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
-                    }
-                }
-
-                await _baixasCobrancasService.AtualizarBaixasCobrancas(new BaixasCobrancasViewModel()
-                {
-                    DataBaixa = dataBaixa,
-                    Etapa = 3,
-                    QuantidadeTipo1 = arquivos.Count(A => A.TipoRegistro == "1"),
-                    QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == "2"),
-                    QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == "3"),
-
-                    ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == "1")
-                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-                    ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == "2")
-                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-                    ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3")
-                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-
-                    QuantidadeErrosTipo1 = errosContabilizados.Count(E => E.Etapa == 1),
-                    QuantidadeErrosTipo2 = errosContabilizados.Count(E => E.Etapa == 2),
-                    QuantidadeErrosTipo3 = errosContabilizados.Count(E => E.Etapa == 3),
-
-                    ValorTotalErrosTipo1 = errosContabilizados.Where(E => E.Etapa == 1).Sum(E => E.ValorParcela),
-                    ValorTotalErrosTipo2 = errosContabilizados.Where(E => E.Etapa == 2).Sum(E => E.ValorParcela),
-                    ValorTotalErrosTipo3 = errosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
-                    UserName = ""
-                });
-            }
-            catch (ArgumentNullException ex)
-            {
-                var dataErro =
-                    await _arquivolayoutService.SalvarLayoutArquivo("E", "Arquivo ja processado com a data de hoje");
-                await _arquivolayoutService.RegistrarErro(dataErro, JsonSerializer.Serialize(ex.StackTrace),
-                    ErrosBaixaPagamento.OutrosErros, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
-                    ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
-            }
-            finally
-            {
-                await _arquivolayoutService.AlterarConteudo(dataBaixa, arquivos);
-            }
-        }
-
-=======
->>>>>>> 7ca358f (ajuste para atender mais de uma ies e arquivo)
     }
 }
