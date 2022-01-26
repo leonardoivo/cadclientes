@@ -58,5 +58,6 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string TipoPagamento { get; set; }
 
         public bool Integrado { get; set; }
+        public int Erro { get; set; }  
     }
 }
