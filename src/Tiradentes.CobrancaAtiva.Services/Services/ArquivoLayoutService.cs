@@ -29,8 +29,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var layoutArquivo = new ArquivoLayoutModel()
             {
-                //Conteudo = arquivoResposta,
-                Conteudo = "Conteudo indisponivel",
+                Conteudo = arquivoResposta,
                 Status = status
             };
 
