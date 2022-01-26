@@ -11,6 +11,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 
         public DateTime ObterDataEnvio(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela);
         Task Criar(ItensGeracaoModel model);
-        Task CriarVarios(List<ItensGeracaoModel> models);
+        Task CriarVarios(IList<ItensGeracaoModel> models);
     }
 }

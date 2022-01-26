@@ -61,7 +61,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await SaveChanges();
         }
 
-        public virtual async Task CriarVarios(List<ItensGeracaoModel> models)
+        public virtual async Task CriarVarios(IList<ItensGeracaoModel> models)
         {
             await Db.Database.ExecuteSqlRawAsync("BEGIN SCF.COBRANCAS_PKG.set_pode_alt_itens_ger( true ); END;");
 
