@@ -95,11 +95,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await Db.Database.ExecuteSqlRawAsync("BEGIN SCF.COBRANCAS_PKG.set_pode_alt_itens_ger( false ); END;");
             await SaveChanges();
         }
-
-        public async Task<int> SaveChanges()
-        {
-            return await Db.SaveChangesAsync();
-        }
     }
 }
 
