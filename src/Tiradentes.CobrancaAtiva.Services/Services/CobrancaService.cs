@@ -11,6 +11,7 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Collections;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
+using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
@@ -25,16 +26,20 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         protected readonly IParcelasAcordoService _parcelaService;
         protected readonly IModalidadeService _modalidadeService;
         protected readonly ICursoService _cursoService;
+        protected readonly IParcelasAcordoService _parcelasAcordoService;
+        protected readonly IAcordoCobrancaService _acordoCobrancaService;
         protected readonly IMapper _map;
 
         public CobrancaService(
-            ICobrancaRepository repositorio, 
-            IAlunosInadimplentesRepository alunosInadimplentesRepository, 
+            ICobrancaRepository repositorio,
+            IAlunosInadimplentesRepository alunosInadimplentesRepository,
             IRegraNegociacaoService regraNegociacaoService,
             IInstituicaoService instituicaoService,
             IParcelasAcordoService parcelaService,
             IModalidadeService modalidadeService,
             ICursoService cursoService,
+            IParcelasAcordoService parcelasAcordoService,
+            IAcordoCobrancaService acordoCobrancaService,
             IMapper map
         )
         {
@@ -45,6 +50,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _parcelaService = parcelaService;
             _modalidadeService = modalidadeService;
             _cursoService = cursoService;
+            _parcelasAcordoService = parcelasAcordoService;
+            _acordoCobrancaService = acordoCobrancaService;
             _map = map;
         }
 
@@ -55,7 +62,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var returnModel = _repositorio.AlterarStatus(model).Result;
 
             return _map.Map<RespostaViewModel>(returnModel);
-            
+
         }
 
         public async Task<IEnumerable<RespostaViewModel>> BuscarRepostaNaoIntegrada()
@@ -63,7 +70,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var arquivosResposta = await _repositorio.Buscar(C => !C.Integrado);
 
             var viewModelList = from arq in arquivosResposta
-                                select _map.Map <RespostaViewModel>(arq);
+                                select _map.Map<RespostaViewModel>(arq);
 
             return viewModelList;
         }
@@ -83,6 +90,17 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _repositorio.Criar(model);
 
             return _map.Map<RespostaViewModel>(model);
+        }
+
+        public async Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel viewModel)
+        {
+            await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(viewModel.Parcela, viewModel.NumeroAcordo, viewModel.DataPagamento, viewModel.DataPagamento, viewModel.ValorPago, 'R');
+
+            await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, (viewModel.ValorPago * -1));
+
+            await _parcelasAcordoService.InserirObservacaoRegularizacaoParcela(viewModel.TipoInadimplencia, viewModel.Parcela.ToString(), viewModel.Matricula, viewModel.Sistema, viewModel.Periodo, viewModel.IdTitulo, viewModel.CodigoAtividade, viewModel.NumeroEvento, viewModel.IdPessoa, viewModel.Texto);
+
+            return viewModel;
         }
 
         public async Task<IEnumerable<string>> ListarFiltrosMatricula(string matricula)
@@ -123,44 +141,49 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var agrupadoPorAcordo = baixas.GroupBy(b => b.NumeroAcordo);
 
-            foreach(var group in agrupadoPorAcordo)
+            foreach (var group in agrupadoPorAcordo)
             {
                 var parcelaUniq = group.First();
 
                 var instituicao = (await _instituicaoService.Buscar()).Where(i => i.Id == int.Parse(parcelaUniq.InstituicaoEnsino)).First();
                 var modalidade = await _modalidadeService.BuscarPorCodigo(parcelaUniq.Sistema);
-                
 
-                var baixaPagamento = new BaixaPagamento() {
-                        DataBaixa = parcelaUniq.DataBaixa,
-                        DataNegociacao = parcelaUniq.DataFechamentoAcordo,
-                        EmpresaParceira = parcelaUniq.CnpjEmpresaCobranca,
-                        FormaPagamento = parcelaUniq.TipoPagamento,
-                        InstituicaoEnsino = instituicao.Instituicao,
-                        InstituicaoModel = new Domain.Models.InstituicaoModel() {
-                            Id = instituicao.Id,
-                            Instituicao = instituicao.Instituicao
-                        },
-                        Matricula = parcelaUniq.Matricula,
-                        ModalidadeEnsino = modalidade.Modalidade,
-                        ModalidadeModel = new Domain.Models.ModalidadeModel() {
-                            Id = modalidade.Id,
-                            Modalidade = modalidade.Modalidade
-                        },
-                        NumeroAcordo = parcelaUniq.NumeroAcordo,
-                        Percentual = 0,
-                        Politica = true,
-                        SaldoDevedor = group.Sum(x => float.Parse(x.SaldoDevedorTotal)),
-                        TotalParcelas = group.Count(),
-                        ValorJuros = group.Sum(x => float.Parse(x.Juros)),
-                        ValorMulta = group.Sum(x => float.Parse(x.Multa)),
-                        ValorPago = group.Sum(x => float.Parse(string.IsNullOrEmpty(x.ValorPago) ? "0" : x.ValorPago)),
-                        ParcelasAcordadas = new List<BaixaPagamentoParcela>(),
-                        ParcelasNegociadas = new List<BaixaPagamentoParcela>()
-                    };
 
-                foreach(var parcela in group.Where(p => p.TipoRegistro.Equals("1"))) {
-                    baixaPagamento.ParcelasAcordadas.Add(new BaixaPagamentoParcela() {
+                var baixaPagamento = new BaixaPagamento()
+                {
+                    DataBaixa = parcelaUniq.DataBaixa,
+                    DataNegociacao = parcelaUniq.DataFechamentoAcordo,
+                    EmpresaParceira = parcelaUniq.CnpjEmpresaCobranca,
+                    FormaPagamento = parcelaUniq.TipoPagamento,
+                    InstituicaoEnsino = instituicao.Instituicao,
+                    InstituicaoModel = new Domain.Models.InstituicaoModel()
+                    {
+                        Id = instituicao.Id,
+                        Instituicao = instituicao.Instituicao
+                    },
+                    Matricula = parcelaUniq.Matricula,
+                    ModalidadeEnsino = modalidade.Modalidade,
+                    ModalidadeModel = new Domain.Models.ModalidadeModel()
+                    {
+                        Id = modalidade.Id,
+                        Modalidade = modalidade.Modalidade
+                    },
+                    NumeroAcordo = parcelaUniq.NumeroAcordo,
+                    Percentual = 0,
+                    Politica = true,
+                    SaldoDevedor = group.Sum(x => float.Parse(x.SaldoDevedorTotal)),
+                    TotalParcelas = group.Count(),
+                    ValorJuros = group.Sum(x => float.Parse(x.Juros)),
+                    ValorMulta = group.Sum(x => float.Parse(x.Multa)),
+                    ValorPago = group.Sum(x => float.Parse(string.IsNullOrEmpty(x.ValorPago) ? "0" : x.ValorPago)),
+                    ParcelasAcordadas = new List<BaixaPagamentoParcela>(),
+                    ParcelasNegociadas = new List<BaixaPagamentoParcela>()
+                };
+
+                foreach (var parcela in group.Where(p => p.TipoRegistro.Equals("1")))
+                {
+                    baixaPagamento.ParcelasAcordadas.Add(new BaixaPagamentoParcela()
+                    {
                         Agencia = parcela.CodigoAgencia,
                         AcordoOriginal = parcela.NumeroAcordo,
                         Banco = parcela.CodigoBanco,
@@ -176,7 +199,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     });
                 }
 
-                foreach(var parcela in group.Where(p => p.TipoRegistro.Equals("2"))) {
+                foreach (var parcela in group.Where(p => p.TipoRegistro.Equals("2")))
+                {
                     var valorParcelaComJuros = 0.0;
                     var valorParcelaOriginal = Double.Parse(parcela.ValorParcela);
                     var valorMulta = (valorParcelaOriginal / 100) * 0.2;
@@ -187,7 +211,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                     valorParcelaComJuros = valorParcelaOriginal + valorMulta + (valorJurosAoDia * diasVencidos);
 
-                    var parcelaBaixa = new BaixaPagamentoParcela() {
+                    var parcelaBaixa = new BaixaPagamentoParcela()
+                    {
                         Agencia = parcela.CodigoAgencia,
                         AcordoOriginal = parcela.NumeroAcordo,
                         Banco = parcela.CodigoBanco,
@@ -200,15 +225,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         TipoPagamento = parcela.TipoPagamento,
                         Valor = float.Parse(parcela.ValorParcela),
                         ValorPago = float.Parse(parcela.ValorPago),
-                        ValorDebitoOriginal = (decimal) valorParcelaComJuros
+                        ValorDebitoOriginal = (decimal)valorParcelaComJuros
                     };
 
                     baixaPagamento.ParcelasNegociadas.Add(parcelaBaixa);
 
-                    if(baixaPagamento.Politica)
+                    if (baixaPagamento.Politica)
                         await RegraContemplada(baixaPagamento, parcelaBaixa);
                 }
-                baixaPagamento.Percentual = (float) (baixaPagamento.ParcelasNegociadas.Sum(p => 100 - (100 * ((decimal) p.ValorPago / p.ValorDebitoOriginal))) / baixaPagamento.ParcelasAcordadas.Count);
+                baixaPagamento.Percentual = (float)(baixaPagamento.ParcelasNegociadas.Sum(p => 100 - (100 * ((decimal)p.ValorPago / p.ValorDebitoOriginal))) / baixaPagamento.ParcelasAcordadas.Count);
                 resultadoBaixas.Add(baixaPagamento);
             }
 
@@ -234,7 +259,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         private async Task RegraContemplada(BaixaPagamento baixaPagamento, BaixaPagamentoParcela parcela)
         {
-            var _regrasAtivas = (await _regraNegociacaoService.Buscar(new ConsultaRegraNegociacaoQueryParam() {
+            var _regrasAtivas = (await _regraNegociacaoService.Buscar(new ConsultaRegraNegociacaoQueryParam()
+            {
                 InstituicaoId = baixaPagamento.InstituicaoModel.Id,
                 ModalidadeId = baixaPagamento.ModalidadeModel.Id,
                 Pagina = 1,
@@ -249,17 +275,22 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     && DateTime.Parse(baixaPagamento.DataNegociacao) <= r.ValidadeFinal.Date)*/
                 .First();
 
-            var percentual = 100 - (100 * ((decimal) parcela.ValorPago / parcela.ValorDebitoOriginal));
+            var percentual = 100 - (100 * ((decimal)parcela.ValorPago / parcela.ValorDebitoOriginal));
 
-            if(baixaPagamento.FormaPagamento == "AVISTA") {
-                baixaPagamento.Politica = ((decimal) percentual) <= regrasAtivas.PercentValorAVista;
-            } else if(baixaPagamento.FormaPagamento == "CARTAO") {
-                baixaPagamento.Politica = ((decimal) percentual) <= regrasAtivas.PercentValorCartao;
-            } else if(baixaPagamento.FormaPagamento == "BOLETO") {
-                baixaPagamento.Politica = ((decimal) percentual) <= regrasAtivas.PercentValorBoleto;
-            }            
+            if (baixaPagamento.FormaPagamento == "AVISTA")
+            {
+                baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorAVista;
+            }
+            else if (baixaPagamento.FormaPagamento == "CARTAO")
+            {
+                baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorCartao;
+            }
+            else if (baixaPagamento.FormaPagamento == "BOLETO")
+            {
+                baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorBoleto;
+            }
         }
-        
+
         public void Dispose()
         {
             Dispose(true);

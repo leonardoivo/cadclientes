@@ -9,7 +9,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     {
         bool ExisteParcela(decimal matricula, decimal periodo, int parcela);
         bool ExisteParcelaInadimplente(DateTime dataBaixa);
-        Task InserirParcela(Int64 numeroAcordo, Int64 matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia, int? periodoChequeDevolvido);
+        Task InserirParcela(Int64 numeroAcordo, Int64 matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia, string periodoChequeDevolvido);
 
         IEnumerable<ParcelasTitulosModel> ObterParcelasPorNumeroAcordo(decimal numeroAcordo);
     }
