@@ -27,6 +27,12 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return Ok(await _cobrancaService.Criar(resposta));
         }
 
+        [HttpPost("regularizar-acordo-cobranca")]
+        public async Task<IActionResult> RegularizarAcordoCobranca([FromBody] RegularizarParcelasAcordoViewModel viewModel)
+        {
+            return Ok(await _cobrancaService.RegularizarAcordoCobranca(viewModel));
+        }
+
         /// <summary>
         /// Retorna o Historico do processamnento de arquivos.
         /// </summary>

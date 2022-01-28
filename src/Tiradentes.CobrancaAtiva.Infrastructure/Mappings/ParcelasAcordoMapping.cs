@@ -4,13 +4,13 @@ using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 {
-    public class ParcelasAcordoModelMapping : IEntityTypeConfiguration<ParcelasAcordoModel>
+    public class ParcelasAcordoMapping : IEntityTypeConfiguration<ParcelasAcordoModel>
     {
         public void Configure(EntityTypeBuilder<ParcelasAcordoModel> builder)
         {
             builder.Ignore(ep => ep.Id);
 
-            builder.HasKey(ep => new { ep.NumeroAcordo, ep.Parcela });
+            builder.HasKey(ep => new { ep.NumeroAcordo, ep.Parcela, ep.CnpjEmpresaCobranca });
 
             builder.Property(ep => ep.NumeroAcordo)
               .HasColumnName("NUM_ACORDO");
@@ -46,6 +46,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 
             builder.Property(ep => ep.TipoInadimplencia)
                 .HasColumnName("TIPO_INADIMPLENCIA")
+                .HasColumnType("CHAR(1)");
+
+            builder.Property(ep => ep.SituacaoPagamento)
+                .HasColumnName("STA_PGTO")
                 .HasColumnType("CHAR(1)");
 
             builder.ToTable("PARCELAS_ACORDO", "SCF");

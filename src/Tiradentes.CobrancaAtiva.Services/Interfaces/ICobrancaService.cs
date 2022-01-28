@@ -11,6 +11,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     {
         Task<RespostaViewModel> Criar(RespostaViewModel model);
 
+        Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel model);
+
         Task<IEnumerable<RespostaViewModel>> BuscarRepostaNaoIntegrada();
 
         RespostaViewModel AlterarStatus(RespostaViewModel viewModel);
