@@ -1,6 +1,4 @@
-﻿
-using MongoDB.Bson;
-using System;
+﻿using System;
 
 namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 {

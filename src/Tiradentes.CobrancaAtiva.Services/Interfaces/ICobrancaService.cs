@@ -15,6 +15,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 
         Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel model);
 
+        Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel model);
+
         Task<IEnumerable<RespostaViewModel>> BuscarRepostaNaoIntegrada();
 
         Task BaixaManual(BaixaPagamentoParcelaManualViewModel viewModel);

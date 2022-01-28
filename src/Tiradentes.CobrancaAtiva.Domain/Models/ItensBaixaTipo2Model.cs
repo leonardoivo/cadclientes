@@ -5,7 +5,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
 {
     public class ItensBaixaTipo2Model : BaseModel
     {
-        public DateTime DataBaixa { get; set; }
+       public DateTime DataBaixa { get; set; }
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public decimal Sequencia { get; set; }
         public decimal CodigoErro { get; set; }
@@ -22,6 +22,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string SituacaoAluno { get; set; }
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }
+
 
     }
 }

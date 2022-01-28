@@ -17,5 +17,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public DateTime DataEnvio { get; set; }
         public DateTime DataVencimento { get; set; }
         public decimal Valor { get; set; }
+
     }
 }

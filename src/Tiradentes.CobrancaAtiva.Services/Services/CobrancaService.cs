@@ -301,6 +301,17 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return viewModel;
         }
 
+        public async Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel viewModel)
+        {
+            await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(viewModel.Parcela, viewModel.NumeroAcordo, viewModel.DataPagamento, viewModel.DataPagamento, viewModel.ValorPago, 'R');
+
+            await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, (viewModel.ValorPago * -1));
+
+            await _parcelasAcordoService.InserirObservacaoRegularizacaoParcela(viewModel.TipoInadimplencia, viewModel.Parcela.ToString(), viewModel.Matricula, viewModel.Sistema, viewModel.Periodo, viewModel.IdTitulo, viewModel.CodigoAtividade, viewModel.NumeroEvento, viewModel.IdPessoa, viewModel.Texto);
+
+            return viewModel;
+        }
+
         public async Task<IEnumerable<string>> ListarFiltrosMatricula(string matricula)
         {
             var baixas = await _repositorio.ListarFiltroPorMatricula(matricula);

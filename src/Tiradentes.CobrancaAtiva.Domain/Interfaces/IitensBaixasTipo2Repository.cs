@@ -4,8 +4,9 @@ using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
-    public interface IItensBaixasTipo2Repository : IBaseRepository<ItensBaixaTipo2Model>
+    public interface IItensBaixasTipo1Repository : IBaseRepository<ItensBaixaTipo1Model>
     {
-        Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int codErro, string cnpjEmpresaCobranca, string sistema, string situacaoAluno, string tipoInadimplencia, string periodoOutros);
+        Task AtualizarMatricula(DateTime dataBaixa, Int64 numeroAcordo, Int64 matricula );
+        Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, decimal multa, decimal juros, DateTime dataVencimento, decimal valorParcela, int codErro, string cnpjEmpresaCobranca, int parcela, string sistema, string situacaoAluno, string tipoInadimplencia);
     }
 }
