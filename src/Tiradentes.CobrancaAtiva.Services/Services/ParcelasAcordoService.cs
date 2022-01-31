@@ -60,9 +60,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                           tipoInadimplencia);
         }
 
-        public async Task InserirObservacaoRegularizacaoParcela(string tipoInadimplencia, string parcela, decimal matricula, string sistema, decimal periodo, decimal? idTitulo, int? codigoAtividade, int? numeroEvt, decimal? idPessoa, string texto)
+        public async Task InserirObservacaoRegularizacaoParcelaAcordo(long cnpjEmpresaCobranca, decimal numAcordo, decimal parcela, string texto)
         {
-            await _parcelasAcordoRepository.InserirObservacaoRegularizacaoParcela(tipoInadimplencia, parcela, matricula, sistema, periodo, idTitulo, codigoAtividade, numeroEvt, idPessoa, texto);
+            await _parcelasAcordoRepository.InserirObservacaoRegularizacaoParcelaAcordo(cnpjEmpresaCobranca, numAcordo, parcela, texto);
         }
 
         public bool ParcelaPaga(decimal parcela, decimal numeroAcordo)
