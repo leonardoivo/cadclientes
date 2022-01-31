@@ -98,7 +98,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, (viewModel.ValorPago * -1));
 
-            await _parcelasAcordoService.InserirObservacaoRegularizacaoParcela(viewModel.TipoInadimplencia, viewModel.Parcela.ToString(), viewModel.Matricula, viewModel.Sistema, viewModel.Periodo, viewModel.IdTitulo, viewModel.CodigoAtividade, viewModel.NumeroEvento, viewModel.IdPessoa, viewModel.Texto);
+            await _parcelasAcordoService.InserirObservacaoRegularizacaoParcelaAcordo(viewModel.CnpjEmpresaCobranca, viewModel.NumeroAcordo, viewModel.Parcela, viewModel.Texto);
 
             return viewModel;
         }

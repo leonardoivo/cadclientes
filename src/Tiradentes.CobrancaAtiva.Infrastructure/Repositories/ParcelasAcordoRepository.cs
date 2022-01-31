@@ -314,51 +314,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
-        public async Task InserirObservacaoRegularizacaoParcela(string tipoInadimplencia, string parcela, decimal matricula, string sistema, decimal periodo, decimal? idTitulo, int? codigoAtividade, int? numeroEvt, decimal? idPessoa, string texto)
+        public async Task InserirObservacaoRegularizacaoParcelaAcordo(long cnpjEmpresaCobranca, decimal numAcordo, decimal parcela, string texto)
         {
-            var idAluno = _idAlunoRepository.ObterIdAluno(matricula);
-
-            if (tipoInadimplencia == "P")
-            {
-                if (sistema == "S")
-                {
-                    var ano = periodo.ToString().Substring(0, 4);
-                    var semestre = periodo.ToString().Substring(4, 1);
-
-                    await Db.Database.ExecuteSqlRawAsync(@"insert into sca.obs_reg_pgto( ano, semestre, idt_alu, parcela, tpo_pgto, dat_hora, username, texto )
-                                                      values( {0}, {1}, {2}, {3}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, {4} );", periodo.ToString().Substring(0, 4), semestre, idAluno, parcela, texto);
-                }
-                else if (sistema == "E")
-                {
-                    await Db.Database.ExecuteSqlRawAsync(@"insert into profope.obs_reg_pgto( idt_alu,parcela,tpo_pgto,dat_hora,username,texto)
-      	                                                       values( {0}, {1}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, {2});", idAluno, parcela, texto);
-                }
-                else if (sistema == "P")
-                {
-                    await Db.Database.ExecuteSqlRawAsync(@"insert into spgl.obs_reg_pgto(idt_alu, parcela, tpo_pgto, dat_hora, username, texto)
-                                                               values( {0}, {1}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, {2})", idAluno, parcela, texto);
-                }
-                else if (sistema == "I")
-                {
-                    await Db.Database.ExecuteSqlRawAsync(@"insert into scf.pgt_obs_reg_tit(idt_titulo,tpo_pgto,dat_hora,username,texto)
-                                                               values( {0}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, {1})", idAluno, texto);
-                }
-                else if (sistema == "X")
-                {
-                    await Db.Database.ExecuteSqlRawAsync(@"insert into extensao.obs_reg_pgto(cod_atv,num_evt,idt_ddp,num_pc,tpo_pgto,dat_hora,username,texto)
-                                                               values( {0}, {1}, {2}, {3}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, {4})", codigoAtividade, numeroEvt, idPessoa, parcela, texto);
-                }
-            }
-            else if (tipoInadimplencia == "T")
-            {
-                await Db.Database.ExecuteSqlRawAsync(@"insert into scf.sap_tit_obs_pgto(idt_titulo_avu,username,dat_hora,texto,tpo_pgto)
-                                                           values( {0}, sec#_.usuarios_pkg.obter_username, sysdate, {1}, 'P')", idTitulo, texto);
-            }
-            else if (tipoInadimplencia == "C")
-            {
 
 
-            }
+            await Db.Database.ExecuteSqlRawAsync(@"insert into scf.obs_reg_pgto_acordo(cnpj_empresa_cobranca,num_acordo,parcela,tpo_pgto,dat_hora,usarname,texto)
+                                                           values( {0},{1},{2},'P',sysdate,sec#_.usuarios_pkg.obter_username,{3} )", cnpjEmpresaCobranca, numAcordo, parcela, texto);
+
         }
     }
 }

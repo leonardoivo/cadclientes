@@ -6,13 +6,12 @@ using System.Threading.Tasks;
 
 namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 {
-    public class RegularizarParcelasAcordoViewModel
+    public class RespostaRegistroTipo3ViewModel
     {
-        public Int64 CnpjEmpresaCobranca { get; set; }
-        public Int64 NumeroAcordo { get; set; }
+        public string NossoNumero { get; set; }
         public DateTime DataPagamento { get; set; }
+        public DateTime DataBaixa { get; set; }
         public decimal ValorPago { get; set; }
-        public decimal Parcela { get; set; }
-        public string Texto { get; set; }
+        public string TipoPagamento { get; set; }
     }
 }
