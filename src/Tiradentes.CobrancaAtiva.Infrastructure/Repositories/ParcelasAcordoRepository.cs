@@ -114,7 +114,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                  && P.DataPagamento != null).Count() > 0;
         }
 
-        public async Task QuitarParcelasAcordo(decimal numeroAcordo, decimal matricula, string sistema, DateTime dataPagamento, decimal periodo, decimal? idTitulo, int? codigoAtividade, int? numeroEvento, decimal? idPessoa, int codigobanco, int codigoAgencia, int numeroConta, decimal numeroCheque, string CpfCnpj)
+        public async Task QuitarParcelasAcordo(decimal numeroAcordo, decimal matricula, string sistema, DateTime dataPagamento, decimal periodo, decimal? idTitulo, int? codigoAtividade, int? numeroEvt, decimal? idPessoa, int codigobanco, int codigoAgencia, int numeroConta, decimal numeroCheque, string CpfCnpj)
         {
 
             var idAluno = _idAlunoRepository.ObterIdAluno(matricula);
@@ -219,12 +219,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                                               from scf.itens_geracao ig
                                                                               where ig.matricula = :p_matricula
                                                                                 and ig.periodo  = :p_periodo
-                                                                                and ig.parcela  = :p_parcela )", dataPagamento, codigoAtividade, numeroEvento, idPessoa, idPessoa);
+                                                                                and ig.parcela  = :p_parcela )", dataPagamento, codigoAtividade, numeroEvt, idPessoa, idPessoa);
 
 
                         await Db.Database.ExecuteSqlRawAsync(@"insert into extensao.obs_reg_pgto(cod_atv,num_evt,idt_ddp,num_pc,tpo_pgto,dat_hora,username,texto)
                                                                values( {0}, {1}, {2}, {3}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do processamento da baixa da empresa de cobrança')", codigoAtividade,
-                                                                                                                                                                                                                                   numeroEvento,
+                                                                                                                                                                                                                                   numeroEvt,
                                                                                                                                                                                                                                    idPessoa,
                                                                                                                                                                                                                                    parcela.Parcela);
                     }

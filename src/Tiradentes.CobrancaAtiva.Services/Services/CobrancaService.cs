@@ -111,7 +111,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                     periodo: viewModel.ObterPeriodo(),
                                                                     idTitulo: viewModel.IdTitulo,
                                                                     codigoAtividade: viewModel.CodigoAtividade,
-                                                                    numeroEvento: viewModel.NumeroEvento,
+                                                                    numeroEvt: viewModel.NumeroEvt,
                                                                     idPessoa: viewModel.IdPessoa,
                                                                     codigobanco: viewModel.CodigoBanco,
                                                                     codigoAgencia: viewModel.CodigoAgencia,
@@ -143,14 +143,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var baixas = await _repositorio.ListarFiltroPorMatricula(matricula);
 
-            return baixas.GroupBy(b => b.Matricula).Select(b => b.Key);
+            return baixas.GroupBy(b => b.Matricula.ToString()).Select(b => b.Key);
         }
 
         public async Task<IEnumerable<string>> ListarFiltrosAcordo(string acordo)
         {
             var baixas = await _repositorio.ListarFiltroPorAcordo(acordo);
 
-            return baixas.GroupBy(b => b.NumeroAcordo).Select(b => b.Key);
+            return baixas.GroupBy(b => b.NumeroAcordo.ToString()).Select(b => b.Key);
         }
 
         public async Task<IEnumerable<string>> ListarFiltroCpf(string cpf)
@@ -187,8 +187,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 var baixaPagamento = new BaixaPagamento()
                 {
-                    DataBaixa = parcelaUniq.DataBaixa,
-                    DataNegociacao = parcelaUniq.DataFechamentoAcordo,
+                    DataBaixa = parcelaUniq.DataBaixa.ToString(),
+                    DataNegociacao = parcelaUniq.DataFechamentoAcordo.ToString(),
                     EmpresaParceira = parcelaUniq.CnpjEmpresaCobranca,
                     FormaPagamento = parcelaUniq.TipoPagamento,
                     InstituicaoEnsino = instituicao.Instituicao,
@@ -197,21 +197,21 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         Id = instituicao.Id,
                         Instituicao = instituicao.Instituicao
                     },
-                    Matricula = parcelaUniq.Matricula,
+                    Matricula = parcelaUniq.Matricula.ToString(),
                     ModalidadeEnsino = modalidade.Modalidade,
                     ModalidadeModel = new Domain.Models.ModalidadeModel()
                     {
                         Id = modalidade.Id,
                         Modalidade = modalidade.Modalidade
                     },
-                    NumeroAcordo = parcelaUniq.NumeroAcordo,
+                    NumeroAcordo = parcelaUniq.NumeroAcordo.ToString(),
                     Percentual = 0,
                     Politica = true,
-                    SaldoDevedor = group.Sum(x => float.Parse(x.SaldoDevedorTotal)),
+                    SaldoDevedor = group.Sum(x => float.Parse(x.SaldoDevedorTotal.ToString())),
                     TotalParcelas = group.Count(),
-                    ValorJuros = group.Sum(x => float.Parse(x.Juros)),
-                    ValorMulta = group.Sum(x => float.Parse(x.Multa)),
-                    ValorPago = group.Sum(x => float.Parse(string.IsNullOrEmpty(x.ValorPago) ? "0" : x.ValorPago)),
+                    ValorJuros = group.Sum(x => float.Parse(x.JurosParcela.ToString())),
+                    ValorMulta = group.Sum(x => float.Parse(x.MultaParcela.ToString())),
+                    ValorPago = group.Sum(x => float.Parse(string.IsNullOrEmpty(x.ValorPago.ToString()) ? "0" : x.ValorPago.ToString())),
                     ParcelasAcordadas = new List<BaixaPagamentoParcela>(),
                     ParcelasNegociadas = new List<BaixaPagamentoParcela>()
                 };
@@ -224,25 +224,25 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         AcordoOriginal = Convert.ToInt64(parcela.NumeroAcordo),
                         Banco = Convert.ToInt32(parcela.CodigoBanco),
                         Cheque = Convert.ToInt64(parcela.NumeroCheque),
-                        DataBaixa = parcela.DataBaixa,
-                        DataPagamento = parcela.DataPagamento,
-                        DataVencimento = parcela.DataVencimento,
-                        Parcela = int.Parse(parcela.Parcela),
+                        DataBaixa = parcela.DataBaixa.ToString(),
+                        DataPagamento = parcela.DataPagamento.ToString(),
+                        DataVencimento = parcela.DataVencimentoParcela.ToString(),
+                        Parcela = int.Parse(parcela.Parcela.ToString()),
                         Periodo = parcela.Periodo,
                         TipoPagamento = parcela.TipoPagamento,
-                        Valor = float.Parse(parcela.ValorParcela),
-                        ValorPago = float.Parse(string.IsNullOrEmpty(parcela.ValorPago) ? "0" : parcela.ValorPago)
+                        Valor = float.Parse(parcela.ValorParcela.ToString()),
+                        ValorPago = float.Parse(string.IsNullOrEmpty(parcela.ValorPago.ToString()) ? "0" : parcela.ValorPago.ToString())
                     });
                 }
 
                 foreach (var parcela in group.Where(p => p.TipoRegistro.Equals("2")))
                 {
                     var valorParcelaComJuros = 0.0;
-                    var valorParcelaOriginal = Double.Parse(parcela.ValorParcela);
+                    var valorParcelaOriginal = Double.Parse(parcela.ValorParcela.ToString());
                     var valorMulta = (valorParcelaOriginal / 100) * 0.2;
                     var valorJurosAoDia = (valorParcelaOriginal / 100) * 0.07;
-                    var dataVencimento = DateTime.ParseExact(parcela.DataVencimento, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    var dataAcordo = DateTime.ParseExact(parcela.DataFechamentoAcordo, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    var dataVencimento = DateTime.ParseExact(parcela.DataVencimentoParcela.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    var dataAcordo = DateTime.ParseExact(parcela.DataFechamentoAcordo.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
                     var diasVencidos = (dataAcordo - dataVencimento).TotalDays;
 
                     valorParcelaComJuros = valorParcelaOriginal + valorMulta + (valorJurosAoDia * diasVencidos);
@@ -253,22 +253,22 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         AcordoOriginal = Convert.ToInt64(parcela.NumeroAcordo),
                         Banco = Convert.ToInt32(parcela.CodigoBanco),
                         Cheque = Convert.ToInt64(parcela.NumeroCheque),
-                        DataBaixa = parcela.DataBaixa,
-                        DataPagamento = parcela.DataPagamento,
-                        DataVencimento = parcela.DataVencimento,
-                        Parcela = int.Parse(parcela.Parcela),
+                        DataBaixa = parcela.DataBaixa.ToString(),
+                        DataPagamento = parcela.DataPagamento.ToString(),
+                        DataVencimento = parcela.DataVencimentoParcela.ToString(),
+                        Parcela = int.Parse(parcela.Parcela.ToString()),
                         Periodo = parcela.Periodo,
                         TipoPagamento = parcela.TipoPagamento,
-                        Valor = float.Parse(parcela.ValorParcela),
-                        ValorPago = float.Parse(parcela.ValorPago),
+                        Valor = float.Parse(parcela.ValorParcela.ToString()),
+                        ValorPago = float.Parse(parcela.ValorPago.ToString()),
                         ValorDebitoOriginal = (decimal)valorParcelaComJuros,
                         NumeroAcordo = Convert.ToDecimal(parcela.NumeroAcordo),
                         Matricula = Convert.ToDecimal(parcela.Matricula),
                         Sistema = parcela.Sistema,
-                        IdTitulo = string.IsNullOrEmpty(parcela.IdTitulo) ? null : Convert.ToDecimal(parcela.IdTitulo),
-                        CodigoAtividade = string.IsNullOrEmpty(parcela.CodigoAtividade) ? null : Convert.ToInt32(parcela.CodigoAtividade),
-                        NumeroEvt = string.IsNullOrEmpty(parcela.NumeroEvt) ? null : Convert.ToInt32(parcela.NumeroEvt),
-                        IdPessoa = string.IsNullOrEmpty(parcela.IdPessoa) ? null : Convert.ToDecimal(parcela.IdPessoa),
+                        IdTitulo = string.IsNullOrEmpty(parcela.IdTitulo.ToString()) ? null : Convert.ToDecimal(parcela.IdTitulo),
+                        CodigoAtividade = string.IsNullOrEmpty(parcela.CodigoAtividade.ToString()) ? null : Convert.ToInt32(parcela.CodigoAtividade),
+                        NumeroEvt = string.IsNullOrEmpty(parcela.NumeroEvt.ToString()) ? null : Convert.ToInt32(parcela.NumeroEvt),
+                        IdPessoa = string.IsNullOrEmpty(parcela.IdPessoa.ToString()) ? null : Convert.ToDecimal(parcela.IdPessoa),
                         NumeroConta = Convert.ToInt32(parcela.NumeroConta),
                         CpfCnpj = parcela.CPF
                     };

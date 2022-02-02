@@ -53,7 +53,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 
 
         public int CodigoAtividade { get; set; }
-        public int NumeroEvento { get; set; }
+        public int NumeroEvt { get; set; }
         public int CodigoBanco { get; set; }
         public int CodigoAgencia { get; set; }
         public int NumeroConta { get; set; }
