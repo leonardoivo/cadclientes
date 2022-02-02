@@ -21,7 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string Sistema { get; set; }
         public decimal? IdTitulo { get; set; }
         public int? CodigoAtividade { get; set; }
-        public int NumeroEvento { get; set; }
+        public int NumeroEvt { get; set; }
 
         public decimal? IdPessoa { get; set; }
         public int CodigoBanco { get; set; }
