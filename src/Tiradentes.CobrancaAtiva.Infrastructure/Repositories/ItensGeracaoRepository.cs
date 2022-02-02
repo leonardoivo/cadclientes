@@ -11,24 +11,26 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
     public class ItensGeracaoRepository : BaseRepository<ItensGeracaoModel>, IItensGeracaoRepository
     {
-        public ItensGeracaoRepository(CobrancaAtivaDbContext context): base(context)
-        { 
+        public ItensGeracaoRepository(CobrancaAtivaDbContext context) : base(context)
+        {
 
         }
 
-        public bool ExisteMatricula(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela)
+        public bool ExisteMatricula(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela, string periodoOutros)
         {
             return DbSet.Where(I => I.CnpjEmpresaCobranca == cnpjEmpresa
                                  && I.Matricula == matricula
                                  && I.Periodo == periodo
+                                 && I.PeriodoOutros == periodoOutros
                                  && I.Parcela == parcela).Count() > 0;
         }
 
-        public DateTime ObterDataEnvio(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela)
+        public DateTime ObterDataEnvio(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela, string periodoOutros)
         {
             return DbSet.Where(I => I.CnpjEmpresaCobranca == cnpjEmpresa
                                  && I.Matricula == matricula
                                  && I.Periodo == periodo
+                                 && I.PeriodoOutros == periodoOutros
                                  && I.Parcela == parcela)
                         .Select(I => I.DataGeracao).FirstOrDefault();
         }
@@ -40,7 +42,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             await Db.Database.ExecuteSqlRawAsync("BEGIN " +
                 "insert into scf.itens_geracao  " +
-                "(dat_geracao, matricula, periodo, parcela, dat_venc, valor, controle, cnpj_empresa_cobranca,sta_alu,sistema,tipo_inadimplencia,dsc_inadimplencia)  " +
+                "(dat_geracao, matricula, periodo, parcela, dat_venc, valor, controle, cnpj_empresa_cobranca,sta_alu,sistema,tipo_inadimplencia,dsc_inadimplencia, periodo_outros)  " +
                 "values ( " +
                 "to_date('" + model.DataGeracao + "','dd/mm/yyyy hh24:mi:ss'), " +
                 "" + model.Matricula + ", " +
@@ -53,7 +55,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 "'" + model.SituacaoAluno + "', " +
                 "'" + model.Sistema + "', " +
                 "'" + model.TipoInadimplencia + "', " +
-                "'" + model.DescricaoInadimplencia + "'); " +
+                "'" + model.DescricaoInadimplencia + "', " +
+                "'" + model.PeriodoOutros + "'); " +
                 "END;");
 
             await SaveChanges();
@@ -70,11 +73,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             foreach (var model in models)
             {
                 sqlCommand += " into scf.itens_geracao  " +
-                "(dat_geracao, matricula, periodo, parcela, dat_venc, valor, controle, cnpj_empresa_cobranca,sta_alu,sistema,tipo_inadimplencia,dsc_inadimplencia,periodo_cheque_devolvido)  " +
+                "(dat_geracao, matricula, periodo, parcela, dat_venc, valor, controle, cnpj_empresa_cobranca,sta_alu,sistema,tipo_inadimplencia,dsc_inadimplencia,periodo_outros)  " +
                 "values ( " +
                 "to_date('" + model.DataGeracao + "','dd/mm/yyyy hh24:mi:ss'), " +
                 "" + model.Matricula + ", " +
-                "" + (model.Periodo == null || model.Periodo.Equals("") ? "null" : model.Periodo) + ", " +
+                "" + model.Periodo + ", " +
                 "" + model.Parcela + ", " +
                 "'" + model.DataVencimento + "', " +
                 "" + model.Valor.ToString().Replace(",", ".") + ", " +
@@ -84,7 +87,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 "'" + model.Sistema + "', " +
                 "'" + model.TipoInadimplencia + "', " +
                 "'" + model.DescricaoInadimplencia + "', " +
-                (model.PeriodoChequeDevolvido == null || model.PeriodoChequeDevolvido.Equals("") ? "null" : "'" + model.PeriodoChequeDevolvido + "'") + ") ";
+                (model.PeriodoOutros == null || model.PeriodoOutros.Equals("") ? "null" : "'" + model.PeriodoOutros + "'") + ") ";
             }
 
             sqlCommand += " SELECT 1 FROM DUAL; END;";

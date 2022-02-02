@@ -14,12 +14,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         }
 
-        public async Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int codErro, string cnpjEmpresaCobranca, string sistema, string situacaoAluno, string tipoInadimplencia, string periodoChequeDevolvido)
+        public async Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int codErro, string cnpjEmpresaCobranca, string sistema, string situacaoAluno, string tipoInadimplencia, string periodoOutros)
         {
 
             HabilitarAlteracaoBaixasTipo2(true);
 
-            await Criar(new ItensBaixaTipo2Model() { 
+            await Criar(new ItensBaixaTipo2Model()
+            {
                 DataBaixa = dataBaixa.Date,
                 Matricula = matricula,
                 NumeroAcordo = numeroAcordo,
@@ -28,11 +29,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 DataVencimento = dataVencimento,
                 Valor = valor,
                 CodigoErro = codErro,
-                CnpjEmpresaCobranca = cnpjEmpresaCobranca,                
+                CnpjEmpresaCobranca = cnpjEmpresaCobranca,
                 Sistema = sistema,
                 SituacaoAluno = situacaoAluno,
                 TipoInadimplencia = tipoInadimplencia,
-                PeriodoChequeDevolvido = periodoChequeDevolvido,
+                PeriodoOutros = periodoOutros,
                 NumeroLinha = 1,
             });
 

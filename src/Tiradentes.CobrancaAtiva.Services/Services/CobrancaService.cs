@@ -1,10 +1,11 @@
-﻿using AutoMapper;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
+using Tiradentes.CobrancaAtiva.Application.Validations.RegularizacaoParcelasAcordo;
 using Tiradentes.CobrancaAtiva.Application.Validations.RespostaCobranca;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Collections;
@@ -85,11 +86,55 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel viewModel)
         {
-            await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(viewModel.Parcela, viewModel.NumeroAcordo, viewModel.DataPagamento, viewModel.DataPagamento, viewModel.ValorPago, 'R');
+            try
+            {
+                Validate(new RegularizacaoParcelasAcordoValidation(), viewModel);
 
-            await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, (viewModel.ValorPago * -1));
+                await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(viewModel.Parcela,
+                                                                     viewModel.NumeroAcordo,
+                                                                     viewModel.DataPagamento,
+                                                                     viewModel.DataPagamento,
+                                                                     viewModel.ValorPago,
+                                                                     'R');
 
-            await _parcelasAcordoService.InserirObservacaoRegularizacaoParcelaAcordo(viewModel.CnpjEmpresaCobranca, viewModel.NumeroAcordo, viewModel.Parcela, viewModel.Texto);
+
+                await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago * -1);
+
+                if (viewModel.Parcela == 1)
+                {
+                    try
+                    {
+                        await _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: viewModel.NumeroAcordo,
+                                                                    matricula: viewModel.Matricula,
+                                                                    sistema: viewModel.Sistema,
+                                                                    dataPagamento: viewModel.DataPagamento,
+                                                                    periodo: viewModel.ObterPeriodo(),
+                                                                    idTitulo: viewModel.IdTitulo,
+                                                                    codigoAtividade: viewModel.CodigoAtividade,
+                                                                    numeroEvento: viewModel.NumeroEvento,
+                                                                    idPessoa: viewModel.IdPessoa,
+                                                                    codigobanco: viewModel.CodigoBanco,
+                                                                    codigoAgencia: viewModel.CodigoAgencia,
+                                                                    numeroConta: viewModel.NumeroConta,
+                                                                    numeroCheque: viewModel.NumeroCheque,
+                                                                    CpfCnpj: viewModel.CPF
+                                                                    );
+
+                        await _parcelasAcordoService.InserirObservacaoRegularizacaoParcelaAcordo(viewModel.CnpjEmpresaCobranca, viewModel.NumeroAcordo, viewModel.Parcela, viewModel.Texto);
+                    }
+                    catch (Exception)
+                    {
+
+                        await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago);
+
+                        throw;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                await _parcelasAcordoService.EstornarParcelaAcordo(viewModel.Parcela, viewModel.NumeroAcordo);
+            }
 
             return viewModel;
         }
@@ -175,10 +220,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     baixaPagamento.ParcelasAcordadas.Add(new BaixaPagamentoParcela()
                     {
-                        Agencia = parcela.CodigoAgencia,
-                        AcordoOriginal = parcela.NumeroAcordo,
-                        Banco = parcela.CodigoBanco,
-                        Cheque = parcela.NumeroCheque,
+                        Agencia = Convert.ToInt32(parcela.CodigoAgencia),
+                        AcordoOriginal = Convert.ToInt64(parcela.NumeroAcordo),
+                        Banco = Convert.ToInt32(parcela.CodigoBanco),
+                        Cheque = Convert.ToInt64(parcela.NumeroCheque),
                         DataBaixa = parcela.DataBaixa,
                         DataPagamento = parcela.DataPagamento,
                         DataVencimento = parcela.DataVencimento,
@@ -204,10 +249,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                     var parcelaBaixa = new BaixaPagamentoParcela()
                     {
-                        Agencia = parcela.CodigoAgencia,
-                        AcordoOriginal = parcela.NumeroAcordo,
-                        Banco = parcela.CodigoBanco,
-                        Cheque = parcela.NumeroCheque,
+                        Agencia = Convert.ToInt32(parcela.CodigoAgencia),
+                        AcordoOriginal = Convert.ToInt64(parcela.NumeroAcordo),
+                        Banco = Convert.ToInt32(parcela.CodigoBanco),
+                        Cheque = Convert.ToInt64(parcela.NumeroCheque),
                         DataBaixa = parcela.DataBaixa,
                         DataPagamento = parcela.DataPagamento,
                         DataVencimento = parcela.DataVencimento,
@@ -216,7 +261,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         TipoPagamento = parcela.TipoPagamento,
                         Valor = float.Parse(parcela.ValorParcela),
                         ValorPago = float.Parse(parcela.ValorPago),
-                        ValorDebitoOriginal = (decimal)valorParcelaComJuros
+                        ValorDebitoOriginal = (decimal)valorParcelaComJuros,
+                        NumeroAcordo = Convert.ToDecimal(parcela.NumeroAcordo),
+                        Matricula = Convert.ToDecimal(parcela.Matricula),
+                        Sistema = parcela.Sistema,
+                        IdTitulo = string.IsNullOrEmpty(parcela.IdTitulo) ? null : Convert.ToDecimal(parcela.IdTitulo),
+                        CodigoAtividade = string.IsNullOrEmpty(parcela.CodigoAtividade) ? null : Convert.ToInt32(parcela.CodigoAtividade),
+                        NumeroEvt = string.IsNullOrEmpty(parcela.NumeroEvt) ? null : Convert.ToInt32(parcela.NumeroEvt),
+                        IdPessoa = string.IsNullOrEmpty(parcela.IdPessoa) ? null : Convert.ToDecimal(parcela.IdPessoa),
+                        NumeroConta = Convert.ToInt32(parcela.NumeroConta),
+                        CpfCnpj = parcela.CPF
                     };
 
                     baixaPagamento.ParcelasNegociadas.Add(parcelaBaixa);

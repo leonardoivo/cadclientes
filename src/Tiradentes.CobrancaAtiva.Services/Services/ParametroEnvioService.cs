@@ -313,7 +313,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             alunoInadimplente.Pai == null ? "" : alunoInadimplente.Pai.Replace(",", " "),
                             alunoInadimplente.NumCi == null ? "" : alunoInadimplente.NumCi.Replace(",", " ")
                         );
-                        
+
                     try
                     {
                         var itemGeracao = new ItensGeracaoModel()
@@ -333,10 +333,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                         var periodo = -1;
 
-                        if(Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 5) {
+                        if (Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 5)
+                        {
                             itemGeracao.Periodo = Convert.ToDecimal(alunoInadimplente.Periodo);
-                        } else {
-                            itemGeracao.PeriodoChequeDevolvido = alunoInadimplente.Periodo;
+                            itemGeracao.PeriodoOutros = "1";
+                        }
+                        else
+                        {
+                            itemGeracao.Periodo = 1;
+                            itemGeracao.PeriodoOutros = alunoInadimplente.Periodo;
                         }
 
                         linhasGeradas.Add(itemGeracao);

@@ -44,9 +44,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return _parcelasAcordoRepository.ObterValorParcelaAcordo(parcela, numeroAcordo);
         }
 
-        public async Task QuitarParcelasAcordo(decimal numeroAcordo, decimal matricula, string sistema, DateTime dataPagamento, decimal periodo, decimal? idTitulo, int? codigoAtividade, int? numeroEvt, decimal? idPessoa, int codigobanco, int codigoAgencia, int numeroConta, decimal numeroCheque, string CpfCnpj)
+        public async Task QuitarParcelasAcordo(decimal numeroAcordo, decimal matricula, string sistema, DateTime dataPagamento, decimal periodo, decimal? idTitulo, int? codigoAtividade, int? numeroEvento, decimal? idPessoa, int codigobanco, int codigoAgencia, int numeroConta, decimal numeroCheque, string CpfCnpj)
         {
-            await _parcelasAcordoRepository.QuitarParcelasAcordo(numeroAcordo, matricula, sistema, dataPagamento, periodo, idTitulo, codigoAtividade, numeroEvt, idPessoa, codigobanco, codigoAgencia, numeroConta, numeroCheque, CpfCnpj);
+            await _parcelasAcordoRepository.QuitarParcelasAcordo(numeroAcordo, matricula, sistema, dataPagamento, periodo, idTitulo, codigoAtividade, numeroEvento, idPessoa, codigobanco, codigoAgencia, numeroConta, numeroCheque, CpfCnpj);
         }
         public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataBaixa, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia)
         {

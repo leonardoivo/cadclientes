@@ -21,8 +21,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Periodo)
                 .HasColumnName("PERIODO");
 
-            builder.Property(ep => ep.PeriodoChequeDevolvido)
-                .HasColumnName("PERIODO_CHEQUE_DEVOLVIDO");
+            builder.Property(ep => ep.PeriodoOutros)
+                .HasColumnName("PERIODO_OUTROS");
 
             builder.Property(ep => ep.Parcela)
                 .HasColumnName("PARCELA");

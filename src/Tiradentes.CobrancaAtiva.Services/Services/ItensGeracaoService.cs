@@ -12,20 +12,22 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _repository = repository;
         }
 
-        public DateTime ObterDataEnvio(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela)
+        public DateTime ObterDataEnvio(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela, string periodoOutros)
         {
             return _repository.ObterDataEnvio(cnpjEmpresa,
                                               matricula,
                                               periodo,
-                                              parcela);
+                                              parcela,
+                                              periodoOutros);
         }
 
-        public bool ExisteMatricula(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela)
+        public bool ExisteMatricula(string cnpjEmpresa, decimal matricula, decimal periodo, int parcela, string periodoOutros)
         {
             return _repository.ExisteMatricula(cnpjEmpresa,
                                                  matricula,
                                                  periodo,
-                                                 parcela);
+                                                 parcela,
+                                                 periodoOutros);
         }
         public void Dispose()
         {
