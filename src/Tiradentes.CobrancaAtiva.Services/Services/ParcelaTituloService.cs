@@ -12,12 +12,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             _parcelaTituloRepository = parcelaTituloRepository;
         }
-        public bool ExisteParcela(decimal matricula, decimal periodo, int parcela)
+        public bool ExisteParcela(decimal matricula, decimal periodo, int parcela, string periodoOutros)
         {
-            return _parcelaTituloRepository.ExisteParcela(matricula, periodo, parcela);
+            return _parcelaTituloRepository.ExisteParcela(matricula, periodo, parcela, periodoOutros);
         }
 
-        public async Task InserirParcela(Int64 numeroAcordo, Int64 matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia, string periodoChequeDevolvido)
+        public async Task InserirParcela(Int64 numeroAcordo, Int64 matricula, decimal periodo, int parcela, DateTime dataBaixa, DateTime dataEnvio, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string sistema, string tipoInadimplencia, string periodoOutros)
         {
             await _parcelaTituloRepository.InserirParcela(numeroAcordo,
                                                           matricula,
@@ -30,7 +30,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                           cnpjEmpresaCobranca,
                                                           sistema,
                                                           tipoInadimplencia,
-                                                          periodoChequeDevolvido);
+                                                          periodoOutros);
         }
         public bool ExisteParcelaInadimplente(DateTime dataBaixa)
         {

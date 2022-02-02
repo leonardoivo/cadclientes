@@ -73,7 +73,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 Periodo = resposta.Periodo,
                 IdTitulo = resposta.IdTitulo,
                 CodigoAtividade = resposta.CodigoAtividade,
-                NumeroEvt = resposta.NumeroEvt,
+                NumeroEvento = resposta.NumeroEvento,
                 IdPessoa = resposta.IdPessoa,
                 CodigoBanco = resposta.CodigoBanco,
                 CodigoAgencia = resposta.CodigoAgencia,
@@ -91,7 +91,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SaldoDevedorTotal = resposta.SaldoDevedorTotal,
                 Produto = resposta.Produto,
                 DescricaoProduto = resposta.DescricaoProduto,
-                Fase = resposta.Fase,
                 CodigoControleCliente = resposta.CodigoControleCliente,
                 NossoNumero = resposta.NossoNumero,
                 DataPagamento = resposta.DataPagamento,
@@ -186,10 +185,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "",
                 Sistema = resposta.Sistema,
                 Matricula = resposta.Matricula,
-                Periodo = resposta.Periodo,
+                Periodo = resposta.ObterPeriodo(),
                 IdTitulo = resposta.IdTitulo,
                 CodigoAtividade = resposta.CodigoAtividade,
-                NumeroEvt = resposta.NumeroEvt,
+                NumeroEvento = resposta.NumeroEvento,
                 IdPessoa = resposta.IdPessoa,
                 CodigoBanco = resposta.CodigoBanco,
                 CodigoAgencia = resposta.CodigoAgencia,
@@ -207,14 +206,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SaldoDevedorTotal = resposta.SaldoDevedorTotal,
                 Produto = resposta.Produto,
                 DescricaoProduto = resposta.DescricaoProduto,
-                Fase = resposta.Fase,
                 CodigoControleCliente = resposta.CodigoControleCliente,
                 NossoNumero = resposta.NossoNumero,
                 DataPagamento = resposta.DataPagamento,
                 DataBaixa = dataBaixa,
                 ValorPago = resposta.ValorPago,
                 TipoPagamento = resposta.TipoPagamento,
-                PeriodoChequeDevolvido = $"{resposta.CodigoBanco}#{resposta.CodigoAgencia}#{resposta.NumeroConta}#{resposta.NumeroCheque}"
+                PeriodoOutros = resposta.ObterPeriodoOutros()
             };
 
             try
@@ -229,15 +227,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 var dataEnvio = _itensGeracaoService.ObterDataEnvio(arquivo.CnpjEmpresaCobranca,
                                                                    arquivo.Matricula,
-                                                                   Convert.ToDecimal(arquivo.Periodo),
-                                                                   arquivo.Parcela);
+                                                                   arquivo.Periodo,
+                                                                   arquivo.Parcela,
+                                                                   arquivo.PeriodoOutros);
 
                 if (dataEnvio.Date != Convert.ToDateTime(arquivo.DataVencimento).Date)
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.DataInconsistente);
                 }
 
-                if (_parcelaTituloService.ExisteParcela(arquivo.Matricula, arquivo.Periodo, arquivo.Parcela))
+                if (_parcelaTituloService.ExisteParcela(arquivo.Matricula, arquivo.Periodo, arquivo.Parcela, arquivo.PeriodoOutros))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.ParcelaEnviadaAnteriormentePelaEmpresaCobranca);
                 }
@@ -249,7 +248,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                        parcela: arquivo.Parcela,
                                                                        idTitulo: arquivo.IdTitulo,
                                                                        codigoAtividade: arquivo.CodigoAtividade,
-                                                                       numeroEvt: arquivo.NumeroEvt,
+                                                                       numeroEvento: arquivo.NumeroEvento,
                                                                        idPessoa: arquivo.IdPessoa,
                                                                        codigoBanco: arquivo.CodigoBanco,
                                                                        codigoAgencia: arquivo.CodigoAgencia,
@@ -263,7 +262,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 if (!_itensGeracaoService.ExisteMatricula(arquivo.CnpjEmpresaCobranca,
                                                         arquivo.Matricula,
                                                         arquivo.Periodo,
-                                                        arquivo.Parcela))
+                                                        arquivo.Parcela,
+                                                        arquivo.PeriodoOutros))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.GeracaoInconsistente);
                 }
@@ -286,7 +286,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                      arquivo.CnpjEmpresaCobranca,
                                                      arquivo.Sistema,
                                                      arquivo.TipoInadimplencia,
-                                                     arquivo.PeriodoChequeDevolvido);
+                                                     arquivo.PeriodoOutros);
 
                 if (_parcelasAcordoService.ExisteParcelaPaga(Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
@@ -298,7 +298,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                 periodo: arquivo.Periodo,
                                                                 idTitulo: arquivo.IdTitulo,
                                                                 codigoAtividade: arquivo.CodigoAtividade,
-                                                                numeroEvt: arquivo.NumeroEvt,
+                                                                numeroEvento: arquivo.NumeroEvento,
                                                                 idPessoa: arquivo.IdPessoa,
                                                                 codigobanco: arquivo.CodigoBanco,
                                                                 codigoAgencia: arquivo.CodigoAgencia,
@@ -337,7 +337,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   arquivo.Sistema,
                                                   arquivo.SituacaoAluno,
                                                   arquivo.TipoInadimplencia,
-                                                  arquivo.PeriodoChequeDevolvido);
+                                                  arquivo.PeriodoOutros);
         }
 
         private async Task ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta, List<ErroParcelaViewModel> erros)
@@ -354,10 +354,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SituacaoAluno = !string.IsNullOrEmpty(resposta.SituacaoAluno) ? resposta.SituacaoAluno : "",
                 Sistema = resposta.Sistema,
                 Matricula = resposta.Matricula,
-                Periodo = resposta.Periodo,
+                Periodo = resposta.ObterPeriodo(),
                 IdTitulo = resposta.IdTitulo,
                 CodigoAtividade = resposta.CodigoAtividade,
-                NumeroEvt = resposta.NumeroEvt,
+                NumeroEvento = resposta.NumeroEvento,
                 IdPessoa = resposta.IdPessoa,
                 CodigoBanco = resposta.CodigoBanco,
                 CodigoAgencia = resposta.CodigoAgencia,
@@ -375,13 +375,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 SaldoDevedorTotal = resposta.SaldoDevedorTotal,
                 Produto = resposta.Produto,
                 DescricaoProduto = resposta.DescricaoProduto,
-                Fase = resposta.Fase,
                 CodigoControleCliente = resposta.CodigoControleCliente,
                 NossoNumero = resposta.NossoNumero,
                 DataPagamento = resposta.DataPagamento,
                 DataBaixa = dataBaixa,
                 ValorPago = resposta.ValorPago,
-                TipoPagamento = resposta.TipoPagamento
+                TipoPagamento = resposta.TipoPagamento,
+                PeriodoOutros = resposta.ObterPeriodoOutros()
             };
 
             try
@@ -433,7 +433,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                         periodo: arquivo.Periodo,
                                                                         idTitulo: arquivo.IdTitulo,
                                                                         codigoAtividade: arquivo.CodigoAtividade,
-                                                                        numeroEvt: arquivo.NumeroEvt,
+                                                                        numeroEvento: arquivo.NumeroEvento,
                                                                         idPessoa: arquivo.IdPessoa,
                                                                         codigobanco: arquivo.CodigoBanco,
                                                                         codigoAgencia: arquivo.CodigoAgencia,
@@ -580,5 +580,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 await _arquivolayoutService.RegistrarErro(DataBaixa, JsonSerializer.Serialize(ex.StackTrace), ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
             }
         }
+
     }
 }

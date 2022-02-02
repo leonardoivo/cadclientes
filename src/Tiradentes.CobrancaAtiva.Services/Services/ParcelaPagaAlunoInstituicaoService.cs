@@ -11,7 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             _repository = repository;
         }
-        public bool ParcelaPagaInstituicao(string tipoInadimplencia, string sistema, decimal matricula, decimal periodo, int? parcela, decimal? idTitulo, int? codigoAtividade, decimal? numeroEvt, decimal? idPessoa, int? codigoBanco, int? codigoAgencia, decimal? numeroConta, decimal? numeroCheque)
+        public bool ParcelaPagaInstituicao(string tipoInadimplencia, string sistema, decimal matricula, decimal periodo, int? parcela, decimal? idTitulo, int? codigoAtividade, decimal? numeroEvento, decimal? idPessoa, int? codigoBanco, int? codigoAgencia, decimal? numeroConta, decimal? numeroCheque)
         {
             return _repository.ParcelaPagaInstituicao(tipoInadimplencia,
                                                       sistema,
@@ -20,8 +20,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                       parcela,
                                                       idTitulo,
                                                       codigoAtividade,
-                                                      numeroEvt,
-                                                      idPessoa,                                                      
+                                                      numeroEvento,
+                                                      idPessoa,
                                                       codigoBanco,
                                                       codigoAgencia,
                                                       numeroConta,

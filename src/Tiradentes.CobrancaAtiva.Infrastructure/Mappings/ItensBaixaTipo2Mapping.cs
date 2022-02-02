@@ -45,9 +45,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.CnpjEmpresaCobranca)
                 .HasColumnName("CNPJ_EMPRESA_COBRANCA");
 
-            builder.Property(ep => ep.PeriodoChequeDevolvido)
-                .HasColumnName("PERIODO_CHEQUE_DEVOLVIDO")
-                .HasColumnType("NUMBER(5)");
+            builder.Property(ep => ep.PeriodoOutros)
+                .HasColumnName("PERIODO_OUTROS");
 
             builder.Property(ep => ep.SituacaoAluno)
                 .HasColumnName("STA_ALU")

@@ -18,7 +18,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public Nullable<decimal> Valor { get; set; }
 
         public string CnpjEmpresaCobranca { get; set; }
-        public string PeriodoChequeDevolvido { get; set; }
+        public string PeriodoOutros { get; set; }
         public string SituacaoAluno { get; set; }
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }

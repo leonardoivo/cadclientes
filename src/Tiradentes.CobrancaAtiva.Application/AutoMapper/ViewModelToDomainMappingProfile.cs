@@ -76,8 +76,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ConflitoViewModel, ConflitoModel>();
             CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();            
 
-            CreateMap<RespostasCollection, RespostaViewModel>()
-                .ForMember(R => R.MongoId, opt => opt.MapFrom(scr => scr.Id)).ReverseMap();
+            CreateMap<RespostasCollection, RespostaViewModel>().ReverseMap();
 
             CreateMap<BaixasCobrancasModel, BaixasCobrancasViewModel>().ReverseMap();
             CreateMap<ArquivoLayoutModel, ArquivoLayoutViewModel>();
