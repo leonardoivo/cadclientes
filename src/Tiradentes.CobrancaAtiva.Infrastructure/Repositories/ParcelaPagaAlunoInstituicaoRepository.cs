@@ -19,7 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         }
 
 
-        public bool ParcelaPagaInstituicao(string tipoInadimplencia, string sistema, decimal matricula, decimal periodo, int? parcela, decimal? idTitulo, int? codigoAtividade, decimal? numeroEvento, decimal? idPessoa, int? codigoBanco, int? codigoAgencia, decimal? numeroConta, decimal? numeroCheque)
+        public bool ParcelaPagaInstituicao(string tipoInadimplencia, string sistema, decimal matricula, decimal periodo, int? parcela, decimal? idTitulo, int? codigoAtividade, decimal? numeroEvt, decimal? idPessoa, int? codigoBanco, int? codigoAgencia, decimal? numeroConta, decimal? numeroCheque)
         {
             ParcelaPagaAlunoInstituicaoModel parcelaAluno = new ParcelaPagaAlunoInstituicaoModel();            
 
@@ -74,7 +74,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         .FromSqlRaw($@"select count(idt_ddp) as PARCELAPAGACOUNT
                                          from extensao.pagamentos
                                         where cod_atv = {codigoAtividade}
-                                        and num_evt = {numeroEvento}
+                                        and num_evt = {numeroEvt}
                                         and idt_ddp = {idPessoa}
                                         and dat_pgto is not null")
                         .FirstOrDefault();

@@ -328,7 +328,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                     periodo: viewModel.ObterPeriodo(),
                                                                     idTitulo: viewModel.IdTitulo,
                                                                     codigoAtividade: viewModel.CodigoAtividade,
-                                                                    numeroEvento: viewModel.NumeroEvento,
+                                                                    numeroEvt: viewModel.NumeroEvt,
                                                                     idPessoa: viewModel.IdPessoa,
                                                                     codigobanco: viewModel.CodigoBanco,
                                                                     codigoAgencia: viewModel.CodigoAgencia,
