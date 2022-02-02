@@ -303,11 +303,55 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel viewModel)
         {
-            await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(viewModel.Parcela, viewModel.NumeroAcordo, viewModel.DataPagamento, viewModel.DataPagamento, viewModel.ValorPago, 'R');
+            try
+            {
+                Validate(new RegularizacaoParcelasAcordoValidation(), viewModel);
 
-            await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, (viewModel.ValorPago * -1));
+                await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(viewModel.Parcela,
+                                                                     viewModel.NumeroAcordo,
+                                                                     viewModel.DataPagamento,
+                                                                     viewModel.DataPagamento,
+                                                                     viewModel.ValorPago,
+                                                                     'R');
 
-            await _parcelasAcordoService.InserirObservacaoRegularizacaoParcelaAcordo(viewModel.CnpjEmpresaCobranca, viewModel.NumeroAcordo, viewModel.Parcela, viewModel.Texto);
+
+                await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago * -1);
+
+                if (viewModel.Parcela == 1)
+                {
+                    try
+                    {
+                        await _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: viewModel.NumeroAcordo,
+                                                                    matricula: viewModel.Matricula,
+                                                                    sistema: viewModel.Sistema,
+                                                                    dataPagamento: viewModel.DataPagamento,
+                                                                    periodo: viewModel.ObterPeriodo(),
+                                                                    idTitulo: viewModel.IdTitulo,
+                                                                    codigoAtividade: viewModel.CodigoAtividade,
+                                                                    numeroEvento: viewModel.NumeroEvento,
+                                                                    idPessoa: viewModel.IdPessoa,
+                                                                    codigobanco: viewModel.CodigoBanco,
+                                                                    codigoAgencia: viewModel.CodigoAgencia,
+                                                                    numeroConta: viewModel.NumeroConta,
+                                                                    numeroCheque: viewModel.NumeroCheque,
+                                                                    CpfCnpj: viewModel.CPF
+                                                                    );
+
+                        await _parcelasAcordoService.InserirObservacaoRegularizacaoParcelaAcordo(viewModel.CnpjEmpresaCobranca, viewModel.NumeroAcordo, viewModel.Parcela, viewModel.Texto);
+                    }
+                    catch (Exception)
+                    {
+
+                        await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago);
+
+                        throw;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                await _parcelasAcordoService.EstornarParcelaAcordo(viewModel.Parcela, viewModel.NumeroAcordo);
+            }
 
             return viewModel;
         }
