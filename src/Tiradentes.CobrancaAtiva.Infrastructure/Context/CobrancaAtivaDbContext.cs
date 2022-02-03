@@ -10,6 +10,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         { }
 
         public DbSet<BancoModel> Banco { get; set; }
+        public DbSet<BancoMagisterModel> BancoMagister { get; set; }
         public DbSet<EmpresaParceiraModel> EmpresaParceira { get; set; }
         public DbSet<ContatoEmpresaParceiraModel> ContatoEmpresaParceira { get; set; }
         public DbSet<ConflitoModel> ConflitoModel { get; set; }

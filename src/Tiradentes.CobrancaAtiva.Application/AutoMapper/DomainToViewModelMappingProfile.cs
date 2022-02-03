@@ -70,6 +70,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<EnderecoModel, EnderecoViewModel>();
             CreateMap<BancoModel, BancoViewModel>();
+            CreateMap<BancoMagisterModel, BancoMagisterViewModel>();
 
             CreateMap<RegraNegociacaoModel, RegraNegociacaoViewModel>();
             CreateMap<BuscaRegraNegociacao, BuscaRegraNegociacaoViewModel>();

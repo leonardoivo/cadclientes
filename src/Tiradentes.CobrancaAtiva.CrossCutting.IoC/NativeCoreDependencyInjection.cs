@@ -36,6 +36,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IConflitoRepository, ConflitoRepository>();
             services.AddScoped<IConflitoDetalheRepository, ConflitoDetalheRepository>();
             services.AddScoped<ICobrancaRepository, CobrancaRepository>();
+            services.AddScoped<IBancoMagisterRepository, BancoMagisterRepository>();
             
 
             services.AddScoped<IAcordoCobrancasRepository, AcordoCobrancasRepository>();
@@ -74,6 +75,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IConflitoService, ConflitoService>();
             services.AddScoped<IConflitoDetalheService, ConflitoDetalheService>();
             services.AddScoped<ICobrancaService,CobrancaService>();
+            services.AddScoped<IBancoMagisterService, BancoMagisterService>();
 
             services.AddScoped<IAcordoCobrancaService, AcordoCobrancaService>();            
             services.AddScoped<IArquivoLayoutService, ArquivoLayoutService>();
