@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 
 namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
@@ -13,5 +14,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task AtualizaPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago);
         Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataBaixa, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia);
         Task EstornarParcelaAcordo(decimal parcela, decimal numeroAcordo);
+        Task AtualizaPagamentoParcelaAcordoBanco(BaixaPagamentoParcelaManualViewModel viewModel);
     }
 }

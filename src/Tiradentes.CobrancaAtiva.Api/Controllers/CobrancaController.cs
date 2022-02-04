@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
@@ -36,6 +37,13 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         public async Task<IActionResult> BuscarHistoricoProcessamentoCobranca(DateTime dataBaixa)
         {
             return Ok(await _baixasCobrancaService.Buscar(Convert.ToDateTime(dataBaixa)));
+        }
+
+        [HttpPost("baixa-manual")]
+        public async Task<IActionResult> BaixaManual([FromBody] BaixaPagamentoParcelaManualViewModel baixaPagamento)
+        {
+            await _cobrancaService.BaixaManual(baixaPagamento);
+            return Ok();
         }
 
         [HttpGet]

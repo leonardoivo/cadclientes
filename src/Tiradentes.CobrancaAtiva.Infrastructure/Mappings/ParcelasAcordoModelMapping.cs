@@ -36,6 +36,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.ValorPago)
                .HasColumnName("VALOR_PAGO");
 
+            builder.Property(ep => ep.CodigoBanco)
+               .HasColumnName("COD_BANCO");
 
             builder.Property(ep => ep.CnpjEmpresaCobranca)
                .HasColumnName("CNPJ_EMPRESA_COBRANCA");

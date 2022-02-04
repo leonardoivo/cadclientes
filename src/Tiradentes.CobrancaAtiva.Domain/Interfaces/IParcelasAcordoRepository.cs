@@ -14,5 +14,14 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
         Task AtualizarPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago);
         Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataBaixa, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia);
         Task EstornarParcelaAcordo(decimal parcela, decimal numeroAcordo);
+        Task AtualizarPagamentoParcelaAcordoBanco(
+            decimal parcela, 
+            decimal numeroAcordo, 
+            DateTime dataPagamento, 
+            DateTime dataBaixa, 
+            decimal valorPago,
+            decimal matricula,
+            string motivo,
+            int codigoBanco);
     }
 }

@@ -6,6 +6,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.Validations.RespostaCobranca;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Collections;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
@@ -21,6 +22,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         protected readonly IAlunosInadimplentesRepository _alunosInadimplentesRepository;
         protected readonly IRegraNegociacaoService _regraNegociacaoService;
         protected readonly IInstituicaoService _instituicaoService;
+        protected readonly IParcelasAcordoService _parcelaService;
         protected readonly IModalidadeService _modalidadeService;
         protected readonly ICursoService _cursoService;
         protected readonly IMapper _map;
@@ -30,6 +32,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             IAlunosInadimplentesRepository alunosInadimplentesRepository, 
             IRegraNegociacaoService regraNegociacaoService,
             IInstituicaoService instituicaoService,
+            IParcelasAcordoService parcelaService,
             IModalidadeService modalidadeService,
             ICursoService cursoService,
             IMapper map
@@ -39,6 +42,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _alunosInadimplentesRepository = alunosInadimplentesRepository;
             _regraNegociacaoService = regraNegociacaoService;
             _instituicaoService = instituicaoService;
+            _parcelaService = parcelaService;
             _modalidadeService = modalidadeService;
             _cursoService = cursoService;
             _map = map;
@@ -62,6 +66,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                 select _map.Map <RespostaViewModel>(arq);
 
             return viewModelList;
+        }
+
+        public async Task BaixaManual(BaixaPagamentoParcelaManualViewModel viewModel)
+        {
+            await _parcelaService.AtualizaPagamentoParcelaAcordoBanco(viewModel);
         }
 
         public async Task<RespostaViewModel> Criar(RespostaViewModel viewModel)
