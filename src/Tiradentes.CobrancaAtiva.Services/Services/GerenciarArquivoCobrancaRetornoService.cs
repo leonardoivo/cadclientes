@@ -118,8 +118,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                        arquivo.Juros,
                                                                        arquivo.Matricula,
                                                                        arquivo.SaldoDevedorTotal,
-                                                                       arquivo.CPF,
-                                                                       arquivo.CnpjEmpresaCobranca,
+                                                                       arquivo.CPF.ToString(),
+                                                                       arquivo.CnpjEmpresaCobranca.ToString(),
                                                                        arquivo.Sistema,
                                                                        arquivo.TipoInadimplencia);
                 }
@@ -133,7 +133,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                            arquivo.DataBaixa,
                                                                            arquivo.DataVencimento,
                                                                            arquivo.ValorParcela,
-                                                                           arquivo.CnpjEmpresaCobranca,
+                                                                           arquivo.CnpjEmpresaCobranca.ToString(),
                                                                            arquivo.TipoInadimplencia);
             }
             catch (ErroArquivoCobrancaException ex)
@@ -161,7 +161,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   arquivo.DataVencimento,
                                                   arquivo.ValorParcela,
                                                   codErro,
-                                                  arquivo.CnpjEmpresaCobranca,
+                                                  arquivo.CnpjEmpresaCobranca.ToString(),
                                                   arquivo.Parcela,
                                                   arquivo.Sistema,
                                                   arquivo.SituacaoAluno,
@@ -225,7 +225,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.MatriculaInexistente);
                 }
 
-                var dataEnvio = _itensGeracaoService.ObterDataEnvio(arquivo.CnpjEmpresaCobranca,
+                var dataEnvio = _itensGeracaoService.ObterDataEnvio(arquivo.CnpjEmpresaCobranca.ToString(),
                                                                    arquivo.Matricula,
                                                                    arquivo.Periodo,
                                                                    arquivo.Parcela,
@@ -259,7 +259,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.ParcelaPagaInstituicao);
                 }
 
-                if (!_itensGeracaoService.ExisteMatricula(arquivo.CnpjEmpresaCobranca,
+                if (!_itensGeracaoService.ExisteMatricula(arquivo.CnpjEmpresaCobranca.ToString(),
                                                         arquivo.Matricula,
                                                         arquivo.Periodo,
                                                         arquivo.Parcela,
@@ -283,7 +283,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                      dataEnvio,
                                                      arquivo.DataVencimento,
                                                      arquivo.ValorParcela,
-                                                     arquivo.CnpjEmpresaCobranca,
+                                                     arquivo.CnpjEmpresaCobranca.ToString(),
                                                      arquivo.Sistema,
                                                      arquivo.TipoInadimplencia,
                                                      arquivo.PeriodoOutros);
@@ -304,7 +304,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                 codigoAgencia: arquivo.CodigoAgencia,
                                                                 numeroConta: arquivo.NumeroConta,
                                                                 numeroCheque: arquivo.NumeroCheque,
-                                                                CpfCnpj: arquivo.CPF
+                                                                CpfCnpj: arquivo.CPF.ToString()
                                                                 );
                 }
             }
@@ -333,7 +333,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   arquivo.DataVencimento,
                                                   arquivo.ValorPago,
                                                   codErro,
-                                                  arquivo.CnpjEmpresaCobranca,
+                                                  arquivo.CnpjEmpresaCobranca.ToString(),
                                                   arquivo.Sistema,
                                                   arquivo.SituacaoAluno,
                                                   arquivo.TipoInadimplencia,
@@ -439,7 +439,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                         codigoAgencia: arquivo.CodigoAgencia,
                                                                         numeroConta: arquivo.NumeroConta,
                                                                         numeroCheque: arquivo.NumeroCheque,
-                                                                        CpfCnpj: arquivo.CPF
+                                                                        CpfCnpj: arquivo.CPF.ToString()
                                                                         );
                         }
                         catch (Exception)
@@ -482,7 +482,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                   arquivo.DataPagamento,
                                                   arquivo.ValorPago,
                                                   codErro,
-                                                  arquivo.CnpjEmpresaCobranca,
+                                                  arquivo.CnpjEmpresaCobranca.ToString(),
                                                   arquivo.Sistema,
                                                   arquivo.SituacaoAluno,
                                                   arquivo.TipoInadimplencia,

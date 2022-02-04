@@ -14,7 +14,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _parcelasAcordoRepository = parcelasAcordoRepository;
         }
 
-        public async Task AtualizaPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago, char? situacaoPagamento)
+        public async Task AtualizaPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago, string situacaoPagamento)
         {
             await _parcelasAcordoRepository.AtualizarPagamentoParcelaAcordo(parcela,
                                                                            numeroAcordo,

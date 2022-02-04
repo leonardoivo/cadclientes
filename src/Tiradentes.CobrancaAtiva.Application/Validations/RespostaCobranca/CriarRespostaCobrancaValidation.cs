@@ -7,7 +7,7 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.RespostaCobranca
     {
         public CriarRespostaCobrancaValidation()
         {
-            RuleFor(e => e.CPF)
+            RuleFor(e => e.CPF.ToString())
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio)
                 .Length(11).WithMessage("CPF inválido")

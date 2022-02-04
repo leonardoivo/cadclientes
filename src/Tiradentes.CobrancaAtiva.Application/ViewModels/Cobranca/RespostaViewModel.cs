@@ -7,14 +7,14 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
     public class RespostaViewModel
     {
         public int TipoRegistro { get; set; }
-        public string CnpjEmpresaCobranca { get; set; }
+        public Int64 CnpjEmpresaCobranca { get; set; }
         public string SituacaoAluno { get; set; }
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }
         public string ChaveInadimplencia { get; set; }
-        public string InstituicaoEnsino { get; set; }
-        public string Curso { get; set; }
-        public string CPF { get; set; }
+        public int InstituicaoEnsino { get; set; }
+        public int? Curso { get; set; }
+        public Int64 CPF { get; set; }
         public string NomeAluno { get; set; }
         public Int64 Matricula { get; set; }
         public Int64 NumeroAcordo { get; set; }
@@ -46,7 +46,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
             Renegociação de Quebra de Acordo (referente à empresa de cobrança)
             PERIODO    = CNPJ_EMPRESA||’#’||NUM_ACORDO (em SCF.ACORDOS_COBRANCAS)
          */
-        public string Periodo { get; set; }  
+        public string Periodo { get; set; }
         public decimal IdTitulo { get; set; } //idt_tipo_titulo (TIPO TÍTULO AVULSO)
         public int IdAluno { get; set; } //idt_alu (IDENTIFICADOR DO ALUNO)
         public decimal IdPessoa { get; set; } //idt_ddp (IDENTIFICADOR DA PESSOA)
