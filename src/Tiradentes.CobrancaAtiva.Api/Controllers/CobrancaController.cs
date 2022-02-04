@@ -33,9 +33,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         /// <param name="dataBaixa">dd-mm-yyyy</param>
         /// <returns></returns>
         [HttpGet("resultado/{dataBaixa}")]
-        public async Task<IActionResult> BuscarHistoricoProcessamentoCobranca(DateTime dataBaixa)
+        public async Task<IActionResult> BuscarHistoricoProcessamentoCobranca()
         {
-            return Ok(await _baixasCobrancaService.Buscar(Convert.ToDateTime(dataBaixa)));
+            return Ok(await _baixasCobrancaService.Buscar(new DateTime(2022, 01,24)));
         }
 
         [HttpGet]
