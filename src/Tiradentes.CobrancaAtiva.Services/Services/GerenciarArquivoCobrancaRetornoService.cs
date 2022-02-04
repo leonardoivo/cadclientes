@@ -57,6 +57,117 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             Erros = new Dictionary<int, decimal>();
         }
 
+        public async Task Gerenciar()
+        {
+            var respostas = await _cobrancaService.BuscarRepostaNaoIntegrada();
+            if (!respostas.Any())
+                return;
+
+            var respostasAgrupadas = respostas.GroupBy(a => new {a.CnpjEmpresaCobranca, a.InstituicaoEnsino});
+
+            foreach (var resp in respostasAgrupadas)
+            {
+                GerenciaArquivos(resp.ToList(), resp.Key.CnpjEmpresaCobranca, resp.Key.InstituicaoEnsino);
+            }
+        }
+
+        private async Task GerenciaArquivos(IList<RespostaViewModel> arquivos, string cnpjEmpresa, int ies)
+        {
+            var dataBaixa = DateTime.MinValue;
+            try
+            {
+                var errosContabilizados = new List<ErroParcelaViewModel>();
+                try
+                {
+                    dataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S",
+                        JsonSerializer.Serialize(arquivos));
+                }
+                catch (Exception ex)
+                {
+                    throw new ArgumentNullException("Arquivo Layout existente", ex);
+                }
+
+                var model = await _baixasCobrancasService.Buscar(dataBaixa);
+
+                if (model == null)
+                {
+                    await _baixasCobrancasService.CriarBaixasCobrancas(dataBaixa);
+                }
+
+                foreach (var arquivo in arquivos.OrderBy(A => A.TipoRegistro).ThenBy(A => A.Parcela))
+                {
+                    try
+                    {
+                        switch (arquivo.TipoRegistro)
+                        {
+                            case "1":
+                                await ProcessaBaixaTipo1(dataBaixa, arquivo, errosContabilizados);
+                                break;
+                            case "2":
+                                await ProcessaBaixaTipo2(dataBaixa, arquivo, errosContabilizados);
+                                break;
+                            case "3":
+                                await ProcessaBaixaTipo3(dataBaixa, arquivo, errosContabilizados);
+                                break;
+                            default:
+                                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(arquivo),
+                                    ErrosBaixaPagamento.ErroInternoServidor, "");
+                                break;
+                        }
+
+                        arquivo.Integrado = true;
+                        _cobrancaService.AlterarStatus(arquivo);
+                    }
+                    catch (Exception ex)
+                    {
+                        await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
+                            ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
+                    }
+                }
+
+                await _baixasCobrancasService.AtualizarBaixasCobrancas(new BaixasCobrancasViewModel()
+                {
+                    DataBaixa = dataBaixa,
+                    Etapa = 3,
+                    QuantidadeTipo1 = arquivos.Count(A => A.TipoRegistro == "1"),
+                    QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == "2"),
+                    QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == "3"),
+
+                    ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == "1")
+                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
+                    ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == "2")
+                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
+                    ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3")
+                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
+
+                    QuantidadeErrosTipo1 = errosContabilizados.Count(E => E.Etapa == 1),
+                    QuantidadeErrosTipo2 = errosContabilizados.Count(E => E.Etapa == 2),
+                    QuantidadeErrosTipo3 = errosContabilizados.Count(E => E.Etapa == 3),
+
+                    ValorTotalErrosTipo1 = errosContabilizados.Where(E => E.Etapa == 1).Sum(E => E.ValorParcela),
+                    ValorTotalErrosTipo2 = errosContabilizados.Where(E => E.Etapa == 2).Sum(E => E.ValorParcela),
+                    ValorTotalErrosTipo3 = errosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
+                    UserName = ""
+                });
+            }
+            catch (ArgumentNullException ex)
+            {
+                var dataErro =
+                    await _arquivolayoutService.SalvarLayoutArquivo("E", "Arquivo ja processado com a data de hoje");
+                await _arquivolayoutService.RegistrarErro(dataErro, JsonSerializer.Serialize(ex.StackTrace),
+                    ErrosBaixaPagamento.OutrosErros, ex.Message);
+            }
+            catch (Exception ex)
+            {
+                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
+                    ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
+            }
+            finally
+            {
+                await _arquivolayoutService.AlterarConteudo(dataBaixa, arquivos);
+            }
+        }
+
         private int? GetPeriodoChequeDevolvido(string periodo)
         {
             if (string.IsNullOrEmpty(periodo))
@@ -551,114 +662,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 arquivo.SituacaoAluno,
                 arquivo.TipoInadimplencia,
                 arquivo.TipoPagamento);
-        }
-
-        public async Task Gerenciar()
-        {
-            var dataBaixa = DateTime.MinValue;
-            var arquivos = await _cobrancaService.BuscarRepostaNaoIntegrada();
-            if (!arquivos.Any())
-                return;
-
-            var teste = arquivos.GroupBy(a => new {a.CnpjEmpresaCobranca, a.InstituicaoEnsino});
-
-            foreach (var t in teste)
-            {
-                var r = t.ToList();
-            }
-
-            try
-            {
-                var errosContabilizados = new List<ErroParcelaViewModel>();
-                try
-                {
-                    dataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S",
-                        JsonSerializer.Serialize(arquivos));
-                }
-                catch (Exception ex)
-                {
-                    throw new ArgumentNullException("Arquivo Layout existente", ex);
-                }
-
-                var model = await _baixasCobrancasService.Buscar(dataBaixa);
-
-                if (model == null)
-                {
-                    await _baixasCobrancasService.CriarBaixasCobrancas(dataBaixa);
-                }
-
-                foreach (var arquivo in arquivos.OrderBy(A => A.TipoRegistro).ThenBy(A => A.Parcela))
-                {
-                    try
-                    {
-                        switch (arquivo.TipoRegistro)
-                        {
-                            case "1":
-                                await ProcessaBaixaTipo1(dataBaixa, arquivo, errosContabilizados);
-                                break;
-                            case "2":
-                                await ProcessaBaixaTipo2(dataBaixa, arquivo, errosContabilizados);
-                                break;
-                            case "3":
-                                await ProcessaBaixaTipo3(dataBaixa, arquivo, errosContabilizados);
-                                break;
-                            default:
-                                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(arquivo),
-                                    ErrosBaixaPagamento.ErroInternoServidor, "");
-                                break;
-                        }
-
-                        arquivo.Integrado = true;
-                        _cobrancaService.AlterarStatus(arquivo);
-                    }
-                    catch (Exception ex)
-                    {
-                        await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
-                            ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
-                    }
-                }
-
-                await _baixasCobrancasService.AtualizarBaixasCobrancas(new BaixasCobrancasViewModel()
-                {
-                    DataBaixa = dataBaixa,
-                    Etapa = 3,
-                    QuantidadeTipo1 = arquivos.Count(A => A.TipoRegistro == "1"),
-                    QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == "2"),
-                    QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == "3"),
-
-                    ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == "1")
-                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-                    ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == "2")
-                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-                    ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3")
-                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-
-                    QuantidadeErrosTipo1 = errosContabilizados.Count(E => E.Etapa == 1),
-                    QuantidadeErrosTipo2 = errosContabilizados.Count(E => E.Etapa == 2),
-                    QuantidadeErrosTipo3 = errosContabilizados.Count(E => E.Etapa == 3),
-
-                    ValorTotalErrosTipo1 = errosContabilizados.Where(E => E.Etapa == 1).Sum(E => E.ValorParcela),
-                    ValorTotalErrosTipo2 = errosContabilizados.Where(E => E.Etapa == 2).Sum(E => E.ValorParcela),
-                    ValorTotalErrosTipo3 = errosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
-                    UserName = ""
-                });
-            }
-            catch (ArgumentNullException ex)
-            {
-                var dataErro =
-                    await _arquivolayoutService.SalvarLayoutArquivo("E", "Arquivo ja processado com a data de hoje");
-                await _arquivolayoutService.RegistrarErro(dataErro, JsonSerializer.Serialize(ex.StackTrace),
-                    ErrosBaixaPagamento.OutrosErros, ex.Message);
-            }
-            catch (Exception ex)
-            {
-                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
-                    ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
-            }
-            finally
-            {
-                await _arquivolayoutService.AlterarConteudo(dataBaixa, arquivos);
-            }
         }
     }
 }
