@@ -13,6 +13,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
     {
         readonly IIdAlunoRepository _idAlunoRepository;
         readonly IParcelaTituloRepository _parcelaTituloRepository;
+        
         public ParcelasAcordoRepository(IIdAlunoRepository idAlunoRepository,
             IParcelaTituloRepository parcelaTituloRepository,
             CobrancaAtivaDbContext context) : base(context)
