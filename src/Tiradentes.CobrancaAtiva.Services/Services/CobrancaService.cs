@@ -312,7 +312,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                      viewModel.DataPagamento,
                                                                      viewModel.DataPagamento,
                                                                      viewModel.ValorPago,
-                                                                     'R');
+                                                                     "R");
 
 
                 await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago * -1);
