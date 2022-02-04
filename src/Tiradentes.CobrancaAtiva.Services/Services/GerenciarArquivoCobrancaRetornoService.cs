@@ -71,7 +71,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
         }
 
-        private async Task GerenciaArquivos(IList<RespostaViewModel> arquivos, string cnpjEmpresa, int ies)
+        private async Task GerenciaArquivos(IList<RespostaViewModel> arquivos, string cnpjEmpresa, string ies)
         {
             var dataBaixa = DateTime.MinValue;
             try
@@ -80,7 +80,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 try
                 {
                     dataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S",
-                        JsonSerializer.Serialize(arquivos));
+                        JsonSerializer.Serialize(arquivos), cnpjEmpresa, Convert.ToInt32(ies));
                 }
                 catch (Exception ex)
                 {

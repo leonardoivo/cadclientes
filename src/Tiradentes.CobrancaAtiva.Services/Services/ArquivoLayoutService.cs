@@ -26,12 +26,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<DateTime> SalvarLayoutArquivo(string status, string arquivoResposta)
+        public async Task<DateTime> SalvarLayoutArquivo(string status, string arquivoResposta, string cnpj, int iesId)
         {
             var layoutArquivo = new ArquivoLayoutModel()
             {
                 Conteudo = arquivoResposta,
-                Status = status
+                Status = status,
+                CnpjEmpresaCobranca = cnpj,
+                InstituicaoEnsinoId = iesId
             };
 
             _repository.HabilitarAlteracaoArquivoLayout(true);
