@@ -14,8 +14,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         readonly IIdAlunoRepository _idAlunoRepository;
         readonly IParcelaTituloRepository _parcelaTituloRepository;
         public ParcelasAcordoRepository(IIdAlunoRepository idAlunoRepository,
-                                        IParcelaTituloRepository parcelaTituloRepository,
-                                        CobrancaAtivaDbContext context) : base(context)
+            IParcelaTituloRepository parcelaTituloRepository,
+            CobrancaAtivaDbContext context) : base(context)
         {
             _idAlunoRepository = idAlunoRepository;
             _parcelaTituloRepository = parcelaTituloRepository;
@@ -33,7 +33,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public async Task EstornarParcelaAcordo(decimal parcela, decimal numeroAcordo)
         {
             var parcAcordo = DbSet.Where(P => P.Parcela == parcela
-                                           && P.NumeroAcordo == numeroAcordo).FirstOrDefault();
+                                              && P.NumeroAcordo == numeroAcordo).FirstOrDefault();
 
             if (parcAcordo == null)
                 return;
@@ -47,7 +47,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await Alterar(parcAcordo);
 
             HabilitarAlteracaoParcelasAcordo(false);
-
         }
 
         public bool ExisteParcelaAcordo(decimal parcela, decimal numeroAcordo)
@@ -59,14 +58,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public bool ExisteParcelaPaga(decimal numeroAcordo)
         {
             return DbSet.Where(P => P.NumeroAcordo == numeroAcordo
-                                 && P.DataPagamento != null
-                                 && P.ValorPago != null).Count() > 0;
+                                    && P.DataPagamento != null
+                                    && P.ValorPago != null).Count() > 0;
         }
 
         public async Task AtualizarPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago, string situacaoPagamento)
         {
             var parcInserir = DbSet.Where(P => P.NumeroAcordo == numeroAcordo
-                                            && P.Parcela == parcela).FirstOrDefault();
+                                               && P.Parcela == parcela).FirstOrDefault();
 
             parcInserir.DataPagamento = dataPagamento;
             parcInserir.ValorPago = valorPago;
@@ -78,17 +77,18 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             await Alterar(parcInserir);
 
             HabilitarAlteracaoParcelasAcordo(false);
-
         }
 
         public decimal? ObterValorParcelaAcordo(decimal parcela, decimal numeroAcordo)
         {
             return DbSet.Where(P => P.Parcela == parcela
-                          && P.NumeroAcordo == numeroAcordo)
-                        .Select(P => P.Valor).FirstOrDefault();
+                                    && P.NumeroAcordo == numeroAcordo)
+                .Select(P => P.Valor).FirstOrDefault();
         }
 
-        public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataBaixa, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia)
+        public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema,
+            DateTime dataBaixa, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca,
+            string tipoInadimplencia)
         {
             HabilitarAlteracaoParcelasAcordo(true);
 
@@ -110,8 +110,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public bool ParcelaPaga(decimal parcela, decimal numeroAcordo)
         {
             return DbSet.Where(P => P.NumeroAcordo == numeroAcordo
-                                 && P.Parcela == parcela
-                                 && P.DataPagamento != null).Count() > 0;
+                                    && P.Parcela == parcela
+                                    && P.DataPagamento != null).Count() > 0;
         }
 
         public async Task QuitarParcelasAcordo(decimal numeroAcordo, decimal matricula, string sistema, DateTime dataPagamento, decimal periodo, decimal? idTitulo, int? codigoAtividade, int? numeroEvt, decimal? idPessoa, int codigobanco, int codigoAgencia, int numeroConta, decimal numeroCheque, string CpfCnpj)
@@ -142,7 +142,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                                                from scf.itens_geracao ig
                                                                                where ig.matricula = {5}
                                                                                  and ig.periodo = {6}
-                                                                                 and ig.parcela = {7} )", dataPagamento, idAluno, ano, semestre, parcela.Parcela, matricula, periodo, parcela.Parcela);
+                                                                                 and ig.parcela = {7} )",
+                            dataPagamento, idAluno, ano, semestre, parcela.Parcela, matricula, periodo,
+                            parcela.Parcela);
 
 
                         await Db.Database.ExecuteSqlRawAsync(@"insert into sca.obs_reg_pgto( ano, semestre, idt_alu, parcela, tpo_pgto, dat_hora, username, texto )
@@ -163,11 +165,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                                               from scf.itens_geracao ig
                                                                               where ig.matricula = {4}
                                                                                 and ig.periodo = {2}
-                                                                                and ig.parcela = {3} )", dataPagamento, idAluno, periodo, parcela.Parcela, matricula);
+                                                                                and ig.parcela = {3} )", dataPagamento,
+                            idAluno, periodo, parcela.Parcela, matricula);
 
 
-                        await Db.Database.ExecuteSqlRawAsync(@"insert into profope.obs_reg_pgto( idt_alu,parcela,tpo_pgto,dat_hora,username,texto)
-      	                                                       values( {0}, {1}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do  processamento da baixa da empresa de cobrança');", idAluno, parcela.Parcela);
+                        await Db.Database.ExecuteSqlRawAsync(
+                            @"insert into profope.obs_reg_pgto( idt_alu,parcela,tpo_pgto,dat_hora,username,texto)
+      	                                                       values( {0}, {1}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do  processamento da baixa da empresa de cobrança');",
+                            idAluno, parcela.Parcela);
                     }
                     else if (parcela.Sistema == "P")
                     {
@@ -183,11 +188,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                                                                          from scf.itens_geracao ig
                                                                                                          where ig.matricula = {3}
                                                                                                            and ig.periodo  = {4}
-                                                                                                           and ig.parcela  = {2} )", dataPagamento, idAluno, parcela.Parcela, matricula, periodo);
+                                                                                                           and ig.parcela  = {2} )",
+                            dataPagamento, idAluno, parcela.Parcela, matricula, periodo);
 
 
-                        await Db.Database.ExecuteSqlRawAsync(@"insert into spgl.obs_reg_pgto(idt_alu, parcela, tpo_pgto, dat_hora, username, texto)
-                                                               values( {0}, {1}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do processamento da baixa da empresa de cobrança')", idAluno, parcela.Parcela);
+                        await Db.Database.ExecuteSqlRawAsync(
+                            @"insert into spgl.obs_reg_pgto(idt_alu, parcela, tpo_pgto, dat_hora, username, texto)
+                                                               values( {0}, {1}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do processamento da baixa da empresa de cobrança')",
+                            idAluno, parcela.Parcela);
                     }
                     else if (parcela.Sistema == "I")
                     {
@@ -200,11 +208,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                                               from scf.itens_geracao ig
                                                                               where ig.matricula = {2}
                                                                                 and ig.periodo  = {3}
-                                                                                and ig.parcela  = {4})", dataPagamento, idTitulo, matricula, periodo, parcela.Parcela);
+                                                                                and ig.parcela  = {4})", dataPagamento,
+                            idTitulo, matricula, periodo, parcela.Parcela);
 
 
-                        await Db.Database.ExecuteSqlRawAsync(@"insert into scf.pgt_obs_reg_tit(idt_titulo,tpo_pgto,dat_hora,username,texto)
-                                                               values( {0}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do processamento da baixa da empresa de cobrança')", idAluno);
+                        await Db.Database.ExecuteSqlRawAsync(
+                            @"insert into scf.pgt_obs_reg_tit(idt_titulo,tpo_pgto,dat_hora,username,texto)
+                                                               values( {0}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do processamento da baixa da empresa de cobrança')",
+                            idAluno);
                     }
                     else if (parcela.Sistema == "X")
                     {
@@ -219,7 +230,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                                               from scf.itens_geracao ig
                                                                               where ig.matricula = :p_matricula
                                                                                 and ig.periodo  = :p_periodo
-                                                                                and ig.parcela  = :p_parcela )", dataPagamento, codigoAtividade, numeroEvt, idPessoa, idPessoa);
+                                                                                and ig.parcela  = :p_parcela )",
+                            dataPagamento, codigoAtividade, numeroEvt, idPessoa, idPessoa);
 
 
                         await Db.Database.ExecuteSqlRawAsync(@"insert into extensao.obs_reg_pgto(cod_atv,num_evt,idt_ddp,num_pc,tpo_pgto,dat_hora,username,texto)
@@ -240,11 +252,14 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                                          from scf.itens_geracao ig
                                                                          where ig.matricula = {2}
                                                                            and ig.periodo  = {3}
-                                                                           and ig.parcela  = {4} )", dataPagamento, idTitulo, matricula, periodo, parcela.Parcela);
+                                                                           and ig.parcela  = {4} )", dataPagamento,
+                        idTitulo, matricula, periodo, parcela.Parcela);
 
 
-                    await Db.Database.ExecuteSqlRawAsync(@"insert into scf.sap_tit_obs_pgto(idt_titulo_avu,username,dat_hora,texto,tpo_pgto)
-                                                           values( {0}, sec#_.usuarios_pkg.obter_username, sysdate, 'Regularização automática através do processamento da baixa da empresa de cobrança', 'P')", idTitulo);
+                    await Db.Database.ExecuteSqlRawAsync(
+                        @"insert into scf.sap_tit_obs_pgto(idt_titulo_avu,username,dat_hora,texto,tpo_pgto)
+                                                           values( {0}, sec#_.usuarios_pkg.obter_username, sysdate, 'Regularização automática através do processamento da baixa da empresa de cobrança', 'P')",
+                        idTitulo);
                 }
                 else if (parcela.TipoInadimplencia == "C")
                 {

@@ -555,20 +555,24 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         public async Task Gerenciar()
         {
-            var DataBaixa = DateTime.MinValue;
+            var dataBaixa = DateTime.MinValue;
+            var arquivos = await _cobrancaService.BuscarRepostaNaoIntegrada();
+            if (!arquivos.Any())
+                return;
+
+            var teste = arquivos.GroupBy(a => new {a.CnpjEmpresaCobranca});
+
+            foreach (var t in teste)
+            {
+                var r = t.ToList();
+            }
+            
             try
             {
-                List<ErroParcelaViewModel> ErrosContabilizados = new List<ErroParcelaViewModel>();
-
-
-                var arquivos = await _cobrancaService.BuscarRepostaNaoIntegrada();
-
-                if (!arquivos.Any())
-                    return;
-
+                var errosContabilizados = new List<ErroParcelaViewModel>();
                 try
                 {
-                    DataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S",
+                    dataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S",
                         JsonSerializer.Serialize(arquivos));
                 }
                 catch (Exception ex)
@@ -576,11 +580,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     throw new ArgumentNullException("Arquivo Layout existente", ex);
                 }
 
-                var model = await _baixasCobrancasService.Buscar(DataBaixa);
+                var model = await _baixasCobrancasService.Buscar(dataBaixa);
 
                 if (model == null)
                 {
-                    await _baixasCobrancasService.CriarBaixasCobrancas(DataBaixa);
+                    await _baixasCobrancasService.CriarBaixasCobrancas(dataBaixa);
                 }
 
                 foreach (var arquivo in arquivos.OrderBy(A => A.TipoRegistro).ThenBy(A => A.Parcela))
@@ -590,16 +594,16 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         switch (arquivo.TipoRegistro)
                         {
                             case "1":
-                                await ProcessaBaixaTipo1(DataBaixa, arquivo, ErrosContabilizados);
+                                await ProcessaBaixaTipo1(dataBaixa, arquivo, errosContabilizados);
                                 break;
                             case "2":
-                                await ProcessaBaixaTipo2(DataBaixa, arquivo, ErrosContabilizados);
+                                await ProcessaBaixaTipo2(dataBaixa, arquivo, errosContabilizados);
                                 break;
                             case "3":
-                                await ProcessaBaixaTipo3(DataBaixa, arquivo, ErrosContabilizados);
+                                await ProcessaBaixaTipo3(dataBaixa, arquivo, errosContabilizados);
                                 break;
                             default:
-                                await _arquivolayoutService.RegistrarErro(DataBaixa, JsonSerializer.Serialize(arquivo),
+                                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(arquivo),
                                     ErrosBaixaPagamento.ErroInternoServidor, "");
                                 break;
                         }
@@ -609,14 +613,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     }
                     catch (Exception ex)
                     {
-                        await _arquivolayoutService.RegistrarErro(DataBaixa, JsonSerializer.Serialize(ex.StackTrace),
+                        await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
                             ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
                     }
                 }
 
                 await _baixasCobrancasService.AtualizarBaixasCobrancas(new BaixasCobrancasViewModel()
                 {
-                    DataBaixa = DataBaixa,
+                    DataBaixa = dataBaixa,
                     Etapa = 3,
                     QuantidadeTipo1 = arquivos.Count(A => A.TipoRegistro == "1"),
                     QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == "2"),
@@ -629,13 +633,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == "3")
                         .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
 
-                    QuantidadeErrosTipo1 = ErrosContabilizados.Count(E => E.Etapa == 1),
-                    QuantidadeErrosTipo2 = ErrosContabilizados.Count(E => E.Etapa == 2),
-                    QuantidadeErrosTipo3 = ErrosContabilizados.Count(E => E.Etapa == 3),
+                    QuantidadeErrosTipo1 = errosContabilizados.Count(E => E.Etapa == 1),
+                    QuantidadeErrosTipo2 = errosContabilizados.Count(E => E.Etapa == 2),
+                    QuantidadeErrosTipo3 = errosContabilizados.Count(E => E.Etapa == 3),
 
-                    ValorTotalErrosTipo1 = ErrosContabilizados.Where(E => E.Etapa == 1).Sum(E => E.ValorParcela),
-                    ValorTotalErrosTipo2 = ErrosContabilizados.Where(E => E.Etapa == 2).Sum(E => E.ValorParcela),
-                    ValorTotalErrosTipo3 = ErrosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
+                    ValorTotalErrosTipo1 = errosContabilizados.Where(E => E.Etapa == 1).Sum(E => E.ValorParcela),
+                    ValorTotalErrosTipo2 = errosContabilizados.Where(E => E.Etapa == 2).Sum(E => E.ValorParcela),
+                    ValorTotalErrosTipo3 = errosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
                     UserName = ""
                 });
             }
@@ -648,8 +652,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
             catch (Exception ex)
             {
-                await _arquivolayoutService.RegistrarErro(DataBaixa, JsonSerializer.Serialize(ex.StackTrace),
+                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
                     ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
+            }
+            finally
+            {
+                await _arquivolayoutService.AlterarConteudo(dataBaixa, arquivos);
             }
         }
 
