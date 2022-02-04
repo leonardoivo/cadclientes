@@ -560,13 +560,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             if (!arquivos.Any())
                 return;
 
-            var teste = arquivos.GroupBy(a => new {a.CnpjEmpresaCobranca});
+            var teste = arquivos.GroupBy(a => new {a.CnpjEmpresaCobranca, a.InstituicaoEnsino});
 
             foreach (var t in teste)
             {
                 var r = t.ToList();
             }
-            
+
             try
             {
                 var errosContabilizados = new List<ErroParcelaViewModel>();
