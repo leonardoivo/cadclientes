@@ -95,7 +95,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                      viewModel.DataPagamento,
                                                                      viewModel.DataPagamento,
                                                                      viewModel.ValorPago,
-                                                                     'R');
+                                                                     "R");
 
 
                 await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago * -1);
@@ -157,7 +157,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var baixas = await _repositorio.ListarFiltroPorCpf(cpf);
 
-            return baixas.GroupBy(b => b.CPF).Select(b => b.Key);
+            return baixas.GroupBy(b => b.CPF.ToString()).Select(b => b.Key);
         }
 
         public async Task<IEnumerable<string>> ListarFiltroNomeAluno(string nomeAluno)
@@ -181,7 +181,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             {
                 var parcelaUniq = group.First();
 
-                var instituicao = (await _instituicaoService.Buscar()).Where(i => i.Id == int.Parse(parcelaUniq.InstituicaoEnsino)).First();
+                var instituicao = (await _instituicaoService.Buscar()).Where(i => i.Id == parcelaUniq.InstituicaoEnsino).First();
                 var modalidade = await _modalidadeService.BuscarPorCodigo(parcelaUniq.Sistema);
 
 
@@ -189,7 +189,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     DataBaixa = parcelaUniq.DataBaixa.ToString(),
                     DataNegociacao = parcelaUniq.DataFechamentoAcordo.ToString(),
-                    EmpresaParceira = parcelaUniq.CnpjEmpresaCobranca,
+                    EmpresaParceira = parcelaUniq.CnpjEmpresaCobranca.ToString(),
                     FormaPagamento = parcelaUniq.TipoPagamento,
                     InstituicaoEnsino = instituicao.Instituicao,
                     InstituicaoModel = new Domain.Models.InstituicaoModel()
@@ -216,7 +216,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     ParcelasNegociadas = new List<BaixaPagamentoParcela>()
                 };
 
-                foreach (var parcela in group.Where(p => p.TipoRegistro.Equals("1")))
+                foreach (var parcela in group.Where(p => p.TipoRegistro.ToString().Equals("1")))
                 {
                     baixaPagamento.ParcelasAcordadas.Add(new BaixaPagamentoParcela()
                     {
@@ -235,14 +235,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     });
                 }
 
-                foreach (var parcela in group.Where(p => p.TipoRegistro.Equals("2")))
+                foreach (var parcela in group.Where(p => p.TipoRegistro.ToString().Equals("2")))
                 {
                     var valorParcelaComJuros = 0.0;
                     var valorParcelaOriginal = Double.Parse(parcela.ValorParcela.ToString());
                     var valorMulta = (valorParcelaOriginal / 100) * 0.2;
                     var valorJurosAoDia = (valorParcelaOriginal / 100) * 0.07;
-                    var dataVencimento = DateTime.ParseExact(parcela.DataVencimentoParcela.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    var dataAcordo = DateTime.ParseExact(parcela.DataFechamentoAcordo.ToString(), "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    var dataVencimento = parcela.DataVencimentoParcela;
+                    var dataAcordo = parcela.DataFechamentoAcordo;
                     var diasVencidos = (dataAcordo - dataVencimento).TotalDays;
 
                     valorParcelaComJuros = valorParcelaOriginal + valorMulta + (valorJurosAoDia * diasVencidos);
@@ -270,7 +270,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                         NumeroEvt = string.IsNullOrEmpty(parcela.NumeroEvt.ToString()) ? null : Convert.ToInt32(parcela.NumeroEvt),
                         IdPessoa = string.IsNullOrEmpty(parcela.IdPessoa.ToString()) ? null : Convert.ToDecimal(parcela.IdPessoa),
                         NumeroConta = Convert.ToInt32(parcela.NumeroConta),
-                        CpfCnpj = parcela.CPF
+                        CpfCnpj = parcela.CPF.ToString(),
+                        TipoInadimplencia = parcela.TipoInadimplencia
                     };
 
                     baixaPagamento.ParcelasNegociadas.Add(parcelaBaixa);

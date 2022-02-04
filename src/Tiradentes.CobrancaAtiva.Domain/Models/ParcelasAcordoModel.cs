@@ -16,6 +16,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string CnpjEmpresaCobranca { get; set; }        
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }
-        public char SituacaoPagamento { get; set; }
+        public string SituacaoPagamento { get; set; }
     }
 }

@@ -52,7 +52,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 query = query.Where(c => c.Matricula.Equals(queryParam.Matricula));
 
             if(!string.IsNullOrEmpty(queryParam.Cpf))
-                query = query.Where(c => c.CPF == queryParam.Cpf);
+                query = query.Where(c => c.CPF.ToString() == queryParam.Cpf);
 
             if(!string.IsNullOrEmpty(queryParam.Acordo))
                 query = query.Where(c => c.NumeroAcordo.ToString() == queryParam.Acordo);
@@ -91,7 +91,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             var query = _repository.AsQueryable();
 
             if(!string.IsNullOrEmpty(cpf))
-                query = query.Where(b => b.CPF.Contains(cpf));
+                query = query.Where(b => b.CPF.ToString().Contains(cpf));
 
             query = query.Take(25);
 

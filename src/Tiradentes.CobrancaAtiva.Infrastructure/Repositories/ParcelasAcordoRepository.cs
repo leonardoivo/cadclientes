@@ -63,7 +63,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                  && P.ValorPago != null).Count() > 0;
         }
 
-        public async Task AtualizarPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago, char? situacaoPagamento)
+        public async Task AtualizarPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago, string situacaoPagamento)
         {
             var parcInserir = DbSet.Where(P => P.NumeroAcordo == numeroAcordo
                                             && P.Parcela == parcela).FirstOrDefault();

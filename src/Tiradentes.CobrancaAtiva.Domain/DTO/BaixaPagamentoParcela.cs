@@ -8,7 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
     {
         public string Periodo { get; set; }
         public int Parcela { get; set; }
-        public string DataVencimento { get; set ;}
+        public string DataVencimento { get; set; }
         public string DataBaixa { get; set; }
         public string DataPagamento { get; set; }
         public float Valor { get; set; }
@@ -34,6 +34,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
         public int NumeroConta { get; set; }
 
         public string CpfCnpj { get; set; }
+        public string TipoInadimplencia { get; set; }
 
     }
 }
