@@ -71,7 +71,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
         }
 
-        private async Task GerenciaArquivos(IList<RespostaViewModel> arquivos, string cnpjEmpresa, int ies)
+        private async Task GerenciaArquivos(IList<RespostaViewModel> arquivos, string cnpjEmpresa, string ies)
         {
             var dataBaixa = DateTime.MinValue;
             try
