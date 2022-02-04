@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
@@ -20,6 +21,18 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                            dataPagamento,
                                                                            dataBaixa,
                                                                            valorPago);
+        }
+
+        public async Task AtualizaPagamentoParcelaAcordoBanco(BaixaPagamentoParcelaManualViewModel viewModel)
+        {
+            await _parcelasAcordoRepository.AtualizarPagamentoParcelaAcordoBanco(viewModel.Parcela,
+                viewModel.NumeroAcordo,
+                viewModel.DataBaixa,
+                DateTime.Now,
+                viewModel.ValorBaixa,
+                viewModel.Matricula,
+                viewModel.Motivo,
+                viewModel.CodigoBanco);
         }
 
 

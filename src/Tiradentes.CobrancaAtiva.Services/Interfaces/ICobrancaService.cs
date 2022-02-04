@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 
@@ -12,6 +13,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task<RespostaViewModel> Criar(RespostaViewModel model);
 
         Task<IEnumerable<RespostaViewModel>> BuscarRepostaNaoIntegrada();
+
+        Task BaixaManual(BaixaPagamentoParcelaManualViewModel viewModel);
 
         RespostaViewModel AlterarStatus(RespostaViewModel viewModel);
         Task<ModelPaginada<BaixaPagamento>> Listar(ConsultaBaixaPagamentoQueryParam queryParam);

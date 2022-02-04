@@ -29,6 +29,18 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                          ");
         }
 
+        private void HabilitarAlteracaoAcordoCobrancas(bool status)
+        {
+            Db.Database.ExecuteSqlRaw($@"begin
+                                         scf.COBRANCAS_PKG.set_pode_alt_acord_cob({status.ToString().ToLower()});
+                                         end;
+                                         ");
+            Db.Database.ExecuteSqlRaw($@"begin
+                                         scf.COBRANCAS_PKG.set_pode_alt_saldo({status.ToString().ToLower()});
+                                         end;
+                                         ");
+        }
+
         public async Task EstornarParcelaAcordo(decimal parcela, decimal numeroAcordo)
         {
             var parcAcordo = DbSet.Where(P => P.Parcela == parcela
@@ -77,6 +89,41 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             HabilitarAlteracaoParcelasAcordo(false);
 
+        }
+
+        public async Task AtualizarPagamentoParcelaAcordoBanco(
+            decimal parcela, 
+            decimal numeroAcordo, 
+            DateTime dataPagamento, 
+            DateTime dataBaixa, 
+            decimal valorPago,
+            decimal matricula,
+            string motivo,
+            int codigoBanco)
+        {
+            var parcInserir = DbSet.Where(P => P.NumeroAcordo == numeroAcordo
+                                            && P.Parcela == parcela).FirstOrDefault();
+            var idAluno = _idAlunoRepository.ObterIdAluno(matricula);
+
+            parcInserir.DataPagamento = dataPagamento;
+            parcInserir.ValorPago = valorPago;
+            parcInserir.DataBaixaPagamento = dataPagamento;
+            parcInserir.CodigoBanco = codigoBanco;
+
+            HabilitarAlteracaoParcelasAcordo(true);
+            HabilitarAlteracaoAcordoCobrancas(true);
+
+            await Alterar(parcInserir);
+
+            await Db.Database.ExecuteSqlRawAsync(@"insert into scf.obs_reg_pgto(idt_alu, parcela, tpo_pgto, dat_hora, username, texto )
+                                values({0}, {1}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, {2});", 
+                                idAluno, parcela, motivo);
+
+            await Db.Database.ExecuteSqlRawAsync(@"update SCF.ACORDOS_COBRANCAS set SALDO_DEVEDOR =- {0} WHERE NUM_ACORDO = {1};", 
+                                valorPago, numeroAcordo);
+
+            HabilitarAlteracaoAcordoCobrancas(false);
+            HabilitarAlteracaoParcelasAcordo(false);
         }
 
         public decimal? ObterValorParcelaAcordo(decimal parcela, decimal numeroAcordo)
