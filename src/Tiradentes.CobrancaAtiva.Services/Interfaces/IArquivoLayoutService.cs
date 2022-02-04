@@ -8,7 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
     public interface IArquivoLayoutService
     {
-        Task<DateTime> SalvarLayoutArquivo(string status, string arquivoResposta);
+        Task<DateTime> SalvarLayoutArquivo(string status, string arquivoResposta, string cnpj, int iesId);
         Task AtualizarStatusLayoutArquivo(DateTime dataHora, string status);
         ArquivoLayoutViewModel BuscarPorDataHora(DateTime dataHora);
         List<ArquivoLayoutViewModel> BuscarPorData(DateTime data);
