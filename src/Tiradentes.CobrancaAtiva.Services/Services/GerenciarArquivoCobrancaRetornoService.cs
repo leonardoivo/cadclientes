@@ -67,7 +67,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             foreach (var resp in respostasAgrupadas)
             {
-                GerenciaArquivos(resp.ToList(), resp.Key.CnpjEmpresaCobranca, resp.Key.InstituicaoEnsino);
+                await GerenciaArquivos(resp.ToList(), resp.Key.CnpjEmpresaCobranca, resp.Key.InstituicaoEnsino);
             }
         }
 
