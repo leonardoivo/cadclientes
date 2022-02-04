@@ -26,6 +26,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 
             builder.Property(ep => ep.Conteudo)
                .HasColumnName("CONTEUDO");
+            
+            builder.Property(ep => ep.CnpjEmpresaCobranca)
+                .HasColumnName("CNPJ_EMPRESA_PARCEIRA");
+            
+            builder.Property(ep => ep.InstituicaoEnsinoId)
+                .HasColumnName("COD_INST_ENSINO");
 
             //builder.HasMany(b => b.ErrosLayout).WithOne();
 
