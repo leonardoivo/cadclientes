@@ -8,7 +8,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public DateTime DataResposta { get; set; } = DateTime.Now;
 
         public int TipoRegistro { get; set; }
-        public int InstituicaoEnsino { get; set; }
+        public int CodigoInstituicaoEnsino { get; set; }
         public int? Curso { get; set; }
         public Int64 CPF { get; set; }
         public string NomeAluno { get; set; }
