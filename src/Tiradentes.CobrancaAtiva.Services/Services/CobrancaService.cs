@@ -190,7 +190,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             {
                 var parcelaUniq = group.First();
 
-                var instituicao = (await _instituicaoService.Buscar()).Where(i => i.Id == parcelaUniq.InstituicaoEnsino).First();
+                var instituicao = (await _instituicaoService.Buscar()).Where(i => i.Id == parcelaUniq.CodigoInstituicaoEnsino).First();
                 var modalidade = await _modalidadeService.BuscarPorCodigo(parcelaUniq.Sistema);
 
 
