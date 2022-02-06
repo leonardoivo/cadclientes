@@ -21,7 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _baixasCobrancaService = baixasCobrancaService;
         }
 
-        [HttpGet]
+        [HttpGet("teste")]
         public async Task<IActionResult> Buscar()
         {
             return Ok(await _baixasCobrancaService.Buscar());
