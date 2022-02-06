@@ -8,5 +8,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     {
         Task<BaixasCobrancasModel> BuscarPorDataBaixa(DateTime dataBaixa);
         void HabilitarAlteracaoBaixaCobranca(bool status);
+        Task<object> Buscar();
     }
 }
