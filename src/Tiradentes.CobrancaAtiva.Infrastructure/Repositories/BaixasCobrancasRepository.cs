@@ -32,7 +32,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task<object> Buscar()
         {
-            var t = Db.ItensBaixaTipo1.FiltrarItensBaixaPagamento()
+            var dados = await Db.ItensBaixaTipo1.FiltrarItensBaixaPagamento()
                 .Select(i1 => new
                 {
                     cnpj = i1.CnpjEmpresaCobranca,
@@ -55,8 +55,22 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 .Select(i => new
                 {
                     i.Key.cnpj,
-                    items = TratarBusca(i.Key.dtBaixa, i.Key.cnpj)
-                }).Paginar(0, 100);
+                    i.Key.dtBaixa
+                })
+                .Paginar(0, 100);
+
+            var t = dados.Items.Select(d =>
+                new
+                {
+                    d.cnpj,
+                    d.dtBaixa,
+                    items = Db.ItensBaixaTipo1.BuscarItems(d.dtBaixa, d.cnpj)
+                        .SelectItensBaixaPagamento(1)
+                        .Concat(Db.ItensBaixaTipo2.BuscarItems(d.dtBaixa, d.cnpj)
+                            .SelectItensBaixaPagamento(2))
+                        .Concat(Db.ItensBaixaTipo3.BuscarItems(d.dtBaixa, d.cnpj)
+                            .SelectItensBaixaPagamento(3)).ToListAsync()
+                });
 
             return t;
         }
