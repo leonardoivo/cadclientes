@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Collections.Generic;
 
 namespace Tiradentes.CobrancaAtiva.Domain.DTO
 {
@@ -7,6 +8,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
     {
         public string CNPJ { get; set; }
         public DateTime DataBaixa { get; set; }
-        public IEnumerable t { get; set; }
+        public List<ItensBaixaDto> Items { get; set; }
     }
 }
