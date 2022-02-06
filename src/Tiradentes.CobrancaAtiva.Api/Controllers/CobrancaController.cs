@@ -20,6 +20,12 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _baixasCobrancaService = baixasCobrancaService;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> Buscar()
+        {
+            return Ok(await _baixasCobrancaService.Buscar());
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> Criar([FromBody] RespostaViewModel resposta)

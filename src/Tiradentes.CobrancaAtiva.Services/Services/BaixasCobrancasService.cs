@@ -21,6 +21,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _arquivoLayoutService = arquivoLayoutService;
             _mapper = mapper;
         }
+
+        public async Task<object> Buscar()
+        {
+            return await _baixasCobrancasRepository.Buscar();
+        }
+        
         public async Task AtualizarBaixasCobrancas(BaixasCobrancasViewModel baixasCobrancas)
         {
             //Update do doc n faz sentido
