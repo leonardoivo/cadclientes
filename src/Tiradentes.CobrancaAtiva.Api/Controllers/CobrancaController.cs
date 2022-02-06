@@ -23,6 +23,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _baixasCobrancaService = baixasCobrancaService;
         }
 
+<<<<<<< HEAD
         /// <summary>
         /// JSON de exemplo para os respectivos tipos de registros (1,2 e 3)
         /// </summary>
@@ -42,6 +43,17 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Criar([FromBody] CriarRespostaViewModel resposta)
+=======
+        [HttpGet]
+        public async Task<IActionResult> Buscar()
+        {
+            return Ok(await _baixasCobrancaService.Buscar());
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> Criar([FromBody] RespostaViewModel resposta)
+>>>>>>> f4af321 (teste concatenar queries)
         {
             return Ok(await _cobrancaService.Criar(resposta));
         }
