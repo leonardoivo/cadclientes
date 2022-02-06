@@ -12,14 +12,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
     {
         public BaixasCobrancasRepository(CobrancaAtivaDbContext context) : base(context)
         {
-
         }
 
         public async Task<BaixasCobrancasModel> BuscarPorDataBaixa(DateTime dataBaixa)
         {
             return await DbSet.Where(B => B.DataBaixa.Year == dataBaixa.Year
-                                       && B.DataBaixa.Month == dataBaixa.Month
-                                       && B.DataBaixa.Day == dataBaixa.Day).FirstOrDefaultAsync();
+                                          && B.DataBaixa.Month == dataBaixa.Month
+                                          && B.DataBaixa.Day == dataBaixa.Day).FirstOrDefaultAsync();
         }
 
         public void HabilitarAlteracaoBaixaCobranca(bool status)
@@ -27,6 +26,22 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             Db.Database.ExecuteSqlRaw($@"begin
                                          scf.COBRANCAS_PKG.set_pode_alt_baix_cob({status.ToString().ToLower()});
                                          end;");
+        }
+
+        public async Task<object> Buscar()
+        {
+            var t = await Db.ItensBaixaTipo1.Where(i1 => i1.CnpjEmpresaCobranca != null).Select(i1 => new
+                {
+                    dt = i1.DataBaixa,
+                    tp = 1,
+                })
+                .Concat(Db.ItensBaixaTipo2.Where(i1 => i1.CnpjEmpresaCobranca != null).Select(i2 => new
+                {
+                    dt = i2.DataBaixa,
+                    tp = 2,
+                })).ToListAsync();
+
+            return t;
         }
     }
 }

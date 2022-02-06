@@ -9,5 +9,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task AtualizarBaixasCobrancas(BaixasCobrancasViewModel baixasCobrancas);
         Task CriarBaixasCobrancas(DateTime dataBaixa);
         Task<BaixasCobrancasViewModel> Buscar(DateTime dataBaixa);
+        Task<object> Buscar();
     }
 }
