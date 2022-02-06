@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
@@ -33,21 +34,34 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             var t = await Db.ItensBaixaTipo1.Where(i1 => i1.CnpjEmpresaCobranca != null).Select(i1 => new
                 {
                     dt = i1.DataBaixa,
-                    tp = 1,
+                    cnpj = i1.CnpjEmpresaCobranca
                 })
                 .Concat(Db.ItensBaixaTipo2.Where(i2 => i2.CnpjEmpresaCobranca != null).Select(i2 => new
                 {
                     dt = i2.DataBaixa,
-                    tp = 2,
+                    cnpj = i2.CnpjEmpresaCobranca
                 }))
                 .Concat(Db.ItensBaixaTipo3.Where(i3 => i3.CnpjEmpresaCobranca != null).Select(i3 => new
                 {
                     dt = i3.DataBaixa,
-                    tp = 3,
-                })).
-                OrderBy(i => i.dt).Paginar(0, 0);
+                    cnpj = i3.CnpjEmpresaCobranca
+                })).OrderByDescending(i => i.dt).GroupBy(i => new {i.dt, i.cnpj}).Select(i => new
+                {
+                    i.Key.dt,
+                    i.Key.cnpj,
+                    list = i.ToList()
+                }).Paginar(0, 100);
 
             return t;
+        }
+
+        private static Expression<Func<TModel, object>> ConverterParaBuscaDto<TModel>() where TModel : BaseItensModel
+        {
+            return i => new
+            {
+                dt = i.DataBaixa,
+                cnpj = i.CnpjEmpresaCobranca
+            };
         }
     }
 }
