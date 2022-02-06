@@ -32,36 +32,30 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task<object> Buscar()
         {
-            var t = await Db.ItensBaixaTipo1.Where(i1 => i1.CnpjEmpresaCobranca != null).Select(i1 => new
-                {
-                    dt = i1.DataBaixa,
-                    cnpj = i1.CnpjEmpresaCobranca
-                })
-                .Concat(Db.ItensBaixaTipo2.Where(i2 => i2.CnpjEmpresaCobranca != null).Select(i2 => new
-                {
-                    dt = i2.DataBaixa,
-                    cnpj = i2.CnpjEmpresaCobranca
-                }))
-                .Concat(Db.ItensBaixaTipo3.Where(i3 => i3.CnpjEmpresaCobranca != null).Select(i3 => new
-                {
-                    dt = i3.DataBaixa,
-                    cnpj = i3.CnpjEmpresaCobranca
-                })).OrderByDescending(i => i.dt).GroupBy(i => new {i.dt, i.cnpj}).Select(i => new
+            var t = await Db.ItensBaixaTipo1.Where(i1 => i1.CnpjEmpresaCobranca != null)
+                .Select(ConverterParaBuscaDto<ItensBaixaTipo1Model>(1))
+                .Concat(Db.ItensBaixaTipo2.Where(i2 => i2.CnpjEmpresaCobranca != null)
+                    .Select(ConverterParaBuscaDto<ItensBaixaTipo2Model>(2)))
+                .Concat(Db.ItensBaixaTipo3.Where(i3 => i3.CnpjEmpresaCobranca != null)
+                    .Select(ConverterParaBuscaDto<ItensBaixaTipo3Model>(3))).OrderByDescending(i => i.DataBaixa)
+                .GroupBy(i => new {i.DataBaixa, i.CNPJ}).Select(i => new
                     BuscaBaixaPagamentoDto
                     {
-                        DataBaixa = i.Key.dt,
-                        CNPJ = i.Key.cnpj
+                        DataBaixa = i.Key.DataBaixa,
+                        CNPJ = i.Key.CNPJ,
                     }).Paginar(0, 100);
 
             return t;
         }
 
-        private static Expression<Func<TModel, object>> ConverterParaBuscaDto<TModel>() where TModel : BaseItensModel
+        private static Expression<Func<TModel, ItensBaixaDto>> ConverterParaBuscaDto<TModel>(int tipo)
+            where TModel : BaseItensModel
         {
-            return i => new
+            return i => new ItensBaixaDto
             {
-                dt = i.DataBaixa,
-                cnpj = i.CnpjEmpresaCobranca
+                DataBaixa = i.DataBaixa,
+                CNPJ = i.CnpjEmpresaCobranca,
+                Tipo = tipo
             };
         }
     }
