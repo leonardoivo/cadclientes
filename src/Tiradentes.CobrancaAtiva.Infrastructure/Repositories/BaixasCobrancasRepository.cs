@@ -35,11 +35,17 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     dt = i1.DataBaixa,
                     tp = 1,
                 })
-                .Concat(Db.ItensBaixaTipo2.Where(i1 => i1.CnpjEmpresaCobranca != null).Select(i2 => new
+                .Concat(Db.ItensBaixaTipo2.Where(i2 => i2.CnpjEmpresaCobranca != null).Select(i2 => new
                 {
                     dt = i2.DataBaixa,
                     tp = 2,
-                })).ToListAsync();
+                }))
+                .Concat(Db.ItensBaixaTipo3.Where(i3 => i3.CnpjEmpresaCobranca != null).Select(i3 => new
+                {
+                    dt = i3.DataBaixa,
+                    tp = 3,
+                })).
+                OrderBy(i => i.dt).Paginar(0, 0);
 
             return t;
         }
