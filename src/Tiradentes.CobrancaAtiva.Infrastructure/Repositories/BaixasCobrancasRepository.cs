@@ -62,10 +62,26 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 .GroupBy(i => new {i.cnpj, i.dtBaixa})
                 .Select(i => new
                 {
+<<<<<<< HEAD
                     i.Key.cnpj,
                     i.Key.dtBaixa
                 })
                 .Paginar(0, 100);
+=======
+                    dt = i2.DataBaixa,
+                    cnpj = i2.CnpjEmpresaCobranca
+                }))
+                .Concat(Db.ItensBaixaTipo3.Where(i3 => i3.CnpjEmpresaCobranca != null).Select(i3 => new
+                {
+                    dt = i3.DataBaixa,
+                    cnpj = i3.CnpjEmpresaCobranca
+                })).OrderByDescending(i => i.dt).GroupBy(i => new {i.dt, i.cnpj}).Select(i => new
+                {
+                    i.Key.dt,
+                    i.Key.cnpj,
+                    list = i.ToList()
+                }).Paginar(0, 100);
+>>>>>>> 154f36b (adicionado agrupamento)
 
 
             var resultado = new ModelPaginada<BuscaBaixaPagamentoDto>
@@ -139,6 +155,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 }).ToListAsync();
 
             return itemTipo1.Concat(itemTipo2).Concat(itemTipo3).OrderBy(i => i.NumeroLinha).ThenBy(i => i.NomeAluno);
+        }
+
+        private static Expression<Func<TModel, object>> ConverterParaBuscaDto<TModel>() where TModel : BaseItensModel
+        {
+            return i => new
+            {
+                dt = i.DataBaixa,
+                cnpj = i.CnpjEmpresaCobranca
+            };
         }
     }
 }
