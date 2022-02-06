@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
@@ -59,18 +60,23 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 })
                 .Paginar(0, 100);
 
-            var t = dados.Items.Select(d =>
-                new
+
+            var t = new List<object>();
+            foreach (var d in dados.Items)
+            {
+                var newObj = new
                 {
                     d.cnpj,
                     d.dtBaixa,
-                    items = Db.ItensBaixaTipo1.BuscarItems(d.dtBaixa, d.cnpj)
+                    items = await Db.ItensBaixaTipo1.BuscarItems(d.dtBaixa, d.cnpj)
                         .SelectItensBaixaPagamento(1)
                         .Concat(Db.ItensBaixaTipo2.BuscarItems(d.dtBaixa, d.cnpj)
                             .SelectItensBaixaPagamento(2))
                         .Concat(Db.ItensBaixaTipo3.BuscarItems(d.dtBaixa, d.cnpj)
                             .SelectItensBaixaPagamento(3)).ToListAsync()
-                });
+                };
+                t.Add(newObj);
+            }
 
             return t;
         }
