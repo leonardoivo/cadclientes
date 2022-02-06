@@ -3,6 +3,7 @@ using System;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
@@ -46,11 +47,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     dt = i3.DataBaixa,
                     cnpj = i3.CnpjEmpresaCobranca
                 })).OrderByDescending(i => i.dt).GroupBy(i => new {i.dt, i.cnpj}).Select(i => new
-                {
-                    i.Key.dt,
-                    i.Key.cnpj,
-                    list = i.ToList()
-                }).Paginar(0, 100);
+                    BuscaBaixaPagamentoDto
+                    {
+                        DataBaixa = i.Key.dt,
+                        CNPJ = i.Key.cnpj
+                    }).Paginar(0, 100);
 
             return t;
         }
