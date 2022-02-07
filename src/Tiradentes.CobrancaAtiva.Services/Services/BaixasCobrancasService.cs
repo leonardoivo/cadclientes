@@ -1,9 +1,13 @@
 ﻿using AutoMapper;
 using System;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.QueryParams;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
+using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Services.Services
@@ -13,27 +17,31 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         readonly IBaixasCobrancasRepository _baixasCobrancasRepository;
         readonly IArquivoLayoutService _arquivoLayoutService;
         readonly IMapper _mapper;
+
         public BaixasCobrancasService(IBaixasCobrancasRepository baixasCobrancasRepository,
-                                      IArquivoLayoutService arquivoLayoutService,
-                                      IMapper mapper)
+            IArquivoLayoutService arquivoLayoutService,
+            IMapper mapper)
         {
             _baixasCobrancasRepository = baixasCobrancasRepository;
             _arquivoLayoutService = arquivoLayoutService;
             _mapper = mapper;
         }
 
-        public async Task<object> Buscar()
+        public async Task<ModelPaginada<ConsultaBaixaPagamentoViewModel>> Buscar(
+            ConsultaBaixaCobrancaQueryParam queryParams)
         {
-            return await _baixasCobrancasRepository.Buscar();
+            var query = _mapper.Map<BaixaCobrancaQueryParam>(queryParams);
+            var resultado = await _baixasCobrancasRepository.Buscar();
+            return _mapper.Map<ModelPaginada<ConsultaBaixaPagamentoViewModel>>(resultado);
         }
-        
+
         public async Task AtualizarBaixasCobrancas(BaixasCobrancasViewModel baixasCobrancas)
         {
             //Update do doc n faz sentido
             var model = await _baixasCobrancasRepository.BuscarPorDataBaixa(baixasCobrancas.DataBaixa);
 
             if (model == null)
-                return;            
+                return;
 
             model.Etapa = baixasCobrancas.Etapa;
             model.QuantidadeErrosTipo1 = baixasCobrancas.QuantidadeErrosTipo1;
@@ -47,7 +55,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             model.TotalErrosTipo3 = baixasCobrancas.ValorTotalErrosTipo3;
             model.TotalTipo1 = baixasCobrancas.ValorTotalTipo1;
             model.TotalTipo2 = baixasCobrancas.ValorTotalTipo2;
-            model.TotalTipo3 = baixasCobrancas.ValorTotalTipo3;            
+            model.TotalTipo3 = baixasCobrancas.ValorTotalTipo3;
 
             _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(true);
 
@@ -64,7 +72,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             {
                 DataBaixa = dataBaixa.Date,
                 Etapa = 0
-
             };
 
             await _baixasCobrancasRepository.Criar(model);

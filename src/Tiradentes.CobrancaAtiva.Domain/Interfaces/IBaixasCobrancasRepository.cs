@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
@@ -8,6 +9,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     {
         Task<BaixasCobrancasModel> BuscarPorDataBaixa(DateTime dataBaixa);
         void HabilitarAlteracaoBaixaCobranca(bool status);
-        Task<object> Buscar();
+        Task<ModelPaginada<BuscaBaixaPagamentoDto>> Buscar();
     }
 }
