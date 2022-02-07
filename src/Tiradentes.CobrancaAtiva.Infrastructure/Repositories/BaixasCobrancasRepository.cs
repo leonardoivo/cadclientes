@@ -31,7 +31,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                          end;");
         }
 
-        public async Task<object> Buscar()
+        public async Task<ModelPaginada<BuscaBaixaPagamentoDto>> Buscar()
         {
             var dados = await Db.ItensBaixaTipo1.FiltrarItensBaixaPagamento()
                 .Select(i1 => new

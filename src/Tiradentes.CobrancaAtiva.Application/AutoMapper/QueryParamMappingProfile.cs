@@ -15,6 +15,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ConsultaParametroEnvioQueryParam, ParametroEnvioQueryParam>();
             CreateMap<ConsultaConflitoQueryParam, ConflitoQueryParam>();
             CreateMap<ConsultaBaixaPagamentoQueryParam, BaixaPagamentoQueryParam>();
+            CreateMap<ConsultaBaixaCobrancaQueryParam, BaixaCobrancaQueryParam>();
         }
     }
 }
