@@ -1,6 +1,4 @@
-﻿
-using MongoDB.Bson;
-using System;
+﻿using System;
 
 namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 {
@@ -8,14 +6,14 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
     {
         public string MongoId { get; set; }
         public int TipoRegistro { get; set; }
-        public Int64 CnpjEmpresaCobranca { get; set; }
+        public string CnpjEmpresaCobranca { get; set; }
         public string SituacaoAluno { get; set; }
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }
         public string ChaveInadimplencia { get; set; }
         public int CodigoInstituicaoEnsino { get; set; }
         public int? Curso { get; set; }
-        public Int64 CPF { get; set; }
+        public string CPF { get; set; }
         public string NomeAluno { get; set; }
         public Int64 Matricula { get; set; }
         public Int64 NumeroAcordo { get; set; }
@@ -87,8 +85,8 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public DateTime? DataBaixa { get; set; }
         public decimal ValorPago { get; set; }
         public string TipoPagamento { get; set; }
-
         public bool Integrado { get; set; }
+        public int Erro { get; set; } 
 
         public decimal ObterPeriodo()
         {

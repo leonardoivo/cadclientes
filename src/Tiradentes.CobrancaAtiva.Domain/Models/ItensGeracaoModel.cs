@@ -17,5 +17,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public string TipoInadimplencia { get; set; }
         public string DescricaoInadimplencia { get; set; }
         public string PeriodoOutros { get; set; }
+        public string PeriodoChequeDevolvido { get; set; }
     }
 }
