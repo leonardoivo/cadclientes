@@ -7,6 +7,7 @@ using Microsoft.EntityFrameworkCore;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
+using Tiradentes.CobrancaAtiva.Infrastructure.Repositories.Helpers;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {

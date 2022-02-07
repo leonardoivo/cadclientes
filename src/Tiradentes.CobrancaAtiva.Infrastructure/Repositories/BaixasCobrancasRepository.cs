@@ -9,6 +9,7 @@ using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
+using Tiradentes.CobrancaAtiva.Infrastructure.Repositories.Helpers;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
@@ -34,19 +35,24 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task<ModelPaginada<BuscaBaixaPagamentoDto>> Buscar(BaixaCobrancaQueryParam queryParam)
         {
-            var dados = await Db.ItensBaixaTipo1.FiltrarItensBaixaPagamento()
+            if (queryParam.EmpresaParceiraId.HasValue)
+                queryParam.CnpjEmpresaParceira =
+                    (await Db.EmpresaParceira.FirstOrDefaultAsync(e => e.Id == queryParam.EmpresaParceiraId.Value))
+                    ?.CNPJ ?? string.Empty;
+            
+            var dados = await Db.ItensBaixaTipo1.FiltrarItensBaixaPagamento(queryParam)
                 .Select(i1 => new
                 {
                     cnpj = i1.CnpjEmpresaCobranca,
                     dtBaixa = i1.DataBaixa
                 })
-                .Concat(Db.ItensBaixaTipo2.FiltrarItensBaixaPagamento()
+                .Concat(Db.ItensBaixaTipo2.FiltrarItensBaixaPagamento(queryParam)
                     .Select(i1 => new
                     {
                         cnpj = i1.CnpjEmpresaCobranca,
                         dtBaixa = i1.DataBaixa
                     }))
-                .Concat(Db.ItensBaixaTipo3.FiltrarItensBaixaPagamento()
+                .Concat(Db.ItensBaixaTipo3.FiltrarItensBaixaPagamento(queryParam)
                     .Select(i1 => new
                     {
                         cnpj = i1.CnpjEmpresaCobranca,
@@ -78,7 +84,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     NomeEmpresaParceira = (await Db.EmpresaParceira.FirstOrDefaultAsync(e => e.CNPJ == item.cnpj))
                         ?.NomeFantasia,
                     NomeInstituicaoEnsino = (await Db.Instituicao.FirstOrDefaultAsync(i => i.Id == 58))?.Instituicao,
-                    Items = await BuscarItems(item.dtBaixa, item.cnpj)
+                    Items = await BuscarItems(item.dtBaixa, item.cnpj, queryParam)
                 };
                 resultado.Items.Add(newObj);
             }
@@ -86,9 +92,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             return resultado;
         }
 
-        private async Task<IEnumerable<ItensBaixaDto>> BuscarItems(DateTime dtBaixa, string cnpj)
+        private async Task<IEnumerable<ItensBaixaDto>> BuscarItems(DateTime dtBaixa, string cnpj,
+            BaixaCobrancaQueryParam queryParam)
         {
-            var itemTipo1 = await Db.ItensBaixaTipo1.BuscarItems(dtBaixa, cnpj)
+            var itemTipo1 = await Db.ItensBaixaTipo1.BuscarItems(dtBaixa, cnpj, queryParam)
                 .Select(i => new ItensBaixaDto
                 {
                     Tipo = 1,
@@ -104,7 +111,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     NomeAluno = "Teste"
                 }).ToListAsync();
 
-            var itemTipo2 = await Db.ItensBaixaTipo2.BuscarItems(dtBaixa, cnpj)
+            var itemTipo2 = await Db.ItensBaixaTipo2.BuscarItems(dtBaixa, cnpj, queryParam)
                 .Select(i => new ItensBaixaDto
                 {
                     Tipo = 2,
@@ -118,7 +125,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     NomeAluno = "Teste"
                 }).ToListAsync();
 
-            var itemTipo3 = await Db.ItensBaixaTipo3.BuscarItems(dtBaixa, cnpj)
+            var itemTipo3 = await Db.ItensBaixaTipo3.BuscarItems(dtBaixa, cnpj, queryParam)
                 .Select(i => new ItensBaixaDto
                 {
                     Tipo = 3,
