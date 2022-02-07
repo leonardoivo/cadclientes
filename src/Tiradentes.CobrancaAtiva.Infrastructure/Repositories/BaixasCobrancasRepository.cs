@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
+using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
@@ -31,7 +32,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                          end;");
         }
 
-        public async Task<ModelPaginada<BuscaBaixaPagamentoDto>> Buscar()
+        public async Task<ModelPaginada<BuscaBaixaPagamentoDto>> Buscar(BaixaCobrancaQueryParam queryParam)
         {
             var dados = await Db.ItensBaixaTipo1.FiltrarItensBaixaPagamento()
                 .Select(i1 => new
