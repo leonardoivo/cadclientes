@@ -7,7 +7,9 @@ namespace Tiradentes.CobrancaAtiva.Domain.DTO
     public class BuscaBaixaPagamentoDto
     {
         public DateTime DataBaixa { get; set; }
-        public string CNPJ { get; set; }
-        public int Tipo { get; set; } 
+        public string NomeEmpresaParceira { get; set; }
+        public string NomeInstituicaoEnsino { get; set; }
+        public IEnumerable<ItensBaixaDto> Items { get; set; }
+
     }
 }
