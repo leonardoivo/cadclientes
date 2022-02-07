@@ -1,4 +1,4 @@
-﻿﻿﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
@@ -34,6 +34,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         {
             return _cobrancaService.ExemplosRespostas();
         }
+
         /// <summary>
         /// Faz o envio das respostas de acordos de cobrança (Tipo 1, Tipo 2 e Tipo 3).
         /// </summary>
@@ -73,10 +74,17 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public async Task<IActionResult> Listar([FromQuery] ConsultaBaixaPagamentoQueryParam resposta)
+        [HttpGet("baixas")]
+        public async Task<IActionResult> Buscar([FromQuery] ConsultaBaixaPagamentoQueryParam queryParam)
         {
-            return Ok(await _cobrancaService.Listar(resposta));
+            return Ok(await _cobrancaService.Listar(queryParam));
+        }
+
+        [HttpGet]
+        public async Task<ActionResult<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>> Listar(
+            [FromQuery] ConsultaBaixaCobrancaQueryParam queryParam)
+        {
+            return await _baixasCobrancaService.Buscar(queryParam);
         }
 
         [HttpGet("listar-filtros-matricula")]
