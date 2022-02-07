@@ -34,7 +34,6 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         {
             return _cobrancaService.ExemplosRespostas();
         }
-
         /// <summary>
         /// Faz o envio das respostas de acordos de cobrança (Tipo 1, Tipo 2 e Tipo 3).
         /// </summary>
@@ -73,18 +72,19 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             await _cobrancaService.BaixaManual(baixaPagamento);
             return Ok();
         }
-
+        
         [HttpGet("baixas")]
-        public async Task<IActionResult> Buscar([FromQuery] ConsultaBaixaPagamentoQueryParam queryParam)
-        {
-            return Ok(await _cobrancaService.Listar(queryParam));
-        }
 
-        [HttpGet]
-        public async Task<ActionResult<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>> Listar(
+        public async Task<ActionResult<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>> Buscar(
             [FromQuery] ConsultaBaixaCobrancaQueryParam queryParam)
         {
             return await _baixasCobrancaService.Buscar(queryParam);
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> Listar([FromQuery] ConsultaBaixaPagamentoQueryParam resposta)
+        {
+            return Ok(await _cobrancaService.Listar(resposta));
         }
 
         [HttpGet("listar-filtros-matricula")]
