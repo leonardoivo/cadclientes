@@ -95,7 +95,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         .Concat(Db.ItensBaixaTipo2.BuscarItems(item.dtBaixa, item.cnpj)
                             .Select(i => new ItensBaixaDto
                             {
-                                Tipo = 1,
+                                Tipo = 2,
                                 Erro = i.CodigoErro,
                                 Matricula = i.Matricula,
                                 Parcela = i.Parcela,
@@ -108,10 +108,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                         .Concat(Db.ItensBaixaTipo3.BuscarItems(item.dtBaixa, item.cnpj)
                             .Select(i => new ItensBaixaDto
                             {
-                                Tipo = 1,
+                                Tipo = 3,
                                 Erro = i.CodigoErro,
                                 Matricula = i.Matricula,
                                 Parcela = i.Parcela,
+                                Valor = i.ValorPago,
                                 NumeroAcordo = i.NumeroAcordo,
                                 NumeroLinha = i.NumeroLinha,
                                 NomeAluno = "Teste",
