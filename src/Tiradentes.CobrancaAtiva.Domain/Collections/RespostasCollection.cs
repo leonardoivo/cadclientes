@@ -10,11 +10,11 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public int TipoRegistro { get; set; }
         public int CodigoInstituicaoEnsino { get; set; }
         public int? Curso { get; set; }
-        public Int64 CPF { get; set; }
+        public string CPF { get; set; }
         public string NomeAluno { get; set; }
         public Int64 NumeroAcordo { get; set; }
         public int Parcela { get; set; }
-        public Int64 CnpjEmpresaCobranca { get; set; }
+        public string CnpjEmpresaCobranca { get; set; }
         public string SituacaoAluno { get; set; }
         public string Sistema { get; set; }
 

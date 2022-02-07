@@ -1,4 +1,4 @@
-﻿﻿using AutoMapper;
+﻿using AutoMapper;
 using System;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;

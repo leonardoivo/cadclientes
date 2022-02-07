@@ -301,61 +301,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return viewModel;
         }
 
-        public async Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel viewModel)
-        {
-            try
-            {
-                Validate(new RegularizacaoParcelasAcordoValidation(), viewModel);
-
-                await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(viewModel.Parcela,
-                                                                     viewModel.NumeroAcordo,
-                                                                     viewModel.DataPagamento,
-                                                                     viewModel.DataPagamento,
-                                                                     viewModel.ValorPago,
-                                                                     "R");
-
-
-                await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago * -1);
-
-                if (viewModel.Parcela == 1)
-                {
-                    try
-                    {
-                        await _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: viewModel.NumeroAcordo,
-                                                                    matricula: viewModel.Matricula,
-                                                                    sistema: viewModel.Sistema,
-                                                                    dataPagamento: viewModel.DataPagamento,
-                                                                    periodo: viewModel.ObterPeriodo(),
-                                                                    idTitulo: viewModel.IdTitulo,
-                                                                    codigoAtividade: viewModel.CodigoAtividade,
-                                                                    numeroEvt: viewModel.NumeroEvt,
-                                                                    idPessoa: viewModel.IdPessoa,
-                                                                    codigobanco: viewModel.CodigoBanco,
-                                                                    codigoAgencia: viewModel.CodigoAgencia,
-                                                                    numeroConta: viewModel.NumeroConta,
-                                                                    numeroCheque: viewModel.NumeroCheque,
-                                                                    CpfCnpj: viewModel.CPF
-                                                                    );
-
-                        await _parcelasAcordoService.InserirObservacaoRegularizacaoParcelaAcordo(viewModel.CnpjEmpresaCobranca, viewModel.NumeroAcordo, viewModel.Parcela, viewModel.Texto);
-                    }
-                    catch (Exception)
-                    {
-
-                        await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago);
-
-                        throw;
-                    }
-                }
-            }
-            catch (Exception)
-            {
-                await _parcelasAcordoService.EstornarParcelaAcordo(viewModel.Parcela, viewModel.NumeroAcordo);
-            }
-
-            return viewModel;
-        }
-
         public async Task<IEnumerable<string>> ListarFiltrosMatricula(string matricula)
         {
             var baixas = await _repositorio.ListarFiltroPorMatricula(matricula);
