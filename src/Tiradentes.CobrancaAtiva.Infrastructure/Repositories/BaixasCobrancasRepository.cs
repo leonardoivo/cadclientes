@@ -102,7 +102,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     NumeroLinha = i.NumeroLinha,
                     NomeAluno = "Teste"
                 }).ToListAsync();
-            
+
             var itemTipo2 = await Db.ItensBaixaTipo2.BuscarItems(dtBaixa, cnpj)
                 .Select(i => new ItensBaixaDto
                 {
@@ -130,7 +130,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     NomeAluno = "Teste",
                 }).ToListAsync();
 
-            return itemTipo1.Concat(itemTipo2).Concat(itemTipo3);
+            return itemTipo1.Concat(itemTipo2).Concat(itemTipo3).OrderBy(i => i.NumeroLinha).ThenBy(i => i.NomeAluno);
         }
     }
 }
