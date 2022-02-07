@@ -2,6 +2,7 @@
 using System;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
+using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
@@ -27,12 +28,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<ModelPaginada<ConsultaBaixaPagamentoViewModel>> Buscar(
+        public async Task<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>> Buscar(
             ConsultaBaixaCobrancaQueryParam queryParams)
         {
             var query = _mapper.Map<BaixaCobrancaQueryParam>(queryParams);
             var resultado = await _baixasCobrancasRepository.Buscar();
-            return _mapper.Map<ModelPaginada<ConsultaBaixaPagamentoViewModel>>(resultado);
+            return _mapper.Map<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>(resultado);
         }
 
         public async Task AtualizarBaixasCobrancas(BaixasCobrancasViewModel baixasCobrancas)
