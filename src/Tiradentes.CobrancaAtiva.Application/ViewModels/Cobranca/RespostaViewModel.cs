@@ -4,6 +4,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
 {
     public class RespostaViewModel
     {
+        public string MongoId { get; set; }
         public int TipoRegistro { get; set; }
         public string CnpjEmpresaCobranca { get; set; }
         public string SituacaoAluno { get; set; }
