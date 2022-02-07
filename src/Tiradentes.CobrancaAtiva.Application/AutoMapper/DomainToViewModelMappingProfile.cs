@@ -92,6 +92,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<RespostasCollection, RespostaViewModel>();
             CreateMap<RespostasCollection, CriarRespostaViewModel>();
             CreateMap<ItensBaixaDto, ItensBaixaPagamentoViewModel>();
+            CreateMap<BuscaBaixaPagamentoDto, ConsultaBaixaPagamentoViewModel>();
             CreateMap<ModelPaginada<BuscaBaixaPagamentoDto>, ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>();
         }
     }
