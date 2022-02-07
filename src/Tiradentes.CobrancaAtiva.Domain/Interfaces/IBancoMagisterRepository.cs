@@ -4,9 +4,7 @@ using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
 {
-    public interface IItensGeracaoRepository
+    public interface IBancoMagisterRepository : IBaseRepository<BancoMagisterModel>
     {
-        Task Criar(ItensGeracaoModel model);
-        Task CriarVarios(List<ItensGeracaoModel> models);
     }
 }

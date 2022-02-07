@@ -8,9 +8,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
     {
         public void Configure(EntityTypeBuilder<ItensGeracaoModel> builder)
         {
-            builder.HasKey(ep => new {ep.DataGeracao, ep.CnpjEmpresaCobranca, ep.Matricula, ep.Parcela});
-
             builder.Ignore(ep => ep.Id);
+
+            builder.HasKey(ep => new {ep.DataGeracao, ep.CnpjEmpresaCobranca, ep.Matricula, ep.Parcela});
 
             builder.Property(ep => ep.DataGeracao)
              .HasColumnName("DAT_GERACAO");
@@ -48,10 +48,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.DescricaoInadimplencia)
              .HasColumnName("DSC_INADIMPLENCIA");
 
-            builder.Property(ep => ep.PeriodoChequeDevolvido)
-             .HasColumnName("PERIODO_CHEQUE_DEVOLVIDO");
+            builder.Property(ep => ep.PeriodoOutros)
+             .HasColumnName("PERIODO_OUTROS");
 
-            builder.ToTable("ITENS_GERACAO");
+            builder.ToTable("ITENS_GERACAO", "SCF");
         }
     }
 }

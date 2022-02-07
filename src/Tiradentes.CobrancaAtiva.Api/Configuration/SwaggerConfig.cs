@@ -1,6 +1,9 @@
 ﻿using Microsoft.AspNetCore.Builder;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.OpenApi.Models;
+using System;
+using System.IO;
+using System.Reflection;
 
 namespace Tiradentes.CobrancaAtiva.Api.Configuration
 {
@@ -15,6 +18,10 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
                     Version = "v1",
                     Title = "Tiradentes - Cobrança Ativa",
                 });
+
+                var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
+                var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
+                swg.IncludeXmlComments(xmlPath);
             });
         }
 

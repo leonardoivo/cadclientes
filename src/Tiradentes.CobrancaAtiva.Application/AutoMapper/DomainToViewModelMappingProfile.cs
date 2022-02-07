@@ -70,6 +70,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<EnderecoModel, EnderecoViewModel>();
             CreateMap<BancoModel, BancoViewModel>();
+            CreateMap<BancoMagisterModel, BancoMagisterViewModel>();
 
             CreateMap<RegraNegociacaoModel, RegraNegociacaoViewModel>();
             CreateMap<BuscaRegraNegociacao, BuscaRegraNegociacaoViewModel>();
@@ -87,6 +88,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             .ForMember(dest => dest.Modalidade, opt => opt.MapFrom(src => src.Modalidade.Modalidade));
 
             CreateMap<RespostasCollection, RespostaViewModel>();
+            CreateMap<RespostasCollection, CriarRespostaViewModel>();
         }
     }
 }

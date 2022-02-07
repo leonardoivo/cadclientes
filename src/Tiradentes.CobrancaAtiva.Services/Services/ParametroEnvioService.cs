@@ -5,6 +5,7 @@ using Renci.SshNet;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Globalization;
 using System.IO;
 using System.Linq;
 using System.Text;
@@ -73,7 +74,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _encryptationApi = new EncryptationApi(encryptationConfig.Value);
         }
 
-        public async Task<ViewModelPaginada<BuscaParametroEnvioViewModel>> Buscar(ConsultaParametroEnvioQueryParam queryParam)
+        public async Task<ViewModelPaginada<BuscaParametroEnvioViewModel>> Buscar(
+            ConsultaParametroEnvioQueryParam queryParam)
         {
             var regraQueryParam = _map.Map<ParametroEnvioQueryParam>(queryParam);
 
@@ -115,9 +117,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     viewModels.ValidadeInicial = parametroEnvio.ValidadeInicial;
                     viewModels.ValidadeFinal = parametroEnvio.ValidadeFinal;
                     viewModels.Cursos = parametroEnvio.Cursos.Select(x => x.CodigoMagister.ToString()).ToArray();
-                    viewModels.SituacoesAluno = parametroEnvio.SituacoesAlunos.Select(x => x.CodigoMagister.ToString()).ToArray();
-                    viewModels.TiposTitulos = parametroEnvio.TiposTitulos.Select(x => x.CodigoMagister.ToString()).ToArray();
-                    viewModels.TitulosAvulsos = parametroEnvio.TitulosAvulsos.Select(x => x.CodigoGT.ToString()).ToArray();
+                    viewModels.SituacoesAluno = parametroEnvio.SituacoesAlunos.Select(x => x.CodigoMagister.ToString())
+                        .ToArray();
+                    viewModels.TiposTitulos =
+                        parametroEnvio.TiposTitulos.Select(x => x.CodigoMagister.ToString()).ToArray();
+                    viewModels.TitulosAvulsos =
+                        parametroEnvio.TitulosAvulsos.Select(x => x.CodigoGT.ToString()).ToArray();
 
                     var stringfiedMessage = JsonSerializer.Serialize(viewModels);
                     var bytesMessage = Encoding.UTF8.GetBytes(stringfiedMessage);
@@ -192,10 +197,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             await _geracaoCobrancaRepositorio.Criar(geracaoArquivo);
 
-            using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value, empresaParceira.UsuarioEnvioArquivo, senhaEnvioArquivo);
+            using var client = new SftpClient(empresaParceira.IpEnvioArquivo, empresaParceira.PortaEnvioArquivo.Value,
+                empresaParceira.UsuarioEnvioArquivo, senhaEnvioArquivo);
             try
             {
-
                 client.Connect();
 
                 foreach (var filename in await GerarArquivoCsv(parametroEnvio, lote, geracaoArquivo))
@@ -225,7 +230,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
         }
 
-        public async Task<List<string>> GerarArquivoCsv(BuscaParametroEnvio parametroEnvio, string lote, GeracaoCobrancasModel geracaoCobrancas)
+        public async Task<List<string>> GerarArquivoCsv(BuscaParametroEnvio parametroEnvio, string lote,
+            GeracaoCobrancasModel geracaoCobrancas)
         {
             var arquivosGerados = new List<string>();
             var linhasGeradas = new List<ItensGeracaoModel>();
@@ -234,9 +240,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var filenameTemplate = "{0}_{1}_{2}_{3}_{4}_PARTE{5}de{6}.csv";
 
-            var cabecalhoCsv = "\"CNPJ EMPRESA COBRANÇA\",\"MODALIDADE DE ENSINO\",\"DESCRIÇÃO DA MODALIDADE DE ENSINO\",\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\",\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\",\"IDENTIFICADOR CURSO\",\"DESCRIÇÃO CURSO\",\"TIPO TITULO\",\"DESCRIÇÃO TIPO TÍTULO\",\"TIPO TITULO AVULSO\",\"DESCRICAO INADIMPLENCIA\",\"SITUACAO ALUNO\",\"CPF ALUNO\",\"MATRICULA\",\"PERIODO\",\"IDENTIFICADOR DO ALUNO\",\"IDENTIFICADOR DA PESSOA\",\"NOME\",\"ENDERECO\",\"BAIRRO\",\"CIDADE\",\"CEP\",\"UF\",\"DDD RES\",\"TELEFONE RES\",\"DDD CELULAR\",\"TELEFONE CELULAR\",\"EMAIL DO ALUNO\",\"NUMERO CONTRATO\",\"PAGAMENTO A VISTA - DESCONTO NA MULTA E JUROS\",\"PAGAMENTO A VISTA - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - DESCONTO NA MULTA E JUROS\",\"CARTÃO - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - QUANTIDADE DE PARCELAS\",\"BOLETO - DESCONTO NA MULTA E JUROS\",\"BOLETO - DESCONTO NO VALOR PRINCIPAL\",\"BOLETO - ENTRADA\",\"BOLETO - QUANTIDADE DE PARCELAS\",\"DESCONTO INCONDICIONAL\",\"VALIDADE DA NEGOCIAÇÃO\",\"NUMERO DA PARCELA\",\"DATA VENCIMENTO\",\"VALOR PARCELA\",\"OBSERVACAO\",\"CODIGO DA CAMPUS IES\",\"NOME DA CAMPUS IES\",\"FILIACAO - MAE\",\"FILIACAO - PAI\",\"NUMERO DO RG\"";
+            var cabecalhoCsv =
+                "\"CNPJ EMPRESA COBRANÇA\",\"MODALIDADE DE ENSINO\",\"DESCRIÇÃO DA MODALIDADE DE ENSINO\",\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\",\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\",\"IDENTIFICADOR CURSO\",\"DESCRIÇÃO CURSO\",\"TIPO TITULO\",\"DESCRIÇÃO TIPO TÍTULO\",\"TIPO TITULO AVULSO\",\"DESCRICAO INADIMPLENCIA\",\"SITUACAO ALUNO\",\"CPF ALUNO\",\"MATRICULA\",\"PERIODO\",\"IDENTIFICADOR DO ALUNO\",\"IDENTIFICADOR DA PESSOA\",\"NOME\",\"ENDERECO\",\"BAIRRO\",\"CIDADE\",\"CEP\",\"UF\",\"DDD RES\",\"TELEFONE RES\",\"DDD CELULAR\",\"TELEFONE CELULAR\",\"EMAIL DO ALUNO\",\"NUMERO CONTRATO\",\"PAGAMENTO A VISTA - DESCONTO NA MULTA E JUROS\",\"PAGAMENTO A VISTA - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - DESCONTO NA MULTA E JUROS\",\"CARTÃO - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - QUANTIDADE DE PARCELAS\",\"BOLETO - DESCONTO NA MULTA E JUROS\",\"BOLETO - DESCONTO NO VALOR PRINCIPAL\",\"BOLETO - ENTRADA\",\"BOLETO - QUANTIDADE DE PARCELAS\",\"DESCONTO INCONDICIONAL\",\"VALIDADE DA NEGOCIAÇÃO\",\"NUMERO DA PARCELA\",\"DATA VENCIMENTO\",\"VALOR PARCELA\",\"OBSERVACAO\",\"CODIGO DA CAMPUS IES\",\"NOME DA CAMPUS IES\",\"FILIACAO - MAE\",\"FILIACAO - PAI\",\"NUMERO DO RG\"";
 
-            var dataTemplate = "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40},{41},{42},{43},{44},{45},{46},{47},{48}";
+            var dataTemplate =
+                "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40},{41},{42},{43},{44},{45},{46},{47},{48}";
 
             var loteEnvio = await _repositorioLoteEnvio.GetLoteEnvio(lote);
 
@@ -247,7 +255,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 .ToList();
 
             var totalLinhas = dados.Count;
-            var quantidadeArquivos = (int)(totalLinhas / limiteLinhas);
+            var quantidadeArquivos = (int) (totalLinhas / limiteLinhas);
 
             if (totalLinhas > 0 && quantidadeArquivos == 0)
                 quantidadeArquivos = 1;
@@ -255,88 +263,106 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             for (var indexArquivoAtual = 1; indexArquivoAtual <= quantidadeArquivos; indexArquivoAtual++)
             {
                 var fileContent = new StringBuilder();
-                var filename = string.Format(filenameTemplate, parametroEnvio.Instituicao.Id, parametroEnvio.Modalidade.Id, DateTime.Now.ToString("dd-MM-yyyy"), parametroEnvio.InadimplenciaInicial.ToString("dd-MM-yyyy"), parametroEnvio.InadimplenciaFinal.ToString("dd-MM-yyyy"), indexArquivoAtual.ToString(), quantidadeArquivos.ToString());
+                var filename = string.Format(filenameTemplate, parametroEnvio.Instituicao.Id,
+                    parametroEnvio.Modalidade.Id, DateTime.Now.ToString("dd-MM-yyyy"),
+                    parametroEnvio.InadimplenciaInicial.ToString("dd-MM-yyyy"),
+                    parametroEnvio.InadimplenciaFinal.ToString("dd-MM-yyyy"), indexArquivoAtual.ToString(),
+                    quantidadeArquivos.ToString());
                 using StreamWriter file = new(filename);
                 await file.WriteLineAsync(cabecalhoCsv);
                 fileContent.AppendLine(cabecalhoCsv);
-                for (var indexDadosInicial = (indexArquivoAtual - 1) * limiteLinhas; indexDadosInicial <= (indexArquivoAtual * limiteLinhas) - 1 && dados.Count > indexDadosInicial; indexDadosInicial++)
+                for (var indexDadosInicial = (indexArquivoAtual - 1) * limiteLinhas;
+                     indexDadosInicial <= (indexArquivoAtual * limiteLinhas) - 1 && dados.Count > indexDadosInicial;
+                     indexDadosInicial++)
                 {
                     var alunoInadimplente = dados[indexDadosInicial];
                     var dataToWrite = string.Format(dataTemplate,
-                            parametroEnvio.EmpresaParceira.CNPJ.Replace(",", "-"),
-                            alunoInadimplente.CodModalidadeEnsino == null ? "" : alunoInadimplente.CodModalidadeEnsino.Replace(",", " "),
-                            alunoInadimplente.DescricaoModalidadeEnsino == null ? "" : alunoInadimplente.DescricaoModalidadeEnsino.Replace(",", " "),
-                            loteEnvio.InstituicaoId.ToString(),
-                            loteEnvio.Instituicao == null ? "" : loteEnvio.Instituicao.Replace(",", " "),
-                            alunoInadimplente.CodCurso == null ? "" : alunoInadimplente.CodCurso.Replace(",", " "),
-                            alunoInadimplente.NomeCurso == null ? "" : alunoInadimplente.NomeCurso.Replace(",", " "),
-                            alunoInadimplente.TipoInadimplencia == null ? "" : alunoInadimplente.TipoInadimplencia.Replace(",", " "),
-                            alunoInadimplente.DescricaoTipoInadimplencia == null ? "" : alunoInadimplente.DescricaoTipoInadimplencia.Replace(",", " "),
-                            alunoInadimplente.TipoTituloAvulso == null ? "" : alunoInadimplente.TipoTituloAvulso.Replace(",", " "),
-                            alunoInadimplente.DescricaoInadimplencia == null ? "" : alunoInadimplente.DescricaoInadimplencia.Replace(",", " "),
-                            alunoInadimplente.StatusAluno == null ? "" : alunoInadimplente.StatusAluno.Replace(",", " "),
-                            alunoInadimplente.CpfAluno == null ? "" : alunoInadimplente.CpfAluno.Replace(",", " "),
-                            alunoInadimplente.MatriculaAluno == null ? "" : alunoInadimplente.MatriculaAluno.Replace(",", " "),
-                            alunoInadimplente.Periodo == null ? "" : alunoInadimplente.Periodo.Replace(",", " "),
-                            alunoInadimplente.IdtAluno == null ? "" : alunoInadimplente.IdtAluno.Replace(",", " "),
-                            alunoInadimplente.IdtDdp == null ? "" : alunoInadimplente.IdtDdp.Replace(",", " "),
-                            alunoInadimplente.Nome == null ? "" : alunoInadimplente.Nome.Replace(",", " "),
-                            alunoInadimplente.Endereco == null ? "" : alunoInadimplente.Endereco.Replace(",", " "),
-                            alunoInadimplente.Bairro == null ? "" : alunoInadimplente.Bairro.Replace(",", " "),
-                            alunoInadimplente.Cidade == null ? "" : alunoInadimplente.Cidade.Replace(",", " "),
-                            alunoInadimplente.Cep == null ? "" : alunoInadimplente.Cep.Replace(",", " "),
-                            alunoInadimplente.Uf == null ? "" : alunoInadimplente.Uf.Replace(",", " "),
-                            alunoInadimplente.DddResidencial == null ? "" : alunoInadimplente.DddResidencial.Replace(",", " "),
-                            alunoInadimplente.TelefoneResidencial == null ? "" : alunoInadimplente.TelefoneResidencial.Replace(",", " "),
-                            alunoInadimplente.DddCelular == null ? "" : alunoInadimplente.DddCelular.Replace(",", " "),
-                            alunoInadimplente.TelefoneCelular == null ? "" : alunoInadimplente.TelefoneCelular.Replace(",", " "),
-                            alunoInadimplente.Email == null ? "" : alunoInadimplente.Email.Replace(",", " "),
-                            alunoInadimplente.ChaveInadimplencia == null ? "" : alunoInadimplente.ChaveInadimplencia.Replace(",", " "),
-                            "5.0".Replace(",", " "),
-                            "10.0".Replace(",", " "),
-                            "5.0".Replace(",", " "),
-                            "6.0".Replace(",", " "),
-                            "12".Replace(",", " "),
-                            "5.0".Replace(",", " "),
-                            "10.0".Replace(",", " "),
-                            "5.0".Replace(",", " "),
-                            "10".Replace(",", " "),
-                            alunoInadimplente.DescontoIncondicional == null ? "" : alunoInadimplente.DescontoIncondicional.Replace(".", "").Replace(",", "."),
-                            "31/12/2021".Replace(",", " "),
-                            alunoInadimplente.NumeroParcela == null ? "" : alunoInadimplente.NumeroParcela.Replace(",", " "),
-                            alunoInadimplente.DataVencimento.ToShortDateString().Replace(",", " "),
-                            alunoInadimplente.ValorPagamento == null ? "" : alunoInadimplente.ValorPagamento.Replace(".", "").Replace(",", "."),
-                            alunoInadimplente.Observacao == null ? "" : alunoInadimplente.Observacao.Replace(",", " "),
-                            alunoInadimplente.IdtCampus == null ? "" : alunoInadimplente.IdtCampus.Replace(",", " "),
-                            alunoInadimplente.DescricaoCampus == null ? "" : alunoInadimplente.DescricaoCampus.Replace(",", " "),
-                            alunoInadimplente.Mae == null ? "" : alunoInadimplente.Mae.Replace(",", " "),
-                            alunoInadimplente.Pai == null ? "" : alunoInadimplente.Pai.Replace(",", " "),
-                            alunoInadimplente.NumCi == null ? "" : alunoInadimplente.NumCi.Replace(",", " ")
-                        );
-                        
+                        parametroEnvio.EmpresaParceira.CNPJ.Replace(",", "-"),
+                        FormatarString(alunoInadimplente.CodModalidadeEnsino),
+                        FormatarString(alunoInadimplente.DescricaoModalidadeEnsino),
+                        loteEnvio.InstituicaoId.ToString(),
+                        FormatarString(loteEnvio.Instituicao),
+                        FormatarString(alunoInadimplente.CodCurso),
+                        FormatarString(alunoInadimplente.NomeCurso),
+                        FormatarString(alunoInadimplente.TipoInadimplencia),
+                        FormatarString(alunoInadimplente.DescricaoTipoInadimplencia),
+                        FormatarString(alunoInadimplente.TipoTituloAvulso),
+                        FormatarString(alunoInadimplente.DescricaoInadimplencia),
+                        FormatarString(alunoInadimplente.StatusAluno),
+                        FormatarString(alunoInadimplente.CpfAluno),
+                        FormatarString(alunoInadimplente.MatriculaAluno),
+                        FormatarString(alunoInadimplente.Periodo),
+                        FormatarString(alunoInadimplente.IdtAluno),
+                        FormatarString(alunoInadimplente.IdtDdp),
+                        FormatarString(alunoInadimplente.Nome),
+                        FormatarString(alunoInadimplente.Endereco),
+                        FormatarString(alunoInadimplente.Bairro),
+                        FormatarString(alunoInadimplente.Cidade),
+                        FormatarString(alunoInadimplente.Cep),
+                        FormatarString(alunoInadimplente.Uf),
+                        FormatarString(alunoInadimplente.DddResidencial),
+                        FormatarString(alunoInadimplente.TelefoneResidencial),
+                        FormatarString(alunoInadimplente.DddCelular),
+                        FormatarString(alunoInadimplente.TelefoneCelular),
+                        FormatarString(alunoInadimplente.Email),
+                        FormatarString(alunoInadimplente.ChaveInadimplencia),
+                        "5.0".Replace(",", " "),
+                        "10.0".Replace(",", " "),
+                        "5.0".Replace(",", " "),
+                        "6.0".Replace(",", " "),
+                        "12".Replace(",", " "),
+                        "5.0".Replace(",", " "),
+                        "10.0".Replace(",", " "),
+                        "5.0".Replace(",", " "),
+                        "10".Replace(",", " "),
+                        alunoInadimplente.DescontoIncondicional == null
+                            ? ""
+                            : alunoInadimplente.DescontoIncondicional.Replace(".", "").Replace(",", "."),
+                        "31/12/2021".Replace(",", " "),
+                        alunoInadimplente.NumeroParcela == null
+                            ? ""
+                            : alunoInadimplente.NumeroParcela.Replace(",", " "),
+                        alunoInadimplente.DataVencimento.ToShortDateString(),
+                        alunoInadimplente.ValorPagamento == null
+                            ? ""
+                            : alunoInadimplente.ValorPagamento.Replace(".", "").Replace(",", "."),
+                        FormatarString(alunoInadimplente.Observacao),
+                        alunoInadimplente.IdtCampus == null ? "" : alunoInadimplente.IdtCampus.Replace(",", " "),
+                        FormatarString(alunoInadimplente.DescricaoCampus),
+                        FormatarString(alunoInadimplente.Mae),
+                        FormatarString(alunoInadimplente.Pai),
+                        alunoInadimplente.NumCi == null ? "" : alunoInadimplente.NumCi.Replace(",", " ")
+                    );
+
                     try
                     {
                         var itemGeracao = new ItensGeracaoModel()
                         {
                             CnpjEmpresaCobranca = parametroEnvio.EmpresaParceira.CNPJ,
-                            Controle = alunoInadimplente.MatriculaAluno + alunoInadimplente.NumeroParcela.PadLeft(3, '0'),
-                            DataGeracao = geracaoCobrancas.DataGeracao,
-                            DataVencimento = alunoInadimplente.DataVencimento.ToString("dd/MM/yyyy"),
+                            Controle = alunoInadimplente.MatriculaAluno +
+                                       alunoInadimplente.NumeroParcela.PadLeft(3, '0'),
+                            DataGeracao = Convert.ToDateTime(geracaoCobrancas.DataGeracao),
+                            DataVencimento = alunoInadimplente.DataVencimento,
                             DescricaoInadimplencia = alunoInadimplente.DescricaoInadimplencia,
-                            Matricula = alunoInadimplente.MatriculaAluno,
+                            Matricula = Convert.ToDecimal(alunoInadimplente.MatriculaAluno),
                             Parcela = int.Parse(alunoInadimplente.NumeroParcela),
                             Sistema = parametroEnvio.Modalidade.CodigoMagister,
                             SituacaoAluno = alunoInadimplente.StatusAluno,
                             TipoInadimplencia = alunoInadimplente.TipoInadimplencia,
-                            Valor = ((float)Double.Parse(alunoInadimplente.ValorPagamento))
+                            Valor = decimal.Parse(alunoInadimplente.ValorPagamento)
                         };
 
                         var periodo = -1;
 
-                        if(Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 5) {
-                            itemGeracao.Periodo = alunoInadimplente.Periodo;
-                        } else {
-                            itemGeracao.PeriodoChequeDevolvido = alunoInadimplente.Periodo;
+                        if (Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 5)
+                        {
+                            itemGeracao.Periodo = Convert.ToDecimal(alunoInadimplente.Periodo);
+                            itemGeracao.PeriodoOutros = "1";
+                        }
+                        else
+                        {
+                            itemGeracao.Periodo = 1;
+                            itemGeracao.PeriodoOutros = alunoInadimplente.Periodo;
                         }
 
                         linhasGeradas.Add(itemGeracao);
@@ -366,12 +392,30 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 var conflitos = await _repositorioConflito.BuscarPorLote(loteEnvio.Lote.ToString());
 
-                conflitos = conflitos.Select(x => { x.NomeLote = filename; return x; }).ToList();
+                conflitos = conflitos.Select(x =>
+                {
+                    x.NomeLote = filename;
+                    return x;
+                }).ToList();
 
                 await _repositorioConflito.AlterarVarios(conflitos);
             }
 
             return arquivosGerados;
+        }
+
+        private static string FormatarString(string dado)
+        {
+            if (string.IsNullOrEmpty(dado)) return string.Empty;
+
+            var caracteres = dado
+                .Replace(",", " ")
+                .Normalize(NormalizationForm.FormD)
+                .ToCharArray()
+                .Where(c => CharUnicodeInfo.GetUnicodeCategory(c) != UnicodeCategory.NonSpacingMark)
+                .ToArray();
+
+            return new string(caracteres).Normalize(NormalizationForm.FormC);
         }
     }
 }

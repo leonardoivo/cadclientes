@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
@@ -75,7 +75,14 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
 
             CreateMap<ConflitoViewModel, ConflitoModel>();
             CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();
-            CreateMap<RespostaViewModel, RespostasCollection>();
+
+            CreateMap<RespostasCollection, RespostaViewModel>().ReverseMap();
+
+            CreateMap<BaixasCobrancasModel, BaixasCobrancasViewModel>().ReverseMap();
+            CreateMap<ArquivoLayoutModel, ArquivoLayoutViewModel>();
+            CreateMap<ErrosLayoutModel, ErroLayoutViewModel>();
+
+            CreateMap<CriarRespostaViewModel, RespostasCollection>();
         }
     }
 }

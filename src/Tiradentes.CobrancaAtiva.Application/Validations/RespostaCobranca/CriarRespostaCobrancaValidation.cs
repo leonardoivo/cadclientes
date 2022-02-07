@@ -3,11 +3,11 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 
 namespace Tiradentes.CobrancaAtiva.Application.Validations.RespostaCobranca
 {
-    public class CriarRespostaCobrancaValidation : AbstractValidator<RespostaViewModel>
+    public class CriarRespostaCobrancaValidation : AbstractValidator<CriarRespostaViewModel>
     {
         public CriarRespostaCobrancaValidation()
         {
-            RuleFor(e => e.CPF)
+            RuleFor(e => e.CPF.ToString())
                 .Cascade(CascadeMode.Stop)
                 .NotEmpty().WithMessage(MensagensErroValidacao.CampoObrigatorio)
                 .Length(11).WithMessage("CPF inválido")
