@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
+using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
@@ -16,8 +17,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
     {
         private readonly ICobrancaService _cobrancaService;
         private readonly IBaixasCobrancasService _baixasCobrancaService;
+
         public CobrancaController(ICobrancaService cobrancaService,
-                                  IBaixasCobrancasService baixasCobrancaService)
+            IBaixasCobrancasService baixasCobrancaService)
         {
             _cobrancaService = cobrancaService;
             _baixasCobrancaService = baixasCobrancaService;
@@ -47,7 +49,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpPost("regularizar-acordo-cobranca")]
-        public async Task<IActionResult> RegularizarAcordoCobranca([FromBody] RegularizarParcelasAcordoViewModel viewModel)
+        public async Task<IActionResult> RegularizarAcordoCobranca(
+            [FromBody] RegularizarParcelasAcordoViewModel viewModel)
         {
             return Ok(await _cobrancaService.RegularizarAcordoCobranca(viewModel));
         }
@@ -58,9 +61,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         /// <param name="dataBaixa">dd-mm-yyyy</param>
         /// <returns></returns>
         [HttpGet("resultado/{dataBaixa}")]
-        public async Task<IActionResult> BuscarHistoricoProcessamentoCobranca(DateTime dataBaixa)
+        public async Task<IActionResult> BuscarHistoricoProcessamentoCobranca()
         {
-            return Ok(await _baixasCobrancaService.Buscar(Convert.ToDateTime(dataBaixa)));
+            return Ok(await _baixasCobrancaService.Buscar(new DateTime(2022, 01, 24)));
         }
 
         [HttpPost("baixa-manual")]
