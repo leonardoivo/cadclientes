@@ -77,52 +77,60 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     NomeEmpresaParceira = (await Db.EmpresaParceira.FirstOrDefaultAsync(e => e.CNPJ == item.cnpj))
                         ?.NomeFantasia,
                     NomeInstituicaoEnsino = (await Db.Instituicao.FirstOrDefaultAsync(i => i.Id == 58))?.Instituicao,
-                    Items = await Db.ItensBaixaTipo1.BuscarItems(item.dtBaixa, item.cnpj)
-                        .Select(i => new ItensBaixaDto
-                        {
-                            Tipo = 1,
-                            Erro = i.CodigoErro,
-                            Juros = i.Juros,
-                            Matricula = i.Matricula,
-                            Multa = i.Multa,
-                            Parcela = i.Parcela,
-                            Valor = i.Valor,
-                            DataVencimento = i.DataVencimento,
-                            NumeroAcordo = i.NumeroAcordo,
-                            NumeroLinha = i.NumeroLinha,
-                            NomeAluno = "Teste"
-                        })
-                        .Concat(Db.ItensBaixaTipo2.BuscarItems(item.dtBaixa, item.cnpj)
-                            .Select(i => new ItensBaixaDto
-                            {
-                                Tipo = 2,
-                                Erro = i.CodigoErro,
-                                Matricula = i.Matricula,
-                                Parcela = i.Parcela,
-                                Valor = i.Valor,
-                                DataVencimento = i.DataVencimento,
-                                NumeroAcordo = i.NumeroAcordo,
-                                NumeroLinha = i.NumeroLinha,
-                                NomeAluno = "Teste"
-                            }))
-                        .Concat(Db.ItensBaixaTipo3.BuscarItems(item.dtBaixa, item.cnpj)
-                            .Select(i => new ItensBaixaDto
-                            {
-                                Tipo = 3,
-                                Erro = i.CodigoErro,
-                                Matricula = i.Matricula,
-                                Parcela = i.Parcela,
-                                Valor = i.ValorPago,
-                                NumeroAcordo = i.NumeroAcordo,
-                                NumeroLinha = i.NumeroLinha,
-                                NomeAluno = "Teste",
-                            }))
-                        .ToListAsync()
+                    Items = await BuscarItems(item.dtBaixa, item.cnpj)
                 };
                 resultado.Items.Add(newObj);
             }
 
             return resultado;
+        }
+
+        private async Task<IEnumerable<ItensBaixaDto>> BuscarItems(DateTime dtBaixa, string cnpj)
+        {
+            var itemTipo1 = await Db.ItensBaixaTipo1.BuscarItems(dtBaixa, cnpj)
+                .Select(i => new ItensBaixaDto
+                {
+                    Tipo = 1,
+                    Erro = i.CodigoErro,
+                    Juros = i.Juros,
+                    Matricula = i.Matricula,
+                    Multa = i.Multa,
+                    Parcela = i.Parcela,
+                    Valor = i.Valor,
+                    DataVencimento = i.DataVencimento,
+                    NumeroAcordo = i.NumeroAcordo,
+                    NumeroLinha = i.NumeroLinha,
+                    NomeAluno = "Teste"
+                }).ToListAsync();
+            
+            var itemTipo2 = await Db.ItensBaixaTipo2.BuscarItems(dtBaixa, cnpj)
+                .Select(i => new ItensBaixaDto
+                {
+                    Tipo = 2,
+                    Erro = i.CodigoErro,
+                    Matricula = i.Matricula,
+                    Parcela = i.Parcela,
+                    Valor = i.Valor,
+                    DataVencimento = i.DataVencimento,
+                    NumeroAcordo = i.NumeroAcordo,
+                    NumeroLinha = i.NumeroLinha,
+                    NomeAluno = "Teste"
+                }).ToListAsync();
+
+            var itemTipo3 = await Db.ItensBaixaTipo3.BuscarItems(dtBaixa, cnpj)
+                .Select(i => new ItensBaixaDto
+                {
+                    Tipo = 3,
+                    Erro = i.CodigoErro,
+                    Matricula = i.Matricula,
+                    Parcela = i.Parcela,
+                    Valor = i.ValorPago,
+                    NumeroAcordo = i.NumeroAcordo,
+                    NumeroLinha = i.NumeroLinha,
+                    NomeAluno = "Teste",
+                }).ToListAsync();
+
+            return itemTipo1.Concat(itemTipo2).Concat(itemTipo3);
         }
     }
 }
