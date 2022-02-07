@@ -1,109 +1,103 @@
-﻿using AutoMapper;
+﻿﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
-using System.Linq;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
-using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
-using Tiradentes.CobrancaAtiva.Domain.DTO;
-using Tiradentes.CobrancaAtiva.Domain.Interfaces;
-using Tiradentes.CobrancaAtiva.Domain.Models;
-using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
-namespace Tiradentes.CobrancaAtiva.Services.Services
+namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
-    public class BaixasCobrancasService : IBaixasCobrancasService
+    [ApiController]
+    [Route("baixa-cobranca")]
+    public class CobrancaController : ControllerBase
     {
-        readonly IBaixasCobrancasRepository _baixasCobrancasRepository;
-        readonly IArquivoLayoutService _arquivoLayoutService;
-        readonly IMapper _mapper;
-
-        public BaixasCobrancasService(IBaixasCobrancasRepository baixasCobrancasRepository,
-            IArquivoLayoutService arquivoLayoutService,
-            IMapper mapper)
+        private readonly ICobrancaService _cobrancaService;
+        private readonly IBaixasCobrancasService _baixasCobrancaService;
+        public CobrancaController(ICobrancaService cobrancaService,
+                                  IBaixasCobrancasService baixasCobrancaService)
         {
-            _baixasCobrancasRepository = baixasCobrancasRepository;
-            _arquivoLayoutService = arquivoLayoutService;
-            _mapper = mapper;
+            _cobrancaService = cobrancaService;
+            _baixasCobrancaService = baixasCobrancaService;
         }
 
-        public async Task<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>> Buscar(
-            ConsultaBaixaCobrancaQueryParam queryParams)
+        /// <summary>
+        /// JSON de exemplo para os respectivos tipos de registros (1,2 e 3)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("exemplo-envio-resposta")]
+        public IEnumerable<CriarRespostaViewModel> ExemplosRespostas()
         {
-            var query = _mapper.Map<BaixaCobrancaQueryParam>(queryParams);
-            var resultadoConsulta = await _baixasCobrancasRepository.Buscar(query);
-            var resultado = _mapper.Map<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>(resultadoConsulta);
-            foreach (var item in resultado.Items)
-            {
-                item.QuantidadeErros = item.Items.Count(i => i.Erro.HasValue && i.Erro.Value != 0);
-                item.QuantidadeTipo1 = item.Items.Count(i => i.Tipo == 1);
-                item.QuantidadeTipo2 = item.Items.Count(i => i.Tipo == 2);
-                item.QuantidadeTipo3 = item.Items.Count(i => i.Tipo == 3);
-                item.ValorTipo1 = item.Items.Where(i => i.Tipo == 1).Sum(i => i.Valor);
-                item.ValorTipo2 = item.Items.Where(i => i.Tipo == 2).Sum(i => i.Valor);
-                item.ValorTipo3 = item.Items.Where(i => i.Tipo == 3).Sum(i => i.Valor);
-            }
-
-            return resultado;
+            return _cobrancaService.ExemplosRespostas();
+        }
+        /// <summary>
+        /// Faz o envio das respostas de acordos de cobrança (Tipo 1, Tipo 2 e Tipo 3).
+        /// </summary>
+        /// <param name="resposta"></param>
+        /// <returns></returns>
+        [HttpPost("enviar-resposta-acordo-cobranca")]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Criar([FromBody] CriarRespostaViewModel resposta)
+        {
+            return Ok(await _cobrancaService.Criar(resposta));
         }
 
-        public async Task AtualizarBaixasCobrancas(BaixasCobrancasViewModel baixasCobrancas)
+        [HttpPost("regularizar-acordo-cobranca")]
+        public async Task<IActionResult> RegularizarAcordoCobranca([FromBody] RegularizarParcelasAcordoViewModel viewModel)
         {
-            //Update do doc n faz sentido
-            var model = await _baixasCobrancasRepository.BuscarPorDataBaixa(baixasCobrancas.DataBaixa);
-
-            if (model == null)
-                return;
-
-            model.Etapa = baixasCobrancas.Etapa;
-            model.QuantidadeErrosTipo1 = baixasCobrancas.QuantidadeErrosTipo1;
-            model.QuantidadeErrosTipo2 = baixasCobrancas.QuantidadeErrosTipo2;
-            model.QuantidadeErrosTipo3 = baixasCobrancas.QuantidadeErrosTipo3;
-            model.QuantidadeTipo1 = baixasCobrancas.QuantidadeTipo1;
-            model.QuantidadeTipo2 = baixasCobrancas.QuantidadeTipo2;
-            model.QuantidadeTipo3 = baixasCobrancas.QuantidadeTipo3;
-            model.TotalErrosTipo1 = baixasCobrancas.ValorTotalErrosTipo1;
-            model.TotalErrosTipo2 = baixasCobrancas.ValorTotalErrosTipo2;
-            model.TotalErrosTipo3 = baixasCobrancas.ValorTotalErrosTipo3;
-            model.TotalTipo1 = baixasCobrancas.ValorTotalTipo1;
-            model.TotalTipo2 = baixasCobrancas.ValorTotalTipo2;
-            model.TotalTipo3 = baixasCobrancas.ValorTotalTipo3;
-
-            _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(true);
-
-            await _baixasCobrancasRepository.Alterar(model);
-
-            _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(false);
+            return Ok(await _cobrancaService.RegularizarAcordoCobranca(viewModel));
         }
 
-        public async Task CriarBaixasCobrancas(DateTime dataBaixa)
+        /// <summary>
+        /// Retorna o Historico do processamnento de arquivos.
+        /// </summary>
+        /// <param name="dataBaixa">dd-mm-yyyy</param>
+        /// <returns></returns>
+        [HttpGet("resultado/{dataBaixa}")]
+        public async Task<IActionResult> BuscarHistoricoProcessamentoCobranca(DateTime dataBaixa)
         {
-            _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(true);
-
-            var model = new BaixasCobrancasModel()
-            {
-                DataBaixa = dataBaixa.Date,
-                Etapa = 0
-            };
-
-            await _baixasCobrancasRepository.Criar(model);
-
-            _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(false);
+            return Ok(await _baixasCobrancaService.Buscar(Convert.ToDateTime(dataBaixa)));
         }
 
-        public async Task<BaixasCobrancasViewModel> Buscar(DateTime dataBaixa)
+        [HttpPost("baixa-manual")]
+        public async Task<IActionResult> BaixaManual([FromBody] BaixaPagamentoParcelaManualViewModel baixaPagamento)
         {
-            var baixaCobranca = await _baixasCobrancasRepository.BuscarPorDataBaixa(dataBaixa);
+            await _cobrancaService.BaixaManual(baixaPagamento);
+            return Ok();
+        }
 
-            if (baixaCobranca == null)
-                return null;
+        [HttpGet]
+        public async Task<IActionResult> Listar([FromQuery] ConsultaBaixaPagamentoQueryParam resposta)
+        {
+            return Ok(await _cobrancaService.Listar(resposta));
+        }
 
-            var viewModel = _mapper.Map<BaixasCobrancasViewModel>(baixaCobranca);
-            viewModel.ArquivoLayout = _arquivoLayoutService.BuscarPorData(dataBaixa);
+        [HttpGet("listar-filtros-matricula")]
+        public async Task<IActionResult> ListarFiltrosMatricula([FromQuery] string matricula)
+        {
+            return Ok(await _cobrancaService.ListarFiltrosMatricula(matricula));
+        }
 
-            return viewModel;
+        [HttpGet("listar-filtros-acordo")]
+        public async Task<IActionResult> ListarFiltrosAcordo([FromQuery] string acordo)
+        {
+            return Ok(await _cobrancaService.ListarFiltrosAcordo(acordo));
+        }
+
+        [HttpGet("listar-filtros-cpf")]
+        public async Task<IActionResult> ListarFiltroCpf([FromQuery] string cpf)
+        {
+            return Ok(await _cobrancaService.ListarFiltroCpf(cpf));
+        }
+
+        [HttpGet("listar-filtros-nome-aluno")]
+        public async Task<IActionResult> ListarFiltroNomeAluno([FromQuery] string nomeAluno)
+        {
+            return Ok(await _cobrancaService.ListarFiltroNomeAluno(nomeAluno));
         }
     }
 }

@@ -4,7 +4,6 @@ using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
-using Tiradentes.CobrancaAtiva.Domain.DTO;
 
 namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
