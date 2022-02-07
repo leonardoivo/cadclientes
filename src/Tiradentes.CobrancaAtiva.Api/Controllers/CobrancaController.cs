@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
@@ -22,9 +23,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet("teste")]
-        public async Task<IActionResult> Buscar()
+        public async Task<ActionResult<ModelPaginada<ConsultaBaixaPagamentoViewModel>>> Buscar(ConsultaBaixaCobrancaQueryParam queryParam)
         {
-            return Ok(await _baixasCobrancaService.Buscar());
+            return await _baixasCobrancaService.Buscar(queryParam);
         }
 
 
