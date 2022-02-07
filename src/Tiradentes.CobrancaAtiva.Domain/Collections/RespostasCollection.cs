@@ -7,57 +7,60 @@ namespace Tiradentes.CobrancaAtiva.Domain.Collections
         public string Id { get; set; }
         public DateTime DataResposta { get; set; } = DateTime.Now;
 
-        public string TipoRegistro { get; set; }
-        public string InstituicaoEnsino { get; set; }
-        public string Curso { get; set; }
-        public string CPF { get; set; }
+        public int TipoRegistro { get; set; }
+        public int CodigoInstituicaoEnsino { get; set; }
+        public int? Curso { get; set; }
+        public Int64 CPF { get; set; }
         public string NomeAluno { get; set; }
-        public string NumeroAcordo { get; set; }
-        public string Parcela { get; set; }
-        public string CnpjEmpresaCobranca { get; set; }
+        public Int64 NumeroAcordo { get; set; }
+        public int Parcela { get; set; }
+        public Int64 CnpjEmpresaCobranca { get; set; }
         public string SituacaoAluno { get; set; }
         public string Sistema { get; set; }
 
-        public string Matricula { get; set; }
+        public Int64 Matricula { get; set; }
         public string TipoInadimplencia { get; set; }
-        public string ChaveInadimplencia { get; set; }        
+        public string ChaveInadimplencia { get; set; }
         public string Periodo { get; set; }
 
 
 
-        public string IdTitulo { get; set; }
-        public string CodigoAtividade { get; set; }
-        public string NumeroEvt { get; set; }
-        public string IdPessoa { get; set; }
-        public string CodigoBanco { get; set; }
-        public string CodigoAgencia { get; set; }
-        public string NumeroConta { get; set; }
-        public string NumeroCheque { get; set; }
+        public decimal IdTitulo { get; set; }
+        public int CodigoAtividade { get; set; }
+        public int NumeroEvt { get; set; }
+        public decimal IdPessoa { get; set; }
+        public int CodigoBanco { get; set; }
+        public int CodigoAgencia { get; set; }
+        public int NumeroConta { get; set; }
+        public int NumeroCheque { get; set; }
 
-        //tipo 1
-        public string Juros { get; set; }
-        public string Multa { get; set; }
-        public string ValorTotal { get; set; }
-        public string DataFechamentoAcordo { get; set; }
-        public string TotalParcelas { get; set; }
+        //public RespostaRegistroTipo1 RespostaRegistroTipo1 { get; set; }
+        public decimal JurosParcela { get; set; }
+        public decimal MultaParcela { get; set; }
+        public decimal ValorTotalParcela { get; set; }
+        public DateTime DataFechamentoAcordo { get; set; }
+        public int TotalParcelasAcordo { get; set; }
+        public DateTime DataVencimentoParcela { get; set; }
+        public decimal ValorParcela { get; set; }
 
-        //tipo 1 e tipo 2
-        public string DataVencimento { get; set; }
-        public string ValorParcela { get; set; }
 
-        //tipo 2
-        public string SaldoDevedorTotal { get; set; }
+        //public RespostaRegistroTipo2 RespostaRegistroTipo2 { get; set; }
+        //public DateTime DataVencimentoParcela { get; set; }
+        //public decimal ValorParcela { get; set; }
+        public decimal SaldoDevedorTotal { get; set; }
         public string Produto { get; set; }
         public string DescricaoProduto { get; set; }
-        public string Fase { get; set; }
+        //public string Fase { get; set; }
         public string CodigoControleCliente { get; set; }
 
-        //tipo 3
+
+        //public RespostaRegistroTipo3 RespostaRegistroTipo3 { get; set; }
         public string NossoNumero { get; set; }
-        public string DataPagamento { get; set; }
-        public string DataBaixa { get; set; }
-        public string ValorPago { get; set; }
+        public DateTime? DataPagamento { get; set; }
+        public DateTime? DataBaixa { get; set; }
+        public decimal? ValorPago { get; set; }
         public string TipoPagamento { get; set; }
+
 
         public bool Integrado { get; set; } = false;
 

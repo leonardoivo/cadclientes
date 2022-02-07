@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Mvc;
 using System;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
@@ -21,11 +23,33 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             _baixasCobrancaService = baixasCobrancaService;
         }
 
-
-        [HttpPost]
-        public async Task<IActionResult> Criar([FromBody] RespostaViewModel resposta)
+        /// <summary>
+        /// JSON de exemplo para os respectivos tipos de registros (1,2 e 3)
+        /// </summary>
+        /// <returns></returns>
+        [HttpGet("exemplo-envio-resposta")]
+        public IEnumerable<CriarRespostaViewModel> ExemplosRespostas()
+        {
+            return _cobrancaService.ExemplosRespostas();
+        }
+        /// <summary>
+        /// Faz o envio das respostas de acordos de cobrança (Tipo 1, Tipo 2 e Tipo 3).
+        /// </summary>
+        /// <param name="resposta"></param>
+        /// <returns></returns>
+        [HttpPost("enviar-resposta-acordo-cobranca")]
+        [ProducesDefaultResponseType]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public async Task<IActionResult> Criar([FromBody] CriarRespostaViewModel resposta)
         {
             return Ok(await _cobrancaService.Criar(resposta));
+        }
+
+        [HttpPost("regularizar-acordo-cobranca")]
+        public async Task<IActionResult> RegularizarAcordoCobranca([FromBody] RegularizarParcelasAcordoViewModel viewModel)
+        {
+            return Ok(await _cobrancaService.RegularizarAcordoCobranca(viewModel));
         }
 
         /// <summary>
@@ -74,6 +98,6 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         public async Task<IActionResult> ListarFiltroNomeAluno([FromQuery] string nomeAluno)
         {
             return Ok(await _cobrancaService.ListarFiltroNomeAluno(nomeAluno));
-        }        
+        }
     }
 }

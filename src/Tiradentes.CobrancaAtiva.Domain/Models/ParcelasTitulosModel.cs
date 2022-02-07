@@ -9,7 +9,7 @@ namespace Tiradentes.CobrancaAtiva.Domain.Models
         public Int64 NumeroAcordo { get; set; }
         public Int64 Matricula { get; set; }
         public decimal Periodo { get; set; }        
-        public int? PeriodoChequeDevolvido { get; set; }        
+        public string PeriodoOutros{ get; set; }        
         public decimal Parcela { get; set; }        
         public string Sistema { get; set; }        
         public string TipoInadimplencia { get; set; }

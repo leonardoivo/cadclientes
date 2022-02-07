@@ -12,7 +12,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             _repository = repository;
         }              
-        public async Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int codErro, string cnpjEmpresaCobranca, string sistema, string situacaoAluno, string tipoInadimplencia, int? periodoChequeDevolvido)
+        public async Task InserirBaixa(DateTime dataBaixa, Int64 matricula, Int64 numeroAcordo, int parcela, decimal periodo, DateTime dataVencimento, decimal valor, int codErro, string cnpjEmpresaCobranca, string sistema, string situacaoAluno, string tipoInadimplencia, string periodoOutros)
         {
             await _repository.InserirBaixa(dataBaixa,
                                            matricula,
@@ -26,7 +26,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                            sistema,
                                            situacaoAluno,
                                            tipoInadimplencia,
-                                           periodoChequeDevolvido);
+                                           periodoOutros);
         }
         public void Dispose()
         {

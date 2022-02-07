@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
@@ -74,15 +74,15 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new ParametroEnvioTipoTituloModel(c))));
 
             CreateMap<ConflitoViewModel, ConflitoModel>();
-            CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();            
+            CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();
 
-            CreateMap<RespostasCollection, RespostaViewModel>()
-                .ForMember(R => R.MongoId, opt => opt.MapFrom(scr => scr.Id)).ReverseMap();
+            CreateMap<RespostasCollection, RespostaViewModel>().ReverseMap();
 
             CreateMap<BaixasCobrancasModel, BaixasCobrancasViewModel>().ReverseMap();
             CreateMap<ArquivoLayoutModel, ArquivoLayoutViewModel>();
             CreateMap<ErrosLayoutModel, ErroLayoutViewModel>();
 
+            CreateMap<CriarRespostaViewModel, RespostasCollection>();
         }
     }
 }

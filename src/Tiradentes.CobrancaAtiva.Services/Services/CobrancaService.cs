@@ -1,16 +1,18 @@
-﻿using AutoMapper;
+using AutoMapper;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
 using System.Linq;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
+using Tiradentes.CobrancaAtiva.Application.Validations.RegularizacaoParcelasAcordo;
 using Tiradentes.CobrancaAtiva.Application.Validations.RespostaCobranca;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Collections;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
+using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
@@ -25,16 +27,20 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         protected readonly IParcelasAcordoService _parcelaService;
         protected readonly IModalidadeService _modalidadeService;
         protected readonly ICursoService _cursoService;
+        protected readonly IParcelasAcordoService _parcelasAcordoService;
+        protected readonly IAcordoCobrancaService _acordoCobrancaService;
         protected readonly IMapper _map;
 
         public CobrancaService(
-            ICobrancaRepository repositorio, 
-            IAlunosInadimplentesRepository alunosInadimplentesRepository, 
+            ICobrancaRepository repositorio,
+            IAlunosInadimplentesRepository alunosInadimplentesRepository,
             IRegraNegociacaoService regraNegociacaoService,
             IInstituicaoService instituicaoService,
             IParcelasAcordoService parcelaService,
             IModalidadeService modalidadeService,
             ICursoService cursoService,
+            IParcelasAcordoService parcelasAcordoService,
+            IAcordoCobrancaService acordoCobrancaService,
             IMapper map
         )
         {
@@ -45,6 +51,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _parcelaService = parcelaService;
             _modalidadeService = modalidadeService;
             _cursoService = cursoService;
+            _parcelasAcordoService = parcelasAcordoService;
+            _acordoCobrancaService = acordoCobrancaService;
             _map = map;
         }
 
@@ -55,7 +63,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var returnModel = _repositorio.AlterarStatus(model).Result;
 
             return _map.Map<RespostaViewModel>(returnModel);
-            
+
         }
 
         public async Task<IEnumerable<RespostaViewModel>> BuscarRepostaNaoIntegrada()
@@ -63,7 +71,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var arquivosResposta = await _repositorio.Buscar(C => !C.Integrado);
 
             var viewModelList = from arq in arquivosResposta
-                                select _map.Map <RespostaViewModel>(arq);
+                                select _map.Map<RespostaViewModel>(arq);
 
             return viewModelList;
         }
@@ -73,37 +81,245 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             await _parcelaService.AtualizaPagamentoParcelaAcordoBanco(viewModel);
         }
 
-        public async Task<RespostaViewModel> Criar(RespostaViewModel viewModel)
+        public IEnumerable<CriarRespostaViewModel> ExemplosRespostas()
+        {
+            var respostas = new List<CriarRespostaViewModel>();
+            var respostaTipo1 = new CriarRespostaViewModel()
+            {
+                TipoRegistro = 1,
+                CodigoInstituicaoEnsino = 58,
+                Curso = null,
+                CPF = 00912455594,
+                NomeAluno = "Aluno Exemplo",
+                NumeroAcordo = 730694444,
+                Parcela = 50,
+
+                CnpjEmpresaCobranca = 07324847000170,
+                SituacaoAluno = "M",
+                Sistema = "E",
+                TipoInadimplencia = "P",
+                ChaveInadimplencia = "123132#1",
+
+                Matricula = 1167147836,
+                Periodo = "8",
+
+                IdTitulo = 0,
+                CodigoAtividade = 0,
+                NumeroEvt = 0,
+                IdPessoa = 0,
+                CodigoBanco = 0,
+                CodigoAgencia = 0,
+                NumeroConta = 0,
+                NumeroCheque = 0,
+
+                JurosParcela = Convert.ToDecimal(919.78),
+                MultaParcela = Convert.ToDecimal(32.51),
+                ValorTotalParcela = Convert.ToDecimal(321.58),
+                DataFechamentoAcordo = new DateTime(2022, 08, 23),
+                TotalParcelasAcordo = 1,
+
+                DataVencimentoParcela = new DateTime(2019, 09, 12),
+                ValorParcela = Convert.ToDecimal(321.58),
+                SaldoDevedorTotal = Convert.ToDecimal(0.0),
+                Produto = "Parcela de Curso",
+                DescricaoProduto = "Curso de Teste",
+                CodigoControleCliente = "1167147836044",
+
+                NossoNumero = "",
+                DataPagamento = null,
+                DataBaixa = null,
+                ValorPago = 0,
+                TipoPagamento = ""
+            };
+
+            var respostaTipo2 = new CriarRespostaViewModel()
+            {
+                TipoRegistro = 2,
+                CodigoInstituicaoEnsino = 58,
+                Curso = null,
+                CPF = 00912455594,
+                NomeAluno = "Aluno Exemplo",
+                NumeroAcordo = 730694444,
+                Parcela = 50,
+
+                CnpjEmpresaCobranca = 07324847000170,
+                SituacaoAluno = "M",
+                Sistema = "E",
+                TipoInadimplencia = "P",
+                ChaveInadimplencia = "123132#1",
+
+                Matricula = 1167147836,
+                Periodo = "8",
+
+                IdTitulo = 0,
+                CodigoAtividade = 0,
+                NumeroEvt = 0,
+                IdPessoa = 0,
+                CodigoBanco = 0,
+                CodigoAgencia = 0,
+                NumeroConta = 0,
+                NumeroCheque = 0,
+
+                JurosParcela = Convert.ToDecimal(919.78),
+                MultaParcela = Convert.ToDecimal(32.51),
+                ValorTotalParcela = Convert.ToDecimal(321.58),
+                DataFechamentoAcordo = new DateTime(2022, 08, 23),
+                TotalParcelasAcordo = 1,
+
+                DataVencimentoParcela = new DateTime(2019, 09, 12),
+                ValorParcela = Convert.ToDecimal(321.58),
+                SaldoDevedorTotal = Convert.ToDecimal(0.0),
+                Produto = "Parcela de Curso",
+                DescricaoProduto = "Curso de Teste",
+                CodigoControleCliente = "1167147836044",
+
+                NossoNumero = "",
+                DataPagamento = null,
+                DataBaixa = null,
+                ValorPago = 0,
+                TipoPagamento = ""
+            };
+
+
+            var respostaTipo3 = new CriarRespostaViewModel()
+            {
+                TipoRegistro = 3,
+                CodigoInstituicaoEnsino = 58,
+                Curso = null,
+                CPF = 00912455594,
+                NomeAluno = "Aluno Exemplo",
+                NumeroAcordo = 730694444,
+                Parcela = 50,
+
+                CnpjEmpresaCobranca = 07324847000170,
+                SituacaoAluno = "M",
+                Sistema = "E",
+                TipoInadimplencia = "P",
+                ChaveInadimplencia = "123132#1",
+
+                Matricula = 1167147836,
+                Periodo = "8",
+
+                IdTitulo = 0,
+                CodigoAtividade = 0,
+                NumeroEvt = 0,
+                IdPessoa = 0,
+                CodigoBanco = 0,
+                CodigoAgencia = 0,
+                NumeroConta = 0,
+                NumeroCheque = 0,
+
+                JurosParcela = Convert.ToDecimal(919.78),
+                MultaParcela = Convert.ToDecimal(32.51),
+                ValorTotalParcela = Convert.ToDecimal(321.58),
+                DataFechamentoAcordo = new DateTime(2022, 08, 23),
+                TotalParcelasAcordo = 1,
+
+                DataVencimentoParcela = new DateTime(2019, 09, 12),
+                ValorParcela = Convert.ToDecimal(321.58),
+                SaldoDevedorTotal = Convert.ToDecimal(0.0),
+                Produto = "Parcela de Curso",
+                DescricaoProduto = "Curso de Teste",
+                CodigoControleCliente = "1167147836044",
+
+                NossoNumero = "123456",
+                DataPagamento = new DateTime(2021 - 01 - 22),
+                DataBaixa = new DateTime(2021 - 01 - 22),
+                ValorPago = Convert.ToDecimal(321.58),
+                TipoPagamento = "CART�O"
+            };
+
+            respostas.Add(respostaTipo1);
+            respostas.Add(respostaTipo2);
+            respostas.Add(respostaTipo3);
+
+            return respostas;
+        }
+
+        public async Task<CriarRespostaViewModel> Criar(CriarRespostaViewModel viewModel)
         {
             Validate(new CriarRespostaCobrancaValidation(), viewModel);
-
 
             var model = _map.Map<RespostasCollection>(viewModel);
 
             await _repositorio.Criar(model);
 
-            return _map.Map<RespostaViewModel>(model);
+            return _map.Map<CriarRespostaViewModel>(model);
+        }
+
+        public async Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel viewModel)
+        {
+            try
+            {
+                Validate(new RegularizacaoParcelasAcordoValidation(), viewModel);
+
+                await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(viewModel.Parcela,
+                                                                     viewModel.NumeroAcordo,
+                                                                     viewModel.DataPagamento,
+                                                                     viewModel.DataPagamento,
+                                                                     viewModel.ValorPago,
+                                                                     "R");
+
+                await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago * -1);
+
+                await _parcelasAcordoService.InserirObservacaoRegularizacaoParcelaAcordo(viewModel.CnpjEmpresaCobranca, viewModel.NumeroAcordo, viewModel.Parcela, viewModel.Texto);
+
+                if (viewModel.Parcela == 1)
+                {
+                    try
+                    {
+                        await _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: viewModel.NumeroAcordo,
+                                                                    matricula: viewModel.Matricula,
+                                                                    sistema: viewModel.Sistema,
+                                                                    dataPagamento: viewModel.DataPagamento,
+                                                                    periodo: viewModel.ObterPeriodo(),
+                                                                    idTitulo: viewModel.IdTitulo,
+                                                                    codigoAtividade: viewModel.CodigoAtividade,
+                                                                    numeroEvt: viewModel.NumeroEvt,
+                                                                    idPessoa: viewModel.IdPessoa,
+                                                                    codigobanco: viewModel.CodigoBanco,
+                                                                    codigoAgencia: viewModel.CodigoAgencia,
+                                                                    numeroConta: viewModel.NumeroConta,
+                                                                    numeroCheque: viewModel.NumeroCheque,
+                                                                    CpfCnpj: viewModel.CPF
+                                                                    );
+                    }
+                    catch (Exception)
+                    {
+
+                        await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago);
+
+                        throw;
+                    }
+                }
+            }
+            catch (Exception)
+            {
+                await _parcelasAcordoService.EstornarParcelaAcordo(viewModel.Parcela, viewModel.NumeroAcordo);
+            }
+
+            return viewModel;
         }
 
         public async Task<IEnumerable<string>> ListarFiltrosMatricula(string matricula)
         {
             var baixas = await _repositorio.ListarFiltroPorMatricula(matricula);
 
-            return baixas.GroupBy(b => b.Matricula).Select(b => b.Key);
+            return baixas.GroupBy(b => b.Matricula.ToString()).Select(b => b.Key);
         }
 
         public async Task<IEnumerable<string>> ListarFiltrosAcordo(string acordo)
         {
             var baixas = await _repositorio.ListarFiltroPorAcordo(acordo);
 
-            return baixas.GroupBy(b => b.NumeroAcordo).Select(b => b.Key);
+            return baixas.GroupBy(b => b.NumeroAcordo.ToString()).Select(b => b.Key);
         }
 
         public async Task<IEnumerable<string>> ListarFiltroCpf(string cpf)
         {
             var baixas = await _repositorio.ListarFiltroPorCpf(cpf);
 
-            return baixas.GroupBy(b => b.CPF).Select(b => b.Key);
+            return baixas.GroupBy(b => b.CPF.ToString()).Select(b => b.Key);
         }
 
         public async Task<IEnumerable<string>> ListarFiltroNomeAluno(string nomeAluno)
@@ -123,92 +339,109 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var agrupadoPorAcordo = baixas.GroupBy(b => b.NumeroAcordo);
 
-            foreach(var group in agrupadoPorAcordo)
+            foreach (var group in agrupadoPorAcordo)
             {
                 var parcelaUniq = group.First();
 
-                var instituicao = (await _instituicaoService.Buscar()).Where(i => i.Id == int.Parse(parcelaUniq.InstituicaoEnsino)).First();
+                var instituicao = (await _instituicaoService.Buscar()).Where(i => i.Id == parcelaUniq.CodigoInstituicaoEnsino).First();
                 var modalidade = await _modalidadeService.BuscarPorCodigo(parcelaUniq.Sistema);
-                
 
-                var baixaPagamento = new BaixaPagamento() {
-                        DataBaixa = parcelaUniq.DataBaixa,
-                        DataNegociacao = parcelaUniq.DataFechamentoAcordo,
-                        EmpresaParceira = parcelaUniq.CnpjEmpresaCobranca,
-                        FormaPagamento = parcelaUniq.TipoPagamento,
-                        InstituicaoEnsino = instituicao.Instituicao,
-                        InstituicaoModel = new Domain.Models.InstituicaoModel() {
-                            Id = instituicao.Id,
-                            Instituicao = instituicao.Instituicao
-                        },
-                        Matricula = parcelaUniq.Matricula,
-                        ModalidadeEnsino = modalidade.Modalidade,
-                        ModalidadeModel = new Domain.Models.ModalidadeModel() {
-                            Id = modalidade.Id,
-                            Modalidade = modalidade.Modalidade
-                        },
-                        NumeroAcordo = parcelaUniq.NumeroAcordo,
-                        Percentual = 0,
-                        Politica = true,
-                        SaldoDevedor = group.Sum(x => float.Parse(x.SaldoDevedorTotal)),
-                        TotalParcelas = group.Count(),
-                        ValorJuros = group.Sum(x => float.Parse(x.Juros)),
-                        ValorMulta = group.Sum(x => float.Parse(x.Multa)),
-                        ValorPago = group.Sum(x => float.Parse(string.IsNullOrEmpty(x.ValorPago) ? "0" : x.ValorPago)),
-                        ParcelasAcordadas = new List<BaixaPagamentoParcela>(),
-                        ParcelasNegociadas = new List<BaixaPagamentoParcela>()
-                    };
 
-                foreach(var parcela in group.Where(p => p.TipoRegistro.Equals("1"))) {
-                    baixaPagamento.ParcelasAcordadas.Add(new BaixaPagamentoParcela() {
-                        Agencia = parcela.CodigoAgencia,
-                        AcordoOriginal = parcela.NumeroAcordo,
-                        Banco = parcela.CodigoBanco,
-                        Cheque = parcela.NumeroCheque,
-                        DataBaixa = parcela.DataBaixa,
-                        DataPagamento = parcela.DataPagamento,
-                        DataVencimento = parcela.DataVencimento,
-                        Parcela = int.Parse(parcela.Parcela),
+                var baixaPagamento = new BaixaPagamento()
+                {
+                    DataBaixa = parcelaUniq.DataBaixa.ToString(),
+                    DataNegociacao = parcelaUniq.DataFechamentoAcordo.ToString(),
+                    EmpresaParceira = parcelaUniq.CnpjEmpresaCobranca.ToString(),
+                    FormaPagamento = parcelaUniq.TipoPagamento,
+                    InstituicaoEnsino = instituicao.Instituicao,
+                    InstituicaoModel = new Domain.Models.InstituicaoModel()
+                    {
+                        Id = instituicao.Id,
+                        Instituicao = instituicao.Instituicao
+                    },
+                    Matricula = parcelaUniq.Matricula.ToString(),
+                    ModalidadeEnsino = modalidade.Modalidade,
+                    ModalidadeModel = new Domain.Models.ModalidadeModel()
+                    {
+                        Id = modalidade.Id,
+                        Modalidade = modalidade.Modalidade
+                    },
+                    NumeroAcordo = parcelaUniq.NumeroAcordo.ToString(),
+                    Percentual = 0,
+                    Politica = true,
+                    SaldoDevedor = group.Sum(x => float.Parse(x.SaldoDevedorTotal.ToString())),
+                    TotalParcelas = group.Count(),
+                    ValorJuros = group.Sum(x => float.Parse(x.JurosParcela.ToString())),
+                    ValorMulta = group.Sum(x => float.Parse(x.MultaParcela.ToString())),
+                    ValorPago = group.Sum(x => float.Parse(string.IsNullOrEmpty(x.ValorPago.ToString()) ? "0" : x.ValorPago.ToString())),
+                    ParcelasAcordadas = new List<BaixaPagamentoParcela>(),
+                    ParcelasNegociadas = new List<BaixaPagamentoParcela>()
+                };
+
+                foreach (var parcela in group.Where(p => p.TipoRegistro.ToString().Equals("1")))
+                {
+                    baixaPagamento.ParcelasAcordadas.Add(new BaixaPagamentoParcela()
+                    {
+                        Agencia = Convert.ToInt32(parcela.CodigoAgencia),
+                        AcordoOriginal = Convert.ToInt64(parcela.NumeroAcordo),
+                        Banco = Convert.ToInt32(parcela.CodigoBanco),
+                        Cheque = Convert.ToInt64(parcela.NumeroCheque),
+                        DataBaixa = parcela.DataBaixa.ToString(),
+                        DataPagamento = parcela.DataPagamento.ToString(),
+                        DataVencimento = parcela.DataVencimentoParcela.ToString(),
+                        Parcela = int.Parse(parcela.Parcela.ToString()),
                         Periodo = parcela.Periodo,
                         TipoPagamento = parcela.TipoPagamento,
-                        Valor = float.Parse(parcela.ValorParcela),
-                        ValorPago = float.Parse(string.IsNullOrEmpty(parcela.ValorPago) ? "0" : parcela.ValorPago)
+                        Valor = float.Parse(parcela.ValorParcela.ToString()),
+                        ValorPago = float.Parse(string.IsNullOrEmpty(parcela.ValorPago.ToString()) ? "0" : parcela.ValorPago.ToString())
                     });
                 }
 
-                foreach(var parcela in group.Where(p => p.TipoRegistro.Equals("2"))) {
+                foreach (var parcela in group.Where(p => p.TipoRegistro.ToString().Equals("2")))
+                {
                     var valorParcelaComJuros = 0.0;
-                    var valorParcelaOriginal = Double.Parse(parcela.ValorParcela);
+                    var valorParcelaOriginal = Double.Parse(parcela.ValorParcela.ToString());
                     var valorMulta = (valorParcelaOriginal / 100) * 0.2;
                     var valorJurosAoDia = (valorParcelaOriginal / 100) * 0.07;
-                    var dataVencimento = DateTime.ParseExact(parcela.DataVencimento, "dd/MM/yyyy", CultureInfo.InvariantCulture);
-                    var dataAcordo = DateTime.ParseExact(parcela.DataFechamentoAcordo, "dd/MM/yyyy", CultureInfo.InvariantCulture);
+                    var dataVencimento = parcela.DataVencimentoParcela;
+                    var dataAcordo = parcela.DataFechamentoAcordo;
                     var diasVencidos = (dataAcordo - dataVencimento).TotalDays;
 
                     valorParcelaComJuros = valorParcelaOriginal + valorMulta + (valorJurosAoDia * diasVencidos);
 
-                    var parcelaBaixa = new BaixaPagamentoParcela() {
-                        Agencia = parcela.CodigoAgencia,
-                        AcordoOriginal = parcela.NumeroAcordo,
-                        Banco = parcela.CodigoBanco,
-                        Cheque = parcela.NumeroCheque,
-                        DataBaixa = parcela.DataBaixa,
-                        DataPagamento = parcela.DataPagamento,
-                        DataVencimento = parcela.DataVencimento,
-                        Parcela = int.Parse(parcela.Parcela),
+                    var parcelaBaixa = new BaixaPagamentoParcela()
+                    {
+                        Agencia = Convert.ToInt32(parcela.CodigoAgencia),
+                        AcordoOriginal = Convert.ToInt64(parcela.NumeroAcordo),
+                        Banco = Convert.ToInt32(parcela.CodigoBanco),
+                        Cheque = Convert.ToInt64(parcela.NumeroCheque),
+                        DataBaixa = parcela.DataBaixa.ToString(),
+                        DataPagamento = parcela.DataPagamento.ToString(),
+                        DataVencimento = parcela.DataVencimentoParcela.ToString(),
+                        Parcela = int.Parse(parcela.Parcela.ToString()),
                         Periodo = parcela.Periodo,
                         TipoPagamento = parcela.TipoPagamento,
-                        Valor = float.Parse(parcela.ValorParcela),
-                        ValorPago = float.Parse(parcela.ValorPago),
-                        ValorDebitoOriginal = (decimal) valorParcelaComJuros
+                        Valor = float.Parse(parcela.ValorParcela.ToString()),
+                        ValorPago = float.Parse(parcela.ValorPago.ToString()),
+                        ValorDebitoOriginal = (decimal)valorParcelaComJuros,
+                        NumeroAcordo = Convert.ToDecimal(parcela.NumeroAcordo),
+                        Matricula = Convert.ToDecimal(parcela.Matricula),
+                        Sistema = parcela.Sistema,
+                        IdTitulo = string.IsNullOrEmpty(parcela.IdTitulo.ToString()) ? null : Convert.ToDecimal(parcela.IdTitulo),
+                        CodigoAtividade = string.IsNullOrEmpty(parcela.CodigoAtividade.ToString()) ? null : Convert.ToInt32(parcela.CodigoAtividade),
+                        NumeroEvt = string.IsNullOrEmpty(parcela.NumeroEvt.ToString()) ? null : Convert.ToInt32(parcela.NumeroEvt),
+                        IdPessoa = string.IsNullOrEmpty(parcela.IdPessoa.ToString()) ? null : Convert.ToDecimal(parcela.IdPessoa),
+                        NumeroConta = Convert.ToInt32(parcela.NumeroConta),
+                        CpfCnpj = parcela.CPF.ToString(),
+                        TipoInadimplencia = parcela.TipoInadimplencia
                     };
 
                     baixaPagamento.ParcelasNegociadas.Add(parcelaBaixa);
 
-                    if(baixaPagamento.Politica)
+                    if (baixaPagamento.Politica)
                         await RegraContemplada(baixaPagamento, parcelaBaixa);
                 }
-                baixaPagamento.Percentual = (float) (baixaPagamento.ParcelasNegociadas.Sum(p => 100 - (100 * ((decimal) p.ValorPago / p.ValorDebitoOriginal))) / baixaPagamento.ParcelasAcordadas.Count);
+                baixaPagamento.Percentual = (float)(baixaPagamento.ParcelasNegociadas.Sum(p => 100 - (100 * ((decimal)p.ValorPago / p.ValorDebitoOriginal))) / baixaPagamento.ParcelasAcordadas.Count);
                 resultadoBaixas.Add(baixaPagamento);
             }
 
@@ -234,7 +467,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         private async Task RegraContemplada(BaixaPagamento baixaPagamento, BaixaPagamentoParcela parcela)
         {
-            var _regrasAtivas = (await _regraNegociacaoService.Buscar(new ConsultaRegraNegociacaoQueryParam() {
+            var _regrasAtivas = (await _regraNegociacaoService.Buscar(new ConsultaRegraNegociacaoQueryParam()
+            {
                 InstituicaoId = baixaPagamento.InstituicaoModel.Id,
                 ModalidadeId = baixaPagamento.ModalidadeModel.Id,
                 Pagina = 1,
@@ -249,17 +483,22 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     && DateTime.Parse(baixaPagamento.DataNegociacao) <= r.ValidadeFinal.Date)*/
                 .First();
 
-            var percentual = 100 - (100 * ((decimal) parcela.ValorPago / parcela.ValorDebitoOriginal));
+            var percentual = 100 - (100 * ((decimal)parcela.ValorPago / parcela.ValorDebitoOriginal));
 
-            if(baixaPagamento.FormaPagamento == "AVISTA") {
-                baixaPagamento.Politica = ((decimal) percentual) <= regrasAtivas.PercentValorAVista;
-            } else if(baixaPagamento.FormaPagamento == "CARTAO") {
-                baixaPagamento.Politica = ((decimal) percentual) <= regrasAtivas.PercentValorCartao;
-            } else if(baixaPagamento.FormaPagamento == "BOLETO") {
-                baixaPagamento.Politica = ((decimal) percentual) <= regrasAtivas.PercentValorBoleto;
-            }            
+            if (baixaPagamento.FormaPagamento == "AVISTA")
+            {
+                baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorAVista;
+            }
+            else if (baixaPagamento.FormaPagamento == "CARTAO")
+            {
+                baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorCartao;
+            }
+            else if (baixaPagamento.FormaPagamento == "BOLETO")
+            {
+                baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorBoleto;
+            }
         }
-        
+
         public void Dispose()
         {
             Dispose(true);

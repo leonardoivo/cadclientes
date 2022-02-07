@@ -88,6 +88,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             .ForMember(dest => dest.Modalidade, opt => opt.MapFrom(src => src.Modalidade.Modalidade));
 
             CreateMap<RespostasCollection, RespostaViewModel>();
+            CreateMap<RespostasCollection, CriarRespostaViewModel>();
         }
     }
 }

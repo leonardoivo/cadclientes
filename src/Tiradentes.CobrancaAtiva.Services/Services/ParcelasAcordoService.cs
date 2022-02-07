@@ -14,13 +14,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _parcelasAcordoRepository = parcelasAcordoRepository;
         }
 
-        public async Task AtualizaPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago)
+        public async Task AtualizaPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, DateTime dataPagamento, DateTime dataBaixa, decimal valorPago, string situacaoPagamento)
         {
             await _parcelasAcordoRepository.AtualizarPagamentoParcelaAcordo(parcela,
                                                                            numeroAcordo,
                                                                            dataPagamento,
                                                                            dataBaixa,
-                                                                           valorPago);
+                                                                           valorPago,
+                                                                           situacaoPagamento);
         }
 
         public async Task AtualizaPagamentoParcelaAcordoBanco(BaixaPagamentoParcelaManualViewModel viewModel)
@@ -57,7 +58,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         }
 
         public async Task QuitarParcelasAcordo(decimal numeroAcordo, decimal matricula, string sistema, DateTime dataPagamento, decimal periodo, decimal? idTitulo, int? codigoAtividade, int? numeroEvt, decimal? idPessoa, int codigobanco, int codigoAgencia, int numeroConta, decimal numeroCheque, string CpfCnpj)
-        {            
+        {
             await _parcelasAcordoRepository.QuitarParcelasAcordo(numeroAcordo, matricula, sistema, dataPagamento, periodo, idTitulo, codigoAtividade, numeroEvt, idPessoa, codigobanco, codigoAgencia, numeroConta, numeroCheque, CpfCnpj);
         }
         public async Task InserirPagamentoParcelaAcordo(decimal parcela, decimal numeroAcordo, string sistema, DateTime dataBaixa, DateTime dataVencimento, decimal valorParcela, string cnpjEmpresaCobranca, string tipoInadimplencia)
@@ -70,6 +71,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                           valorParcela,
                                                                           cnpjEmpresaCobranca,
                                                                           tipoInadimplencia);
+        }
+
+        public async Task InserirObservacaoRegularizacaoParcelaAcordo(long cnpjEmpresaCobranca, decimal numAcordo, decimal parcela, string texto)
+        {
+            await _parcelasAcordoRepository.InserirObservacaoRegularizacaoParcelaAcordo(cnpjEmpresaCobranca, numAcordo, parcela, texto);
         }
 
         public bool ParcelaPaga(decimal parcela, decimal numeroAcordo)

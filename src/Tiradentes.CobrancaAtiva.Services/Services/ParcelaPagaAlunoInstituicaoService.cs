@@ -21,7 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                       idTitulo,
                                                       codigoAtividade,
                                                       numeroEvt,
-                                                      idPessoa,                                                      
+                                                      idPessoa,
                                                       codigoBanco,
                                                       codigoAgencia,
                                                       numeroConta,
