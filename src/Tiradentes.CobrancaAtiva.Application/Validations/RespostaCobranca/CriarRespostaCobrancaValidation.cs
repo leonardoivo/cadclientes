@@ -3,7 +3,7 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 
 namespace Tiradentes.CobrancaAtiva.Application.Validations.RespostaCobranca
 {
-    public class CriarRespostaCobrancaValidation : AbstractValidator<RespostaViewModel>
+    public class CriarRespostaCobrancaValidation : AbstractValidator<CriarRespostaViewModel>
     {
         public CriarRespostaCobrancaValidation()
         {

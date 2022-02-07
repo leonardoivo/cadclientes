@@ -9,7 +9,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
 {
     public interface ICobrancaService : IDisposable
     {
-        Task<RespostaViewModel> Criar(RespostaViewModel model);
+        IEnumerable<CriarRespostaViewModel> ExemplosRespostas();
+        Task<CriarRespostaViewModel> Criar(CriarRespostaViewModel model);
 
         Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel model);
 

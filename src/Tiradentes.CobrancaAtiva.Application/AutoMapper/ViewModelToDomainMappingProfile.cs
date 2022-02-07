@@ -74,7 +74,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                     opt => opt.MapFrom(src => src.TipoTituloIds.Select(c => new ParametroEnvioTipoTituloModel(c))));
 
             CreateMap<ConflitoViewModel, ConflitoModel>();
-            CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();            
+            CreateMap<ConflitoDetalheViewModel, ConflitoDetalheModel>();
 
             CreateMap<RespostasCollection, RespostaViewModel>().ReverseMap();
 
@@ -82,6 +82,7 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ArquivoLayoutModel, ArquivoLayoutViewModel>();
             CreateMap<ErrosLayoutModel, ErroLayoutViewModel>();
 
+            CreateMap<CriarRespostaViewModel, RespostasCollection>();
         }
     }
 }

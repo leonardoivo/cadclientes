@@ -72,16 +72,170 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return viewModelList;
         }
 
-        public async Task<RespostaViewModel> Criar(RespostaViewModel viewModel)
+        public IEnumerable<CriarRespostaViewModel> ExemplosRespostas()
+        {
+            var respostas = new List<CriarRespostaViewModel>();
+            var respostaTipo1 = new CriarRespostaViewModel()
+            {
+                TipoRegistro = 1,
+                CodigoInstituicaoEnsino = 58,
+                Curso = null,
+                CPF = 00912455594,
+                NomeAluno = "Aluno Exemplo",
+                NumeroAcordo = 730694444,
+                Parcela = 50,
+
+                CnpjEmpresaCobranca = 07324847000170,
+                SituacaoAluno = "M",
+                Sistema = "E",
+                TipoInadimplencia = "P",
+                ChaveInadimplencia = "123132#1",
+
+                Matricula = 1167147836,
+                Periodo = "8",
+
+                IdTitulo = 0,
+                CodigoAtividade = 0,
+                NumeroEvt = 0,
+                IdPessoa = 0,
+                CodigoBanco = 0,
+                CodigoAgencia = 0,
+                NumeroConta = 0,
+                NumeroCheque = 0,
+
+                JurosParcela = Convert.ToDecimal(919.78),
+                MultaParcela = Convert.ToDecimal(32.51),
+                ValorTotalParcela = Convert.ToDecimal(321.58),
+                DataFechamentoAcordo = new DateTime(2022, 08, 23),
+                TotalParcelasAcordo = 1,
+
+                DataVencimentoParcela = new DateTime(2019, 09, 12),
+                ValorParcela = Convert.ToDecimal(321.58),
+                SaldoDevedorTotal = Convert.ToDecimal(0.0),
+                Produto = "Parcela de Curso",
+                DescricaoProduto = "Curso de Teste",
+                CodigoControleCliente = "1167147836044",
+
+                NossoNumero = "",
+                DataPagamento = null,
+                DataBaixa = null,
+                ValorPago = 0,
+                TipoPagamento = ""
+            };
+
+            var respostaTipo2 = new CriarRespostaViewModel()
+            {
+                TipoRegistro = 2,
+                CodigoInstituicaoEnsino = 58,
+                Curso = null,
+                CPF = 00912455594,
+                NomeAluno = "Aluno Exemplo",
+                NumeroAcordo = 730694444,
+                Parcela = 50,
+
+                CnpjEmpresaCobranca = 07324847000170,
+                SituacaoAluno = "M",
+                Sistema = "E",
+                TipoInadimplencia = "P",
+                ChaveInadimplencia = "123132#1",
+
+                Matricula = 1167147836,
+                Periodo = "8",
+
+                IdTitulo = 0,
+                CodigoAtividade = 0,
+                NumeroEvt = 0,
+                IdPessoa = 0,
+                CodigoBanco = 0,
+                CodigoAgencia = 0,
+                NumeroConta = 0,
+                NumeroCheque = 0,
+
+                JurosParcela = Convert.ToDecimal(919.78),
+                MultaParcela = Convert.ToDecimal(32.51),
+                ValorTotalParcela = Convert.ToDecimal(321.58),
+                DataFechamentoAcordo = new DateTime(2022, 08, 23),
+                TotalParcelasAcordo = 1,
+
+                DataVencimentoParcela = new DateTime(2019, 09, 12),
+                ValorParcela = Convert.ToDecimal(321.58),
+                SaldoDevedorTotal = Convert.ToDecimal(0.0),
+                Produto = "Parcela de Curso",
+                DescricaoProduto = "Curso de Teste",
+                CodigoControleCliente = "1167147836044",
+
+                NossoNumero = "",
+                DataPagamento = null,
+                DataBaixa = null,
+                ValorPago = 0,
+                TipoPagamento = ""
+            };
+
+
+            var respostaTipo3 = new CriarRespostaViewModel()
+            {
+                TipoRegistro = 3,
+                CodigoInstituicaoEnsino = 58,
+                Curso = null,
+                CPF = 00912455594,
+                NomeAluno = "Aluno Exemplo",
+                NumeroAcordo = 730694444,
+                Parcela = 50,
+
+                CnpjEmpresaCobranca = 07324847000170,
+                SituacaoAluno = "M",
+                Sistema = "E",
+                TipoInadimplencia = "P",
+                ChaveInadimplencia = "123132#1",
+
+                Matricula = 1167147836,
+                Periodo = "8",
+
+                IdTitulo = 0,
+                CodigoAtividade = 0,
+                NumeroEvt = 0,
+                IdPessoa = 0,
+                CodigoBanco = 0,
+                CodigoAgencia = 0,
+                NumeroConta = 0,
+                NumeroCheque = 0,
+
+                JurosParcela = Convert.ToDecimal(919.78),
+                MultaParcela = Convert.ToDecimal(32.51),
+                ValorTotalParcela = Convert.ToDecimal(321.58),
+                DataFechamentoAcordo = new DateTime(2022, 08, 23),
+                TotalParcelasAcordo = 1,
+
+                DataVencimentoParcela = new DateTime(2019, 09, 12),
+                ValorParcela = Convert.ToDecimal(321.58),
+                SaldoDevedorTotal = Convert.ToDecimal(0.0),
+                Produto = "Parcela de Curso",
+                DescricaoProduto = "Curso de Teste",
+                CodigoControleCliente = "1167147836044",
+
+                NossoNumero = "123456",
+                DataPagamento = new DateTime(2021 - 01 - 22),
+                DataBaixa = new DateTime(2021 - 01 - 22),
+                ValorPago = Convert.ToDecimal(321.58),
+                TipoPagamento = "CARTÃO"
+            };
+
+            respostas.Add(respostaTipo1);
+            respostas.Add(respostaTipo2);
+            respostas.Add(respostaTipo3);
+
+            return respostas;
+        }
+
+        public async Task<CriarRespostaViewModel> Criar(CriarRespostaViewModel viewModel)
         {
             Validate(new CriarRespostaCobrancaValidation(), viewModel);
-
 
             var model = _map.Map<RespostasCollection>(viewModel);
 
             await _repositorio.Criar(model);
 
-            return _map.Map<RespostaViewModel>(model);
+            return _map.Map<CriarRespostaViewModel>(model);
         }
 
         public async Task<RegularizarParcelasAcordoViewModel> RegularizarAcordoCobranca(RegularizarParcelasAcordoViewModel viewModel)
@@ -97,8 +251,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                      viewModel.ValorPago,
                                                                      "R");
 
-
                 await _acordoCobrancaService.AtualizarSaldoDevedor(viewModel.NumeroAcordo, viewModel.ValorPago * -1);
+
+                await _parcelasAcordoService.InserirObservacaoRegularizacaoParcelaAcordo(viewModel.CnpjEmpresaCobranca, viewModel.NumeroAcordo, viewModel.Parcela, viewModel.Texto);
 
                 if (viewModel.Parcela == 1)
                 {
@@ -119,8 +274,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                                                     numeroCheque: viewModel.NumeroCheque,
                                                                     CpfCnpj: viewModel.CPF
                                                                     );
-
-                        await _parcelasAcordoService.InserirObservacaoRegularizacaoParcelaAcordo(viewModel.CnpjEmpresaCobranca, viewModel.NumeroAcordo, viewModel.Parcela, viewModel.Texto);
                     }
                     catch (Exception)
                     {
