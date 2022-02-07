@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Banco;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Conflito;
@@ -46,7 +47,8 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
                 .ForMember(dest => dest.Convenio, opt => opt.MapFrom(src => src.ContaBancaria.Convenio))
                 .ForMember(dest => dest.Pix, opt => opt.MapFrom(src => src.ContaBancaria.Pix));
             CreateMap<ModelPaginada<EmpresaParceiraModel>, ViewModelPaginada<BuscaEmpresaParceiraViewModel>>();
-            CreateMap<ModelPaginada<HonorarioEmpresaParceiraModel>, ViewModelPaginada<HonorarioEmpresaParceiraViewModel>>();
+            CreateMap<ModelPaginada<HonorarioEmpresaParceiraModel>,
+                ViewModelPaginada<HonorarioEmpresaParceiraViewModel>>();
             CreateMap<ModelPaginada<RegraNegociacaoModel>, ViewModelPaginada<RegraNegociacaoViewModel>>();
             CreateMap<ModelPaginada<ParametroEnvioModel>, ViewModelPaginada<ParametroEnvioViewModel>>();
             CreateMap<ModelPaginada<BuscaRegraNegociacao>, ViewModelPaginada<BuscaRegraNegociacaoViewModel>>();
@@ -85,11 +87,12 @@ namespace Tiradentes.CobrancaAtiva.Application.AutoMapper
             CreateMap<ModelPaginada<BuscaConflito>, ViewModelPaginada<BuscaConflitoViewModel>>();
 
             CreateMap<ConflitoDetalheModel, ConflitoDetalheViewModel>()
-            .ForMember(dest => dest.Modalidade, opt => opt.MapFrom(src => src.Modalidade.Modalidade));
+                .ForMember(dest => dest.Modalidade, opt => opt.MapFrom(src => src.Modalidade.Modalidade));
 
             CreateMap<RespostasCollection, RespostaViewModel>();
             CreateMap<RespostasCollection, CriarRespostaViewModel>();
+            CreateMap<ItensBaixaDto, ItensBaixaPagamentoViewModel>();
+            CreateMap<ModelPaginada<BuscaBaixaPagamentoDto>, ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>();
         }
     }
 }
-

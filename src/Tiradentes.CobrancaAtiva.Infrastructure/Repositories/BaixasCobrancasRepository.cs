@@ -61,34 +61,67 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 .Paginar(0, 100);
 
 
-            var t = new List<object>();
-            foreach (var d in dados.Items)
+            var resultado = new ModelPaginada<BuscaBaixaPagamentoDto>
             {
-                var newObj = new
+                Items = new List<BuscaBaixaPagamentoDto>(),
+                PaginaAtual = dados.PaginaAtual,
+                TamanhoPagina = dados.TamanhoPagina,
+                TotalItems = dados.TotalItems,
+                TotalPaginas = dados.TotalPaginas
+            };
+            foreach (var item in dados.Items)
+            {
+                var newObj = new BuscaBaixaPagamentoDto
                 {
-                    d.cnpj,
-                    d.dtBaixa,
-                    items = await Db.ItensBaixaTipo1.BuscarItems(d.dtBaixa, d.cnpj)
-                        .SelectItensBaixaPagamento(1)
-                        .Concat(Db.ItensBaixaTipo2.BuscarItems(d.dtBaixa, d.cnpj)
-                            .SelectItensBaixaPagamento(2))
-                        .Concat(Db.ItensBaixaTipo3.BuscarItems(d.dtBaixa, d.cnpj)
-                            .SelectItensBaixaPagamento(3)).ToListAsync()
+                    DataBaixa = item.dtBaixa,
+                    NomeEmpresaParceira = (await Db.EmpresaParceira.FirstOrDefaultAsync(e => e.CNPJ == item.cnpj))
+                        ?.NomeFantasia,
+                    NomeInstituicaoEnsino = (await Db.Instituicao.FirstOrDefaultAsync(i => i.Id == 58))?.Instituicao,
+                    Items = await Db.ItensBaixaTipo1.BuscarItems(item.dtBaixa, item.cnpj)
+                        .Select(i => new ItensBaixaDto
+                        {
+                            Tipo = 1,
+                            Erro = i.CodigoErro,
+                            Juros = i.Juros,
+                            Matricula = i.Matricula,
+                            Multa = i.Multa,
+                            Parcela = i.Parcela,
+                            Valor = i.Valor,
+                            DataVencimento = i.DataVencimento,
+                            NumeroAcordo = i.NumeroAcordo,
+                            NumeroLinha = i.NumeroLinha,
+                            NomeAluno = "Teste"
+                        })
+                        .Concat(Db.ItensBaixaTipo2.BuscarItems(item.dtBaixa, item.cnpj)
+                            .Select(i => new ItensBaixaDto
+                            {
+                                Tipo = 1,
+                                Erro = i.CodigoErro,
+                                Matricula = i.Matricula,
+                                Parcela = i.Parcela,
+                                Valor = i.Valor,
+                                DataVencimento = i.DataVencimento,
+                                NumeroAcordo = i.NumeroAcordo,
+                                NumeroLinha = i.NumeroLinha,
+                                NomeAluno = "Teste"
+                            }))
+                        .Concat(Db.ItensBaixaTipo3.BuscarItems(item.dtBaixa, item.cnpj)
+                            .Select(i => new ItensBaixaDto
+                            {
+                                Tipo = 1,
+                                Erro = i.CodigoErro,
+                                Matricula = i.Matricula,
+                                Parcela = i.Parcela,
+                                NumeroAcordo = i.NumeroAcordo,
+                                NumeroLinha = i.NumeroLinha,
+                                NomeAluno = "Teste",
+                            }))
+                        .ToListAsync()
                 };
-                t.Add(newObj);
+                resultado.Items.Add(newObj);
             }
 
-            return t;
-        }
-
-        private IQueryable<object> TratarBusca(DateTime dtBaixa, string cnpj)
-        {
-            return Db.ItensBaixaTipo1.BuscarItems(dtBaixa, cnpj)
-                .SelectItensBaixaPagamento(1)
-                .Concat(Db.ItensBaixaTipo2.BuscarItems(dtBaixa, cnpj)
-                    .SelectItensBaixaPagamento(2))
-                .Concat(Db.ItensBaixaTipo3.BuscarItems(dtBaixa, cnpj)
-                    .SelectItensBaixaPagamento(3));
+            return resultado;
         }
     }
 }

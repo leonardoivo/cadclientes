@@ -7,17 +7,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
     public static class BuscaItensBaixaCobranca
     {
-        public static IQueryable<ItensBaixaDto> SelectItensBaixaPagamento<TModel>(
-            this IQueryable<TModel> query, int tipo) where TModel : BaseItensModel
-        {
-            return query.Select(i => new ItensBaixaDto
-            {
-                DataBaixa = i.DataBaixa,
-                CNPJ = i.CnpjEmpresaCobranca,
-                Tipo = tipo
-            });
-        }
-
         public static IQueryable<TModel> FiltrarItensBaixaPagamento<TModel>(
             this IQueryable<TModel> query) where TModel : BaseItensModel
         {

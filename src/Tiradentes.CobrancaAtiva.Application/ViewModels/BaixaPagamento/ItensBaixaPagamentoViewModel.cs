@@ -1,8 +1,8 @@
 using System;
 
-namespace Tiradentes.CobrancaAtiva.Domain.DTO
+namespace Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento
 {
-    public class ItensBaixaDto
+    public class ItensBaixaPagamentoViewModel
     {
         public int Tipo { get; set; } 
         public long NumeroLinha { get; set; }
