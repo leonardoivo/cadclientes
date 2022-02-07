@@ -1,5 +1,6 @@
 ﻿using AutoMapper;
 using System;
+using System.Linq;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
@@ -32,8 +33,20 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             ConsultaBaixaCobrancaQueryParam queryParams)
         {
             var query = _mapper.Map<BaixaCobrancaQueryParam>(queryParams);
-            var resultado = await _baixasCobrancasRepository.Buscar();
-            return _mapper.Map<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>(resultado);
+            var resultadoConsulta = await _baixasCobrancasRepository.Buscar(query);
+            var resultado = _mapper.Map<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>(resultadoConsulta);
+            foreach (var item in resultado.Items)
+            {
+                item.QuantidadeErros = item.Items.Count(i => i.Erro.HasValue && i.Erro.Value != 0);
+                item.QuantidadeTipo1 = item.Items.Count(i => i.Tipo == 1);
+                item.QuantidadeTipo2 = item.Items.Count(i => i.Tipo == 2);
+                item.QuantidadeTipo3 = item.Items.Count(i => i.Tipo == 3);
+                item.ValorTipo1 = item.Items.Where(i => i.Tipo == 1).Sum(i => i.Valor);
+                item.ValorTipo2 = item.Items.Where(i => i.Tipo == 2).Sum(i => i.Valor);
+                item.ValorTipo3 = item.Items.Where(i => i.Tipo == 3).Sum(i => i.Valor);
+            }
+
+            return resultado;
         }
 
         public async Task AtualizarBaixasCobrancas(BaixasCobrancasViewModel baixasCobrancas)

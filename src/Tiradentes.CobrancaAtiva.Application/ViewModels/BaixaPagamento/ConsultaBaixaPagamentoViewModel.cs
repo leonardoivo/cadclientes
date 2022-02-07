@@ -11,9 +11,10 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento
         public int QuantidadeTipo1 { get; set; }
         public int QuantidadeTipo2 { get; set; }
         public int QuantidadeTipo3 { get; set; }
-        public int ValorTipo1 { get; set; }
-        public int ValorTipo2 { get; set; }
-        public int ValorTipo3 { get; set; }
+        public decimal ValorTipo1 { get; set; }
+        public decimal ValorTipo2 { get; set; }
+        public decimal ValorTipo3 { get; set; }
+        public int QuantidadeErros { get; set; }
         public IEnumerable<ItensBaixaPagamentoViewModel> Items { get; set; }
     }
 }
