@@ -467,35 +467,41 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
         private async Task RegraContemplada(BaixaPagamento baixaPagamento, BaixaPagamentoParcela parcela)
         {
-            var _regrasAtivas = (await _regraNegociacaoService.Buscar(new ConsultaRegraNegociacaoQueryParam()
+            try
             {
-                InstituicaoId = baixaPagamento.InstituicaoModel.Id,
-                ModalidadeId = baixaPagamento.ModalidadeModel.Id,
-                Pagina = 1,
-                Limite = int.MaxValue,
-                OrdenarPor = "Id",
-                SentidoOrdenacao = "ASC"
-            }));
-            var regrasAtivas = _regrasAtivas.Items
-                /*.Where(r => DateTime.Parse(parcela.DataVencimento) >= r.InadimplenciaInicial.Date
-                    && DateTime.Parse(parcela.DataVencimento) <= r.InadimplenciaFinal.Date)
-                .Where(r => DateTime.Parse(baixaPagamento.DataNegociacao) >= r.ValidadeInicial.Date
-                    && DateTime.Parse(baixaPagamento.DataNegociacao) <= r.ValidadeFinal.Date)*/
-                .First();
+                var _regrasAtivas = (await _regraNegociacaoService.Buscar(new ConsultaRegraNegociacaoQueryParam()
+                {
+                    InstituicaoId = baixaPagamento.InstituicaoModel.Id,
+                    ModalidadeId = baixaPagamento.ModalidadeModel.Id,
+                    Pagina = 1,
+                    Limite = int.MaxValue,
+                    OrdenarPor = "Id",
+                    SentidoOrdenacao = "ASC"
+                }));
+                var regrasAtivas = _regrasAtivas.Items
+                    .Where(r => DateTime.Parse(parcela.DataVencimento) >= r.InadimplenciaInicial.Date
+                        && DateTime.Parse(parcela.DataVencimento) <= r.InadimplenciaFinal.Date)
+                    .Where(r => DateTime.Parse(baixaPagamento.DataNegociacao) >= r.ValidadeInicial.Date
+                        && DateTime.Parse(baixaPagamento.DataNegociacao) <= r.ValidadeFinal.Date).First();
 
-            var percentual = 100 - (100 * ((decimal)parcela.ValorPago / parcela.ValorDebitoOriginal));
+                var percentual = 100 - (100 * ((decimal)parcela.ValorPago / parcela.ValorDebitoOriginal));
 
-            if (baixaPagamento.FormaPagamento == "AVISTA")
-            {
-                baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorAVista;
+                if (baixaPagamento.FormaPagamento == "AVISTA")
+                {
+                    baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorAVista;
+                }
+                else if (baixaPagamento.FormaPagamento == "CARTAO")
+                {
+                    baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorCartao;
+                }
+                else if (baixaPagamento.FormaPagamento == "BOLETO")
+                {
+                    baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorBoleto;
+                }
             }
-            else if (baixaPagamento.FormaPagamento == "CARTAO")
+            catch(Exception)
             {
-                baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorCartao;
-            }
-            else if (baixaPagamento.FormaPagamento == "BOLETO")
-            {
-                baixaPagamento.Politica = ((decimal)percentual) <= regrasAtivas.PercentValorBoleto;
+                baixaPagamento.Politica = false;
             }
         }
 
