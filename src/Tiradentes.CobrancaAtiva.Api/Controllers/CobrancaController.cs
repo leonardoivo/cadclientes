@@ -39,7 +39,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         [HttpPost("enviar-resposta-acordo-cobranca")]
         [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status404NotFound)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Criar([FromBody] CriarRespostaViewModel resposta)
         {
             return Ok(await _cobrancaService.Criar(resposta));
