@@ -12,6 +12,7 @@ sonarqube-check:
   #   key: "${CI_JOB_NAME}"
   #   paths:
   #     - .sonar/cache
+  cache: [] # disable ci cache
   script: 
       # - "apt-get clean"
       - "apt-get update"
