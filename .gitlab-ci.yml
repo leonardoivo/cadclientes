@@ -22,7 +22,7 @@ sonarqube-check:
       - "dotnet build"
       - "dotnet sonarscanner end /d:sonar.login=\"$SONAR_TOKEN\""
 
-  # allow_failure: true
+  allow_failure: true
   # only:
   #   - master # or the name of your main branch
 
