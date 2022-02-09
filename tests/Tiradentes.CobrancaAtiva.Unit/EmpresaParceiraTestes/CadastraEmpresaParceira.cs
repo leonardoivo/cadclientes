@@ -15,6 +15,7 @@ using Tiradentes.CobrancaAtiva.Application.Utils;
 using System;
 using Microsoft.Extensions.Options;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
+using System.Collections.Generic;
 
 namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 {
@@ -281,6 +282,39 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
             };
 
             Assert.ThrowsAsync<CustomException>(async () => await _service.Criar(model));
+        }
+
+        [Test]
+        [TestCase(TestName = "Teste Cadastrar Empresa Parceira com SenhaEnvioArquivo",
+                   Description = "Teste cadastrar Empresa Parceira no Banco")]
+        public async Task TesteCadastrarChaveIntegracaoSapNotNull()
+        {
+            var model = new EmpresaParceiraViewModel
+            {
+                Id = 1,
+                CEP = "42345234",
+                Estado = "SE",
+                Cidade = "Aracaju",
+                Logradouro = "Rua Pedro",
+                Numero = "7",
+                Complemento = "",
+                NomeFantasia = "Nome Fantasia",
+                RazaoSocial = "Razao Social",
+                CNPJ = "97355899000105",
+                NumeroContrato = "NumeroContrato",
+                Contatos = new List<ContatoEmpresaParceiraViewModel> {
+                    new ContatoEmpresaParceiraViewModel {
+                        Id = 1,
+                        Contato = "Teste",
+                        Email = "teste@teste.com",
+                        Telefone = "4444444444"
+                    }
+                },
+                ChaveIntegracaoSap = "123423525",
+                SenhaEnvioArquivo = "123456"
+            };
+
+            await _service.Criar(model);
         }
     }
 }
