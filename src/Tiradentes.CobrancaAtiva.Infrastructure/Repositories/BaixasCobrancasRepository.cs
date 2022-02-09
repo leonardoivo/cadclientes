@@ -35,11 +35,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task<ModelPaginada<BuscaBaixaPagamentoDto>> Buscar(BaixaCobrancaQueryParam queryParam)
         {
-            if (queryParam.EmpresaParceiraId.HasValue)
+            if (queryParam.EmpresaParceiraId != null)
                 queryParam.CnpjEmpresaParceira =
-                    (await Db.EmpresaParceira.FirstOrDefaultAsync(e => e.Id == queryParam.EmpresaParceiraId.Value))
-                    ?.CNPJ ?? string.Empty;
-            
+                    await Db.EmpresaParceira.Where(e => queryParam.EmpresaParceiraId.Contains(e.Id))
+                        .Select(e => e.CNPJ)
+                        .ToListAsync();
+
             var dados = await Db.ItensBaixaTipo1.FiltrarItensBaixaPagamento(queryParam)
                 .Select(i1 => new
                 {
