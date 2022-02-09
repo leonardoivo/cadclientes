@@ -18,11 +18,10 @@ sonarqube-check:
       - "apt-get install --yes openjdk-11-jre"
       - "dotnet tool install --global dotnet-sonarscanner"
       - "export PATH=\"$PATH:$HOME/.dotnet/tools\""
-      - "dotnet sonarscanner begin /k:\"Mec-backend_AXzMjo45jEZl7aJuSv-D\" /d:sonar.login=\"$SONAR_TOKEN\" /d:\"sonar.host.url=$SONAR_HOST_URL\""
+      - "dotnet sonarscanner begin /k:\"Mec-backend_AXzMjo45jEZl7aJuSv-D\" /d:sonar.login=\"$SONAR_TOKEN\" /d:\"sonar.host.url=$SONAR_HOST_URL\" /d:sonar.qualitygate.wait=true"
       - "dotnet build"
       - "dotnet sonarscanner end /d:sonar.login=\"$SONAR_TOKEN\""
 
-  allow_failure: true
   # only:
   #   - master # or the name of your main branch
 
