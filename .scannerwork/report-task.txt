@@ -1,6 +1,0 @@
-projectKey=Mec-Backend
-serverUrl=http://127.0.0.1:9002
-serverVersion=9.1.0.47736
-dashboardUrl=http://127.0.0.1:9002/dashboard?id=Mec-Backend
-ceTaskId=AXzCJgurQJZTi3hyrly-
-ceTaskUrl=http://127.0.0.1:9002/api/ce/task?id=AXzCJgurQJZTi3hyrly-

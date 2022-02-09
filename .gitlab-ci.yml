@@ -16,11 +16,13 @@ sonarqube-check:
       # - "apt-get clean"
       - "apt-get update"
       - "apt-get install --yes openjdk-11-jre"
-      - "dotnet tool install --global dotnet-sonarscanner"
+      - dotnet tool install --global dotnet-sonarscanner
       - "export PATH=\"$PATH:$HOME/.dotnet/tools\""
-      - "dotnet sonarscanner begin /k:\"Mec-backend_AXzMjo45jEZl7aJuSv-D\" /d:sonar.login=\"$SONAR_TOKEN\" /d:\"sonar.host.url=$SONAR_HOST_URL\" "
-      - "dotnet build"
-      - "dotnet sonarscanner end /d:sonar.login=\"$SONAR_TOKEN\""
+      - export PATH="$PATH:/root/.dotnet/tools"
+      - dotnet sonarscanner begin /k:"Mec-backend_AXzMjo45jEZl7aJuSv-D" /d:sonar.login="$SONAR_TOKEN" /d:"sonar.host.url=$SONAR_HOST_URL" /d:sonar.cs.opencover.reportsPaths=./coverage.opencover.xml /d:sonar.projectBaseDir=../
+      - dotnet build
+      - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../coverage
+      - dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN" 
 
   allow_failure: true
   # only:
