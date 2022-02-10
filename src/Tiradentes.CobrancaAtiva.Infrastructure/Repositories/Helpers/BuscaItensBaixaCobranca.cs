@@ -21,9 +21,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories.Helpers
             if (queryParam.Erro.HasValue)
             {
                 if(queryParam.Erro.Value)
-                    query = query.Where(i => i.CodigoErro == 0);
-                else 
                     query = query.Where(i => i.CodigoErro != 0);
+                else 
+                    query = query.Where(i => i.CodigoErro == 0);
             }
 
             return query;
