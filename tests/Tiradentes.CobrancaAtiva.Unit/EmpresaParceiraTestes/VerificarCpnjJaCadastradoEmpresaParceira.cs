@@ -7,6 +7,7 @@ using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Api.Controllers;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
+using Tiradentes.CobrancaAtiva.Application.Utils;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
@@ -56,7 +57,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 Complemento = "",
                 NomeFantasia = "Nome Fantasia",
                 RazaoSocial = "Razao Social",
-                CNPJ = "97355899000105",
+                CNPJ = "28.992.700/0001-29",
                 NumeroContrato = "NumeroContrato",
                 Contatos = new List<ContatoEmpresaParceiraViewModel> {
                     new ContatoEmpresaParceiraViewModel {
@@ -85,13 +86,21 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         }
 
         [Test]
-        [TestCase(TestName = "Teste Verificar Cnpj",
+        [TestCase(TestName = "Teste verificar cnpj já cadastrado válido",
                    Description = "Teste Verificar Cnpj no Banco")]
-        public async Task VerificarCnpjJaCadastrado()
+        public async Task VerificarCnpjJaCadastradoValido()
         {
             await _service.VerificarCnpjJaCadastrado("28.992.700/0001-29", 1);
 
             Assert.Pass();
+        }
+
+        [Test]
+        [TestCase(TestName = "Teste verificar cnpj já cadastrado inválido",
+                   Description = "Teste Verificar Cnpj no Banco")]
+        public void VerificarCnpjJaCadastradoInvalido()
+        {
+            Assert.ThrowsAsync<CustomException>(async () => await _service.VerificarCnpjJaCadastrado("28.992.700/0001-29", 2));
         }
     }
 }
