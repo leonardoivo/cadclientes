@@ -20,10 +20,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories.Helpers
                 query = query.Where(i => i.DataBaixa.Date <= queryParam.DataFinal.Value.Date);
             if (queryParam.Erro.HasValue)
             {
-                if(queryParam.Erro.Value)
-                    query = query.Where(i => i.CodigoErro == 0);
-                else 
-                    query = query.Where(i => i.CodigoErro != 0);
+                query = queryParam.Erro.Value
+                    ? query.Where(i => i.CodigoErro != 0)
+                    : query.Where(i => i.CodigoErro == 0);
             }
 
             return query;
