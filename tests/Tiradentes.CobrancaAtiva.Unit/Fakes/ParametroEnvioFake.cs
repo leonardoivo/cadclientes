@@ -26,6 +26,5 @@ namespace Tiradentes.CobrancaAtiva.Unit.Fakes
         .RuleFor(cc => cc.ValidadeFinal, DateTime.Now)
         .RuleFor(cc => cc.Instituicao, new InstituicaoViewModel())
         .RuleFor(cc => cc.Modalidade, new ModalidadeViewModel());
-
     }
 }
