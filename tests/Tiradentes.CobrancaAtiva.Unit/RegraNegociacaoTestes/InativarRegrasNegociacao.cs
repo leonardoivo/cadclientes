@@ -14,11 +14,10 @@ using System;
 using Microsoft.Extensions.Options;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
 using System.Threading.Tasks;
-using Tiradentes.CobrancaAtiva.Application.QueryParams;
 
 namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
 {
-    public class CriarRegraNegociacao
+    public class InativarRegrasNegociacao
     {
         private RegraNegociacaoController _controller;
         private CobrancaAtivaDbContext _context;
@@ -33,7 +32,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests2")
+                    .UseInMemoryDatabase("CobrancaAtivaTests5")
                     .Options;
             _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
             {
@@ -51,15 +50,15 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
             {
                 InstituicaoId = 1,
                 ModalidadeId = 1,
-                PercentJurosMultaAVista = 1,
-                PercentValorAVista = 1,
-                PercentJurosMultaCartao  = 1,
-                PercentValorCartao = 1,
-                QuantidadeParcelasCartao = 1,
-                PercentJurosMultaBoleto = 1,
-                PercentValorBoleto = 1,
-                PercentEntradaBoleto = 1,
-                QuantidadeParcelasBoleto = 1,
+                PercentJurosMultaAVista = 0,
+                PercentValorAVista = 0,
+                PercentJurosMultaCartao  = 0,
+                PercentValorCartao = 0,
+                QuantidadeParcelasCartao = 0,
+                PercentJurosMultaBoleto = 0,
+                PercentValorBoleto = 0,
+                PercentEntradaBoleto = 0,
+                QuantidadeParcelasBoleto = 0,
                 Status = true,
                 InadimplenciaInicial = DateTime.Now,
                 InadimplenciaFinal = DateTime.Now,
@@ -70,30 +69,25 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 TitulosAvulsosId = new int[1]{ 1 },
                 TipoTituloIds = new int[1]{ 1 },
             };
+
+            if(_context.RegraNegociacao.CountAsync().Result == 0)
+            {
+                _model = _mapper.Map<RegraNegociacaoModel>(_criarViewModel);
+                _context.RegraNegociacao.Add(_model);
+                _context.SaveChanges();
+            }
+            
+            _context.ChangeTracker.Clear();
         }
 
         [Test]
-        [TestCase(TestName = "Teste Criar Regra Negociacao válido",
-                   Description = "Teste Criar Regra Negociacao no Banco")]
-        public async Task TesteCriarRegraNegociacaoValido()
+        [TestCase(TestName = "Teste Inativar Regra Negociacao",
+                   Description = "Teste Inativar Regra Negociacao no Banco")]
+        public async Task TesteInativarRegraNegociacaoValido()
         {
-            await _service.Criar(_criarViewModel);
+            await _service.InativarRegrasNegociacao();
 
-            var Regras = await _service.Buscar(new ConsultaRegraNegociacaoQueryParam());
-
-            Assert.AreEqual(1, Regras.TotalItems);
-        }
-
-        [Test]
-        [TestCase(TestName = "Teste Verificar Criar Regra Conflitante Negociacao",
-                   Description = "Teste Verificar Criar Regra Conflitante Negociacao no Banco")]
-        public async Task TesteVerificarConflitanteRegraNegociacaoValido()
-        {
-            var criarViewModel = _criarViewModel;
-
-            var conflito = await _service.VerificarRegraConflitante(_criarViewModel);
-
-            Assert.AreEqual(null, conflito);
+            Assert.Pass();
         }
     }
 }

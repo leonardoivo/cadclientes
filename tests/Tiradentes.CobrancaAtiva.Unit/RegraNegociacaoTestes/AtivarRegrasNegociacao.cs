@@ -1,4 +1,4 @@
-﻿using AutoMapper;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Tiradentes.CobrancaAtiva.Api.Controllers;
@@ -17,7 +17,7 @@ using System.Threading.Tasks;
 
 namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
 {
-    public class VerificarRegraConflitante
+    public class AtivarRegrasNegociacao
     {
         private RegraNegociacaoController _controller;
         private CobrancaAtivaDbContext _context;
@@ -25,13 +25,14 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         private RegraNegociacaoModel _model;
         private IMapper _mapper;
         private IOptions<EncryptationConfig> _encryptationConfig;
+        private CriarRegraNegociacaoViewModel _criarViewModel;
 
         [SetUp]
         public void Setup()
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests2")
+                    .UseInMemoryDatabase("CobrancaAtivaTests6")
                     .Options;
             _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
             {
@@ -45,7 +46,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
             _service = new RegraNegociacaoService(repository, _mapper);
             _controller = new RegraNegociacaoController(_service);
 
-            var alterarViewModel = new AlterarRegraNegociacaoViewModel
+            _criarViewModel = new CriarRegraNegociacaoViewModel
             {
                 InstituicaoId = 1,
                 ModalidadeId = 1,
@@ -71,7 +72,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
 
             if(_context.RegraNegociacao.CountAsync().Result == 0)
             {
-                _model = _mapper.Map<RegraNegociacaoModel>(alterarViewModel);
+                _model = _mapper.Map<RegraNegociacaoModel>(_criarViewModel);
                 _context.RegraNegociacao.Add(_model);
                 _context.SaveChanges();
             }
@@ -80,36 +81,13 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         }
 
         [Test]
-        [TestCase(TestName = "Teste Verificar Regra Conflitante Negociacao",
-                   Description = "Teste Verificar Regra Conflitante Negociacao no Banco")]
-        public async Task TesteVerificarConflitanteRegraNegociacaoValido()
+        [TestCase(TestName = "Teste Ativar Regra Negociacao",
+                   Description = "Teste Ativar Regra Negociacao no Banco")]
+        public async Task TesteAtivarRegraNegociacaoValido()
         {
-            var alterarViewModel = new AlterarRegraNegociacaoViewModel
-            {
-                Id = _model.Id,
-                InstituicaoId = 1,
-                ModalidadeId = 1,
-                PercentJurosMultaAVista = 0,
-                PercentValorAVista = 0,
-                PercentJurosMultaCartao  = 0,
-                PercentValorCartao = 0,
-                QuantidadeParcelasCartao = 0,
-                PercentJurosMultaBoleto = 0,
-                PercentValorBoleto = 0,
-                PercentEntradaBoleto = 0,
-                QuantidadeParcelasBoleto = 0,
-                Status = true,
-                InadimplenciaInicial = DateTime.Now,
-                InadimplenciaFinal = DateTime.Now,
-                ValidadeInicial = DateTime.Now,
-                ValidadeFinal = DateTime.Now,
-                CursoIds = new int[1]{ 1 },
-                SituacaoAlunoIds = new int[1] { 1 },
-                TitulosAvulsosId = new int[1]{ 1 },
-                TipoTituloIds = new int[1]{ 1 },
-            };
+            await _service.AtivarRegrasNegociacao();
 
-            await _service.VerificarRegraConflitante(alterarViewModel);
+            Assert.Pass();
         }
     }
 }

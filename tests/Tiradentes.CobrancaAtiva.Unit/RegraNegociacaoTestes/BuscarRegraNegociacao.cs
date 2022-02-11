@@ -26,6 +26,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         private RegraNegociacaoModel _model;
         private IMapper _mapper;
         private IOptions<EncryptationConfig> _encryptationConfig;
+        private CriarRegraNegociacaoViewModel _criarViewModel;
 
         [SetUp]
         public void Setup()
@@ -46,7 +47,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
             _service = new RegraNegociacaoService(repository, _mapper);
             _controller = new RegraNegociacaoController(_service);
 
-            var criarViewModel = new CriarRegraNegociacaoViewModel
+            _criarViewModel = new CriarRegraNegociacaoViewModel
             {
                 InstituicaoId = 1,
                 ModalidadeId = 1,
@@ -72,13 +73,13 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
 
             if(_context.RegraNegociacao.CountAsync().Result == 0)
             {
-                _model = _mapper.Map<RegraNegociacaoModel>(criarViewModel);
+                _model = _mapper.Map<RegraNegociacaoModel>(_criarViewModel);
                 _context.RegraNegociacao.Add(_model);
                 _context.SaveChanges();
 
-                criarViewModel.InstituicaoId = 2;
+                _criarViewModel.Status = false;
 
-                _context.RegraNegociacao.Add(_mapper.Map<RegraNegociacaoModel>(criarViewModel));
+                _context.RegraNegociacao.Add(_mapper.Map<RegraNegociacaoModel>(_criarViewModel));
                 _context.SaveChanges();
             }
             
@@ -86,18 +87,18 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         }
 
         [Test]
-        [TestCase(TestName = "Teste Buscar Regra Negociacao inválido",
+        [TestCase(TestName = "Teste Buscar Regra Negociacao válido",
                    Description = "Teste Buscar Regra Negociacao no Banco")]
-        public async Task TesteBuscarRegraNegociacaoInvalido()
+        public async Task TesteBuscarRegraNegociacaoValido()
         {
             var queryParam = new ConsultaRegraNegociacaoQueryParam()
             {
-                InstituicaoId = 1,
+                Status = true,
             };
 
             var Regras = await _service.Buscar(queryParam);
 
-            Assert.AreEqual(0, Regras.TotalItems);
+            Assert.AreEqual(1, Regras.TotalItems);
         }
     }
 }
