@@ -100,5 +100,26 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
 
             Assert.AreEqual(1, Regras.TotalItems);
         }
+
+        [Test]
+        [TestCase(TestName = "Teste Buscar Regra Negociacao inválido",
+                   Description = "Teste Buscar Regra Negociacao no Banco")]
+        public async Task TesteBuscarRegraNegociacaoInvalido()
+        {
+            var queryParam = new ConsultaRegraNegociacaoQueryParam()
+            {
+                InstituicaoId = 123123,
+                ModalidadeId = 112311,
+                Status = true,
+                ValidadeInicial = DateTime.Now.AddDays(-7),
+                ValidadeFinal = DateTime.Now.AddDays(7),
+                InadimplenciaInicial = DateTime.Now.AddDays(-7),
+                InadimplenciaFinal = DateTime.Now.AddDays(7),
+            };
+
+            var Regras = await _service.Buscar(queryParam);
+
+            Assert.AreEqual(0, Regras.TotalItems);
+        }
     }
 }
