@@ -16,6 +16,10 @@ using System;
 using Microsoft.Extensions.Options;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
 using System.Collections.Generic;
+using Tiradentes.CobrancaAtiva.Unit.Fakes;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Instituicao;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Modalidade;
 
 namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 {
@@ -91,10 +95,11 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                    Description = "Teste Atualizar Empresa Parceira no Banco")]
         public void TesteAtualizarEmpresaParceira()
         {
-            _model.NomeFantasia = "Mudança";
+           _model.NomeFantasia = "Mudança";
 
             Assert.IsTrue(_service.Atualizar(_model).IsCompleted);
         }
+    
 
         [Test]
         [TestCase(TestName = "Teste Atualizar Empresa Parceira Sem Nome Fantasia",
