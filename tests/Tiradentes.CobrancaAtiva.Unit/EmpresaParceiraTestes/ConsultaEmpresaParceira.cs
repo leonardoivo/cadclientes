@@ -38,8 +38,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
             _context = new CobrancaAtivaDbContext(optionsContext);
             IEmpresaParceiraRepository repository = new EmpresaParceiraRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            IEmpresaParceiraService service = new EmpresaParceiraService(repository, mapper, _encryptationConfig);
-            _controller = new EmpresaParceiraController(service);
+            _service = new EmpresaParceiraService(repository, mapper, _encryptationConfig);
+            _controller = new EmpresaParceiraController(_service);
 
             _context.EmpresaParceira.Remove(_context.EmpresaParceira.FirstAsync().Result);
             _context.SaveChanges();
@@ -57,11 +57,11 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         public async Task TesteBuscarTodos()
         {
             var t = await _controller.Buscar(new ConsultaEmpresaParceiraQueryParam());
-            Assert.AreEqual(t.Value.Items.Count, 0);
-            Assert.AreEqual(t.Value.TotalItems, 0);
-            Assert.AreEqual(t.Value.TotalPaginas, 0);
-            Assert.AreEqual(t.Value.PaginaAtual, 1);
-            Assert.AreEqual(t.Value.TamanhoPagina, 10);
+            Assert.AreEqual(0, t.Value.Items.Count);
+            Assert.AreEqual(0, t.Value.TotalItems);
+            Assert.AreEqual(0, t.Value.TotalPaginas);
+            Assert.AreEqual(1, t.Value.PaginaAtual);
+            Assert.AreEqual(10, t.Value.TamanhoPagina);
         }
     }
 }

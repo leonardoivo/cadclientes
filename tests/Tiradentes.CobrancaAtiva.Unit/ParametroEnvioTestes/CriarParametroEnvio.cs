@@ -1,34 +1,27 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 using NUnit.Framework;
 using System;
 using Moq;
 using System.Threading.Tasks;
-using Tiradentes.CobrancaAtiva.Api.Controllers;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
-using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
-using Tiradentes.CobrancaAtiva.Unit.Fakes;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
-using Tiradentes.CobrancaAtiva.Domain.Models;
 
-namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
+namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
 {
-    public class ConsultaParametroEnvio
+    public class ConsultaParametroEnvioPorId
     {
         private CobrancaAtivaDbContext _context;
         private CobrancaAtivaScfDbContext _contextScf;
-        private MongoContext _contextMongo;
         private IParametroEnvioService _service;
         private IOptions<EncryptationConfig> _encryptationConfig;
-        private ParametroEnvioModel _model;
         private IMapper _mapper;
         private Mock<IAlunosInadimplentesRepository> _alunosInadimplentesRepository;
         private Mock<ILoteEnvioRepository> _loteEnvioRepository;
@@ -93,39 +86,16 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
                 TituloAvulsoIds = new int[1]{ 1 },
                 TipoTituloIds = new int[1]{ 1 }
             };
-
-            if(_context.RegraNegociacao.CountAsync().Result == 0)
-            {
-                _model = _mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio);
-                _context.ParametroEnvio.Add(_model);
-                _context.SaveChanges();
-
-                _CriarParametroEnvio.Status = false;
-
-                _context.ParametroEnvio.Add(_mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio));
-                _context.SaveChanges();
-            }
-
-
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            GC.SuppressFinalize(this);
         }
 
         [Test]
-        [TestCase(TestName = "Teste Consultar Parametro envio",
+        [TestCase(TestName = "Teste Consultar Parametro envio Por ID",
                     Description = "Testando função de busca do CRUD Parametro envio")]
         public async Task TesteBuscarParametroEnvio()
         {
-            
-            var queryParam = new ConsultaParametroEnvioQueryParam(){
-                Status = true
-            };
-            var busca = await _service.Buscar(queryParam);
-            Assert.AreEqual(1, busca.TotalItems);
+            var Criar = await _service.Criar(_CriarParametroEnvio);
 
-}} 
+            Assert.AreEqual(Criar.DiaEnvio, _CriarParametroEnvio.DiaEnvio);
+        }
+    } 
 }

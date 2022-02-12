@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using Tiradentes.CobrancaAtiva.Api.Controllers;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
@@ -11,20 +10,16 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
 using System;
-using Microsoft.Extensions.Options;
-using Tiradentes.CobrancaAtiva.Application.Configuration;
 using System.Threading.Tasks;
 
 namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
 {
     public class AtivarRegrasNegociacao
     {
-        private RegraNegociacaoController _controller;
         private CobrancaAtivaDbContext _context;
         private IRegraNegociacaoService _service;
         private RegraNegociacaoModel _model;
         private IMapper _mapper;
-        private IOptions<EncryptationConfig> _encryptationConfig;
         private CriarRegraNegociacaoViewModel _criarViewModel;
 
         [SetUp]
@@ -34,17 +29,11 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
                     .UseInMemoryDatabase("CobrancaAtivaTests6")
                     .Options;
-            _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
-            {
-                BaseUrl = "https://encrypt-service-2kcoisahga-ue.a.run.app/",
-                DecryptAuthorization = "bWVjLWVuYzpwYXNzd29yZA==",
-                EncryptAuthorization = "bWVjLWRlYzpwYXNzd29yZA=="
-            });
+
             _context = new CobrancaAtivaDbContext(optionsContext);
             IRegraNegociacaoRepository repository = new RegraNegociacaoRepository(_context);
             _mapper = new Mapper(AutoMapperSetup.RegisterMappings());
             _service = new RegraNegociacaoService(repository, _mapper);
-            _controller = new RegraNegociacaoController(_service);
 
             _criarViewModel = new CriarRegraNegociacaoViewModel
             {
