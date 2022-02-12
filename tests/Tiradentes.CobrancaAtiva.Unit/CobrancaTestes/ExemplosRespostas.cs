@@ -79,6 +79,12 @@ namespace Tiradentes.CobrancaAtiva.Unit.CobrancaTestes
                     );
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _service?.Dispose();
+        }
+
         [Test]
         [TestCase(TestName = "Teste Exemplos Respostas",
                    Description = "Teste Exemplos Respostas")]

@@ -47,6 +47,12 @@ namespace Tiradentes.CobrancaAtiva.Unit.HonorarioEmpresaParceiraTestes
             };
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _service?.Dispose();
+        }
+
         [Test]
         [TestCase(TestName = "Teste Criar Honorario Empresa Parceira válido",
                    Description = "Teste Criar Honorario Empresa Parceira no Banco")]

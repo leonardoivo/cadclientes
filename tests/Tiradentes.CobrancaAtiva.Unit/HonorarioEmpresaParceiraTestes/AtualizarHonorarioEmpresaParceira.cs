@@ -57,6 +57,12 @@ namespace Tiradentes.CobrancaAtiva.Unit.HonorarioEmpresaParceiraTestes
             _context.ChangeTracker.Clear();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _service?.Dispose();
+        }
+        
         [Test]
         [TestCase(TestName = "Teste Atualizar Honorario Empresa Parceira Negociacao",
                    Description = "Teste Atualizar Honorario Empresa Parceira Negociacao no Banco")]
