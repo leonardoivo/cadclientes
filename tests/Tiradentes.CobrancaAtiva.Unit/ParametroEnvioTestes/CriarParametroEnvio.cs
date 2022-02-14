@@ -16,7 +16,7 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 
 namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
 {
-    public class ConsultaParametroEnvioPorId
+    public class CriarParametroEnvio
     {
         private CobrancaAtivaDbContext _context;
         private CobrancaAtivaScfDbContext _contextScf;

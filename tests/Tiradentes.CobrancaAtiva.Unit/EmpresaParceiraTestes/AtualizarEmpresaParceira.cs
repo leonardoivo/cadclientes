@@ -14,7 +14,6 @@ using Tiradentes.CobrancaAtiva.Application.Utils;
 using Microsoft.Extensions.Options;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
 using System.Collections.Generic;
-
 namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 {
     public class AtualizarEmpresaParceira

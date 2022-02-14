@@ -6,6 +6,7 @@ using NUnit.Framework;
 using System;
 using Moq;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Api.Controllers;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
@@ -17,12 +18,13 @@ using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 
-namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
+namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
 {
-    public class ConsultaParametroEnvio
+    public class DeletarParametroEnvio
     {
         private CobrancaAtivaDbContext _context;
         private CobrancaAtivaScfDbContext _contextScf;
+        private MongoContext _contextMongo;
         private IParametroEnvioService _service;
         private IOptions<EncryptationConfig> _encryptationConfig;
         private ParametroEnvioModel _model;
@@ -91,31 +93,26 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
                 TipoTituloIds = new int[1]{ 1 }
             };
 
-            if(_context.ParametroEnvio.CountAsync().Result == 0)
-            {
-                _model = _mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio);
-                _context.ParametroEnvio.Add(_model);
-                _context.SaveChanges();
+            _model = _mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio);
+            _context.ParametroEnvio.Add(_model);
+            _context.SaveChanges();
 
-                _CriarParametroEnvio.Status = false;
+        
+        }
 
-                _context.ParametroEnvio.Add(_mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio));
-                _context.SaveChanges();
-            }
+        [TearDown]
+        public void TearDown()
+        {
+            GC.SuppressFinalize(this);
         }
 
         [Test]
-        [TestCase(TestName = "Teste Consultar Parametro envio",
-                    Description = "Testando função de busca do CRUD Parametro envio")]
+        [TestCase(TestName = "Teste Deletar Parametro Envio",
+                    Description = "Testando função de Deletar do CRUD Parametro envio")]
         public async Task TesteBuscarParametroEnvio()
         {
-            
-            var queryParam = new ConsultaParametroEnvioQueryParam(){
-                Status = true
-            };
-            var busca = await _service.Buscar(queryParam);
-            Assert.AreEqual(1, busca.TotalItems);
-
-        }       
+           await _service.Deletar(_model.Id);
+            Assert.Pass();
+        }
     } 
 }
