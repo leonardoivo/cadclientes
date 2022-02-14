@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
@@ -23,7 +24,10 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         [HttpGet]
         public async Task<ActionResult<IList<BuscaRegraNegociacao>>> Buscar([FromQuery] ConsultaRegraNegociacaoQueryParam queryParam)
         {
-            return Ok(await _service.Buscar(queryParam));
+            var retoron = await _service.Buscar(queryParam);
+            var config = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+            
+            return Ok(JsonConvert.SerializeObject(retoron, config));
         }
 
         [HttpGet("{id:int}")]

@@ -195,15 +195,23 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
                                 TitulosAvulsos = (from rt in r.RegraNegociacaoTituloAvulso
                                                   join t in listTituloAvulsoModel on rt.TituloAvulsoId equals t.Id
-                                                  select t).ToList(),
+                                                  select new TituloAvulsoModel()
+                                                  {
+                                                      Id = t.Id,
+
+                                                  }).ToList(),
 
                                 SituacoesAlunos = (from ra in r.RegraNegociacaoSituacaoAluno
                                                    join a in listSituacaoAluno on ra.SituacaoAlunoId equals a.Id
-                                                   select a).ToList(),
+                                                   select new SituacaoAlunoModel() { 
+                                                       Id = a.Id,
+                                                   } ).ToList(),
 
                                 TiposTitulos = (from rt in r.RegraNegociacaoTipoTitulo
                                                 join t in listTipoTitulo on rt.TipoTituloId equals t.Id
-                                                select t).ToList(),
+                                                select new TipoTituloModel() { 
+                                                    Id = t.Id
+                                                }).ToList(),
                             }).ToList();
 
             var queryPaginar = listFull.AsQueryable();
