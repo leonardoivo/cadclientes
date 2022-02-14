@@ -19,6 +19,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.CodigoGT)
              .HasColumnName("COD_GT");
 
+            builder.HasMany(c => c.RegraNegociacaoTituloAvulso)
+                    .WithOne();
+
             builder.ToTable("TITULO_AVULSO");
         }
     }

@@ -16,8 +16,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
     public class RegraNegociacaoRepository : BaseRepository<RegraNegociacaoModel>, IRegraNegociacaoRepository
     {
-        private readonly CacheService _cache;
-        public RegraNegociacaoRepository(CacheService cache, CobrancaAtivaDbContext context) : base(context)
+        private readonly CacheServiceRepository _cache;
+        public RegraNegociacaoRepository(CacheServiceRepository cache, CobrancaAtivaDbContext context) : base(context)
         {
             _cache = cache;
         }

@@ -13,6 +13,8 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
+            services.AddSingleton<CacheServiceRepository>();           
+
             #region Repositorios
             services.AddScoped<IEmpresaParceiraRepository, EmpresaParceiraRepository>();
             services.AddScoped<ICursoRepository, CursoRepository>();
@@ -91,7 +93,6 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IParcelasAcordoService, ParcelasAcordoService>();
             services.AddScoped<IParcelaTituloService, ParcelaTituloService>();
 
-            services.AddSingleton<CacheServiceRepository>();           
             #endregion
 
             services.AddScoped<MongoContext>();
