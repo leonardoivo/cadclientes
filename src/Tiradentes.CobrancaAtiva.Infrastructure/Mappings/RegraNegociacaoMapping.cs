@@ -83,16 +83,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasForeignKey(im => im.ModalidadeId);
 
             builder.HasMany(c => c.RegraNegociacaoCurso)
-               .WithOne();
+                       .WithOne(e => e.RegraNegociacao);
 
             builder.HasMany(c => c.RegraNegociacaoTituloAvulso)
-              .WithOne();
+              .WithOne(e => e.RegraNegociacao);
 
             builder.HasMany(c => c.RegraNegociacaoSituacaoAluno)
-              .WithOne();
+              .WithOne(e => e.RegraNegociacao);
 
             builder.HasMany(c => c.RegraNegociacaoTipoTitulo)
-              .WithOne();
+              .WithOne(e => e.RegraNegociacao);
 
             builder.ToTable("REGRA_NEGOCIACAO");
         }

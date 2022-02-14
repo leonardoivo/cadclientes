@@ -23,7 +23,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
                                   });
             });
 
-            services.AddControllers();
+            services.AddControllers().AddNewtonsoftJson(x => x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Serialize);
         }
 
         public static void ApiApplicationConfig(this IApplicationBuilder app, IWebHostEnvironment env)
