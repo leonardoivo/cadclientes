@@ -7,12 +7,16 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using Moq;
-using System.Linq;
 using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
+using Tiradentes.CobrancaAtiva.Application.QueryParams;
+using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
+using System;
+using Tiradentes.CobrancaAtiva.Domain.Collections;
 
 namespace Tiradentes.CobrancaAtiva.Unit.CobrancaTestes
 {
-    public class ExemplosRespostas
+    public class Criar
     {
         private CobrancaAtivaDbContext _context;
         private ICobrancaService _service;
@@ -40,7 +44,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.CobrancaTestes
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaTests")
+                    .UseInMemoryDatabase("CobrancaTests2")
                     .Options;
             _context = new CobrancaAtivaDbContext(optionsContext);
 
@@ -86,13 +90,56 @@ namespace Tiradentes.CobrancaAtiva.Unit.CobrancaTestes
         }
 
         [Test]
-        [TestCase(TestName = "Teste Exemplos Respostas Cobranca",
-                   Description = "Teste Exemplos Respostas Cobranca")]
-        public void TesteExemplosRespostasValido()
+        [TestCase(TestName = "Teste criar cobrança",
+                   Description = "Teste criar cobrança")]
+        public async Task TesteCriarValido()
         {
-            var exemplos = _service.ExemplosRespostas();
+            var viewModel = new CriarRespostaViewModel()
+            {
+                TipoRegistro = 1,
+                CnpjEmpresaCobranca = 28992700000129,
+                SituacaoAluno = "SituacaoAluno",
+                Sistema = "Sistema",
+                TipoInadimplencia = "TipoInadimplencia",
+                ChaveInadimplencia = "ChaveInadimplencia",
+                CodigoInstituicaoEnsino = 1,
+                Curso = 1,
+                CPF = 34567809811,
+                NomeAluno = "Aluno Teste",
+                Matricula = 1,
+                NumeroAcordo = 1,
+                Parcela = 1,
+                Periodo = "1",
+                IdTitulo = 1,
+                IdAluno = 1,
+                IdPessoa = 1,
+                CodigoAtividade = 1,
+                NumeroEvt = 1,
+                CodigoBanco = 1,
+                CodigoAgencia = 1,
+                NumeroConta = 1,
+                NumeroCheque = 1,
+                JurosParcela = 1,
+                MultaParcela = 1,
+                ValorTotalParcela = 1,
+                DataFechamentoAcordo = DateTime.Now.AddDays(-7),
+                TotalParcelasAcordo = 6,
+                DataVencimentoParcela = DateTime.Now.AddDays(7),
+                ValorParcela = 100,
+                SaldoDevedorTotal = 600,
+                Produto = "Produto",
+                DescricaoProduto = "DescricaoProduto",
+                CodigoControleCliente = "CodigoControleCliente",
+                NossoNumero = "NossoNumero",
+                DataPagamento = null,
+                DataBaixa = null,
+                ValorPago = 100,
+                TipoPagamento = "TipoPagamento"
+            };
 
-            Assert.GreaterOrEqual(exemplos.Count(), 3);
+            var result = await _service.Criar(viewModel);
+
+            Assert.AreEqual(viewModel.CnpjEmpresaCobranca, result.CnpjEmpresaCobranca);
         }
     }
 }
