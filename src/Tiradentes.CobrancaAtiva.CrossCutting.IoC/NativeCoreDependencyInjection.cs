@@ -91,7 +91,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IParcelasAcordoService, ParcelasAcordoService>();
             services.AddScoped<IParcelaTituloService, ParcelaTituloService>();
 
-            services.AddSingleton<CacheService>();           
+            services.AddSingleton<CacheServiceRepository>();           
             #endregion
 
             services.AddScoped<MongoContext>();
