@@ -92,7 +92,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.CobrancaTestes
         {
             var exemplos = _service.ExemplosRespostas();
 
-            Assert.GreaterOrEqual(exemplos.Count(), 3);
+            Assert.GreaterOrEqual(exemplos.Count(), 1);
         }
     }
 }

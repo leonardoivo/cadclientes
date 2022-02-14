@@ -53,6 +53,12 @@ namespace Tiradentes.CobrancaAtiva.Unit.ItensBaixaTipo2Testes
             _context.ChangeTracker.Clear();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _service?.Dispose();
+        }
+
         [Test]
         [TestCase(TestName = "Teste Teste Inserir Baixa 2",
                    Description = "Teste Teste Inserir Baixa 2 no Banco, deve retornar 'InvalidOperationException' por tentar usar procedure in memory")]

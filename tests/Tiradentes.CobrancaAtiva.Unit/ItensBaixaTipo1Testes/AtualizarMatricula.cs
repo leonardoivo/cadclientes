@@ -54,6 +54,12 @@ namespace Tiradentes.CobrancaAtiva.Unit.ItensBaixaTipo1Testes
             _context.ChangeTracker.Clear();
         }
 
+        [TearDown]
+        public void TearDown()
+        {
+            _service?.Dispose();
+        }
+
         [Test]
         [TestCase(TestName = "Teste Atualizar Matricula Itens Baixa 1",
                    Description = "Teste Atualizar Matricula Itens Baixa 1 no Banco")]
