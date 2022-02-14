@@ -4,6 +4,7 @@ using System.Net;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
@@ -20,7 +21,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<BuscaRegraNegociacaoViewModel>>> Buscar([FromQuery] ConsultaRegraNegociacaoQueryParam queryParam)
+        public async Task<ActionResult<IList<BuscaRegraNegociacao>>> Buscar([FromQuery] ConsultaRegraNegociacaoQueryParam queryParam)
         {
             return Ok(await _service.Buscar(queryParam));
         }
