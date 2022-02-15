@@ -24,7 +24,6 @@ sonarqube-check:
       - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../coverage
       - dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN" 
 
-  allow_failure: true
   # only:
   #   - master # or the name of your main branch
 

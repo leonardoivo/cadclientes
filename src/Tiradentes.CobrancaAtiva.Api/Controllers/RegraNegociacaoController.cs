@@ -1,9 +1,11 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
+using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
@@ -20,8 +22,11 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<BuscaRegraNegociacaoViewModel>>> Buscar([FromQuery] ConsultaRegraNegociacaoQueryParam queryParam)
+        public async Task<ActionResult<BuscaRegraNegociacaoViewModel>> Buscar([FromQuery] ConsultaRegraNegociacaoQueryParam queryParam)
         {
+            //var retoron = await _service.Buscar(queryParam);
+            //var config = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+
             return Ok(await _service.Buscar(queryParam));
         }
 

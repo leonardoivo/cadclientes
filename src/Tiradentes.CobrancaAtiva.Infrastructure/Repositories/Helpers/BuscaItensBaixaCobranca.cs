@@ -11,16 +11,20 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories.Helpers
             this IQueryable<TModel> query, BaixaCobrancaQueryParam queryParam) where TModel : BaseItensModel
         {
             query = query.Where(i => i.CnpjEmpresaCobranca != null);
-            //Alterar depois de começar a salvar a ies
-            if (queryParam.EmpresaParceiraId.HasValue)
-                query = query;
-            if (queryParam.EmpresaParceiraId.HasValue)
-                query = query.Where(i => i.CnpjEmpresaCobranca == queryParam.CnpjEmpresaParceira);
+
+            if (queryParam.EmpresaParceiraId != null && queryParam.EmpresaParceiraId.Any())
+                query = query.Where(i => queryParam.CnpjEmpresaParceira.Contains(i.CnpjEmpresaCobranca));
             if (queryParam.DataInicial.HasValue)
-                query = query.Where(i => i.DataBaixa.Date <= queryParam.DataInicial.Value.Date);
+                query = query.Where(i => i.DataBaixa.Date >= queryParam.DataInicial.Value.Date);
             if (queryParam.DataFinal.HasValue)
                 query = query.Where(i => i.DataBaixa.Date <= queryParam.DataFinal.Value.Date);
-            
+            if (queryParam.Erro.HasValue)
+            {
+                query = queryParam.Erro.Value
+                    ? query.Where(i => i.CodigoErro != 0)
+                    : query.Where(i => i.CodigoErro == 0);
+            }
+
             return query;
         }
 
