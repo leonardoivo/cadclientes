@@ -144,7 +144,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
 
-            var listRegraNegoquiacao = await query.Include(X => X.RegraNegociacaoCurso)
+            var listRegraNegoquiacao = await query.Include(X => X.Instituicao)
+                                                  .Include(X => X.Modalidade)
+                                                  .Include(X => X.RegraNegociacaoCurso)
                                                   .Include(X => X.RegraNegociacaoTituloAvulso)
                                                   .Include(X => X.RegraNegociacaoSituacaoAluno)
                                                   .Include(X => X.RegraNegociacaoTipoTitulo).AsSplitQuery().AsNoTracking().ToListAsync();
@@ -189,7 +191,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 InadimplenciaInicial = r.InadimplenciaInicial,
                                 InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
-                                ValidadeFinal = r.ValidadeFinal,
+                                ValidadeFinal = r.ValidadeFinal,                                       
                                 Cursos = (from rc in r.RegraNegociacaoCurso
                                           join c in listCursoModel on rc.CursoId equals c.Id
                                           select new CursoModel() {
