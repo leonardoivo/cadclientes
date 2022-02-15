@@ -24,7 +24,6 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
     {
         private CobrancaAtivaDbContext _context;
         private CobrancaAtivaScfDbContext _contextScf;
-        private MongoContext _contextMongo;
         private IParametroEnvioService _service;
         private IOptions<EncryptationConfig> _encryptationConfig;
         private ParametroEnvioModel _model;
@@ -111,7 +110,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
                     Description = "Testando função de Deletar do CRUD Parametro envio")]
         public async Task TesteBuscarParametroEnvio()
         {
-           await _service.Deletar(_model.Id);
+            await _service.Deletar(_model.Id);
             Assert.Pass();
         }
     } 

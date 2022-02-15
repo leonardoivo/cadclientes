@@ -15,7 +15,7 @@
 // using Tiradentes.CobrancaAtiva.Services.Services;
 // using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 // using Tiradentes.CobrancaAtiva.Domain.Models;
-// using System.Diagnostics;
+// using Tiradentes.CobrancaAtiva.Api.Controllers;
 
 // namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
 // {
@@ -35,6 +35,8 @@
 //         private ParametroEnvioTituloAvulsoModel _CriarTituloAvulsoModel;
 //         private ParametroEnvioSituacaoAlunoModel _CriarSituacaoAlunoModel;
 //         private ParametroEnvioTipoTituloModel _CriarTipoTituloModel;
+
+//         private ParametroEnvioController _Controller;
 
 //         [SetUp]
 //         public void Setup()
@@ -78,6 +80,8 @@
 //             });
 
 //             _service = new ParametroEnvioService(repository, empresaParceiraRepository, geracaoCobrancasRepository, itensGeracaoRepository, arquivoCobrancasRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions, _encryptationConfig);
+
+//             _Controller = new ParametroEnvioController(_service);
 
 //             _CriarCursoModel = new ParametroEnvioCursoModel()
 //             {
@@ -153,8 +157,9 @@
 //         public async Task TesteBuscarParametroEnvio()
 //         {
 
-//                 var busca = await _service.BuscarPorId(_model.Id);
-//                 Assert.AreEqual(busca, _model.DiaEnvio);
+//                 var busca = await _Controller.Buscar(_model.Id);
+
+//                 Assert.AreEqual(busca.Value.DiaEnvio, _model.DiaEnvio);
 //         }
 //     } 
 // }
