@@ -1,22 +1,24 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 using NUnit.Framework;
+using System.Collections.Generic;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Api.Controllers;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
+using Tiradentes.CobrancaAtiva.Application.Configuration;
+using Tiradentes.CobrancaAtiva.Application.Utils;
+using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
-using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
-using Microsoft.Extensions.Options;
-using Tiradentes.CobrancaAtiva.Application.Configuration;
 
 namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 {
-    public class ExcluirEmpresaParceira
+    public class VerificarCpnjJaCadastradoEmpresaParceira
     {
         private EmpresaParceiraController _controller;
         private CobrancaAtivaDbContext _context;
@@ -30,7 +32,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests")
+                    .UseInMemoryDatabase("VerificarCpnjJaCadastradoEmpresaParceiraTests")
                     .Options;
             _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
             {
@@ -46,19 +48,26 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 
             _model = new EmpresaParceiraViewModel
             {
-                Id = 10,
+                Id = 1,
+                CEP = "42345234",
+                Estado = "SE",
+                Cidade = "Aracaju",
+                Logradouro = "Rua Pedro",
+                Numero = "7",
+                Complemento = "",
                 NomeFantasia = "Nome Fantasia",
                 RazaoSocial = "Razao Social",
-                CNPJ = "97355899000109",
+                CNPJ = "28.992.700/0001-29",
                 NumeroContrato = "NumeroContrato",
-                Contatos = new System.Collections.Generic.List<ContatoEmpresaParceiraViewModel> {
+                Contatos = new List<ContatoEmpresaParceiraViewModel> {
                     new ContatoEmpresaParceiraViewModel {
-                        Id = 10,
+                        Id = 1,
                         Contato = "Teste",
                         Email = "teste@teste.com",
                         Telefone = "4444444444"
                     }
-                }
+                },
+                ChaveIntegracaoSap = "123423525"
             };
 
             if(_context.EmpresaParceira.CountAsync().Result == 0)
@@ -66,6 +75,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 _context.EmpresaParceira.Add(_mapper.Map<EmpresaParceiraModel>(_model));
                 _context.SaveChanges();
             }
+            
             _context.ChangeTracker.Clear();
         }
 
@@ -76,13 +86,21 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         }
 
         [Test]
-        [TestCase(TestName = "Teste Atualizar Empresa Parceira",
-                   Description = "Teste Atualizar Empresa Parceira no Banco")]
-        public async Task TesteExcluirEmpresaParceira()
+        [TestCase(TestName = "Teste verificar cnpj já cadastrado válido",
+                   Description = "Teste Verificar Cnpj no Banco")]
+        public async Task VerificarCnpjJaCadastradoValido()
         {
-            await _service.Deletar(_model.Id);
+            await _service.VerificarCnpjJaCadastrado("28.992.700/0001-29", 1);
 
             Assert.Pass();
+        }
+
+        [Test]
+        [TestCase(TestName = "Teste verificar cnpj já cadastrado inválido",
+                   Description = "Teste Verificar Cnpj no Banco")]
+        public void VerificarCnpjJaCadastradoInvalido()
+        {
+            Assert.ThrowsAsync<CustomException>(async () => await _service.VerificarCnpjJaCadastrado("28.992.700/0001-29", 2));
         }
     }
 }

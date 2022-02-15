@@ -38,8 +38,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
             _context = new CobrancaAtivaDbContext(optionsContext);
             IEmpresaParceiraRepository repository = new EmpresaParceiraRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            IEmpresaParceiraService service = new EmpresaParceiraService(repository, mapper, _encryptationConfig);
-            _controller = new EmpresaParceiraController(service);
+            _service = new EmpresaParceiraService(repository, mapper, _encryptationConfig);
+            _controller = new EmpresaParceiraController(_service);
         }
 
         [TearDown]
@@ -94,7 +94,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 
             var t = await _controller.Buscar(++model.Id);
 
-            Assert.AreEqual(t.Value, null);
+            Assert.AreEqual(null, t.Value);
         }
 
         private async Task DeletarTodasEmpresasParceirasBanco()

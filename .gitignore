@@ -155,3 +155,7 @@ velocity.log
 
 .scannerwork
 /.idea
+
+# Sonar QUBE
+.sonarqube
+coverage.opencover.xml
