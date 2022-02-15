@@ -27,8 +27,6 @@ namespace Tiradentes.CobrancaAtiva.Api
             _configuration = builder.Build();
         }
 
-        public IConfiguration Configuration { get; }
-
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {            
@@ -38,6 +36,7 @@ namespace Tiradentes.CobrancaAtiva.Api
             services.ApiServiceConfig();
             services.AutoMapperServiceConfig();
             services.SwaggerServiceConfig();
+            services.AddAuthenticationConfig(_configuration);
 
             services.AddHostedService<GerenciarCobrancaRetornoWorker>();
             services.AddHostedService<RegraNegociacaoWorker>();
@@ -51,6 +50,8 @@ namespace Tiradentes.CobrancaAtiva.Api
             {
                 app.SwaggerApplicationConfig();
             }
+            app.UseAuthentication();
+            app.UseAuthorization();
             app.ApiApplicationConfig(env);
         }
     }
