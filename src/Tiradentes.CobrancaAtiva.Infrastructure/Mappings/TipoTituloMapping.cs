@@ -20,7 +20,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
              .HasColumnName("COD_MAGISTER");
 
             builder.HasMany(c => c.RegraNegociacaoTipoTitulo)
-               .WithOne(e => e.TipoTitulo);
+               .WithOne(c => c.TipoTitulo);
 
             builder.ToTable("TIPO_TITULOS");
         }
