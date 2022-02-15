@@ -22,12 +22,12 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<ModelPaginada<BuscaRegraNegociacao>>> Buscar([FromQuery] ConsultaRegraNegociacaoQueryParam queryParam)
+        public async Task<ActionResult<BuscaRegraNegociacaoViewModel>> Buscar([FromQuery] ConsultaRegraNegociacaoQueryParam queryParam)
         {
-            var retoron = await _service.Buscar(queryParam);
-            var config = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
-            
-            return Ok(JsonConvert.SerializeObject(retoron, config));
+            //var retoron = await _service.Buscar(queryParam);
+            //var config = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };
+
+            return Ok(await _service.Buscar(queryParam));
         }
 
         [HttpGet("{id:int}")]
