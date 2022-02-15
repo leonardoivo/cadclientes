@@ -49,14 +49,11 @@ namespace Tiradentes.CobrancaAtiva.Api.Extensions
             var realmAccess = context.User.Claims.FirstOrDefault(c => c.Type.Equals("realm_access"))?.Value;
             var resourceAccess = context.User.Claims.FirstOrDefault(c => c.Type.Equals("resource_access"))?.Value;
             var audience = context.User.Claims.FirstOrDefault(c => c.Type.Equals("azp"))?.Value;
-
             if (realmAccess == null) return false;
 
-            var realmRoles = JsonSerializer.Deserialize<RealmRole>(realmAccess);
             var resourceAccessRoles = JsonSerializer.Deserialize<IDictionary<string, RealmRole>>(resourceAccess);
             resourceAccessRoles.TryGetValue(audience, out var resourceRoles);
-            return realmRoles.roles.Contains(_realmRole) && resourceRoles != null &&
-                   resourceRoles.roles.Any(r => _clientRole.Contains(r));
+            return resourceRoles != null && resourceRoles.roles.Any(r => _clientRole.Contains(r));
         }
     }
 
