@@ -46,13 +46,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
         }
 
-        public async Task<ModelPaginada<BuscaRegraNegociacao>> Buscar(ConsultaRegraNegociacaoQueryParam queryParam)
+        public async Task<ViewModelPaginada<BuscaRegraNegociacaoViewModel>> Buscar(ConsultaRegraNegociacaoQueryParam queryParam)
         {
             var regraQueryParam = _map.Map<RegraNegociacaoQueryParam>(queryParam);
 
             var list = await _repositorio.Buscar(regraQueryParam);
 
-            return list;
+            return _map.Map<ViewModelPaginada<BuscaRegraNegociacaoViewModel>>(list);
         }
 
         public async Task<BuscaRegraNegociacaoViewModel> BuscarPorId(int id)
