@@ -50,6 +50,7 @@ namespace Tiradentes.CobrancaAtiva.Api
             {
                 app.SwaggerApplicationConfig();
             }
+            app.UseMetrics();
             app.UseAuthentication();
             app.UseAuthorization();
             app.ApiApplicationConfig(env);
