@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Linq.Expressions;
 
-namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
+namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories.Helpers
 {
     public static class Ordenacao
     {

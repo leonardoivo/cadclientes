@@ -70,7 +70,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasColumnName("CHAVE_INTEGRACAO_SAP")
                 .HasDefaultValue("");
 
-            builder.ToTable("EMPRESAS");
+            builder.ToTable("EMPRESAS", "APP_COBRANCA");
         }
     }
 }

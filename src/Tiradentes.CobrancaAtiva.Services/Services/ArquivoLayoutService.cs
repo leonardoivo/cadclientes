@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text.Json;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca;
 using Tiradentes.CobrancaAtiva.Domain.Enum;
@@ -25,13 +26,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _mapper = mapper;
         }
 
-        public async Task<DateTime> SalvarLayoutArquivo(string status, string arquivoResposta)
+        public async Task<DateTime> SalvarLayoutArquivo(string status, string arquivoResposta, string cnpj, int iesId)
         {
             var layoutArquivo = new ArquivoLayoutModel()
             {
-                //Conteudo = arquivoResposta,
-                Conteudo = "Conteudo indisponivel",
-                Status = status
+                Conteudo = arquivoResposta,
+                Status = status,
+                CnpjEmpresaCobranca = cnpj,
+                InstituicaoEnsinoId = iesId
             };
 
             _repository.HabilitarAlteracaoArquivoLayout(true);
@@ -72,8 +74,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 item.ErrosLayout = _erroLayoutService.BuscarPorDataHora(data);
             }
-
-
+            
             return listViewModel;
         }
 
@@ -100,6 +101,17 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
 
             return await _erroLayoutService.CriarErroLayoutService(dataBaixa, erro, erroDescricao);
+        }
+
+        public async Task AlterarConteudo(DateTime dataHora, object conteudo)
+        {
+            var arquivoViewModel = BuscarPorDataHora(dataHora);
+
+            if (arquivoViewModel == null) return;
+
+            arquivoViewModel.Conteudo = JsonSerializer.Serialize(conteudo);
+
+            await _repository.Alterar(_mapper.Map<ArquivoLayoutModel>(arquivoViewModel));
         }
     }
 }
