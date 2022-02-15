@@ -1,4 +1,7 @@
+using System.Linq;
+using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Http;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
@@ -15,14 +18,14 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
                 options.DefaultChallengeScheme = JwtBearerDefaults.AuthenticationScheme;
             }).AddJwtBearer(options =>
             {
-                options.Authority = configuration["KeyCloack:Authority"];
+                options.Authority = configuration.GetValue<string>("KeyCloack:Authority");
                 options.RequireHttpsMetadata = false;
                 options.TokenValidationParameters = new TokenValidationParameters
                 {
                     ValidateIssuer = true,
-                    ValidIssuer = configuration["KeyCloack:Authority"],
+                    ValidIssuer = configuration.GetValue<string>("KeyCloack:Authority"),
                     ValidateAudience = true,
-                    ValidAudience = configuration["KeyCloack:Audience"],
+                    ValidAudience = configuration.GetValue<string>("KeyCloack:Audience"),
                     ValidateLifetime = true
                 };
             });
