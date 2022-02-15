@@ -38,9 +38,9 @@ namespace Tiradentes.CobrancaAtiva.Api
             services.SwaggerServiceConfig();
             services.AddAuthenticationConfig(_configuration);
 
-            services.AddHostedService<GerenciarCobrancaRetornoWorker>();
-            services.AddHostedService<RegraNegociacaoWorker>();
-            services.AddHostedService<ParametroEnvioConsumer>();
+            // services.AddHostedService<GerenciarCobrancaRetornoWorker>();
+            // services.AddHostedService<RegraNegociacaoWorker>();
+            // services.AddHostedService<ParametroEnvioConsumer>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -50,6 +50,7 @@ namespace Tiradentes.CobrancaAtiva.Api
             {
                 app.SwaggerApplicationConfig();
             }
+            app.UseMetrics();
             app.UseAuthentication();
             app.UseAuthorization();
             app.ApiApplicationConfig(env);
