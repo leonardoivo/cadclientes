@@ -192,7 +192,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 Cursos = (from rc in r.RegraNegociacaoCurso
                                           join c in listCursoModel on rc.CursoId equals c.Id
                                           select new CursoModel() {
-                                              Id = c.Id
+                                              Id = c.Id,
+                                              Descricao = c.Descricao,
+                                              CodigoMagister = c.CodigoMagister,
+                                              InstituicaoId = c.InstituicaoId,
+                                              ModalidadeId = c.ModalidadeId
+                                              
                                           }).ToList(),
 
                                 TitulosAvulsos = (from rt in r.RegraNegociacaoTituloAvulso
@@ -200,6 +205,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                   select new TituloAvulsoModel()
                                                   {
                                                       Id = t.Id,
+                                                      Descricao = t.Descricao,
+                                                      CodigoGT = t.CodigoGT
 
                                                   }).ToList(),
 
@@ -207,12 +214,17 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                                    join a in listSituacaoAluno on ra.SituacaoAlunoId equals a.Id
                                                    select new SituacaoAlunoModel() { 
                                                        Id = a.Id,
+                                                       CodigoMagister = a.CodigoMagister,
+                                                       Situacao = a.Situacao
                                                    } ).ToList(),
 
                                 TiposTitulos = (from rt in r.RegraNegociacaoTipoTitulo
                                                 join t in listTipoTitulo on rt.TipoTituloId equals t.Id
                                                 select new TipoTituloModel() { 
-                                                    Id = t.Id
+                                                    Id = t.Id,
+                                                    CodigoMagister = t.CodigoMagister,
+                                                    TipoTitulo = t.TipoTitulo
+                                                    
                                                 }).ToList(),
                             }).ToList();
 
