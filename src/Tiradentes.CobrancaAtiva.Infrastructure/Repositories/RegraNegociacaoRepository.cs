@@ -191,7 +191,9 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 ValidadeFinal = r.ValidadeFinal,
                                 Cursos = (from rc in r.RegraNegociacaoCurso
                                           join c in listCursoModel on rc.CursoId equals c.Id
-                                          select c).ToList(),
+                                          select new CursoModel() {
+                                              Id = c.Id
+                                          }).ToList(),
 
                                 TitulosAvulsos = (from rt in r.RegraNegociacaoTituloAvulso
                                                   join t in listTituloAvulsoModel on rt.TituloAvulsoId equals t.Id

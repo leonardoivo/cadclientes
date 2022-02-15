@@ -22,7 +22,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         }
 
         [HttpGet]
-        public async Task<ActionResult<IList<BuscaRegraNegociacao>>> Buscar([FromQuery] ConsultaRegraNegociacaoQueryParam queryParam)
+        public async Task<ActionResult<ModelPaginada<BuscaRegraNegociacao>>> Buscar([FromQuery] ConsultaRegraNegociacaoQueryParam queryParam)
         {
             var retoron = await _service.Buscar(queryParam);
             var config = new JsonSerializerSettings() { ReferenceLoopHandling = ReferenceLoopHandling.Ignore };

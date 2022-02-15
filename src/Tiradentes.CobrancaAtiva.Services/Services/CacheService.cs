@@ -1,4 +1,5 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -11,6 +12,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
     {
         private readonly IServiceScopeFactory _scope;
 
+        private DateTime _UtimaAtualizacaoCurso;
+        private DateTime _UtimaAtualizacaoTitulo;
+        private DateTime _UtimaAtualizacaoSituacaoAluno;
+        private DateTime _UtimaAtualizacaoTipoTitulo;
+
         private  List<CursoModel> _cursoModel;
         private List<TituloAvulsoModel> _tituloAvulsoModel;
         private List<SituacaoAlunoModel> _situacaoAlunoModel;
@@ -19,13 +25,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             get
             { 
-                if(_cursoModel == null)
+                if(_cursoModel == null || (TimeSpan.Parse(DateTime.Now.ToShortTimeString()).TotalHours - TimeSpan.Parse(_UtimaAtualizacaoCurso.ToShortTimeString()).TotalHours > 2))
                 {
                     using (var scope = _scope.CreateScope())
                     {
                         var _repository = scope.ServiceProvider.GetRequiredService<ICursoRepository>();
                         _cursoModel = _repository.Buscar().Result.ToList();
                     }
+
+                    _UtimaAtualizacaoCurso = DateTime.Now;
                 }
 
                 return _cursoModel;
@@ -36,13 +44,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             get
             {
-                if (_tituloAvulsoModel == null)
+                if (_tituloAvulsoModel == null || (TimeSpan.Parse(DateTime.Now.ToShortTimeString()).TotalHours - TimeSpan.Parse(_UtimaAtualizacaoTitulo.ToShortTimeString()).TotalHours > 2))
                 {
                     using (var scope = _scope.CreateScope())
                     {
                         var _repository = scope.ServiceProvider.GetRequiredService<ITituloAvulsoRepository>();
                         _tituloAvulsoModel = _repository.Buscar().Result.ToList();
                     }
+
+                    _UtimaAtualizacaoTitulo = DateTime.Now;
                 }
 
                 return _tituloAvulsoModel;
@@ -53,13 +63,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             get
             {
-                if (_situacaoAlunoModel == null)
+                if (_situacaoAlunoModel == null || (TimeSpan.Parse(DateTime.Now.ToShortTimeString()).TotalHours - TimeSpan.Parse(_UtimaAtualizacaoSituacaoAluno.ToShortTimeString()).TotalHours > 2))
                 {
                     using (var scope = _scope.CreateScope())
                     {
                         var _repository = scope.ServiceProvider.GetRequiredService<ISituacaoAlunoRepository>();
                         _situacaoAlunoModel = _repository.Buscar().Result.ToList();
                     }
+
+                    _UtimaAtualizacaoSituacaoAluno = DateTime.Now;
                 }
 
                 return _situacaoAlunoModel;
@@ -70,13 +82,15 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             get
             {
-                if (_tipoTituloModel == null)
+                if (_tipoTituloModel == null || (TimeSpan.Parse(DateTime.Now.ToShortTimeString()).TotalHours - TimeSpan.Parse(_UtimaAtualizacaoTipoTitulo.ToShortTimeString()).TotalHours > 2))
                 {
                     using (var scope = _scope.CreateScope())
                     {
                         var _repository = scope.ServiceProvider.GetRequiredService<ITipoTituloRepository>();
                         _tipoTituloModel = _repository.Buscar().Result.ToList();
                     }
+
+                    _UtimaAtualizacaoTipoTitulo = DateTime.Now;
                 }
 
                 return _tipoTituloModel;
