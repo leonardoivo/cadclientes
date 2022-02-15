@@ -36,7 +36,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests")
+                    .UseInMemoryDatabase("CobrancaAtivaTests2")
                     .Options;
             
              DbContextOptions<CobrancaAtivaScfDbContext> optionsContextScf =

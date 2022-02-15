@@ -148,7 +148,7 @@
 //         }
 
 //         [Test]
-//         [TestCase(TestName = "Teste Consultar Parametro envio",
+//         [TestCase(TestName = "Teste Consultar Parametro envio por ID",
 //                     Description = "Testando função de busca do CRUD Parametro envio")]
 //         public async Task TesteBuscarParametroEnvio()
 //         {
