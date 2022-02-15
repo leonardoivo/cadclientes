@@ -9,13 +9,18 @@ using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Domain.QueryParams;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
+using Tiradentes.CobrancaAtiva.Infrastructure.Repositories.Helpers;
+using Tiradentes.CobrancaAtiva.Services.Interfaces;
+using Tiradentes.CobrancaAtiva.Services.Services;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
     public class RegraNegociacaoRepository : BaseRepository<RegraNegociacaoModel>, IRegraNegociacaoRepository
     {
-        public RegraNegociacaoRepository(CobrancaAtivaDbContext context) : base(context)
+        private readonly CacheServiceRepository _cache;
+        public RegraNegociacaoRepository(CacheServiceRepository cache, CobrancaAtivaDbContext context) : base(context)
         {
+            _cache = cache;
         }
 
         public async Task<List<RegraNegociacaoModel>> ListarRegrasParaInativar()
@@ -119,35 +124,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task<ModelPaginada<BuscaRegraNegociacao>> Buscar(RegraNegociacaoQueryParam queryParams)
         {
-            var query = DbSet
-                .Select(r => new BuscaRegraNegociacao
-                {
-                    Id = r.Id,
-                    Instituicao = r.Instituicao,
-                    Modalidade = r.Modalidade,
-                    PercentJurosMultaAVista = r.PercentJurosMultaAVista,
-                    PercentValorAVista = r.PercentValorAVista,
-                    PercentJurosMultaCartao = r.PercentJurosMultaCartao,
-                    PercentValorCartao = r.PercentValorCartao,
-                    QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
-                    PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
-                    PercentValorBoleto = r.PercentValorBoleto,
-                    QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
-                    PercentEntradaBoleto = r.PercentEntradaBoleto,
-                    Status = r.Status,
-                    InadimplenciaInicial = r.InadimplenciaInicial,
-                    InadimplenciaFinal = r.InadimplenciaFinal,
-                    ValidadeInicial = r.ValidadeInicial,
-                    ValidadeFinal = r.ValidadeFinal,
-                    Cursos = r.RegraNegociacaoCurso.Select(x => x.Curso),
-                    TitulosAvulsos = r.RegraNegociacaoTituloAvulso.Select(x => x.TituloAvulso),
-                    SituacoesAlunos = r.RegraNegociacaoSituacaoAluno.Select(x => x.SituacaoAluno),
-                    TiposTitulos = r.RegraNegociacaoTipoTitulo.Select(x => x.TipoTitulo)
-                })
-                .AsQueryable();
+            var listCursoModel = _cache.CursoModel;
+            var listTituloAvulsoModel = _cache.TituloAvulsoModel;
+            var listSituacaoAluno = _cache.SituacaoAlunoModel;
+            var listTipoTitulo = _cache.TipoTituloModel;
+
+            var query = DbSet.AsQueryable();
 
             if (queryParams.InstituicaoId != 0)
                 query = query.Where(e => e.Instituicao.Id == queryParams.InstituicaoId);
+
 
             if (queryParams.ModalidadeId != 0)
                 query = query.Where(e => e.Modalidade.Id == queryParams.ModalidadeId);
@@ -155,25 +141,114 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             query = TrataFiltroDataValidade(query, queryParams);
             query = TrataFiltroDataInadimplencia(query, queryParams);
 
-            if (queryParams.Cursos.Length > 0)
-                query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
-
-            if (queryParams.TitulosAvulsos.Length > 0)
-                query = query.Where(e => e.TitulosAvulsos.Where(c => queryParams.TitulosAvulsos.Contains(c.Id)).Any());
-
-            if (queryParams.SituacoesAlunos.Length > 0)
-                query = query.Where(e =>
-                    e.SituacoesAlunos.Where(c => queryParams.SituacoesAlunos.Contains(c.Id)).Any());
-
-            if (queryParams.TiposTitulos.Length > 0)
-                query = query.Where(e => e.TiposTitulos.Where(c => queryParams.TiposTitulos.Contains(c.Id)).Any());
-
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
 
-            query = query.Ordenar(queryParams.OrdenarPor, "ValidadeInicial", queryParams.SentidoOrdenacao == "desc");
+            var listRegraNegoquiacao = await query.Include(X => X.RegraNegociacaoCurso)
+                                                  .Include(X => X.RegraNegociacaoTituloAvulso)
+                                                  .Include(X => X.RegraNegociacaoSituacaoAluno)
+                                                  .Include(X => X.RegraNegociacaoTipoTitulo).AsSplitQuery().AsNoTracking().ToListAsync();
 
-            return await query.Paginar(queryParams.Pagina, queryParams.Limite);
+            // FILTROS
+            if (queryParams.Cursos.Length > 0)
+            {
+                listRegraNegoquiacao = listRegraNegoquiacao.Where(L => L.RegraNegociacaoCurso.Any(R => queryParams.Cursos.Contains(R.CursoId))).ToList();                
+            }
+
+            if (queryParams.TitulosAvulsos.Length > 0)
+            {
+                listRegraNegoquiacao = listRegraNegoquiacao.Where(L => L.RegraNegociacaoTituloAvulso.Any(R => queryParams.TitulosAvulsos.Contains(R.TituloAvulsoId))).ToList();
+            }
+
+            if (queryParams.SituacoesAlunos.Length > 0)
+            {
+                listRegraNegoquiacao = listRegraNegoquiacao.Where(L => L.RegraNegociacaoSituacaoAluno.Any(R => queryParams.SituacoesAlunos.Contains(R.SituacaoAlunoId))).ToList();
+            }
+
+            if (queryParams.TiposTitulos.Length > 0)
+            {
+                listRegraNegoquiacao = listRegraNegoquiacao.Where(L => L.RegraNegociacaoTipoTitulo.Any(R => queryParams.TiposTitulos.Contains(R.TipoTituloId))).ToList();
+            }
+
+            var listFull = (from r in listRegraNegoquiacao
+                            select new BuscaRegraNegociacao()
+                            {
+                                Id = r.Id,
+                                Instituicao = r.Instituicao,
+                                Modalidade = r.Modalidade,
+                                PercentJurosMultaAVista = r.PercentJurosMultaAVista,
+                                PercentValorAVista = r.PercentValorAVista,
+                                PercentJurosMultaCartao = r.PercentJurosMultaCartao,
+                                PercentValorCartao = r.PercentValorCartao,
+                                QuantidadeParcelasCartao = r.QuantidadeParcelasCartao,
+                                PercentJurosMultaBoleto = r.PercentJurosMultaBoleto,
+                                PercentValorBoleto = r.PercentValorBoleto,
+                                QuantidadeParcelasBoleto = r.QuantidadeParcelasBoleto,
+                                PercentEntradaBoleto = r.PercentEntradaBoleto,
+                                Status = r.Status,
+                                InadimplenciaInicial = r.InadimplenciaInicial,
+                                InadimplenciaFinal = r.InadimplenciaFinal,
+                                ValidadeInicial = r.ValidadeInicial,
+                                ValidadeFinal = r.ValidadeFinal,
+                                Cursos = (from rc in r.RegraNegociacaoCurso
+                                          join c in listCursoModel on rc.CursoId equals c.Id
+                                          select new CursoModel() {
+                                              Id = c.Id,
+                                              Descricao = c.Descricao,
+                                              CodigoMagister = c.CodigoMagister,
+                                              InstituicaoId = c.InstituicaoId,
+                                              ModalidadeId = c.ModalidadeId
+                                              
+                                          }).ToList(),
+
+                                TitulosAvulsos = (from rt in r.RegraNegociacaoTituloAvulso
+                                                  join t in listTituloAvulsoModel on rt.TituloAvulsoId equals t.Id
+                                                  select new TituloAvulsoModel()
+                                                  {
+                                                      Id = t.Id,
+                                                      Descricao = t.Descricao,
+                                                      CodigoGT = t.CodigoGT
+
+                                                  }).ToList(),
+
+                                SituacoesAlunos = (from ra in r.RegraNegociacaoSituacaoAluno
+                                                   join a in listSituacaoAluno on ra.SituacaoAlunoId equals a.Id
+                                                   select new SituacaoAlunoModel() { 
+                                                       Id = a.Id,
+                                                       CodigoMagister = a.CodigoMagister,
+                                                       Situacao = a.Situacao
+                                                   } ).ToList(),
+
+                                TiposTitulos = (from rt in r.RegraNegociacaoTipoTitulo
+                                                join t in listTipoTitulo on rt.TipoTituloId equals t.Id
+                                                select new TipoTituloModel() { 
+                                                    Id = t.Id,
+                                                    CodigoMagister = t.CodigoMagister,
+                                                    TipoTitulo = t.TipoTitulo
+                                                    
+                                                }).ToList(),
+                            }).ToList();
+
+            var queryPaginar = listFull.AsQueryable();
+            
+            queryPaginar = queryPaginar.Ordenar(queryParams.OrdenarPor, "ValidadeInicial", queryParams.SentidoOrdenacao == "desc");
+
+ 
+            var modelPaginada = new ModelPaginada<BuscaRegraNegociacao>();
+
+            modelPaginada.TotalItems = queryPaginar.Count();            
+            modelPaginada.TotalPaginas = (int)Math.Ceiling(modelPaginada.TotalItems / (double)10);
+            modelPaginada.TamanhoPagina = 10;
+            modelPaginada.PaginaAtual = 1;
+
+            var skip = modelPaginada.PaginaAtual <= 1 ? 0 : (modelPaginada.PaginaAtual - 1) * modelPaginada.TamanhoPagina;
+
+            modelPaginada.Items = queryPaginar.Skip(skip)
+                                    .Take(modelPaginada.TamanhoPagina)
+                                    .ToList();
+
+
+            return modelPaginada;
         }
 
         public Task<BuscaRegraNegociacao> BuscarPorIdComRelacionamentos(int id)
@@ -278,7 +353,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             return regraConflitante;
         }
 
-        private static IQueryable<BuscaRegraNegociacao> TrataFiltroDataValidade(IQueryable<BuscaRegraNegociacao> query,
+        private static IQueryable<RegraNegociacaoModel> TrataFiltroDataValidade(IQueryable<RegraNegociacaoModel> query,
             RegraNegociacaoQueryParam queryParams)
         {
             if (!queryParams.ValidadeInicial.HasValue && !queryParams.ValidadeFinal.HasValue) return query;
@@ -304,8 +379,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                     && r.ValidadeFinal.Date >= validade.Date);
         }
 
-        private static IQueryable<BuscaRegraNegociacao> TrataFiltroDataInadimplencia(
-            IQueryable<BuscaRegraNegociacao> query,
+        private static IQueryable<RegraNegociacaoModel> TrataFiltroDataInadimplencia(
+            IQueryable<RegraNegociacaoModel> query,
             RegraNegociacaoQueryParam queryParams)
         {
             if (!queryParams.InadimplenciaInicial.HasValue && !queryParams.InadimplenciaFinal.HasValue) return query;

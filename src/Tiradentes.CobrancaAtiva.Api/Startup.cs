@@ -17,6 +17,7 @@ namespace Tiradentes.CobrancaAtiva.Api
 
         public Startup(IWebHostEnvironment environment)
         {
+
             var builder = new ConfigurationBuilder()
                 .SetBasePath(environment.ContentRootPath)
                 .AddJsonFile("appsettings.json", true, true)
@@ -30,7 +31,7 @@ namespace Tiradentes.CobrancaAtiva.Api
 
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
-        {
+        {            
             services.Configure<RabbitMQConfig>(_configuration.GetSection("RabbitMQ"));
             services.Configure<EncryptationConfig>(_configuration.GetSection("Encryptation"));
             services.AddDependencies(_configuration);

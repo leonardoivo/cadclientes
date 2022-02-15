@@ -37,6 +37,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         public DbSet<ParametroEnvioTipoTituloModel> ParametroEnvioTipoTitulo { get; set; }
         public DbSet<ParametroEnvioTituloAvulsoModel> ParametroEnvioTituloAvulso { get; set; }
 
+        public DbSet<TituloAvulsoModel> TituloAvulso { get; set; }
+
 
         public DbSet<AcordosCobrancasModel> AcordosCobrancasModel { get; set; }
         public DbSet<ParcelasTitulosModel> ParcelasTitulosModel { get; set; }

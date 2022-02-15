@@ -21,6 +21,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Domain\Tiradentes.CobrancaAtiva.Domain.csproj" />
+    <ProjectReference Include="..\Tiradentes.CobrancaAtiva.Services\Tiradentes.CobrancaAtiva.Services.csproj" />
   </ItemGroup>
 
 </Project>

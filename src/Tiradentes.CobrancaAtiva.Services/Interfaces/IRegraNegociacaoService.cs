@@ -11,7 +11,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
     {
         Task InativarRegrasNegociacao();
         Task AtivarRegrasNegociacao();
-        Task<ViewModelPaginada<BuscaRegraNegociacaoViewModel>> Buscar(ConsultaRegraNegociacaoQueryParam queryParam);
+        Task<ModelPaginada<BuscaRegraNegociacao>> Buscar(ConsultaRegraNegociacaoQueryParam queryParam);
         Task<BuscaRegraNegociacaoViewModel> BuscarPorId(int id);
         Task<RegraNegociacaoViewModel> Criar(CriarRegraNegociacaoViewModel viewModel);
         Task<RegraNegociacaoViewModel> Alterar(AlterarRegraNegociacaoViewModel viewModel);
