@@ -11,6 +11,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
     {
         private readonly IServiceScopeFactory _scope;
 
+        private DateTime _timerCursoCache;
+        private DateTime _timerTituloAvulsoCache;
+        private DateTime _timerSituacaoAlunoCache;
+        private DateTime _timerTipoTituloCache;
+
         private List<CursoModel> _cursoModel;
         private List<TituloAvulsoModel> _tituloAvulsoModel;
         private List<SituacaoAlunoModel> _situacaoAlunoModel;
@@ -19,13 +24,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             get
             {
-                if (_cursoModel == null)
+                if (_cursoModel == null || (TimeSpan.Parse(DateTime.Now.ToShortTimeString()).TotalHours - TimeSpan.Parse(_timerCursoCache.ToShortTimeString()).TotalHours > 1))
                 {
                     using (var scope = _scope.CreateScope())
                     {
                         var _repository = scope.ServiceProvider.GetRequiredService<ICursoRepository>();
                         _cursoModel = _repository.Buscar().Result.ToList();
                     }
+
+                    _timerCursoCache = DateTime.Now;
                 }
 
                 return _cursoModel;
@@ -36,13 +43,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             get
             {
-                if (_tituloAvulsoModel == null)
+                if (_tituloAvulsoModel == null || (TimeSpan.Parse(DateTime.Now.ToShortTimeString()).TotalHours - TimeSpan.Parse(_timerTituloAvulsoCache.ToShortTimeString()).TotalHours > 1))
                 {
                     using (var scope = _scope.CreateScope())
                     {
                         var _repository = scope.ServiceProvider.GetRequiredService<ITituloAvulsoRepository>();
                         _tituloAvulsoModel = _repository.Buscar().Result.ToList();
                     }
+
+                    _timerTituloAvulsoCache = DateTime.Now;
                 }
 
                 return _tituloAvulsoModel;
@@ -53,13 +62,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             get
             {
-                if (_situacaoAlunoModel == null)
+                if (_situacaoAlunoModel == null || (TimeSpan.Parse(DateTime.Now.ToShortTimeString()).TotalHours - TimeSpan.Parse(_timerSituacaoAlunoCache.ToShortTimeString()).TotalHours > 1))
                 {
                     using (var scope = _scope.CreateScope())
                     {
                         var _repository = scope.ServiceProvider.GetRequiredService<ISituacaoAlunoRepository>();
                         _situacaoAlunoModel = _repository.Buscar().Result.ToList();
                     }
+
+                    _timerSituacaoAlunoCache = DateTime.Now;
                 }
 
                 return _situacaoAlunoModel;
@@ -70,13 +81,15 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
             get
             {
-                if (_tipoTituloModel == null)
+                if (_tipoTituloModel == null || (TimeSpan.Parse(DateTime.Now.ToShortTimeString()).TotalHours - TimeSpan.Parse(_timerTipoTituloCache.ToShortTimeString()).TotalHours > 1))
                 {
                     using (var scope = _scope.CreateScope())
                     {
                         var _repository = scope.ServiceProvider.GetRequiredService<ITipoTituloRepository>();
                         _tipoTituloModel = _repository.Buscar().Result.ToList();
                     }
+
+                    _timerTipoTituloCache = DateTime.Now;
                 }
 
                 return _tipoTituloModel;
@@ -87,6 +100,12 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         public CacheServiceRepository(IServiceScopeFactory scopeFactory)
         {
             _scope = scopeFactory;
+
+            _timerCursoCache = DateTime.MinValue;
+            _timerSituacaoAlunoCache = DateTime.MinValue;
+            _timerTipoTituloCache = DateTime.MinValue;
+            _timerTituloAvulsoCache = DateTime.MinValue;
+
         }
     }
 }
