@@ -121,15 +121,19 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.Status.HasValue)
                 query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
 
-            if (queryParams.Modalidades.Length > 0)
-                query = query.Where(e => queryParams.Modalidades.Contains(e.Modalidade.Id));
 
             var listParametrosEnvio = await query.Include(X => X.EmpresaParceira)
                                                  .Include(X => X.Instituicao)
                                                  .Include(X => X.Modalidade)
                                                  .Include(X => X.ParametroEnvioCurso)
                                                  .Include(X => X.ParametroEnvioSituacaoAluno)
+                                                 .Include(X => X.ParametroEnvioTituloAvulso)
                                                  .Include(X => X.ParametroEnvioTipoTitulo).AsSplitQuery().AsNoTracking().ToListAsync();
+
+            if (queryParams.Modalidades.Length > 0)
+            {
+                listParametrosEnvio = listParametrosEnvio.Where(P => queryParams.Cursos.Contains(P.Modalidade.Id)).ToList();                
+            }
 
             if (queryParams.Cursos.Length > 0)
             {
