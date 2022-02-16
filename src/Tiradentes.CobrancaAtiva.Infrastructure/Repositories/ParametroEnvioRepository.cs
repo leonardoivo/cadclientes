@@ -14,8 +14,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 {
     public class ParametroEnvioRepository : BaseRepository<ParametroEnvioModel>, IParametroEnvioRepository
     {
-        public ParametroEnvioRepository(CobrancaAtivaDbContext context) : base(context)
-        { }
+        readonly CacheServiceRepository _cache;
+        public ParametroEnvioRepository(CacheServiceRepository cache, CobrancaAtivaDbContext context) : base(context)
+        {
+            _cache = cache;
+        }
         public override Task Criar(ParametroEnvioModel model)
         {
             var query = DbSet
@@ -58,25 +61,33 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
         public async Task<ModelPaginada<BuscaParametroEnvio>> Buscar(ParametroEnvioQueryParam queryParams)
         {
-            var query = DbSet
-                            .Select(r  => new BuscaParametroEnvio {
-                                Id = r.Id,
-                                EmpresaParceira = r.EmpresaParceira,
-                                Instituicao = r.Instituicao,
-                                Modalidade = r.Modalidade,
-                                Status = r.Status,
-                                DiaEnvio = r.DiaEnvio,
-                                MotivoInativacao = r.MotivoInativacao,
-                                InadimplenciaInicial = r.InadimplenciaInicial,
-                                InadimplenciaFinal = r.InadimplenciaFinal,
-                                ValidadeInicial = r.ValidadeInicial,
-                                ValidadeFinal = r.ValidadeFinal,
-                                Cursos = r.ParametroEnvioCurso.Select(x => x.Curso),
-                                TitulosAvulsos = r.ParametroEnvioTituloAvulso.Select(x => x.TituloAvulso),
-                                SituacoesAlunos = r.ParametroEnvioSituacaoAluno.Select(x => x.SituacaoAluno),
-                                TiposTitulos = r.ParametroEnvioTipoTitulo.Select(x => x.TipoTitulo)
-                            })
-                            .AsQueryable();
+            var listCursoModel = _cache.CursoModel;
+            var listTituloAvulsoModel = _cache.TituloAvulsoModel;
+            var listSituacaoAluno = _cache.SituacaoAlunoModel;
+            var listTipoTitulo = _cache.TipoTituloModel;
+
+            //var query = DbSet
+            //                .Select(r => new BuscaParametroEnvio
+            //                {
+            //                    Id = r.Id,
+            //                    EmpresaParceira = r.EmpresaParceira,
+            //                    Instituicao = r.Instituicao,
+            //                    Modalidade = r.Modalidade,
+            //                    Status = r.Status,
+            //                    DiaEnvio = r.DiaEnvio,
+            //                    MotivoInativacao = r.MotivoInativacao,
+            //                    InadimplenciaInicial = r.InadimplenciaInicial,
+            //                    InadimplenciaFinal = r.InadimplenciaFinal,
+            //                    ValidadeInicial = r.ValidadeInicial,
+            //                    ValidadeFinal = r.ValidadeFinal,
+            //                    Cursos = r.ParametroEnvioCurso.Select(x => x.Curso),
+            //                    TitulosAvulsos = r.ParametroEnvioTituloAvulso.Select(x => x.TituloAvulso),
+            //                    SituacoesAlunos = r.ParametroEnvioSituacaoAluno.Select(x => x.SituacaoAluno),
+            //                    TiposTitulos = r.ParametroEnvioTipoTitulo.Select(x => x.TipoTitulo)
+            //                })
+            //                .AsQueryable();
+
+            var query = DbSet.AsQueryable();
 
             if (queryParams.EmpresaParceiraId != 0)
                 query = query.Where(e => e.EmpresaParceira.Id == queryParams.EmpresaParceiraId);
@@ -107,27 +118,103 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     && e.InadimplenciaFinal.Month == queryParams.InadimplenciaFinal.Value.Month 
                     && e.InadimplenciaFinal.Year == queryParams.InadimplenciaFinal.Value.Year);   
 
+            if (queryParams.Status.HasValue)
+                query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
+
             if (queryParams.Modalidades.Length > 0)
                 query = query.Where(e => queryParams.Modalidades.Contains(e.Modalidade.Id));
 
+            var listParametrosEnvio = await query.Include(X => X.EmpresaParceira)
+                                                 .Include(X => X.Instituicao)
+                                                 .Include(X => X.Modalidade)
+                                                 .Include(X => X.ParametroEnvioCurso)
+                                                 .Include(X => X.ParametroEnvioSituacaoAluno)
+                                                 .Include(X => X.ParametroEnvioTipoTitulo).AsSplitQuery().AsNoTracking().ToListAsync();
+
             if (queryParams.Cursos.Length > 0)
-                query = query.Where(e => e.Cursos.Where(c => queryParams.Cursos.Contains(c.Id)).Any());
+            {
+                listParametrosEnvio = listParametrosEnvio.Where(P => P.ParametroEnvioCurso.Any(R => queryParams.Cursos.Contains(R.CursoId))).ToList();
+            }                
 
             if (queryParams.TitulosAvulsos.Length > 0)
-                query = query.Where(e => e.TitulosAvulsos.Where(c => queryParams.TitulosAvulsos.Contains(c.Id)).Any());
+            {
+                listParametrosEnvio = listParametrosEnvio.Where(P => P.ParametroEnvioTituloAvulso.Any(R => queryParams.TitulosAvulsos.Contains(R.Id))).ToList();
+            }                
 
             if (queryParams.SituacoesAlunos.Length > 0)
-                query = query.Where(e => e.SituacoesAlunos.Where(c => queryParams.SituacoesAlunos.Contains(c.Id)).Any());
+            {
+                listParametrosEnvio = listParametrosEnvio.Where(P => P.ParametroEnvioSituacaoAluno.Any(R => queryParams.SituacoesAlunos.Contains(R.Id))).ToList();
+            }                
 
             if (queryParams.TiposTitulos.Length > 0)
-                query = query.Where(e => e.TiposTitulos.Where(c => queryParams.TiposTitulos.Contains(c.Id)).Any());
+            {
+                listParametrosEnvio = listParametrosEnvio.Where(P => P.ParametroEnvioTipoTitulo.Any(R => queryParams.TiposTitulos.Contains(R.Id))).ToList();
+            }
 
-            if (queryParams.Status.HasValue)
-                query = query.Where(e => e.Status.Equals(queryParams.Status.Value));
-                
-            query = query.Ordenar(queryParams.OrdenarPor, "Id", queryParams.SentidoOrdenacao == "desc");
 
-            return await query.Paginar(queryParams.Pagina, queryParams.Limite);
+            var listFull = (from r in listParametrosEnvio
+                            select new BuscaParametroEnvio
+                            {
+                                Id = r.Id,
+                                EmpresaParceira = r.EmpresaParceira,
+                                Instituicao = r.Instituicao,
+                                Modalidade = r.Modalidade,
+                                Status = r.Status,
+                                DiaEnvio = r.DiaEnvio,
+                                MotivoInativacao = r.MotivoInativacao,
+                                InadimplenciaInicial = r.InadimplenciaInicial,
+                                InadimplenciaFinal = r.InadimplenciaFinal,
+                                ValidadeInicial = r.ValidadeInicial,
+                                ValidadeFinal = r.ValidadeFinal,
+
+                                Cursos = (from rc in r.ParametroEnvioCurso
+                                          join c in listCursoModel on rc.CursoId equals c.Id
+                                          select new CursoModel()
+                                          {
+                                              Id = c.Id,
+                                              Descricao = c.Descricao,
+                                              CodigoMagister = c.CodigoMagister,
+                                              InstituicaoId = c.InstituicaoId,
+                                              ModalidadeId = c.ModalidadeId
+
+                                          }).ToList(),
+
+                                TitulosAvulsos = (from rt in r.ParametroEnvioTituloAvulso
+                                                  join t in listTituloAvulsoModel on rt.TituloAvulsoId equals t.Id
+                                                  select new TituloAvulsoModel()
+                                                  {
+                                                      Id = t.Id,
+                                                      Descricao = t.Descricao,
+                                                      CodigoGT = t.CodigoGT
+
+                                                  }).ToList(),
+
+                                SituacoesAlunos = (from ra in r.ParametroEnvioSituacaoAluno
+                                                   join a in listSituacaoAluno on ra.SituacaoAlunoId equals a.Id
+                                                   select new SituacaoAlunoModel()
+                                                   {
+                                                       Id = a.Id,
+                                                       CodigoMagister = a.CodigoMagister,
+                                                       Situacao = a.Situacao
+                                                   }).ToList(),
+
+                                TiposTitulos = (from rt in r.ParametroEnvioTipoTitulo
+                                                join t in listTipoTitulo on rt.TipoTituloId equals t.Id
+                                                select new TipoTituloModel()
+                                                {
+                                                    Id = t.Id,
+                                                    CodigoMagister = t.CodigoMagister,
+                                                    TipoTitulo = t.TipoTitulo
+
+                                                }).ToList(),
+
+                            }).ToList();
+
+            var queryPaginar = listFull.AsQueryable();
+
+            queryPaginar = queryPaginar.Ordenar(queryParams.OrdenarPor, "Id", queryParams.SentidoOrdenacao == "desc");
+
+            return queryPaginar.Paginar(queryParams.Pagina, queryParams.Limite);
         }
 
         public Task<BuscaParametroEnvio> BuscarPorIdComRelacionamentos(int id)

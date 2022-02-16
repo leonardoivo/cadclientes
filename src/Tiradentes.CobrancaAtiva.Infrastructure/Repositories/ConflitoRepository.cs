@@ -52,7 +52,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             query = query.Ordenar(queryParams.OrdenarPor, "Id", queryParams.SentidoOrdenacao == "desc");
 
-            return await query.Paginar(queryParams.Pagina, queryParams.Limite);
+            return await query.PaginarAsync(queryParams.Pagina, queryParams.Limite);
         }
 
         public async Task<IEnumerable<ConflitoModel>> BuscarPorLote(string lote)
