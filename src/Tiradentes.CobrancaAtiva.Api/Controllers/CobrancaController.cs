@@ -3,6 +3,8 @@ using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Tiradentes.CobrancaAtiva.Api.Extensions;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
@@ -11,6 +13,7 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
+    [Authorize]
     [ApiController]
     [Route("baixa-cobranca")]
     public class CobrancaController : ControllerBase
@@ -48,6 +51,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return Ok(await _cobrancaService.Criar(resposta));
         }
 
+        [Autorizacao]
         [HttpPost("regularizar-acordo-cobranca")]
         public async Task<IActionResult> RegularizarAcordoCobranca(
             [FromBody] RegularizarParcelasAcordoViewModel viewModel)
@@ -60,12 +64,14 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         /// </summary>
         /// <param name="dataBaixa">dd-mm-yyyy</param>
         /// <returns></returns>
+        [Autorizacao]
         [HttpGet("resultado/{dataBaixa}")]
         public async Task<IActionResult> BuscarHistoricoProcessamentoCobranca()
         {
             return Ok(await _baixasCobrancaService.Buscar(new DateTime(2022, 01, 24)));
         }
 
+        [Autorizacao]
         [HttpPost("baixa-manual")]
         public async Task<IActionResult> BaixaManual([FromBody] BaixaPagamentoParcelaManualViewModel baixaPagamento)
         {
@@ -73,6 +79,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return Ok();
         }
         
+        [Autorizacao]
         [HttpGet("baixas")]
 
         public async Task<ActionResult<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>> Buscar(
@@ -81,30 +88,35 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return await _baixasCobrancaService.Buscar(queryParam);
         }
 
+        [Autorizacao("financeiro_unidadeapenas")]
         [HttpGet]
         public async Task<IActionResult> Listar([FromQuery] ConsultaBaixaPagamentoQueryParam resposta)
         {
             return Ok(await _cobrancaService.Listar(resposta));
         }
 
+        [Autorizacao("financeiro_unidadeapenas")]
         [HttpGet("listar-filtros-matricula")]
         public async Task<IActionResult> ListarFiltrosMatricula([FromQuery] string matricula)
         {
             return Ok(await _cobrancaService.ListarFiltrosMatricula(matricula));
         }
 
+        [Autorizacao("financeiro_unidadeapenas")]
         [HttpGet("listar-filtros-acordo")]
         public async Task<IActionResult> ListarFiltrosAcordo([FromQuery] string acordo)
         {
             return Ok(await _cobrancaService.ListarFiltrosAcordo(acordo));
         }
 
+        [Autorizacao("financeiro_unidadeapenas")]
         [HttpGet("listar-filtros-cpf")]
         public async Task<IActionResult> ListarFiltroCpf([FromQuery] string cpf)
         {
             return Ok(await _cobrancaService.ListarFiltroCpf(cpf));
         }
 
+        [Autorizacao("financeiro_unidadeapenas")]
         [HttpGet("listar-filtros-nome-aluno")]
         public async Task<IActionResult> ListarFiltroNomeAluno([FromQuery] string nomeAluno)
         {

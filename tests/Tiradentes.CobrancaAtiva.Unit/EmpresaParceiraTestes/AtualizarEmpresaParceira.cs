@@ -1,7 +1,6 @@
 ﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
-using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Api.Controllers;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
@@ -12,10 +11,9 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Tiradentes.CobrancaAtiva.Application.Utils;
-using System;
 using Microsoft.Extensions.Options;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
-
+using System.Collections.Generic;
 namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 {
     public class AtualizarEmpresaParceira
@@ -49,18 +47,25 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
             _model = new EmpresaParceiraViewModel
             {
                 Id = 1,
+                CEP = "42345234",
+                Estado = "SE",
+                Cidade = "Aracaju",
+                Logradouro = "Rua Pedro",
+                Numero = "7",
+                Complemento = "",
                 NomeFantasia = "Nome Fantasia",
                 RazaoSocial = "Razao Social",
                 CNPJ = "97355899000105",
                 NumeroContrato = "NumeroContrato",
-                Contatos = new System.Collections.Generic.List<ContatoEmpresaParceiraViewModel> {
+                Contatos = new List<ContatoEmpresaParceiraViewModel> {
                     new ContatoEmpresaParceiraViewModel {
                         Id = 1,
                         Contato = "Teste",
                         Email = "teste@teste.com",
                         Telefone = "4444444444"
                     }
-                }
+                },
+                ChaveIntegracaoSap = "123423525"
             };
 
             if(_context.EmpresaParceira.CountAsync().Result == 0)
@@ -83,10 +88,11 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                    Description = "Teste Atualizar Empresa Parceira no Banco")]
         public void TesteAtualizarEmpresaParceira()
         {
-            _model.NomeFantasia = "Mudança";
+           _model.NomeFantasia = "Mudança";
 
             Assert.IsTrue(_service.Atualizar(_model).IsCompleted);
         }
+    
 
         [Test]
         [TestCase(TestName = "Teste Atualizar Empresa Parceira Sem Nome Fantasia",
@@ -153,7 +159,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                    Description = "Teste Atualizar Empresa Parceira no Banco")]
         public void TesteAtualizarNumeroMaisContatosNull()
         {
-            _model.Contatos = new System.Collections.Generic.List<ContatoEmpresaParceiraViewModel> {
+            _model.Contatos = new List<ContatoEmpresaParceiraViewModel> {
                 new ContatoEmpresaParceiraViewModel {
                     Contato = "Teste",
                     Email = "teste@teste.com",

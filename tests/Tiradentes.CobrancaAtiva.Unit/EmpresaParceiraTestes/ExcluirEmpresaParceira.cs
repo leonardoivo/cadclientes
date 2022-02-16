@@ -11,7 +11,6 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
-using System;
 using Microsoft.Extensions.Options;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
 
@@ -82,6 +81,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         public async Task TesteExcluirEmpresaParceira()
         {
             await _service.Deletar(_model.Id);
+
+            Assert.Pass();
         }
     }
 }

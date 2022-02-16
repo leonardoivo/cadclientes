@@ -1,7 +1,9 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System.Diagnostics.CodeAnalysis;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace Tiradentes.CobrancaAtiva.Infrastructure.Migrations
 {
+    [ExcludeFromCodeCoverage]
     public partial class updateItensBaixaTipo2 : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)

@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Tiradentes.CobrancaAtiva.Api.Extensions;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
@@ -10,6 +12,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
     [ApiController]
     [Route("parametro-envio")]
+    [Authorize]
+    [Autorizacao]
     public class ParametroEnvioController : ControllerBase
     {
         private readonly IParametroEnvioService _service;

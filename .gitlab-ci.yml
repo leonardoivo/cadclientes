@@ -2,26 +2,27 @@
 #     - build
 #     - deploy
 
-sonarqube-check:
-  image: mcr.microsoft.com/dotnet/sdk:5.0
-  stage: .pre
-  variables:
-    SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
-    GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
-  cache:
-    key: "${CI_JOB_NAME}"
-    paths:
-      - .sonar/cache
-  script: 
-      # - "apt-get clean"
-      - "apt-get update"
-      - "apt-get install --yes openjdk-11-jre"
-      - "dotnet tool install --global dotnet-sonarscanner"
-      - "export PATH=\"$PATH:$HOME/.dotnet/tools\""
-      #- "dotnet sonarscanner begin /k:\"Mec-backend_AXzMjo45jEZl7aJuSv-D\" /d:sonar.login=\"$SONAR_TOKEN\" /d:\"sonar.host.url=$SONAR_HOST_URL\" /d:sonar.qualitygate.wait=true"
-      - "dotnet sonarscanner begin /k:\"Mec-backend_AXzMjo45jEZl7aJuSv-D\" /d:sonar.login=\"$SONAR_TOKEN\" /d:\"sonar.host.url=$SONAR_HOST_URL\""
-      - "dotnet build"
-      - "dotnet sonarscanner end /d:sonar.login=\"$SONAR_TOKEN\""
+# sonarqube-check:
+#   image: mcr.microsoft.com/dotnet/sdk:5.0
+#   stage: .pre
+#   variables:
+#     SONAR_USER_HOME: "${CI_PROJECT_DIR}/.sonar"  # Defines the location of the analysis task cache
+#     GIT_DEPTH: "0"  # Tells git to fetch all the branches of the project, required by the analysis task
+#   cache:
+#     key: "${CI_JOB_NAME}"
+#     paths:
+#       - .sonar/cache
+#   script: 
+#       # - "apt-get clean"
+#       - "apt-get update"
+#       - "apt-get install --yes openjdk-11-jre"
+#       - dotnet tool install --global dotnet-sonarscanner
+#       - "export PATH=\"$PATH:$HOME/.dotnet/tools\""
+#       - export PATH="$PATH:/root/.dotnet/tools"
+#       - dotnet sonarscanner begin /k:"Mec-backend_AXzMjo45jEZl7aJuSv-D" /d:sonar.login="$SONAR_TOKEN" /d:"sonar.host.url=$SONAR_HOST_URL" /d:sonar.cs.opencover.reportsPaths=./coverage.opencover.xml /d:sonar.projectBaseDir=../
+#       - dotnet build
+#       - dotnet test /p:CollectCoverage=true /p:CoverletOutputFormat=opencover /p:CoverletOutput=../../coverage
+#       - dotnet sonarscanner end /d:sonar.login="$SONAR_TOKEN" 
 
   # only:
   #   - master # or the name of your main branch
