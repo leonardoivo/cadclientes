@@ -13,8 +13,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
 
         public MongoContext(IConfiguration config)
         {
-            var mongoClient = new MongoClient("mongodb+srv://fief:6oUEyQE7sDKUXZcV@cluster0.pryqh.mongodb.net/mec?retryWrites=true&w=majority");
-            _database = mongoClient.GetDatabase("mec");
+            var conn = config["MongoDb:Url"];
+            var database = config["MongoDb:DataBase"];
+
+            var mongoClient = new MongoClient(conn);
+            _database = mongoClient.GetDatabase(database);
         }
 
         public IMongoCollection<ApplicationErrorCollection> Log
