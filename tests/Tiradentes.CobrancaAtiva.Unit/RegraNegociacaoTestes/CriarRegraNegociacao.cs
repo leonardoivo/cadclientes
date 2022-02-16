@@ -175,7 +175,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         {
             var criarViewModel = _criarViewModel;
 
-            var conflito = await _service.VerificarRegraConflitante(_criarViewModel);
+            var conflito = await _service.VerificarRegraConflitante(criarViewModel);
 
             Assert.AreEqual(null, conflito);
         }
