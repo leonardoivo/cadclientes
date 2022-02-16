@@ -9,14 +9,15 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using System.Threading.Tasks;
+using Tiradentes.CobrancaAtiva.Application.QueryParams;
 
-namespace Tiradentes.CobrancaAtiva.Unit.CursoTestes
+namespace Tiradentes.CobrancaAtiva.Unit.ConflitoTestes
 {
-    public class Buscar
+    public class BuscarConflito
     {
         private CobrancaAtivaDbContext _context;
-        private ICursoService _service;
-        private CursoModel _model;
+        private IConflitoService _service;
+        private ConflitoModel _model;
         private IMapper _mapper;
 
         [SetUp]
@@ -24,26 +25,29 @@ namespace Tiradentes.CobrancaAtiva.Unit.CursoTestes
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CursoTestes")
+                    .UseInMemoryDatabase("ConflitoTestes")
                     .Options;
             _context = new CobrancaAtivaDbContext(optionsContext);
 
             IdAlunoRepository idAlunoRepository = new IdAlunoRepository(_context);
             ParcelaTituloRepository parcelaTituloRepository = new ParcelaTituloRepository(_context);
-            ICursoRepository repository = new CursoRepository(_context);
+            IConflitoRepository repository = new ConflitoRepository(_context);
             _mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            _service = new CursoService(repository, _mapper);
+            _service = new ConflitoService(repository, _mapper);
 
-            _model = new CursoModel
+            _model = new ConflitoModel
             {
-                Descricao = "teste",
-                ModalidadeId = 1,
-                InstituicaoId = 1,
-                CodigoMagister = "1",
+                Lote = "Lote",
+                NomeLote = "NomeLote",
+                EmpresaParceiraTentativaId = 1,
+                EmpresaParceiraEnvioId = 1,
+                Matricula = 1,
+                NomeAluno = "NomeAluno",
+                CPF = "CPF"
             };
-            if(_context.Curso.CountAsync().Result == 0)
+            if(_context.ConflitoModel.CountAsync().Result == 0)
             {
-                _context.Curso.Add(_model);
+                _context.ConflitoModel.Add(_model);
                 _context.SaveChanges();
             }
             
@@ -57,13 +61,22 @@ namespace Tiradentes.CobrancaAtiva.Unit.CursoTestes
         }
 
         [Test]
-        [TestCase(TestName = "Teste Buscar Curso válido",
-                   Description = "Teste Buscar Curso no Banco")]
+        [TestCase(TestName = "Teste Buscar Conflito válido",
+                   Description = "Teste Buscar Conflito no Banco")]
         public async Task TesteBuscarValido()
         {
-            var Cursos = await _service.Buscar();
+            var queryParam = new ConsultaConflitoQueryParam()
+            {
+                EmpresasParceiraTentativa = new int[1]{ _model.Id },
+                EmpresasParceiraEnvio = new int[1]{ _model.Id },
+                NomeLote = "NomeLote",
+                NomeAluno = "NomeAluno",
+                CPF = "CPF"
+            };
+            
+            var Conflitos = await _service.Buscar(queryParam);
 
-            Assert.AreEqual(1, Cursos.Count);
+            Assert.AreEqual(1, Conflitos.TotalItems);
         }
     }
 }
