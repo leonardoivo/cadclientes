@@ -34,7 +34,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             if (queryParams.EmpresaParceiraId > 0)
                 query = query.Where(e => e.EmpresaParceiraId == queryParams.EmpresaParceiraId);
 
-            return await query.OrderBy(e => e.Id).Paginar(queryParams.Pagina, queryParams.Limite);
+            return await query.OrderBy(e => e.Id).PaginarAsync(queryParams.Pagina, queryParams.Limite);
         }
     }
 }

@@ -235,22 +235,24 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             
             queryPaginar = queryPaginar.Ordenar(queryParams.OrdenarPor, "ValidadeInicial", queryParams.SentidoOrdenacao == "desc");
 
- 
-            var modelPaginada = new ModelPaginada<BuscaRegraNegociacao>();
+            return queryPaginar.Paginar(queryParams.Pagina, queryParams.Limite);
 
-            modelPaginada.TotalItems = queryPaginar.Count();            
-            modelPaginada.TotalPaginas = (int)Math.Ceiling(modelPaginada.TotalItems / (double)10);
-            modelPaginada.TamanhoPagina = 10;
-            modelPaginada.PaginaAtual = 1;
+            //var modelPaginada = new ModelPaginada<BuscaRegraNegociacao>();
 
-            var skip = modelPaginada.PaginaAtual <= 1 ? 0 : (modelPaginada.PaginaAtual - 1) * modelPaginada.TamanhoPagina;
-
-            modelPaginada.Items = queryPaginar.Skip(skip)
-                                    .Take(modelPaginada.TamanhoPagina)
-                                    .ToList();
+            //modelPaginada.TotalItems = queryPaginar.Count();            
+            //modelPaginada.TotalPaginas = (int)Math.Ceiling(modelPaginada.TotalItems / (double)10);
+            //modelPaginada.TamanhoPagina = (queryParams.Pagina < 1) ? 1 : queryParams.Pagina;
+            //modelPaginada.PaginaAtual = (queryParams.Limite < 1) ? 10 : queryParams.Limite;
 
 
-            return modelPaginada;
+            //var skip = modelPaginada.PaginaAtual <= 1 ? 0 : (modelPaginada.PaginaAtual - 1) * modelPaginada.TamanhoPagina;
+
+            //modelPaginada.Items = queryPaginar.Skip(skip)
+            //                        .Take(modelPaginada.TamanhoPagina)
+            //                        .ToList();
+
+
+            //return modelPaginada;
         }
 
         public Task<BuscaRegraNegociacao> BuscarPorIdComRelacionamentos(int id)
