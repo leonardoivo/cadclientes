@@ -12,6 +12,8 @@ using System;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Microsoft.Extensions.DependencyInjection;
+using Moq;
+using Tiradentes.CobrancaAtiva.Domain.Models;
 
 namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
 {
@@ -21,6 +23,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         private IServiceScopeFactory _scopeFactory;
         private CacheServiceRepository _cacheServiceRepository;
         private IRegraNegociacaoService _service;
+        private RegraNegociacaoModel _model;
         private IMapper _mapper;
         private CriarRegraNegociacaoViewModel _criarViewModel;
 
@@ -31,9 +34,36 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
                     .UseInMemoryDatabase("CobrancaAtivaTests2")
                     .Options;
-
             _context = new CobrancaAtivaDbContext(optionsContext);
-            _cacheServiceRepository = new CacheServiceRepository(_scopeFactory);
+
+            var services = new ServiceCollection();
+
+            services.AddScoped<ICursoRepository, CursoRepository>();
+            services.AddScoped<ICursoService, CursoService>();
+
+            services.AddScoped<ITituloAvulsoRepository, TituloAvulsoRepository>();
+            services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
+
+            services.AddScoped<ISituacaoAlunoRepository, SituacaoAlunoRepository>();
+            services.AddScoped<ISituacaoAlunoService, SituacaoAlunoService>();
+
+            services.AddScoped<ITipoTituloRepository, TipoTituloRepository>();
+            services.AddScoped<ITipoTituloService, TipoTituloService>();
+
+            services.AddScoped<MongoContext>();
+            services.AddDbContext<CobrancaAtivaDbContext>(options =>
+                options.UseInMemoryDatabase("CobrancaAtivaTests2")); 
+            services.AddDbContext<CobrancaAtivaScfDbContext>(options =>
+                options.UseInMemoryDatabase("CobrancaAtivaTests2"));
+
+            var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService(typeof(CobrancaAtivaDbContext));
+            var serviceScope = new Mock<IServiceScope>();
+            serviceScope.Setup(x => x.ServiceProvider).Returns(serviceProvider);
+            var serviceScopeFactory = new Mock<IServiceScopeFactory>();
+            serviceScopeFactory.Setup(x => x.CreateScope()).Returns(serviceScope.Object);
+
+            _cacheServiceRepository = new CacheServiceRepository(serviceScopeFactory.Object);
             IRegraNegociacaoRepository repository = new RegraNegociacaoRepository(_cacheServiceRepository, _context);
             _mapper = new Mapper(AutoMapperSetup.RegisterMappings());
             _service = new RegraNegociacaoService(repository, _mapper);
@@ -61,19 +91,33 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 TitulosAvulsosId = new int[1]{ 1 },
                 TipoTituloIds = new int[1]{ 1 },
             };
+
+            if(_context.RegraNegociacao.CountAsync().Result == 0)
+            {
+                _model = _mapper.Map<RegraNegociacaoModel>(_criarViewModel);
+                _context.RegraNegociacao.Add(_model);
+                _context.SaveChanges();
+            }
         }
 
-/*         [Test]
+        [Test]
         [TestCase(TestName = "Teste Criar Regra Negociacao válido",
                    Description = "Teste Criar Regra Negociacao no Banco")]
         public async Task TesteCriarRegraNegociacaoValido()
         {
+            _criarViewModel.ValidadeInicial = DateTime.Now.AddDays(-7);
+
             await _service.Criar(_criarViewModel);
 
-            var Regras = await _service.Buscar(new ConsultaRegraNegociacaoQueryParam());
+            var queryParam = new ConsultaRegraNegociacaoQueryParam()
+            {
+                ValidadeInicial = DateTime.Now.AddDays(-6)
+            };
+
+            var Regras = await _service.Buscar(queryParam);
 
             Assert.AreEqual(1, Regras.TotalItems);
-        } */
+        }
 
         [Test]
         [TestCase(TestName = "Teste Verificar Criar Regra Conflitante Negociacao",

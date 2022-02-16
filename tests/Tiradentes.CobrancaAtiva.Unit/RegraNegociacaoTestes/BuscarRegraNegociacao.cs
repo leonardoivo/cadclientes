@@ -1,4 +1,4 @@
-﻿/* using AutoMapper;
+﻿using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
@@ -26,6 +26,10 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         private RegraNegociacaoModel _model;
         private IMapper _mapper;
         private CriarRegraNegociacaoViewModel _criarViewModel;
+        private CursoModel _CriarCursoModel;
+        private TituloAvulsoModel _CriarTituloAvulsoModel;
+        private SituacaoAlunoModel _CriarSituacaoAlunoModel;
+        private TipoTituloModel _CriarTipoTituloModel;
 
         [SetUp]
         public void Setup()
@@ -37,34 +41,84 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
 
             _context = new CobrancaAtivaDbContext(optionsContext);
 
-            ICursoRepository repositoryTT = new CursoRepository(_context);
+            var services = new ServiceCollection();
 
-            var test = new CursoModel()
-            {
-                Descricao = "teste"
-            };
-            repositoryTT.Criar(test);
-            _context.SaveChanges();
+            services.AddScoped<ICursoRepository, CursoRepository>();
+            services.AddScoped<ICursoService, CursoService>();
 
-            var serviceProvider = new Mock<IServiceProvider>();
-            serviceProvider.Setup(x => x.GetService(typeof(CobrancaAtivaDbContext))).Returns(optionsContext);
+            services.AddScoped<ITituloAvulsoRepository, TituloAvulsoRepository>();
+            services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
+
+            services.AddScoped<ISituacaoAlunoRepository, SituacaoAlunoRepository>();
+            services.AddScoped<ISituacaoAlunoService, SituacaoAlunoService>();
+
+            services.AddScoped<ITipoTituloRepository, TipoTituloRepository>();
+            services.AddScoped<ITipoTituloService, TipoTituloService>();
+
+            services.AddScoped<MongoContext>();
+            services.AddDbContext<CobrancaAtivaDbContext>(options =>
+                options.UseInMemoryDatabase("CobrancaAtivaTests3")); 
+            services.AddDbContext<CobrancaAtivaScfDbContext>(options =>
+                options.UseInMemoryDatabase("CobrancaAtivaTests3"));
+
+            var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService(typeof(CobrancaAtivaDbContext));
             var serviceScope = new Mock<IServiceScope>();
-            serviceScope.Setup(x => x.ServiceProvider).Returns(serviceProvider.Object);
+            serviceScope.Setup(x => x.ServiceProvider).Returns(serviceProvider);
             var serviceScopeFactory = new Mock<IServiceScopeFactory>();
             serviceScopeFactory.Setup(x => x.CreateScope()).Returns(serviceScope.Object);
-            serviceProvider
-                .Setup(x => x.GetService(typeof(IServiceScopeFactory)))
-                .Returns(serviceScopeFactory.Object);
 
             _cacheServiceRepository = new CacheServiceRepository(serviceScopeFactory.Object);
             IRegraNegociacaoRepository repository = new RegraNegociacaoRepository(_cacheServiceRepository, _context);
             _mapper = new Mapper(AutoMapperSetup.RegisterMappings());
             _service = new RegraNegociacaoService(repository, _mapper);
 
+            _CriarCursoModel = new CursoModel()
+            {
+                Descricao = "teste",
+                ModalidadeId = 1,
+                InstituicaoId = 1,
+            };
+            
+            _CriarTituloAvulsoModel = new TituloAvulsoModel()
+            {
+                Descricao = "teste"
+            };
+
+            _CriarSituacaoAlunoModel = new SituacaoAlunoModel()
+            {
+                Situacao = "teste"
+            };
+
+            _CriarTipoTituloModel = new TipoTituloModel()
+            {
+                TipoTitulo = "teste"
+            };
+
+            var CriarInstituicaoModel = new InstituicaoModel()
+            {
+                Instituicao = "teste"
+            };
+
+            var CriarModalidadeModel = new ModalidadeModel()
+            {
+                Modalidade = "teste"
+            };
+
+            
+            _context.Curso.Add(_CriarCursoModel);
+            _context.TituloAvulso.Add(_CriarTituloAvulsoModel);
+            _context.SituacaoAluno.Add(_CriarSituacaoAlunoModel);
+            _context.TipoTitulo.Add(_CriarTipoTituloModel);
+            _context.Instituicao.Add(CriarInstituicaoModel);
+            _context.Modalidade.Add(CriarModalidadeModel);
+           
+            _context.SaveChanges();
+
             _criarViewModel = new CriarRegraNegociacaoViewModel
             {
-                InstituicaoId = 1,
-                ModalidadeId = 1,
+                InstituicaoId = CriarInstituicaoModel.Id,
+                ModalidadeId = CriarModalidadeModel.Id,
                 PercentJurosMultaAVista = 0,
                 PercentValorAVista = 0,
                 PercentJurosMultaCartao  = 0,
@@ -79,10 +133,10 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 InadimplenciaFinal = DateTime.Now,
                 ValidadeInicial = DateTime.Now,
                 ValidadeFinal = DateTime.Now,
-                CursoIds = new int[1]{ 1 },
-                SituacaoAlunoIds = new int[1]{ 1 },
-                TitulosAvulsosId = new int[1]{ 1 },
-                TipoTituloIds = new int[1]{ 1 },
+                CursoIds = new int[1]{ _CriarCursoModel.Id },
+                SituacaoAlunoIds = new int[1]{ _CriarSituacaoAlunoModel.Id },
+                TitulosAvulsosId = new int[1]{ _CriarTituloAvulsoModel.Id },
+                TipoTituloIds = new int[1]{ _CriarTipoTituloModel.Id }
             };
 
             if(_context.RegraNegociacao.CountAsync().Result == 0)
@@ -129,6 +183,10 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 ValidadeFinal = DateTime.Now.AddDays(7),
                 InadimplenciaInicial = DateTime.Now.AddDays(-7),
                 InadimplenciaFinal = DateTime.Now.AddDays(7),
+                Cursos = new int[1]{ _CriarCursoModel.Id },
+                SituacoesAlunos = new int[1]{ _CriarSituacaoAlunoModel.Id },
+                TitulosAvulsos = new int[1]{ _CriarTituloAvulsoModel.Id },
+                TiposTitulos = new int[1]{ _CriarTipoTituloModel.Id }
             };
 
             var Regras = await _service.Buscar(queryParam);
@@ -136,4 +194,4 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
             Assert.AreEqual(0, Regras.TotalItems);
         }
     }
-} */
+}
