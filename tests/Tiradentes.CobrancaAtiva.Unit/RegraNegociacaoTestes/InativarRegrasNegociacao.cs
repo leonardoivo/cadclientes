@@ -30,7 +30,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests5")
+                    .UseInMemoryDatabase("RegraNegociacaoTests5")
                     .Options;
 
             _context = new CobrancaAtivaDbContext(optionsContext);
@@ -55,8 +55,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 Status = true,
                 InadimplenciaInicial = DateTime.Now,
                 InadimplenciaFinal = DateTime.Now,
-                ValidadeInicial = DateTime.Now,
-                ValidadeFinal = DateTime.Now,
+                ValidadeInicial = DateTime.Now.AddDays(-2),
+                ValidadeFinal = DateTime.Now.AddDays(-1),
                 CursoIds = new int[1]{ 1 },
                 SituacaoAlunoIds = new int[1]{ 1 },
                 TitulosAvulsosId = new int[1]{ 1 },
@@ -80,7 +80,9 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         {
             await _service.InativarRegrasNegociacao();
 
-            Assert.Pass();
+            var regra = await _service.BuscarPorId(_model.Id);
+
+            Assert.AreEqual(false, regra.Status);
         }
     }
 }

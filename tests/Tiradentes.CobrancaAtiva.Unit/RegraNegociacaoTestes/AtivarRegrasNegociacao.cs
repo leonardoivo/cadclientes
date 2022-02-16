@@ -30,7 +30,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests6")
+                    .UseInMemoryDatabase("RegraNegociacaoTests6")
                     .Options;
 
             _context = new CobrancaAtivaDbContext(optionsContext);
@@ -52,11 +52,11 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 PercentValorBoleto = 0,
                 PercentEntradaBoleto = 0,
                 QuantidadeParcelasBoleto = 0,
-                Status = true,
+                Status = false,
                 InadimplenciaInicial = DateTime.Now,
                 InadimplenciaFinal = DateTime.Now,
-                ValidadeInicial = DateTime.Now,
-                ValidadeFinal = DateTime.Now,
+                ValidadeInicial = DateTime.Now.AddDays(-1),
+                ValidadeFinal = DateTime.Now.AddDays(1),
                 CursoIds = new int[1]{ 1 },
                 SituacaoAlunoIds = new int[1]{ 1 },
                 TitulosAvulsosId = new int[1]{ 1 },
@@ -80,7 +80,9 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         {
             await _service.AtivarRegrasNegociacao();
 
-            Assert.Pass();
+            var regra = await _service.BuscarPorId(_model.Id);
+
+            Assert.AreEqual(true, regra.Status);
         }
     }
 }

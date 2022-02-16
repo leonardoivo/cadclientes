@@ -26,13 +26,17 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         private RegraNegociacaoModel _model;
         private IMapper _mapper;
         private CriarRegraNegociacaoViewModel _criarViewModel;
+        private CursoModel _CriarCursoModel;
+        private TituloAvulsoModel _CriarTituloAvulsoModel;
+        private SituacaoAlunoModel _CriarSituacaoAlunoModel;
+        private TipoTituloModel _CriarTipoTituloModel;
 
         [SetUp]
         public void Setup()
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests2")
+                    .UseInMemoryDatabase("RegraNegociacaoTests2")
                     .Options;
             _context = new CobrancaAtivaDbContext(optionsContext);
 
@@ -52,9 +56,9 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
 
             services.AddScoped<MongoContext>();
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
-                options.UseInMemoryDatabase("CobrancaAtivaTests2")); 
+                options.UseInMemoryDatabase("RegraNegociacaoTests2")); 
             services.AddDbContext<CobrancaAtivaScfDbContext>(options =>
-                options.UseInMemoryDatabase("CobrancaAtivaTests2"));
+                options.UseInMemoryDatabase("RegraNegociacaoTests2"));
 
             var serviceProvider = services.BuildServiceProvider();
             serviceProvider.GetService(typeof(CobrancaAtivaDbContext));
@@ -68,10 +72,52 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
             _mapper = new Mapper(AutoMapperSetup.RegisterMappings());
             _service = new RegraNegociacaoService(repository, _mapper);
 
+            _CriarCursoModel = new CursoModel()
+            {
+                Descricao = "teste",
+                ModalidadeId = 1,
+                InstituicaoId = 1,
+            };
+            
+            _CriarTituloAvulsoModel = new TituloAvulsoModel()
+            {
+                Descricao = "teste"
+            };
+
+            _CriarSituacaoAlunoModel = new SituacaoAlunoModel()
+            {
+                Situacao = "teste"
+            };
+
+            _CriarTipoTituloModel = new TipoTituloModel()
+            {
+                TipoTitulo = "teste"
+            };
+
+            var CriarInstituicaoModel = new InstituicaoModel()
+            {
+                Instituicao = "teste"
+            };
+
+            var CriarModalidadeModel = new ModalidadeModel()
+            {
+                Modalidade = "teste"
+            };
+
+            
+            _context.Curso.Add(_CriarCursoModel);
+            _context.TituloAvulso.Add(_CriarTituloAvulsoModel);
+            _context.SituacaoAluno.Add(_CriarSituacaoAlunoModel);
+            _context.TipoTitulo.Add(_CriarTipoTituloModel);
+            _context.Instituicao.Add(CriarInstituicaoModel);
+            _context.Modalidade.Add(CriarModalidadeModel);
+           
+            _context.SaveChanges();
+
             _criarViewModel = new CriarRegraNegociacaoViewModel
             {
-                InstituicaoId = 1,
-                ModalidadeId = 1,
+                InstituicaoId = CriarInstituicaoModel.Id,
+                ModalidadeId = CriarModalidadeModel.Id,
                 PercentJurosMultaAVista = 1,
                 PercentValorAVista = 1,
                 PercentJurosMultaCartao  = 1,
@@ -86,10 +132,10 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 InadimplenciaFinal = DateTime.Now,
                 ValidadeInicial = DateTime.Now,
                 ValidadeFinal = DateTime.Now,
-                CursoIds = new int[1]{ 1 },
-                SituacaoAlunoIds = new int[1]{ 1 },
-                TitulosAvulsosId = new int[1]{ 1 },
-                TipoTituloIds = new int[1]{ 1 },
+                CursoIds = new int[1]{ _CriarCursoModel.Id },
+                SituacaoAlunoIds = new int[1]{ _CriarSituacaoAlunoModel.Id },
+                TitulosAvulsosId = new int[1]{ _CriarTituloAvulsoModel.Id },
+                TipoTituloIds = new int[1]{ _CriarTipoTituloModel.Id }
             };
 
             if(_context.RegraNegociacao.CountAsync().Result == 0)
@@ -98,6 +144,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
                 _context.RegraNegociacao.Add(_model);
                 _context.SaveChanges();
             }
+            
+            _context.ChangeTracker.Clear();
         }
 
         [Test]
@@ -106,6 +154,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         public async Task TesteCriarRegraNegociacaoValido()
         {
             _criarViewModel.ValidadeInicial = DateTime.Now.AddDays(-7);
+            _criarViewModel.InstituicaoId = 7;
 
             await _service.Criar(_criarViewModel);
 

@@ -30,7 +30,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.RegraNegociacaoTestes
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests4")
+                    .UseInMemoryDatabase("RegraNegociacaoTests4")
                     .Options;
 
             _context = new CobrancaAtivaDbContext(optionsContext);
