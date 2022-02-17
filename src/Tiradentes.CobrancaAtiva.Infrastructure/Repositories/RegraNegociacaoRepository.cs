@@ -154,7 +154,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             // FILTROS
             if (queryParams.Cursos.Length > 0)
             {
-                listRegraNegoquiacao = listRegraNegoquiacao.Where(L => L.RegraNegociacaoCurso.Any(R => queryParams.Cursos.Contains(R.CursoId))).ToList();                
+                listRegraNegoquiacao = listRegraNegoquiacao.Where(L => L.RegraNegociacaoCurso.Any(R => queryParams.Cursos.Contains(R.CursoId))).ToList();
             }
 
             if (queryParams.TitulosAvulsos.Length > 0)
@@ -191,16 +191,17 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 InadimplenciaInicial = r.InadimplenciaInicial,
                                 InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
-                                ValidadeFinal = r.ValidadeFinal,                                       
+                                ValidadeFinal = r.ValidadeFinal,
                                 Cursos = (from rc in r.RegraNegociacaoCurso
                                           join c in listCursoModel on rc.CursoId equals c.Id
-                                          select new CursoModel() {
+                                          select new CursoModel()
+                                          {
                                               Id = c.Id,
                                               Descricao = c.Descricao,
                                               CodigoMagister = c.CodigoMagister,
                                               InstituicaoId = c.InstituicaoId,
                                               ModalidadeId = c.ModalidadeId
-                                              
+
                                           }).ToList(),
 
                                 TitulosAvulsos = (from rt in r.RegraNegociacaoTituloAvulso
@@ -215,24 +216,26 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
                                 SituacoesAlunos = (from ra in r.RegraNegociacaoSituacaoAluno
                                                    join a in listSituacaoAluno on ra.SituacaoAlunoId equals a.Id
-                                                   select new SituacaoAlunoModel() { 
+                                                   select new SituacaoAlunoModel()
+                                                   {
                                                        Id = a.Id,
                                                        CodigoMagister = a.CodigoMagister,
                                                        Situacao = a.Situacao
-                                                   } ).ToList(),
+                                                   }).ToList(),
 
                                 TiposTitulos = (from rt in r.RegraNegociacaoTipoTitulo
                                                 join t in listTipoTitulo on rt.TipoTituloId equals t.Id
-                                                select new TipoTituloModel() { 
+                                                select new TipoTituloModel()
+                                                {
                                                     Id = t.Id,
                                                     CodigoMagister = t.CodigoMagister,
                                                     TipoTitulo = t.TipoTitulo
-                                                    
+
                                                 }).ToList(),
                             }).ToList();
 
             var queryPaginar = listFull.AsQueryable();
-            
+
             queryPaginar = queryPaginar.Ordenar(queryParams.OrdenarPor, "ValidadeInicial", queryParams.SentidoOrdenacao == "desc");
 
             return queryPaginar.Paginar(queryParams.Pagina, queryParams.Limite);
@@ -326,6 +329,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 .Include(r => r.Instituicao)
                 .Include(r => r.Modalidade)
                 .AsQueryable();
+
+            query = query.Where(c => c.InstituicaoId == model.InstituicaoId && c.ModalidadeId == model.ModalidadeId);
 
             query = query.Where(e =>
                 (e.ValidadeInicial.Date <= model.ValidadeInicial.Date &&
