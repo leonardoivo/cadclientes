@@ -92,6 +92,7 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IParcelaPagaAlunoInstituicaoService, ParcelaPagaAlunoInstituicaoService>();
             services.AddScoped<IParcelasAcordoService, ParcelasAcordoService>();
             services.AddScoped<IParcelaTituloService, ParcelaTituloService>();
+            services.AddScoped<ICriptografiaService, CriptografiaService>();
 
             #endregion
 
