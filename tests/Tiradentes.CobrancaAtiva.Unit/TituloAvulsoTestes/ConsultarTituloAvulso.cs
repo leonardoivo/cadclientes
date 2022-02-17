@@ -13,7 +13,7 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 
-namespace Tiradentes.CobrancaAtiva.Unit.TituloAvulso
+namespace Tiradentes.CobrancaAtiva.Unit.TituloAvulsoTestes
 {
     public class ConsultarTituloAvulso
     {

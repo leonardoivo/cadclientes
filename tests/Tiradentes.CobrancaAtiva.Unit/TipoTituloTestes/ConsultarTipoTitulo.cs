@@ -13,35 +13,43 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 
-namespace Tiradentes.CobrancaAtiva.Unit.SituacaoAluno
+namespace Tiradentes.CobrancaAtiva.Unit.TipoTituloTestes
 {
-    public class ConsultarSituacaoAluno
+    public class ConsultarTipoTitulo
     {
         private CobrancaAtivaDbContext _context;
-        private SituacaoAlunoService _service;
-        private SituacaoAlunoModel _CriarSituacaoAlunoModel;
+        private TipoTituloService _service;
+        private TipoTituloModel _CriarTipoTituloModel;
 
         [SetUp]
         public void Setup()
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("SitutacaoAlunoTests")
+                    .UseInMemoryDatabase("TipoTituloTests")
                     .Options;
 
             _context = new CobrancaAtivaDbContext(optionsContext);
-            ISituacaoAlunoRepository repository = new SituacaoAlunoRepository(_context);
+            ITipoTituloRepository repository = new TipoTituloRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            _service = new SituacaoAlunoService(repository, mapper);
+            _service = new TipoTituloService(repository, mapper);
 
 
-            _CriarSituacaoAlunoModel = new SituacaoAlunoModel()
+            _CriarTipoTituloModel = new TipoTituloModel()
             {
-                Situacao = "AAA",
+                TipoTitulo = "AAA",
                 CodigoMagister = "M4H"
             };
 
-            _context.SituacaoAluno.Add(_CriarSituacaoAlunoModel);
+            var _CriarTipoTituloModel2 = new TipoTituloModel()
+            {
+                TipoTitulo = "AAA",
+                CodigoMagister = "M4H"
+            };
+
+          
+            _context.TipoTitulo.Add(_CriarTipoTituloModel);
+            _context.TipoTitulo.Add(_CriarTipoTituloModel2);
             _context.SaveChanges();
         }
 
@@ -52,12 +60,12 @@ namespace Tiradentes.CobrancaAtiva.Unit.SituacaoAluno
         }
 
         [Test]
-        [TestCase(TestName = "Teste Consultar Situacao Aluno",
-                    Description = "Teste consultando rota de busca de Situacao Aluno")]
+        [TestCase(TestName = "Teste Consultar Tipo Titulo",
+                    Description = "Teste consultando rota de busca de Tipo Titulo")]
         public async Task TesteBuscarTodos()
         {
             var SituacaoAluno = await _service.Buscar();
-            Assert.AreEqual(1, SituacaoAluno.Count);
+            Assert.AreEqual(2, SituacaoAluno.Count);
         }
     }
 }
