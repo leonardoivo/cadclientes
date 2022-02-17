@@ -40,7 +40,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         public async Task<EmpresaParceiraViewModel> BuscarPorId(int id)
         {
             var resultadoConsulta = await _repositorio.BuscarPorIdCompleto(id);
-            var empresaParceira =  _map.Map<EmpresaParceiraViewModel>(resultadoConsulta);
+            var empresaParceira = _map.Map<EmpresaParceiraViewModel>(resultadoConsulta);
             empresaParceira.SenhaApi = await _criptografiaService.Descriptografar(empresaParceira.SenhaApi);
             return empresaParceira;
         }
@@ -65,11 +65,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             {
                 contato.Id = 0;
             }
+
             if (viewModel.SenhaEnvioArquivo != null)
             {
                 viewModel.SenhaEnvioArquivo = await _criptografiaService.Criptografar(viewModel.SenhaEnvioArquivo);
             }
-            viewModel.SenhaApi = await _criptografiaService.Criptografar(GeraStringAleatoria());
+
+            viewModel.SenhaApi = await _criptografiaService.Criptografar(RandomString.GeneratePassword(20, 5));
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
             model.SetarEndereco(0, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
@@ -93,11 +95,13 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             {
                 EntidadeNaoEncontrada("Empresa não encontrada");
             }
+
             await ValidaCnpj(viewModel.CNPJ, viewModel.Id);
             if (viewModel.SenhaEnvioArquivo != null)
             {
                 viewModel.SenhaEnvioArquivo = await _criptografiaService.Criptografar(viewModel.SenhaEnvioArquivo);
             }
+
             viewModel.SenhaApi = modelNoBanco.SenhaApi;
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
@@ -137,18 +141,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             if (CnpjCadastrado)
                 throw CustomException.BadRequest(JsonSerializer.Serialize(new {erro = "CNPJ já cadastrado"}));
-        }
-
-        private string GeraStringAleatoria()
-        {
-            var caracteres = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890!@#$%*-+{}[]";
-            var valor = new char[20];
-            var random = new Random();
-            for (var i = 0; i < valor.Length; i++)
-            {
-                valor[i] = caracteres[random.Next(caracteres.Length)];
-            }
-            return new string(valor);
         }
     }
 }
