@@ -26,7 +26,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.SituacaoAluno
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests")
+                    .UseInMemoryDatabase("SitutacaoAlunoTests")
                     .Options;
 
             _context = new CobrancaAtivaDbContext(optionsContext);

@@ -26,7 +26,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.TituloAvulso
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests")
+                    .UseInMemoryDatabase("TituloAvulsoTests")
                     .Options;
 
             _context = new CobrancaAtivaDbContext(optionsContext);
@@ -76,8 +76,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.TituloAvulso
         }
 
         [Test]
-        [TestCase(TestName = "Teste Consultar Situacao Aluno",
-                    Description = "Teste consultando rota de busca de Situacao Aluno")]
+        [TestCase(TestName = "Teste Consultar Titulo Avulso",
+                    Description = "Teste consultando rota de busca de Titulo Avulso")]
         public async Task TesteBuscarTodos()
         {
             var SituacaoAluno = await _service.Buscar();

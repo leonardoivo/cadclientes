@@ -89,8 +89,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
         }
 
         [Test]
-        [TestCase(TestName = "Teste Consultar Parametro envio Por ID",
-                    Description = "Testando função de busca do CRUD Parametro envio")]
+        [TestCase(TestName = "Teste criar Parametro envio Por ID",
+                    Description = "Testando função de criar do CRUD Parametro envio")]
         public async Task TesteCriarParametroEnvio()
         {
             var Criar = await _service.Criar(_CriarParametroEnvio);

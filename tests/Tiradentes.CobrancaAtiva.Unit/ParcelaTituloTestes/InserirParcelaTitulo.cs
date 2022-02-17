@@ -24,7 +24,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParcelasTituloTestes
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("ParcelasTituloTestes")
+                    .UseInMemoryDatabase("ParcelasTituloTestes3")
                     .Options;
             _context = new CobrancaAtivaDbContext(optionsContext);
 

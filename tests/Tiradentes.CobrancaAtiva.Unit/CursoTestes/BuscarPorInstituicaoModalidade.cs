@@ -58,8 +58,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.CursoTestes
         }
 
         [Test]
-        [TestCase(TestName = "Teste Buscar Curso Por Modalidade inválido",
-                   Description = "Teste Buscar Curso Por Modalidade no Banco")]
+        [TestCase(TestName = "Teste Buscar Curso Por Instituicao Modalidade inválido",
+                   Description = "Teste Buscar Curso Por Instituicao Modalidade no Banco")]
         public async Task TesteBuscarPorInstituicaoModalidadeInvalido()
         {
             var Curso = await _service.BuscarPorInstituicaoModalidade(_model.InstituicaoId, _model.ModalidadeId);
