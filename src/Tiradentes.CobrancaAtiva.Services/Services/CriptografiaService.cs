@@ -4,6 +4,7 @@ using System.Net.Http.Headers;
 using System.Text;
 using System.Text.Json;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Options;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 
@@ -14,13 +15,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         private readonly HttpClient _httpClient;
         private readonly EncryptationConfig _config;
 
-        public CriptografiaService(EncryptationConfig config, HttpClient client)
+        public CriptografiaService(IOptions<EncryptationConfig> config, HttpClient client)
         {
-            client.DefaultRequestHeaders.Accept.Clear();
-            client.DefaultRequestHeaders.Accept.Add(
-                new MediaTypeWithQualityHeaderValue("application/json"));
-
             _httpClient = client;
+            _config = config.Value;
         }
 
         public async Task<string> Criptografar(string dado)

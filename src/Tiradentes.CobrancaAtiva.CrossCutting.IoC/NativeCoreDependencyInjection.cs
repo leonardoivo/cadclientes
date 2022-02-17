@@ -1,3 +1,5 @@
+using System;
+using System.Net.Http.Headers;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -13,9 +15,10 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
     {
         public static IServiceCollection AddDependencies(this IServiceCollection services, IConfiguration configuration)
         {
-            services.AddSingleton<CacheServiceRepository>();           
+            services.AddSingleton<CacheServiceRepository>();
 
             #region Repositorios
+
             services.AddScoped<IEmpresaParceiraRepository, EmpresaParceiraRepository>();
             services.AddScoped<ICursoRepository, CursoRepository>();
             services.AddScoped<ISemestreRepository, SemestreRepository>();
@@ -39,11 +42,9 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IConflitoDetalheRepository, ConflitoDetalheRepository>();
             services.AddScoped<ICobrancaRepository, CobrancaRepository>();
             services.AddScoped<IBancoMagisterRepository, BancoMagisterRepository>();
-            
-
             services.AddScoped<IAcordoCobrancasRepository, AcordoCobrancasRepository>();
             services.AddScoped<IArquivoCobrancasRepository, ArquivoCobrancasRepository>();
-            services.AddScoped<IArquivoLayoutRepository, ArquivoLayoutRepository>();           
+            services.AddScoped<IArquivoLayoutRepository, ArquivoLayoutRepository>();
             services.AddScoped<IBaixasCobrancasRepository, BaixasCobrancasRepository>();
             services.AddScoped<IErrosLayoutRepository, ErrosLayoutRepository>();
             services.AddScoped<IGeracaoCobrancasRepository, GeracaoCobrancasRepository>();
@@ -56,9 +57,11 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IParcelaPagaAlunoInstituicaoRepository, ParcelaPagaAlunoInstituicaoRepository>();
             services.AddScoped<IParcelasAcordoRepository, ParcelasAcordoRepository>();
             services.AddScoped<IParcelaTituloRepository, ParcelaTituloRepository>();
+
             #endregion
 
             #region Services
+
             services.AddScoped<IEmpresaParceiraService, EmpresaParceiraService>();
             services.AddScoped<ICursoService, CursoService>();
             services.AddScoped<ISemestreService, SemestreService>();
@@ -76,14 +79,13 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IApplicationErrorService, ApplicationErrorService>();
             services.AddScoped<IConflitoService, ConflitoService>();
             services.AddScoped<IConflitoDetalheService, ConflitoDetalheService>();
-            services.AddScoped<ICobrancaService,CobrancaService>();
+            services.AddScoped<ICobrancaService, CobrancaService>();
             services.AddScoped<IBancoMagisterService, BancoMagisterService>();
-
-            services.AddScoped<IAcordoCobrancaService, AcordoCobrancaService>();            
+            services.AddScoped<IAcordoCobrancaService, AcordoCobrancaService>();
             services.AddScoped<IArquivoLayoutService, ArquivoLayoutService>();
             services.AddScoped<IBaixasCobrancasService, BaixasCobrancasService>();
             services.AddScoped<IErroLayoutService, ErroLayoutService>();
-            services.AddScoped<IGerenciarArquivoCobrancaRetornoService, GerenciarArquivoCobrancaRetornoService>();            
+            services.AddScoped<IGerenciarArquivoCobrancaRetornoService, GerenciarArquivoCobrancaRetornoService>();
             services.AddScoped<IItensBaixasTipo1Service, ItensBaixasTipo1Service>();
             services.AddScoped<IItensBaixasTipo2Service, ItensBaixasTipo2Service>();
             services.AddScoped<IItensBaixasTipo3Service, ItensBaixasTipo3Service>();
@@ -92,14 +94,22 @@ namespace Tiradentes.CobrancaAtiva.CrossCutting.IoC
             services.AddScoped<IParcelaPagaAlunoInstituicaoService, ParcelaPagaAlunoInstituicaoService>();
             services.AddScoped<IParcelasAcordoService, ParcelasAcordoService>();
             services.AddScoped<IParcelaTituloService, ParcelaTituloService>();
-            services.AddScoped<ICriptografiaService, CriptografiaService>();
 
             #endregion
+
+            services.AddHttpClient<ICriptografiaService, CriptografiaService>("criptografia", client =>
+            {
+                client.DefaultRequestHeaders.Accept.Clear();
+                client.DefaultRequestHeaders.Accept.Add(
+                    new MediaTypeWithQualityHeaderValue("application/json"));
+                client.BaseAddress = new Uri(configuration["Encryptation:BaseUrl"]);
+            });
+
 
             services.AddScoped<MongoContext>();
 
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
-                options.UseOracle(configuration.GetConnectionString("Empresas"))); 
+                options.UseOracle(configuration.GetConnectionString("Empresas")));
 
             services.AddDbContext<CobrancaAtivaScfDbContext>(options =>
                 options.UseOracle(configuration.GetConnectionString("EmpresasScf")));

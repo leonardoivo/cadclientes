@@ -28,7 +28,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             _repositorio = repositorio;
             _map = map;
-
             _criptografiaService = criptografiaService;
         }
 
