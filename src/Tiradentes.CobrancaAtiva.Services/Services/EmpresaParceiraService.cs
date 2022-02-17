@@ -43,6 +43,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             empresaParceira.SenhaApi = await _criptografiaService.Descriptografar(empresaParceira.SenhaApi);
             return empresaParceira;
         }
+        
+        public async Task<EmpresaParceiraViewModel> BuscarPorCnpj(string cnpj)
+        {
+            var resultadoConsulta = await _repositorio.BuscarPorCnpj(cnpj);
+            var empresaParceira = _map.Map<EmpresaParceiraViewModel>(resultadoConsulta);
+            empresaParceira.SenhaApi = await _criptografiaService.Descriptografar(empresaParceira.SenhaApi);
+            return empresaParceira;
+        }
 
         public async Task<ViewModelPaginada<BuscaEmpresaParceiraViewModel>> Buscar(
             ConsultaEmpresaParceiraQueryParam queryParams)
@@ -103,7 +111,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 viewModel.SenhaEnvioArquivo = await _criptografiaService.Criptografar(viewModel.SenhaEnvioArquivo);
             }
 
-            viewModel.SenhaApi = modelNoBanco.SenhaApi;
+            if(string.IsNullOrEmpty(viewModel.SenhaApi))
+                viewModel.SenhaApi = modelNoBanco.SenhaApi;
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
             model.SetarEndereco(modelNoBanco.Endereco.Id, viewModel.CEP, viewModel.Estado, viewModel.Cidade,

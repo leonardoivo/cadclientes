@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
@@ -38,6 +39,10 @@ namespace Tiradentes.CobrancaAtiva.Api.Extensions
 
         public void OnAuthorization(AuthorizationFilterContext context)
         {
+            var permiteAnonimo = context.ActionDescriptor.EndpointMetadata.Any(em =>
+                em.GetType() == typeof(AllowAnonymousAttribute));
+            if (permiteAnonimo) return;
+
             if (!IsAuthorized(context.HttpContext))
             {
                 context.Result = new ForbidResult();

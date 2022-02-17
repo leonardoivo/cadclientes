@@ -38,7 +38,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             var data = JsonSerializer.Serialize(dado);
             var response = await _httpClient.PostAsync(rota,
-                new StringContent(data, Encoding.UTF8));
+                new StringContent(data, Encoding.UTF8, "application/json"));
 
             response.EnsureSuccessStatusCode();
             var responseData = await response.Content.ReadAsStringAsync();
