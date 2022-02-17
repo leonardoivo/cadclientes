@@ -82,7 +82,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             await _repositorio.Criar(model);
 
-            return _map.Map<EmpresaParceiraViewModel>(model);
+            var empresaParceira = _map.Map<EmpresaParceiraViewModel>(model);
+            empresaParceira.SenhaApi = null;
+            return empresaParceira;
         }
 
         public async Task<EmpresaParceiraViewModel> Atualizar(EmpresaParceiraViewModel viewModel)
@@ -112,12 +114,22 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 viewModel.Convenio, viewModel.Pix, viewModel.BancoId);
 
             await _repositorio.Alterar(model);
-            return _map.Map<EmpresaParceiraViewModel>(model);
+            var empresaParceira = _map.Map<EmpresaParceiraViewModel>(model);
+            empresaParceira.SenhaApi = null;
+            return empresaParceira;
         }
 
         public async Task Deletar(int id)
         {
             await _repositorio.Deletar(id);
+        }
+        
+        private async Task ValidaCnpj(string cnpj, int? id = null)
+        {
+            var CnpjCadastrado = await _repositorio.VerificaCnpjJaCadastrado(cnpj, id);
+
+            if (CnpjCadastrado)
+                throw CustomException.BadRequest(JsonSerializer.Serialize(new {erro = "CNPJ já cadastrado"}));
         }
 
         public void Dispose()
@@ -133,14 +145,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 _repositorio?.Dispose();
                 _criptografiaService.Dispose();
             }
-        }
-
-        private async Task ValidaCnpj(string cnpj, int? id = null)
-        {
-            var CnpjCadastrado = await _repositorio.VerificaCnpjJaCadastrado(cnpj, id);
-
-            if (CnpjCadastrado)
-                throw CustomException.BadRequest(JsonSerializer.Serialize(new {erro = "CNPJ já cadastrado"}));
         }
     }
 }
