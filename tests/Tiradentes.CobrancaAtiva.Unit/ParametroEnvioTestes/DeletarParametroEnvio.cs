@@ -108,7 +108,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
         [Test]
         [TestCase(TestName = "Teste Deletar Parametro Envio",
                     Description = "Testando função de Deletar do CRUD Parametro envio")]
-        public async Task TesteBuscarParametroEnvio()
+        public async Task TesteDeletarParametroEnvio()
         {
             await _service.Deletar(_model.Id);
             Assert.Pass();
