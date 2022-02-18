@@ -40,10 +40,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var resultadoConsulta = await _repositorio.BuscarPorIdCompleto(id);
             var empresaParceira = _map.Map<EmpresaParceiraViewModel>(resultadoConsulta);
-            empresaParceira.SenhaApi = await _criptografiaService.Descriptografar(empresaParceira.SenhaApi);
+            if (empresaParceira != null)
+                empresaParceira.SenhaApi = await _criptografiaService.Descriptografar(empresaParceira.SenhaApi);
             return empresaParceira;
         }
-        
+
         public async Task<EmpresaParceiraViewModel> BuscarPorCnpj(string cnpj)
         {
             var resultadoConsulta = await _repositorio.BuscarPorCnpj(cnpj);
@@ -111,7 +112,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 viewModel.SenhaEnvioArquivo = await _criptografiaService.Criptografar(viewModel.SenhaEnvioArquivo);
             }
 
-            if(string.IsNullOrEmpty(viewModel.SenhaApi))
+            if (string.IsNullOrEmpty(viewModel.SenhaApi))
                 viewModel.SenhaApi = modelNoBanco.SenhaApi;
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
@@ -131,7 +132,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             await _repositorio.Deletar(id);
         }
-        
+
         private async Task ValidaCnpj(string cnpj, int? id = null)
         {
             var CnpjCadastrado = await _repositorio.VerificaCnpjJaCadastrado(cnpj, id);
