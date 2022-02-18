@@ -54,7 +54,6 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 
             _model = new EmpresaParceiraViewModel
             {
-                Id = 1,
                 CEP = "42345234",
                 Estado = "SE",
                 Cidade = "Aracaju",
@@ -69,7 +68,6 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 {
                     new ContatoEmpresaParceiraViewModel
                     {
-                        Id = 1,
                         Contato = "Teste",
                         Email = "teste@teste.com",
                         Telefone = "4444444444"
