@@ -97,6 +97,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 e.InadimplenciaInicial <= model.InadimplenciaFinal &&
                 model.InadimplenciaInicial <= e.InadimplenciaFinal);
 
+            query = query.Where(e =>
+                e.ValidadeInicial <= model.ValidadeFinal &&
+                model.ValidadeInicial <= e.ValidadeFinal);
+
             var regrasCadastradas = query.ToList();
 
             if (regrasCadastradas.Count > 0)
@@ -114,6 +118,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     regrasCadastradas = regrasCadastradas.Where(e =>
                         e.TiposTitulos.Where(c =>
                             model.RegraNegociacaoTipoTitulo.Select(c => c.TipoTituloId).Contains(c.Id)).Any()).ToList();
+
+                if (model.RegraNegociacaoSituacaoAluno.Count > 0)
+                    regrasCadastradas = regrasCadastradas.Where(e =>
+                        e.SituacoesAlunos.Where(c =>
+                            model.RegraNegociacaoSituacaoAluno.Select(c => c.SituacaoAlunoId).Contains(c.Id)).Any()).ToList();
+
+                if (model.RegraNegociacaoTituloAvulso.Count > 0)
+                    regrasCadastradas = regrasCadastradas.Where(e =>
+                        e.TitulosAvulsos.Where(c =>
+                            model.RegraNegociacaoTituloAvulso.Select(c => c.TituloAvulsoId).Contains(c.Id)).Any()).ToList();
 
                 if (regrasCadastradas.Count > 0)
                     throw new System.Exception("Regra já cadastrada!");
