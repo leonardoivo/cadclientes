@@ -1,8 +1,17 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Linq;
+using System.Net;
+using System.Net.Http;
+using System.Net.Http.Json;
+using System.Text.Json;
+using System.Threading;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System.Threading.Tasks;
+using Moq;
+using Moq.Protected;
 using Tiradentes.CobrancaAtiva.Api.Controllers;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
@@ -20,25 +29,29 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         private EmpresaParceiraController _controller;
         private CobrancaAtivaDbContext _context;
         private IEmpresaParceiraService _service;
-        private IOptions<EncryptationConfig> _encryptationConfig;
+        private Mock<HttpMessageHandler> _mockHttpClient;
 
         [SetUp]
         public void Setup()
         {
-            DbContextOptions<CobrancaAtivaDbContext> optionsContext =
+            var optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
                     .UseInMemoryDatabase("CobrancaAtivaTests")
                     .Options;
-            _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
+            var encryptationConfig = Options.Create(new EncryptationConfig()
             {
-                BaseUrl = "https://encrypt-service-2kcoisahga-ue.a.run.app/",
-                DecryptAuthorization = "bWVjLWVuYzpwYXNzd29yZA==",
-                EncryptAuthorization = "bWVjLWRlYzpwYXNzd29yZA=="
+                DecryptAuthorization = "123",
+                EncryptAuthorization = "123"
             });
             _context = new CobrancaAtivaDbContext(optionsContext);
             IEmpresaParceiraRepository repository = new EmpresaParceiraRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            _service = new EmpresaParceiraService(repository, mapper, _encryptationConfig);
+            _mockHttpClient = new Mock<HttpMessageHandler>();
+            var client = new HttpClient(_mockHttpClient.Object);
+            client.BaseAddress = new Uri("http://teste.com/");
+            var criptografiaService =
+                new CriptografiaService(encryptationConfig, client);
+            _service = new EmpresaParceiraService(repository, mapper, criptografiaService);
             _controller = new EmpresaParceiraController(_service);
         }
 
@@ -50,7 +63,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 
         [Test]
         [TestCase(TestName = "Teste Consultar Empresa Parceira por id",
-                   Description = "Teste buscando um dado existente no banco")]
+            Description = "Teste buscando um dado existente no banco")]
         public async Task TesteBuscarPorIdComResultado()
         {
             var model = new EmpresaParceiraModel(
@@ -66,17 +79,26 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 
             await InserirDadoNoBanco(model);
 
+            var senhaDescriptografada = "teste-senha-descriptgrafada";
+            var httpResponse = new HttpResponseMessage
+                {StatusCode = HttpStatusCode.OK, Content = new StringContent(JsonSerializer.Serialize(senhaDescriptografada))};
+            _mockHttpClient.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(httpResponse);
+
             var t = await _controller.Buscar(model.Id);
 
             Assert.AreEqual(t.Value.Id, model.Id);
             Assert.AreEqual(t.Value.NomeFantasia, model.NomeFantasia);
+            Assert.AreEqual(t.Value.SenhaApi, senhaDescriptografada);
 
             await DeletarTodasEmpresasParceirasBanco();
         }
 
         [Test]
         [TestCase(TestName = "Teste Consultar Empresa Parceira por id inexistente ",
-                    Description = "Teste buscando um dado inexistente")]
+            Description = "Teste buscando um dado inexistente")]
         public async Task TesteBuscarPorId()
         {
             var model = new EmpresaParceiraModel(
@@ -89,6 +111,14 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                 Status: true,
                 ChaveIntegracaoSap: null
             );
+            
+            var senhaDescriptografada = "teste-senha-descriptgrafada";
+            var httpResponse = new HttpResponseMessage
+                {StatusCode = HttpStatusCode.OK, Content = new StringContent(JsonSerializer.Serialize(senhaDescriptografada))};
+            _mockHttpClient.Protected()
+                .Setup<Task<HttpResponseMessage>>("SendAsync", ItExpr.IsAny<HttpRequestMessage>(),
+                    ItExpr.IsAny<CancellationToken>())
+                .ReturnsAsync(httpResponse);
 
             await InserirDadoNoBanco(model);
 

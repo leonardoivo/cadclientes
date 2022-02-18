@@ -60,6 +60,9 @@ namespace Tiradentes.CobrancaAtiva.Application.Validations.EmpresaParceira
             
             RuleFor(e => e.CodigoAgencia)
                 .MaximumLength(10).WithMessage(MensagensErroValidacao.TamanhaMaximo);
+            
+            RuleFor(e => e.SenhaApi)
+                .MaximumLength(20).WithMessage(MensagensErroValidacao.TamanhaMaximo);
 
             RuleFor(e => e.Contatos)
                 .Cascade(CascadeMode.Stop)

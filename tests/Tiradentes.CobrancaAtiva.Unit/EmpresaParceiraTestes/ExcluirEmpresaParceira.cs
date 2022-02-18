@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using System;
+using System.Net.Http;
+using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using NUnit.Framework;
 using System.Threading.Tasks;
@@ -12,6 +14,7 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira;
 using Microsoft.Extensions.Options;
+using Moq;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
 
 namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
@@ -22,26 +25,29 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         private CobrancaAtivaDbContext _context;
         private IEmpresaParceiraService _service;
         private EmpresaParceiraViewModel _model;
-        private IMapper _mapper;
-        private IOptions<EncryptationConfig> _encryptationConfig;
+        private Mock<HttpMessageHandler> _mockHttpClient;
 
         [SetUp]
         public void Setup()
         {
-            DbContextOptions<CobrancaAtivaDbContext> optionsContext =
+            var optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
                     .UseInMemoryDatabase("CobrancaAtivaTests")
                     .Options;
-            _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
+            var encryptationConfig = Options.Create(new EncryptationConfig()
             {
-                BaseUrl = "https://encrypt-service-2kcoisahga-ue.a.run.app/",
-                DecryptAuthorization = "bWVjLWVuYzpwYXNzd29yZA==",
-                EncryptAuthorization = "bWVjLWRlYzpwYXNzd29yZA=="
+                DecryptAuthorization = "123",
+                EncryptAuthorization = "123"
             });
             _context = new CobrancaAtivaDbContext(optionsContext);
             IEmpresaParceiraRepository repository = new EmpresaParceiraRepository(_context);
-            _mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            _service = new EmpresaParceiraService(repository, _mapper, _encryptationConfig);
+            IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
+            _mockHttpClient = new Mock<HttpMessageHandler>();
+            var client = new HttpClient(_mockHttpClient.Object);
+            client.BaseAddress = new Uri("http://teste.com/");
+            var criptografiaService =
+                new CriptografiaService(encryptationConfig, client);
+            _service = new EmpresaParceiraService(repository, mapper, criptografiaService);
             _controller = new EmpresaParceiraController(_service);
 
             _model = new EmpresaParceiraViewModel
@@ -63,7 +69,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
 
             if(_context.EmpresaParceira.CountAsync().Result == 0)
             {
-                _context.EmpresaParceira.Add(_mapper.Map<EmpresaParceiraModel>(_model));
+                _context.EmpresaParceira.Add(mapper.Map<EmpresaParceiraModel>(_model));
                 _context.SaveChanges();
             }
             _context.ChangeTracker.Clear();
@@ -76,8 +82,8 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         }
 
         [Test]
-        [TestCase(TestName = "Teste Atualizar Empresa Parceira",
-                   Description = "Teste Atualizar Empresa Parceira no Banco")]
+        [TestCase(TestName = "Teste Excluir Empresa Parceira",
+                   Description = "Teste Excluir Empresa Parceira no Banco")]
         public async Task TesteExcluirEmpresaParceira()
         {
             await _service.Deletar(_model.Id);

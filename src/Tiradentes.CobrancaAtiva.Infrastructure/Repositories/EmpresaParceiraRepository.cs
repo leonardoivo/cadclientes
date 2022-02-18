@@ -85,5 +85,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
             return await query.PaginarAsync(queryParams.Pagina, queryParams.Limite);
         }
+        
+        public async Task<EmpresaParceiraModel> BuscarPorCnpj(string cnpj) =>
+            await DbSet
+                .AsNoTracking()
+                .FirstOrDefaultAsync(e => e.CNPJ == cnpj);
     }
 }
