@@ -4,5 +4,7 @@
     {
         public int Id { get; set; }
         public string Situacao { get; set; }
+        public string CodigoMagister { get; set; }
+
     }
 }
