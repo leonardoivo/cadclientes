@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Authorization;
 using Tiradentes.CobrancaAtiva.Api.Extensions;
@@ -37,6 +38,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         {
             return _cobrancaService.ExemplosRespostas();
         }
+
         /// <summary>
         /// Faz o envio das respostas de acordos de cobrança (Tipo 1, Tipo 2 e Tipo 3).
         /// </summary>
@@ -49,7 +51,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Criar([FromBody] CriarRespostaViewModel resposta)
         {
-            return Ok(await _cobrancaService.Criar(resposta));
+            var cnpj = HttpContext.User.Claims.FirstOrDefault(c => c.Type == "CNPJ");
+            return Ok(await _cobrancaService.Criar(resposta, cnpj.Value));
         }
 
         [Autorizacao]
@@ -79,10 +82,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             await _cobrancaService.BaixaManual(baixaPagamento);
             return Ok();
         }
-        
+
         [Autorizacao]
         [HttpGet("baixas")]
-
         public async Task<ActionResult<ViewModelPaginada<ConsultaBaixaPagamentoViewModel>>> Buscar(
             [FromQuery] ConsultaBaixaCobrancaQueryParam queryParam)
         {
