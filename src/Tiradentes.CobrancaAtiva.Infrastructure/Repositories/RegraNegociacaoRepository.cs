@@ -97,6 +97,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 e.InadimplenciaInicial <= model.InadimplenciaFinal &&
                 model.InadimplenciaInicial <= e.InadimplenciaFinal);
 
+            query = query.Where(e =>
+                e.ValidadeInicial <= model.ValidadeFinal &&
+                model.ValidadeInicial <= e.ValidadeFinal);
+
             var regrasCadastradas = query.ToList();
 
             if (regrasCadastradas.Count > 0)
@@ -114,6 +118,16 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     regrasCadastradas = regrasCadastradas.Where(e =>
                         e.TiposTitulos.Where(c =>
                             model.RegraNegociacaoTipoTitulo.Select(c => c.TipoTituloId).Contains(c.Id)).Any()).ToList();
+
+                if (model.RegraNegociacaoSituacaoAluno.Count > 0)
+                    regrasCadastradas = regrasCadastradas.Where(e =>
+                        e.SituacoesAlunos.Where(c =>
+                            model.RegraNegociacaoSituacaoAluno.Select(c => c.SituacaoAlunoId).Contains(c.Id)).Any()).ToList();
+
+                if (model.RegraNegociacaoTituloAvulso.Count > 0)
+                    regrasCadastradas = regrasCadastradas.Where(e =>
+                        e.TitulosAvulsos.Where(c =>
+                            model.RegraNegociacaoTituloAvulso.Select(c => c.TituloAvulsoId).Contains(c.Id)).Any()).ToList();
 
                 if (regrasCadastradas.Count > 0)
                     throw new System.Exception("Regra já cadastrada!");
@@ -154,7 +168,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             // FILTROS
             if (queryParams.Cursos.Length > 0)
             {
-                listRegraNegoquiacao = listRegraNegoquiacao.Where(L => L.RegraNegociacaoCurso.Any(R => queryParams.Cursos.Contains(R.CursoId))).ToList();                
+                listRegraNegoquiacao = listRegraNegoquiacao.Where(L => L.RegraNegociacaoCurso.Any(R => queryParams.Cursos.Contains(R.CursoId))).ToList();
             }
 
             if (queryParams.TitulosAvulsos.Length > 0)
@@ -191,16 +205,17 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                                 InadimplenciaInicial = r.InadimplenciaInicial,
                                 InadimplenciaFinal = r.InadimplenciaFinal,
                                 ValidadeInicial = r.ValidadeInicial,
-                                ValidadeFinal = r.ValidadeFinal,                                       
+                                ValidadeFinal = r.ValidadeFinal,
                                 Cursos = (from rc in r.RegraNegociacaoCurso
                                           join c in listCursoModel on rc.CursoId equals c.Id
-                                          select new CursoModel() {
+                                          select new CursoModel()
+                                          {
                                               Id = c.Id,
                                               Descricao = c.Descricao,
                                               CodigoMagister = c.CodigoMagister,
                                               InstituicaoId = c.InstituicaoId,
                                               ModalidadeId = c.ModalidadeId
-                                              
+
                                           }).ToList(),
 
                                 TitulosAvulsos = (from rt in r.RegraNegociacaoTituloAvulso
@@ -215,42 +230,46 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
                                 SituacoesAlunos = (from ra in r.RegraNegociacaoSituacaoAluno
                                                    join a in listSituacaoAluno on ra.SituacaoAlunoId equals a.Id
-                                                   select new SituacaoAlunoModel() { 
+                                                   select new SituacaoAlunoModel()
+                                                   {
                                                        Id = a.Id,
                                                        CodigoMagister = a.CodigoMagister,
                                                        Situacao = a.Situacao
-                                                   } ).ToList(),
+                                                   }).ToList(),
 
                                 TiposTitulos = (from rt in r.RegraNegociacaoTipoTitulo
                                                 join t in listTipoTitulo on rt.TipoTituloId equals t.Id
-                                                select new TipoTituloModel() { 
+                                                select new TipoTituloModel()
+                                                {
                                                     Id = t.Id,
                                                     CodigoMagister = t.CodigoMagister,
                                                     TipoTitulo = t.TipoTitulo
-                                                    
+
                                                 }).ToList(),
                             }).ToList();
 
             var queryPaginar = listFull.AsQueryable();
-            
+
             queryPaginar = queryPaginar.Ordenar(queryParams.OrdenarPor, "ValidadeInicial", queryParams.SentidoOrdenacao == "desc");
 
- 
-            var modelPaginada = new ModelPaginada<BuscaRegraNegociacao>();
+            return queryPaginar.Paginar(queryParams.Pagina, queryParams.Limite);
 
-            modelPaginada.TotalItems = queryPaginar.Count();            
-            modelPaginada.TotalPaginas = (int)Math.Ceiling(modelPaginada.TotalItems / (double)10);
-            modelPaginada.TamanhoPagina = 10;
-            modelPaginada.PaginaAtual = 1;
+            //var modelPaginada = new ModelPaginada<BuscaRegraNegociacao>();
 
-            var skip = modelPaginada.PaginaAtual <= 1 ? 0 : (modelPaginada.PaginaAtual - 1) * modelPaginada.TamanhoPagina;
-
-            modelPaginada.Items = queryPaginar.Skip(skip)
-                                    .Take(modelPaginada.TamanhoPagina)
-                                    .ToList();
+            //modelPaginada.TotalItems = queryPaginar.Count();            
+            //modelPaginada.TotalPaginas = (int)Math.Ceiling(modelPaginada.TotalItems / (double)10);
+            //modelPaginada.TamanhoPagina = (queryParams.Pagina < 1) ? 1 : queryParams.Pagina;
+            //modelPaginada.PaginaAtual = (queryParams.Limite < 1) ? 10 : queryParams.Limite;
 
 
-            return modelPaginada;
+            //var skip = modelPaginada.PaginaAtual <= 1 ? 0 : (modelPaginada.PaginaAtual - 1) * modelPaginada.TamanhoPagina;
+
+            //modelPaginada.Items = queryPaginar.Skip(skip)
+            //                        .Take(modelPaginada.TamanhoPagina)
+            //                        .ToList();
+
+
+            //return modelPaginada;
         }
 
         public Task<BuscaRegraNegociacao> BuscarPorIdComRelacionamentos(int id)
@@ -324,6 +343,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 .Include(r => r.Instituicao)
                 .Include(r => r.Modalidade)
                 .AsQueryable();
+
+            query = query.Where(c => c.InstituicaoId == model.InstituicaoId && c.ModalidadeId == model.ModalidadeId);
 
             query = query.Where(e =>
                 (e.ValidadeInicial.Date <= model.ValidadeInicial.Date &&

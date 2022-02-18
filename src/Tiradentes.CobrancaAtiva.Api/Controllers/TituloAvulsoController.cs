@@ -1,6 +1,8 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Tiradentes.CobrancaAtiva.Api.Extensions;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Instituicao;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.Situacao;
@@ -11,6 +13,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
     [ApiController]
     [Route("titulo-avulso")]
+    [Authorize]
+    [Autorizacao]
     public class TituloAvulsoController : ControllerBase
     {
         private readonly ITituloAvulsoService _service;

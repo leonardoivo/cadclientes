@@ -7,7 +7,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
     public class CriarRespostaViewModel
     {
         public int TipoRegistro { get; set; }
-        public Int64 CnpjEmpresaCobranca { get; set; }
+        public string CnpjEmpresaCobranca { get; set; }
         public string SituacaoAluno { get; set; }
         public string Sistema { get; set; }
         public string TipoInadimplencia { get; set; }

@@ -3,6 +3,8 @@ using Newtonsoft.Json;
 using System.Collections.Generic;
 using System.Net;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
+using Tiradentes.CobrancaAtiva.Api.Extensions;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.RegraNegociacao;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
@@ -12,6 +14,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
     [ApiController]
     [Route("regra-negociacao")]
+    [Authorize]
+    [Autorizacao]
     public class RegraNegociacaoController : ControllerBase
     {
         private readonly IRegraNegociacaoService _service;

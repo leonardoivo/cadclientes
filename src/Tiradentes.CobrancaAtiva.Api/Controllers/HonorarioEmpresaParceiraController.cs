@@ -7,12 +7,16 @@ using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Microsoft.AspNetCore.Http;
 using System.Collections.Generic;
 using FluentValidation.Results;
+using Microsoft.AspNetCore.Authorization;
+using Tiradentes.CobrancaAtiva.Api.Extensions;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.HonorarioEmpresaParceira;
 
 namespace Tiradentes.CobrancaAtiva.Api.Controllers
 {
     [ApiController]
     [Route("honorarios")]
+    [Authorize]
+    [Autorizacao]
     public class HonorarioEmpresaParceiraController : ControllerBase
     {
         private readonly IHonorarioEmpresaParceiraService _service;
