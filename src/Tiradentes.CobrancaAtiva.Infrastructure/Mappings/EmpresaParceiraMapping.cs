@@ -56,6 +56,13 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.SenhaEnvioArquivo)
                .HasColumnName("SENHA_ENVIO_ARQUIVO")
                .HasDefaultValue("");
+            
+            builder.Property(ep => ep.ChaveIntegracaoSap)
+                .HasColumnName("CHAVE_INTEGRACAO_SAP")
+                .HasDefaultValue("");
+
+            builder.Property(ep => ep.SenhaApi)
+                .HasColumnName("SENHA_API");
 
             builder.HasMany(c => c.Contatos)
                 .WithOne(e => e.Empresa);
@@ -65,10 +72,6 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
 
             builder.HasOne(c => c.ContaBancaria)
                 .WithOne(e => e.Empresa);
-
-            builder.Property(ep => ep.ChaveIntegracaoSap)
-                .HasColumnName("CHAVE_INTEGRACAO_SAP")
-                .HasDefaultValue("");
 
             builder.ToTable("EMPRESAS", "APP_COBRANCA");
         }

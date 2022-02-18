@@ -53,7 +53,6 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         [HttpPut]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest, Type = typeof(List<ValidationFailure>))]
-        [ProducesResponseType(StatusCodes.Status404NotFound, Type = typeof(teste))]
         public async Task<ActionResult<EmpresaParceiraViewModel>> Atualizar([FromBody] EmpresaParceiraViewModel viewModel)
         {
             return await _service.Atualizar(viewModel);
@@ -66,10 +65,4 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
             return NoContent();
         }
     }
-
-    public class teste {
-
-        public string erro { get; set; }
-    }
-
 }

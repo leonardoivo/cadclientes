@@ -1,4 +1,5 @@
 ﻿using System.Collections.Generic;
+using System.Text.Json.Serialization;
 
 namespace Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira
 {
@@ -30,6 +31,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.EmpresaParceira
         public string UsuarioEnvioArquivo { get; set; }
         public string SenhaEnvioArquivo { get; set; }
         public string ChaveIntegracaoSap { get; set; }
+        public string SenhaApi { get; set; }
 
         public List<ContatoEmpresaParceiraViewModel> Contatos { get; set; }
     }

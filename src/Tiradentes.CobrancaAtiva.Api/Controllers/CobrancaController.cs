@@ -42,8 +42,9 @@ namespace Tiradentes.CobrancaAtiva.Api.Controllers
         /// </summary>
         /// <param name="resposta"></param>
         /// <returns></returns>
+        [AllowAnonymous]
+        [AutenticacaoEmpresa]
         [HttpPost("enviar-resposta-acordo-cobranca")]
-        [ProducesDefaultResponseType]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public async Task<IActionResult> Criar([FromBody] CriarRespostaViewModel resposta)
