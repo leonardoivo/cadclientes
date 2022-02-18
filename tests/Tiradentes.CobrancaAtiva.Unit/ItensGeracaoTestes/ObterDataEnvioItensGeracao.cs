@@ -9,7 +9,6 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using System;
-using System.Threading.Tasks;
 
 namespace Tiradentes.CobrancaAtiva.Unit.ItensGeracaoTestes
 {

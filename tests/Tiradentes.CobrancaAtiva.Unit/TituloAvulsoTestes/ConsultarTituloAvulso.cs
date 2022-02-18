@@ -1,16 +1,12 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Options;
 using NUnit.Framework;
 using System.Threading.Tasks;
-using Tiradentes.CobrancaAtiva.Api.Controllers;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
-using Tiradentes.CobrancaAtiva.Application.ViewModels.Semestre;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
-using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 
 namespace Tiradentes.CobrancaAtiva.Unit.TituloAvulsoTestes
@@ -59,9 +55,6 @@ namespace Tiradentes.CobrancaAtiva.Unit.TituloAvulsoTestes
                 Descricao = "M4H"
             };
 
-           
-
-          
             _context.TituloAvulso.Add(_CriarTituloAvulsoModel);
             _context.TituloAvulso.Add(_CriarTituloAvulsoModel2);
             _context.TituloAvulso.Add(_CriarTituloAvulsoModel3);

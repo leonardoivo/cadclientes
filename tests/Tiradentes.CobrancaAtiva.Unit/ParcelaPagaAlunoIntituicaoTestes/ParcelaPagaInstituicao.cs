@@ -9,7 +9,6 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using System;
-using Tiradentes.CobrancaAtiva.Application.ViewModels.BaixaPagamento;
 
 namespace Tiradentes.CobrancaAtiva.Unit.ParcelaPagaAlunoIntituicaoTestes
 {
