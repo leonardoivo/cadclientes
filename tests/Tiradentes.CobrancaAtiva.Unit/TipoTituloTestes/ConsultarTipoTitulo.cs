@@ -13,35 +13,43 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 
-namespace Tiradentes.CobrancaAtiva.Unit.Semestre
+namespace Tiradentes.CobrancaAtiva.Unit.TipoTituloTestes
 {
-    public class ConsultarSemestre
+    public class ConsultarTipoTitulo
     {
         private CobrancaAtivaDbContext _context;
-        private ISemestreService _service;
-        private SemestreModel _CriarSemestreModel;
+        private TipoTituloService _service;
+        private TipoTituloModel _CriarTipoTituloModel;
 
         [SetUp]
         public void Setup()
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests")
+                    .UseInMemoryDatabase("TipoTituloTests")
                     .Options;
 
             _context = new CobrancaAtivaDbContext(optionsContext);
-            ISemestreRepository repository = new SemestreRepository(_context);
+            ITipoTituloRepository repository = new TipoTituloRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            _service = new SemestreService(repository, mapper);
+            _service = new TipoTituloService(repository, mapper);
 
 
-            _CriarSemestreModel = new SemestreModel()
+            _CriarTipoTituloModel = new TipoTituloModel()
             {
-                Descricao = "AAA",
-                Numeral = 10
+                TipoTitulo = "AAA",
+                CodigoMagister = "M4H"
             };
 
-            _context.Semestre.Add(_CriarSemestreModel);
+            var _CriarTipoTituloModel2 = new TipoTituloModel()
+            {
+                TipoTitulo = "AAA",
+                CodigoMagister = "M4H"
+            };
+
+          
+            _context.TipoTitulo.Add(_CriarTipoTituloModel);
+            _context.TipoTitulo.Add(_CriarTipoTituloModel2);
             _context.SaveChanges();
         }
 
@@ -52,12 +60,12 @@ namespace Tiradentes.CobrancaAtiva.Unit.Semestre
         }
 
         [Test]
-        [TestCase(TestName = "Teste Consultar Semestre",
-                    Description = "Teste consultando rota de busca de semestres")]
+        [TestCase(TestName = "Teste Consultar Tipo Titulo",
+                    Description = "Teste consultando rota de busca de Tipo Titulo")]
         public async Task TesteBuscarTodos()
         {
-            var semestre = await _service.Buscar();
-            Assert.AreEqual(1, semestre.Count);
+            var SituacaoAluno = await _service.Buscar();
+            Assert.AreEqual(2, SituacaoAluno.Count);
         }
     }
 }

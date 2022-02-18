@@ -13,35 +13,46 @@ using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
 using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 
-namespace Tiradentes.CobrancaAtiva.Unit.SituacaoAluno
+namespace Tiradentes.CobrancaAtiva.Unit.TipoPagamentoTestes
 {
-    public class ConsultarSituacaoAluno
+    public class ConsultarTipoPagamento
     {
         private CobrancaAtivaDbContext _context;
-        private SituacaoAlunoService _service;
-        private SituacaoAlunoModel _CriarSituacaoAlunoModel;
+        private TipoPagamentoService _service;
+        private TipoPagamentoModel _CriarTipoPagamentoModel;
 
         [SetUp]
         public void Setup()
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests")
+                    .UseInMemoryDatabase("TipoPagamentoTests")
                     .Options;
 
             _context = new CobrancaAtivaDbContext(optionsContext);
-            ISituacaoAlunoRepository repository = new SituacaoAlunoRepository(_context);
+            ITipoPagamentoRepository repository = new TipoPagamentoRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            _service = new SituacaoAlunoService(repository, mapper);
+            _service = new TipoPagamentoService(repository, mapper);
 
 
-            _CriarSituacaoAlunoModel = new SituacaoAlunoModel()
+            _CriarTipoPagamentoModel = new TipoPagamentoModel()
             {
-                Situacao = "AAA",
-                CodigoMagister = "M4H"
+                TipoPagamento = "AAA",
             };
 
-            _context.SituacaoAluno.Add(_CriarSituacaoAlunoModel);
+            var _CriarTipoPagamentoModel2 = new TipoPagamentoModel()
+            {
+                TipoPagamento = "AAA",
+            };
+
+            var _CriarTipoPagamentoModel3 = new TipoPagamentoModel()
+            {
+                TipoPagamento = "AAA",
+            };
+
+            _context.TipoPagamento.Add(_CriarTipoPagamentoModel);
+            _context.TipoPagamento.Add(_CriarTipoPagamentoModel2);
+            _context.TipoPagamento.Add(_CriarTipoPagamentoModel3);
             _context.SaveChanges();
         }
 
@@ -52,12 +63,12 @@ namespace Tiradentes.CobrancaAtiva.Unit.SituacaoAluno
         }
 
         [Test]
-        [TestCase(TestName = "Teste Consultar Situacao Aluno",
-                    Description = "Teste consultando rota de busca de Situacao Aluno")]
+        [TestCase(TestName = "Teste Consultar Tipo Pagamento",
+                    Description = "Teste consultando rota de busca de Tipo Pagamento")]
         public async Task TesteBuscarTodos()
         {
             var SituacaoAluno = await _service.Buscar();
-            Assert.AreEqual(1, SituacaoAluno.Count);
+            Assert.AreEqual(3, SituacaoAluno.Count);
         }
     }
 }
