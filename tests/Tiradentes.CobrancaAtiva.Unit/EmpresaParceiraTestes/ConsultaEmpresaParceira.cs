@@ -20,25 +20,25 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
         private EmpresaParceiraController _controller;
         private CobrancaAtivaDbContext _context;
         private IEmpresaParceiraService _service;
-        private IOptions<EncryptationConfig> _encryptationConfig;
 
         [SetUp]
         public void Setup()
         {
-            DbContextOptions<CobrancaAtivaDbContext> optionsContext =
+            var optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
                     .UseInMemoryDatabase("CobrancaAtivaTests")
                     .Options;
-            _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
+            var encryptationConfig = Options.Create(new EncryptationConfig()
             {
-                BaseUrl = "https://encrypt-service-2kcoisahga-ue.a.run.app/",
-                DecryptAuthorization = "bWVjLWVuYzpwYXNzd29yZA==",
-                EncryptAuthorization = "bWVjLWRlYzpwYXNzd29yZA=="
+                BaseUrl = "http://teste.com/",
+                DecryptAuthorization = "123",
+                EncryptAuthorization = "123"
             });
             _context = new CobrancaAtivaDbContext(optionsContext);
             IEmpresaParceiraRepository repository = new EmpresaParceiraRepository(_context);
             IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            _service = new EmpresaParceiraService(repository, mapper, _encryptationConfig);
+            var criptografiaService = new CriptografiaService(encryptationConfig, null);
+            _service = new EmpresaParceiraService(repository, mapper, criptografiaService);
             _controller = new EmpresaParceiraController(_service);
 
             _context.EmpresaParceira.Remove(_context.EmpresaParceira.FirstAsync().Result);
@@ -56,6 +56,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.EmpresaParceiraTestes
                     Description = "Teste usando um banco vazio e não enviado dados de paginação")]
         public async Task TesteBuscarTodos()
         {
+            
             var t = await _controller.Buscar(new ConsultaEmpresaParceiraQueryParam());
             Assert.AreEqual(0, t.Value.Items.Count);
             Assert.AreEqual(0, t.Value.TotalItems);

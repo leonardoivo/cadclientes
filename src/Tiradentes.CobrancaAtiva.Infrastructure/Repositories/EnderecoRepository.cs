@@ -29,7 +29,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             pBairro.Size = 100;
             pLogradouro.Size = 100;
 
-            await _context.Database.ExecuteSqlRawAsync("BEGIN SCF.P_OBTER_DADOS_CEP_2({0}, {1}, {2}, {3}, {4}); END;", 
+            await _context.Database.ExecuteSqlRawAsync("BEGIN SCF.P_OBTER_DADOS_CEP({0}, {1}, {2}, {3}, {4}); END;", 
                 pCep, pUf, pCidade, pBairro, pLogradouro );
 
             return new EnderecoModel(CEP, 

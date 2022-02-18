@@ -22,7 +22,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
 {
     public class DeletarParametroEnvio
     {
-        private CobrancaAtivaDbContext _context;
+ /*        private CobrancaAtivaDbContext _context;
         private CobrancaAtivaScfDbContext _contextScf;
         private IParametroEnvioService _service;
         private IOptions<EncryptationConfig> _encryptationConfig;
@@ -30,88 +30,98 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
         private IMapper _mapper;
         private Mock<IAlunosInadimplentesRepository> _alunosInadimplentesRepository;
         private Mock<ILoteEnvioRepository> _loteEnvioRepository;
-        private CriarParametroEnvioViewModel _CriarParametroEnvio;
+        private CriarParametroEnvioViewModel _CriarParametroEnvio; */
+        //private CobrancaAtivaDbContext _context;
+        //private CobrancaAtivaScfDbContext _contextScf;
+        //private MongoContext _contextMongo;
+        //private IParametroEnvioService _service;
+        //private IOptions<EncryptationConfig> _encryptationConfig;
+        //private ParametroEnvioModel _model;
+        //private IMapper _mapper;
+        //private Mock<IAlunosInadimplentesRepository> _alunosInadimplentesRepository;
+        //private Mock<ILoteEnvioRepository> _loteEnvioRepository;
+        //private CriarParametroEnvioViewModel _CriarParametroEnvio;
 
-        [SetUp]
-        public void Setup()
-        {
-            DbContextOptions<CobrancaAtivaDbContext> optionsContext =
-                new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("CobrancaAtivaTests")
-                    .Options;
+        //[SetUp]
+        //public void Setup()
+        //{
+        //    DbContextOptions<CobrancaAtivaDbContext> optionsContext =
+        //        new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
+        //            .UseInMemoryDatabase("CobrancaAtivaTests")
+        //            .Options;
             
-             DbContextOptions<CobrancaAtivaScfDbContext> optionsContextScf =
-                new DbContextOptionsBuilder<CobrancaAtivaScfDbContext>()
-                    .UseInMemoryDatabase("SCF")
-                    .Options;
+        //     DbContextOptions<CobrancaAtivaScfDbContext> optionsContextScf =
+        //        new DbContextOptionsBuilder<CobrancaAtivaScfDbContext>()
+        //            .UseInMemoryDatabase("SCF")
+        //            .Options;
        
-            _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
-                {
-                    BaseUrl = "https://encrypt-service-2kcoisahga-ue.a.run.app/",
-                    DecryptAuthorization = "bWVjLWVuYzpwYXNzd29yZA==",
-                    EncryptAuthorization = "bWVjLWRlYzpwYXNzd29yZA=="
-                });
+        //    _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
+        //        {
+        //            BaseUrl = "https://encrypt-service-2kcoisahga-ue.a.run.app/",
+        //            DecryptAuthorization = "bWVjLWVuYzpwYXNzd29yZA==",
+        //            EncryptAuthorization = "bWVjLWRlYzpwYXNzd29yZA=="
+        //        });
 
-            _alunosInadimplentesRepository = new Mock<IAlunosInadimplentesRepository>();
-            _loteEnvioRepository = new Mock<ILoteEnvioRepository>();
-            _mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            _context = new CobrancaAtivaDbContext(optionsContext);
-            _contextScf = new CobrancaAtivaScfDbContext(optionsContextScf);
-            IParametroEnvioRepository repository = new ParametroEnvioRepository(_context);
-            IEmpresaParceiraRepository empresaParceiraRepository = new EmpresaParceiraRepository(_context);
-            IGeracaoCobrancasRepository geracaoCobrancasRepository = new GeracaoCobrancasRepository(_contextScf);
-            IItensGeracaoRepository itensGeracaoRepository = new ItensGeracaoRepository(_context);
-            IArquivoCobrancasRepository arquivoCobrancasRepository= new ArquivoCobrancasRepository(_contextScf);
-            IConflitoRepository conflitoRepository = new ConflitoRepository(_context);
-            IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
-            IOptions<RabbitMQConfig> rabbitOptions = Options.Create<RabbitMQConfig>(new RabbitMQConfig() { 
-                Queue = "consulta_facilitada_dev",
-                QueueEnvioArquivo = "envio-arquivo-lote-dev",
-                HostName = "fox-02.rmq.cloudamqp.com",
-                VirtualHost = "lxytdtks",
-                UserName = "lxytdtks",
-                Password = "YXoTIx-qdbPYJRwt8HUDgBsFgsoczRtu"
-            });
+        //    _alunosInadimplentesRepository = new Mock<IAlunosInadimplentesRepository>();
+        //    _loteEnvioRepository = new Mock<ILoteEnvioRepository>();
+        //    _mapper = new Mapper(AutoMapperSetup.RegisterMappings());
+        //    _context = new CobrancaAtivaDbContext(optionsContext);
+        //    _contextScf = new CobrancaAtivaScfDbContext(optionsContextScf);
+        //    IParametroEnvioRepository repository = new ParametroEnvioRepository(_context);
+        //    IEmpresaParceiraRepository empresaParceiraRepository = new EmpresaParceiraRepository(_context);
+        //    IGeracaoCobrancasRepository geracaoCobrancasRepository = new GeracaoCobrancasRepository(_contextScf);
+        //    IItensGeracaoRepository itensGeracaoRepository = new ItensGeracaoRepository(_context);
+        //    IArquivoCobrancasRepository arquivoCobrancasRepository= new ArquivoCobrancasRepository(_contextScf);
+        //    IConflitoRepository conflitoRepository = new ConflitoRepository(_context);
+        //    IMapper mapper = new Mapper(AutoMapperSetup.RegisterMappings());
+        //    IOptions<RabbitMQConfig> rabbitOptions = Options.Create<RabbitMQConfig>(new RabbitMQConfig() { 
+        //        Queue = "consulta_facilitada_dev",
+        //        QueueEnvioArquivo = "envio-arquivo-lote-dev",
+        //        HostName = "fox-02.rmq.cloudamqp.com",
+        //        VirtualHost = "lxytdtks",
+        //        UserName = "lxytdtks",
+        //        Password = "YXoTIx-qdbPYJRwt8HUDgBsFgsoczRtu"
+        //    });
 
-            _service = new ParametroEnvioService(repository, empresaParceiraRepository, geracaoCobrancasRepository, itensGeracaoRepository, arquivoCobrancasRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions, _encryptationConfig);
+        //    _service = new ParametroEnvioService(repository, empresaParceiraRepository, geracaoCobrancasRepository, itensGeracaoRepository, arquivoCobrancasRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions, _encryptationConfig);
 
-            _CriarParametroEnvio = new CriarParametroEnvioViewModel()
-            {
-                EmpresaParceiraId = 1,
-                InstituicaoId = 10,
-                ModalidadeId = 100,
-                DiaEnvio = 28,
-                Status = true,
-                InadimplenciaInicial = DateTime.Now,
-                InadimplenciaFinal = DateTime.Now,
-                ValidadeInicial = DateTime.Now,
-                ValidadeFinal = DateTime.Now,
-                CursoIds = new int[1]{ 1 },
-                SituacaoAlunoIds = new int[1]{ 1 },
-                TituloAvulsoIds = new int[1]{ 1 },
-                TipoTituloIds = new int[1]{ 1 }
-            };
+        //    _CriarParametroEnvio = new CriarParametroEnvioViewModel()
+        //    {
+        //        EmpresaParceiraId = 1,
+        //        InstituicaoId = 10,
+        //        ModalidadeId = 100,
+        //        DiaEnvio = 28,
+        //        Status = true,
+        //        InadimplenciaInicial = DateTime.Now,
+        //        InadimplenciaFinal = DateTime.Now,
+        //        ValidadeInicial = DateTime.Now,
+        //        ValidadeFinal = DateTime.Now,
+        //        CursoIds = new int[1]{ 1 },
+        //        SituacaoAlunoIds = new int[1]{ 1 },
+        //        TituloAvulsoIds = new int[1]{ 1 },
+        //        TipoTituloIds = new int[1]{ 1 }
+        //    };
 
-            _model = _mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio);
-            _context.ParametroEnvio.Add(_model);
-            _context.SaveChanges();
+        //    _model = _mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio);
+        //    _context.ParametroEnvio.Add(_model);
+        //    _context.SaveChanges();
 
         
-        }
+        //}
 
-        [TearDown]
-        public void TearDown()
-        {
-            GC.SuppressFinalize(this);
-        }
+        //[TearDown]
+        //public void TearDown()
+        //{
+        //    GC.SuppressFinalize(this);
+        //}
 
-        [Test]
-        [TestCase(TestName = "Teste Deletar Parametro Envio",
-                    Description = "Testando função de Deletar do CRUD Parametro envio")]
-        public async Task TesteDeletarParametroEnvio()
-        {
-            await _service.Deletar(_model.Id);
-            Assert.Pass();
-        }
+        //[Test]
+        //[TestCase(TestName = "Teste Deletar Parametro Envio",
+        //            Description = "Testando função de Deletar do CRUD Parametro envio")]
+        //public async Task TesteBuscarParametroEnvio()
+        //{
+        //   await _service.Deletar(_model.Id);
+        //    Assert.Pass();
+        //}
     } 
 }

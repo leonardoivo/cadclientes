@@ -66,7 +66,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                     i.Key.cnpj,
                     i.Key.dtBaixa
                 })
-                .Paginar(0, 100);
+                .PaginarAsync(0, 100);
 
 
             var resultado = new ModelPaginada<BuscaBaixaPagamentoDto>

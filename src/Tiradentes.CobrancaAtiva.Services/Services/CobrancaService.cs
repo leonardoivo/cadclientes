@@ -94,7 +94,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NumeroAcordo = 730694444,
                 Parcela = 50,
 
-                CnpjEmpresaCobranca = 07324847000170,
+                CnpjEmpresaCobranca = "07324847000170",
                 SituacaoAluno = "M",
                 Sistema = "E",
                 TipoInadimplencia = "P",
@@ -142,7 +142,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NumeroAcordo = 730694444,
                 Parcela = 50,
 
-                CnpjEmpresaCobranca = 07324847000170,
+                CnpjEmpresaCobranca = "07324847000170",
                 SituacaoAluno = "M",
                 Sistema = "E",
                 TipoInadimplencia = "P",
@@ -191,7 +191,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 NumeroAcordo = 730694444,
                 Parcela = 50,
 
-                CnpjEmpresaCobranca = 07324847000170,
+                CnpjEmpresaCobranca = "07324847000170",
                 SituacaoAluno = "M",
                 Sistema = "E",
                 TipoInadimplencia = "P",
@@ -236,8 +236,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             return respostas;
         }
 
-        public async Task<CriarRespostaViewModel> Criar(CriarRespostaViewModel viewModel)
+        public async Task<CriarRespostaViewModel> Criar(CriarRespostaViewModel viewModel, string cnpj)
         {
+            viewModel.CnpjEmpresaCobranca = cnpj;
             Validate(new CriarRespostaCobrancaValidation(), viewModel);
 
             var model = _map.Map<RespostasCollection>(viewModel);
