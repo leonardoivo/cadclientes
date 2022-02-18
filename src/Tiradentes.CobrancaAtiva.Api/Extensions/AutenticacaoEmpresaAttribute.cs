@@ -43,7 +43,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Extensions
 
             if (validaErro.ExisteErro)
             {
-                context.Result = TratarResult(HttpStatusCode.BadRequest, new {erros = validaErro.Erros});
+                context.Result = TratarResult(HttpStatusCode.Unauthorized, new {erros = validaErro.Erros});
                 return;
             }
 
