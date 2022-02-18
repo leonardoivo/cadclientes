@@ -99,7 +99,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.CobrancaTestes
             var viewModel = new CriarRespostaViewModel()
             {
                 TipoRegistro = 1,
-                CnpjEmpresaCobranca = 28992700000129,
+                CnpjEmpresaCobranca = "28992700000129",
                 SituacaoAluno = "SituacaoAluno",
                 Sistema = "Sistema",
                 TipoInadimplencia = "TipoInadimplencia",
@@ -139,7 +139,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.CobrancaTestes
                 TipoPagamento = "TipoPagamento"
             };
 
-            var result = await _service.Criar(viewModel);
+            var result = await _service.Criar(viewModel, viewModel.CnpjEmpresaCobranca);
 
             Assert.AreEqual(viewModel.CnpjEmpresaCobranca, result.CnpjEmpresaCobranca);
         }

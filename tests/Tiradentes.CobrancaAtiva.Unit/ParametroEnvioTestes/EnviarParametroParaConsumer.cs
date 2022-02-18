@@ -16,6 +16,8 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 using Tiradentes.CobrancaAtiva.Domain.Models;
+using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
 
 namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
 {
@@ -32,17 +34,21 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
         private CriarParametroEnvioViewModel _CriarParametroEnvio;
         private InstituicaoModel _CriarInstituicaoModel;
 
+         private CacheServiceRepository _cacheServiceRepository;
+        private Mock<HttpMessageHandler> _mockHttpClient;
+
+
         [SetUp]
         public void Setup()
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("EnviarParametroParaConsumer")
+                    .UseInMemoryDatabase("TesteConsultarPorID")
                     .Options;
             
              DbContextOptions<CobrancaAtivaScfDbContext> optionsContextScf =
                 new DbContextOptionsBuilder<CobrancaAtivaScfDbContext>()
-                    .UseInMemoryDatabase("EnviarParametroParaConsumer2")
+                    .UseInMemoryDatabase("TesteConsultarPorID")
                     .Options;
        
             _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
@@ -52,12 +58,46 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
                     EncryptAuthorization = "bWVjLWRlYzpwYXNzd29yZA=="
                 });
 
+            _mockHttpClient = new Mock<HttpMessageHandler>();
+            var client = new HttpClient(_mockHttpClient.Object);
+            client.BaseAddress = new Uri("http://teste.com/");
+            var criptografiaService = new CriptografiaService(_encryptationConfig, client);
+
             _alunosInadimplentesRepository = new Mock<IAlunosInadimplentesRepository>();
             _loteEnvioRepository = new Mock<ILoteEnvioRepository>();
             _mapper = new Mapper(AutoMapperSetup.RegisterMappings());
             _context = new CobrancaAtivaDbContext(optionsContext);
             _contextScf = new CobrancaAtivaScfDbContext(optionsContextScf);
-            IParametroEnvioRepository repository = new ParametroEnvioRepository(_context);
+            var services = new ServiceCollection();
+
+            services.AddScoped<ICursoRepository, CursoRepository>();
+            services.AddScoped<ICursoService, CursoService>();
+
+            services.AddScoped<ITituloAvulsoRepository, TituloAvulsoRepository>();
+            services.AddScoped<ITituloAvulsoService, TituloAvulsoService>();
+
+            services.AddScoped<ISituacaoAlunoRepository, SituacaoAlunoRepository>();
+            services.AddScoped<ISituacaoAlunoService, SituacaoAlunoService>();
+
+            services.AddScoped<ITipoTituloRepository, TipoTituloRepository>();
+            services.AddScoped<ITipoTituloService, TipoTituloService>();
+
+            services.AddScoped<MongoContext>();
+            services.AddDbContext<CobrancaAtivaDbContext>(options =>
+                options.UseInMemoryDatabase("TesteConsultarPorID")); 
+            services.AddDbContext<CobrancaAtivaScfDbContext>(options =>
+                options.UseInMemoryDatabase("TesteConsultarPorID"));
+
+            var serviceProvider = services.BuildServiceProvider();
+            serviceProvider.GetService(typeof(CobrancaAtivaDbContext));
+            var serviceScope = new Mock<IServiceScope>();
+            serviceScope.Setup(x => x.ServiceProvider).Returns(serviceProvider);
+            var serviceScopeFactory = new Mock<IServiceScopeFactory>();
+            serviceScopeFactory.Setup(x => x.CreateScope()).Returns(serviceScope.Object);
+
+            _cacheServiceRepository = new CacheServiceRepository(serviceScopeFactory.Object);
+
+            IParametroEnvioRepository repository = new ParametroEnvioRepository(_cacheServiceRepository, _context);
             IEmpresaParceiraRepository empresaParceiraRepository = new EmpresaParceiraRepository(_context);
             IGeracaoCobrancasRepository geracaoCobrancasRepository = new GeracaoCobrancasRepository(_contextScf);
             IItensGeracaoRepository itensGeracaoRepository = new ItensGeracaoRepository(_context);
@@ -73,7 +113,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
                 Password = "YXoTIx-qdbPYJRwt8HUDgBsFgsoczRtu"
             });
 
-            _service = new ParametroEnvioService(repository, empresaParceiraRepository, geracaoCobrancasRepository, itensGeracaoRepository, arquivoCobrancasRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions, _encryptationConfig);
+            _service = new ParametroEnvioService(criptografiaService, repository, geracaoCobrancasRepository, itensGeracaoRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions);
 
             _CriarInstituicaoModel = new InstituicaoModel()
             {
