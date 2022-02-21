@@ -354,7 +354,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                         var periodo = -1;
 
-                        if (Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 6)
+                        if (Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 5)
                         {
                             itemGeracao.Periodo = Convert.ToDecimal(alunoInadimplente.Periodo);
                             itemGeracao.PeriodoOutros = "1";
@@ -388,7 +388,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     DataGeracao = geracaoCobrancas.DataGeracao,
                     Sequencia = indexArquivoAtual
                 };
-                await _arquivosGeracaoRepository.Criar(arquivoGerado);
+                //await _arquivosGeracaoRepository.Criar(arquivoGerado);
 
                 var conflitos = await _repositorioConflito.BuscarPorLote(loteEnvio.Lote.ToString());
 

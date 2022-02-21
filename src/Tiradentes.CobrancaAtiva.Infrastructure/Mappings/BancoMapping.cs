@@ -19,7 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Nome)
              .HasColumnName("NOME_BANCO");
 
-            builder.ToTable("BANCOS","APP_COBRANCA");
+            builder.ToTable("BANCOS");
         }
     }
 }
