@@ -24,7 +24,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Extensions
                 Required = true,
                 Schema = new OpenApiSchema
                 {
-                    Type = "string" 
+                    Type = "string",
+                    Description = "Chave da empresa sem caracteres especiais"
                 }
             });
             
@@ -36,7 +37,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Extensions
                 Required = true,
                 Schema = new OpenApiSchema
                 {
-                    Type = "string"
+                    Type = "string",
+                    Description = "Senha da empresa"
                 }
             });
         }
