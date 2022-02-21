@@ -117,7 +117,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
                 Password = "YXoTIx-qdbPYJRwt8HUDgBsFgsoczRtu"
             });
 
-            _service = new ParametroEnvioService(criptografiaService, repository, geracaoCobrancasRepository, itensGeracaoRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions);
+            _service = new ParametroEnvioService(criptografiaService, repository, geracaoCobrancasRepository, itensGeracaoRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions, arquivoCobrancasRepository);
 
             _CriarInstituicaoModel = new InstituicaoModel()
             {
@@ -202,7 +202,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
        [Test]
        [TestCase(TestName = "Teste Consultar Parametro envio",
                    Description = "Testando função de busca do CRUD Parametro envio")]
-       public async Task TesteBuscarParametroEnvio()
+       public async Task TesteBuscarParametroEnvioValido()
        {
             
             var queryParam = new ConsultaParametroEnvioQueryParam(){
@@ -214,6 +214,32 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
             var busca = await _service.Buscar(queryParam);
             Assert.AreEqual(1, busca.TotalItems);
 
+       }
+
+       [Test]
+       [TestCase(TestName = "Teste Consultar Parametro envio inválido",
+                   Description = "Testando função de busca do CRUD Parametro envio")]
+       public async Task TesteBuscarParametroEnvioInvalido()
+       {
+            
+            var queryParam = new ConsultaParametroEnvioQueryParam(){
+                EmpresaId = 1,
+                InstituicaoId = 1,
+                DiaEnvio = 1,
+                Status = false,
+                InadimplenciaInicial = DateTime.Now,
+                InadimplenciaFinal = DateTime.Now,
+                ValidadeInicial = DateTime.Now,
+                ValidadeFinal = DateTime.Now,
+                Modalidades = new int[1]{ 1 },
+                Cursos = new int[1]{ 1 },
+                TitulosAvulsos = new int[1]{ 1 },
+                SituacoesAlunos = new int[1]{ 1 },
+                TiposTitulos = new int[1]{ 1 }
+            };
+
+            var busca = await _service.Buscar(queryParam);
+            Assert.AreEqual(0, busca.TotalItems);
        }       
     } 
 }

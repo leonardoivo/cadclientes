@@ -112,7 +112,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
                 Password = "YXoTIx-qdbPYJRwt8HUDgBsFgsoczRtu"
             });
 
-            _service = new ParametroEnvioService(criptografiaService, repository, geracaoCobrancasRepository, itensGeracaoRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions);
+            _service = new ParametroEnvioService(criptografiaService, repository, geracaoCobrancasRepository, itensGeracaoRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions, arquivoCobrancasRepository);
 
             _CriarCursoModel = new CursoModel()
             {
