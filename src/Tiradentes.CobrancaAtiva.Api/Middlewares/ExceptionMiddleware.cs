@@ -59,7 +59,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Middlewares
 
             context.Response.ContentType = "application/json";
             context.Response.StatusCode = statusCode;
-            await context.Response.Body.WriteAsync(bytes, 0, bytes.Length);
+            await context.Response.Body.WriteAsync(bytes.AsMemory(0, bytes.Length));
 
             await _service.LogError(new ApplicationErrorCollection() 
             {
