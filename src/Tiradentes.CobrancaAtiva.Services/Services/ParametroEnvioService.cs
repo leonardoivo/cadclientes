@@ -29,6 +29,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         private readonly ConnectionFactory _factory;
         private readonly RabbitMQConfig _rabbitMQConfig;
         private readonly IParametroEnvioRepository _repositorio;
+        private readonly IArquivoCobrancasRepository _arquivosGeracaoRepository;
         private readonly IGeracaoCobrancasRepository _geracaoCobrancaRepositorio;
         private readonly IItensGeracaoRepository _itensGeracaoRepository;
         private readonly IAlunosInadimplentesRepository _repositorioAlunosInadimplentes;
@@ -45,8 +46,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             ILoteEnvioRepository repositorioLoteEnvio,
             IConflitoRepository repositoryConflito,
             IMapper map,
-            IOptions<RabbitMQConfig> rabbitMQConfig 
-        )
+            IOptions<RabbitMQConfig> rabbitMQConfig,
+            IArquivoCobrancasRepository arquivosGeracaoRepository)
         {
             _map = map;
             _repositorio = repositorio;
@@ -65,6 +66,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 Password = _rabbitMQConfig.Password
             };
             _criptografiaService = criptografiaService;
+            _arquivosGeracaoRepository = arquivosGeracaoRepository;
         }
 
         public async Task<ViewModelPaginada<BuscaParametroEnvioViewModel>> Buscar(
@@ -248,7 +250,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 .ToList();
 
             var totalLinhas = dados.Count;
-            var quantidadeArquivos = (int) (totalLinhas / limiteLinhas);
+            var quantidadeArquivos = (int)(totalLinhas / limiteLinhas);
 
             if (totalLinhas > 0 && quantidadeArquivos == 0)
                 quantidadeArquivos = 1;
@@ -347,8 +349,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                         var periodo = -1;
 
-                        if (Int32.TryParse(alunoInadimplente.Periodo, out periodo) &&
-                            alunoInadimplente.Periodo.Length <= 5)
+                        if (Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 6)
                         {
                             itemGeracao.Periodo = Convert.ToDecimal(alunoInadimplente.Periodo);
                             itemGeracao.PeriodoOutros = "1";
@@ -382,7 +383,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     DataGeracao = geracaoCobrancas.DataGeracao,
                     Sequencia = indexArquivoAtual
                 };
-                //await _arquivosGeracaoRepository.Criar(arquivoGerado);
+                await _arquivosGeracaoRepository.Criar(arquivoGerado);
 
                 var conflitos = await _repositorioConflito.BuscarPorLote(loteEnvio.Lote.ToString());
 
