@@ -15,7 +15,6 @@ using Tiradentes.CobrancaAtiva.Application.Configuration;
 using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Application.ViewModels;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
-using Tiradentes.CobrancaAtiva.Application.WebApi;
 using Tiradentes.CobrancaAtiva.Domain.DTO;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Domain.Models;
@@ -26,39 +25,34 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 {
     public class ParametroEnvioService : BaseService, IParametroEnvioService
     {
-        protected readonly EncryptationApi _encryptationApi;
+        protected readonly ICriptografiaService _criptografiaService;
         private readonly ConnectionFactory _factory;
         private readonly RabbitMQConfig _rabbitMQConfig;
         private readonly IParametroEnvioRepository _repositorio;
-        private readonly IEmpresaParceiraRepository _repositorioEmpresaParceira;
+        private readonly IArquivoCobrancasRepository _arquivosGeracaoRepository;
         private readonly IGeracaoCobrancasRepository _geracaoCobrancaRepositorio;
         private readonly IItensGeracaoRepository _itensGeracaoRepository;
-        private readonly IArquivoCobrancasRepository _arquivosGeracaoRepository;
-        protected readonly IAlunosInadimplentesRepository _repositorioAlunosInadimplentes;
-        protected readonly ILoteEnvioRepository _repositorioLoteEnvio;
-        protected readonly IConflitoRepository _repositorioConflito;
-        protected readonly IMapper _map;
+        private readonly IAlunosInadimplentesRepository _repositorioAlunosInadimplentes;
+        private readonly ILoteEnvioRepository _repositorioLoteEnvio;
+        private readonly IConflitoRepository _repositorioConflito;
+        private readonly IMapper _map;
 
         public ParametroEnvioService(
+            ICriptografiaService criptografiaService,
             IParametroEnvioRepository repositorio,
-            IEmpresaParceiraRepository repositorioEmpresaParceira,
             IGeracaoCobrancasRepository geracaoCobrancaRepositorio,
             IItensGeracaoRepository itensGeracaoRepository,
-            IArquivoCobrancasRepository arquivoCobrancasRepository,
             IAlunosInadimplentesRepository repositorioAlunosInadimplentes,
             ILoteEnvioRepository repositorioLoteEnvio,
             IConflitoRepository repositoryConflito,
             IMapper map,
             IOptions<RabbitMQConfig> rabbitMQConfig,
-            IOptions<EncryptationConfig> encryptationConfig
-        )
+            IArquivoCobrancasRepository arquivosGeracaoRepository)
         {
             _map = map;
             _repositorio = repositorio;
-            _repositorioEmpresaParceira = repositorioEmpresaParceira;
             _geracaoCobrancaRepositorio = geracaoCobrancaRepositorio;
             _itensGeracaoRepository = itensGeracaoRepository;
-            _arquivosGeracaoRepository = arquivoCobrancasRepository;
             _repositorioAlunosInadimplentes = repositorioAlunosInadimplentes;
             _repositorioLoteEnvio = repositorioLoteEnvio;
             _repositorioConflito = repositoryConflito;
@@ -71,7 +65,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 UserName = _rabbitMQConfig.UserName,
                 Password = _rabbitMQConfig.Password
             };
-            _encryptationApi = new EncryptationApi(encryptationConfig.Value);
+            _criptografiaService = criptografiaService;
+            _arquivosGeracaoRepository = arquivosGeracaoRepository;
         }
 
         public async Task<ViewModelPaginada<BuscaParametroEnvioViewModel>> Buscar(
@@ -179,7 +174,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var parametroEnvio = await _repositorio.BuscarPorIdComRelacionamentos(id);
             var empresaParceira = parametroEnvio.EmpresaParceira;
 
-            var senhaEnvioArquivo = await _encryptationApi.CallDecrypt(empresaParceira.SenhaEnvioArquivo);
+            var senhaEnvioArquivo = await _criptografiaService.Descriptografar(empresaParceira.SenhaEnvioArquivo);
 
             var dataGeracaoArquivo = DateTime.Now.ToString("dd/MM/yyyy");
 
@@ -255,7 +250,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 .ToList();
 
             var totalLinhas = dados.Count;
-            var quantidadeArquivos = (int) (totalLinhas / limiteLinhas);
+            var quantidadeArquivos = (int)(totalLinhas / limiteLinhas);
 
             if (totalLinhas > 0 && quantidadeArquivos == 0)
                 quantidadeArquivos = 1;
@@ -354,7 +349,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                         var periodo = -1;
 
-                        if (Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 5)
+                        if (Int32.TryParse(alunoInadimplente.Periodo, out periodo) && alunoInadimplente.Periodo.Length <= 6)
                         {
                             itemGeracao.Periodo = Convert.ToDecimal(alunoInadimplente.Periodo);
                             itemGeracao.PeriodoOutros = "1";
@@ -388,7 +383,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     DataGeracao = geracaoCobrancas.DataGeracao,
                     Sequencia = indexArquivoAtual
                 };
-                //await _arquivosGeracaoRepository.Criar(arquivoGerado);
+                await _arquivosGeracaoRepository.Criar(arquivoGerado);
 
                 var conflitos = await _repositorioConflito.BuscarPorLote(loteEnvio.Lote.ToString());
 

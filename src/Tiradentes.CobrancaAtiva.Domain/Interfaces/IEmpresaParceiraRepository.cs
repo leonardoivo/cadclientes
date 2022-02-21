@@ -10,5 +10,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
         Task<bool> VerificaCnpjJaCadastrado(string cnpj, int? id);
         Task<EmpresaParceiraModel> BuscarPorIdCompleto(int id);
         Task<ModelPaginada<EmpresaParceiraModel>> Buscar(EmpresaParceiraQueryParam queryParams);
+        Task<EmpresaParceiraModel> BuscarPorCnpj(string cnpj);
     }
 }

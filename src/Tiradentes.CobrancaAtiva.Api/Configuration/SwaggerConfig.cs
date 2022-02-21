@@ -4,6 +4,7 @@ using Microsoft.OpenApi.Models;
 using System;
 using System.IO;
 using System.Reflection;
+using Tiradentes.CobrancaAtiva.Api.Extensions;
 
 namespace Tiradentes.CobrancaAtiva.Api.Configuration
 {
@@ -27,10 +28,13 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
                     In = ParameterLocation.Header,
                     Description = "Autenticação JWT. Exemplo: Bearer <token>"
                 });
-                swg.AddSecurityRequirement(new OpenApiSecurityRequirement {
+                swg.AddSecurityRequirement(new OpenApiSecurityRequirement
+                {
                     {
-                        new OpenApiSecurityScheme {
-                            Reference = new OpenApiReference {
+                        new OpenApiSecurityScheme
+                        {
+                            Reference = new OpenApiReference
+                            {
                                 Type = ReferenceType.SecurityScheme,
                                 Id = "Bearer"
                             }
@@ -38,7 +42,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Configuration
                         Array.Empty<string>()
                     }
                 });
-                
+                swg.OperationFilter<AutenticacaoEmpresaParameterOperationFilter>();
+
                 var xmlFile = $"{Assembly.GetExecutingAssembly().GetName().Name}.xml";
                 var xmlPath = Path.Combine(AppContext.BaseDirectory, xmlFile);
                 swg.IncludeXmlComments(xmlPath);
