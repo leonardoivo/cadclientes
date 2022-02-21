@@ -49,7 +49,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         {
             var resultadoConsulta = await _repositorio.BuscarPorCnpj(cnpj);
             var empresaParceira = _map.Map<EmpresaParceiraViewModel>(resultadoConsulta);
-            empresaParceira.SenhaApi = await _criptografiaService.Descriptografar(empresaParceira.SenhaApi);
+            if (empresaParceira != null)
+                empresaParceira.SenhaApi = await _criptografiaService.Descriptografar(empresaParceira.SenhaApi);
             return empresaParceira;
         }
 
@@ -114,6 +115,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             if (string.IsNullOrEmpty(viewModel.SenhaApi))
                 viewModel.SenhaApi = modelNoBanco.SenhaApi;
+            else 
+                viewModel.SenhaApi = await _criptografiaService.Criptografar(viewModel.SenhaApi);
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
             model.SetarEndereco(modelNoBanco.Endereco.Id, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
