@@ -51,10 +51,17 @@ namespace Tiradentes.CobrancaAtiva.Api.Extensions
 
             if (empresaParceira is null || empresaParceira.SenhaApi != senha)
             {
-                context.Result = TratarResult(HttpStatusCode.BadRequest, new {erro = "Chave ou Senha da empresa inválida"});
+                context.Result = TratarResult(HttpStatusCode.BadRequest,
+                    new {erro = "Chave ou Senha da empresa inválida"});
                 return;
             }
-            
+
+            if (!empresaParceira.Status)
+            {
+                context.Result = TratarResult(HttpStatusCode.BadRequest, new {erro = "Empresa inativa"});
+                return;
+            }
+
             var claimsIdentity = context.HttpContext.User.Identity;
             var identity = new ClaimsIdentity(claimsIdentity);
             identity.AddClaim(new Claim("CNPJ", empresaParceira.CNPJ));
