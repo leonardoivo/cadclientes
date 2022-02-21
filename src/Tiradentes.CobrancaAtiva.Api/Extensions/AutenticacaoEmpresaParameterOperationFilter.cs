@@ -20,12 +20,11 @@ namespace Tiradentes.CobrancaAtiva.Api.Extensions
             {
                 Name = "CHAVE-EMPRESA",
                 In = ParameterLocation.Header,
-                Description = "Chave da Empresa",
+                Description = "Chave da empresa sem caracteres especiais",
                 Required = true,
                 Schema = new OpenApiSchema
                 {
-                    Type = "string",
-                    Description = "Chave da empresa sem caracteres especiais"
+                    Type = "string"
                 }
             });
             
@@ -37,8 +36,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Extensions
                 Required = true,
                 Schema = new OpenApiSchema
                 {
-                    Type = "string",
-                    Description = "Senha da empresa"
+                    Type = "string"
                 }
             });
         }
