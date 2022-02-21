@@ -114,6 +114,8 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             if (string.IsNullOrEmpty(viewModel.SenhaApi))
                 viewModel.SenhaApi = modelNoBanco.SenhaApi;
+            else 
+                viewModel.SenhaEnvioArquivo = await _criptografiaService.Criptografar(viewModel.SenhaEnvioArquivo);
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
             model.SetarEndereco(modelNoBanco.Endereco.Id, viewModel.CEP, viewModel.Estado, viewModel.Cidade,
