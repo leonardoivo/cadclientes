@@ -1,7 +1,6 @@
 using AutoMapper;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
-using MongoDB.Driver;
 using NUnit.Framework;
 using System;
 using Moq;
@@ -15,20 +14,17 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 using Tiradentes.CobrancaAtiva.Domain.Models;
-using Tiradentes.CobrancaAtiva.Api.Controllers;
-using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
 
-namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
+namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
 {
-    public class ConsultaParametroEnvioPorId
+    public class AlterarParametroEnvio
     {
         private CobrancaAtivaDbContext _context;
         private CobrancaAtivaScfDbContext _contextScf;
-        private MongoContext _contextMongo;
         private IParametroEnvioService _service;
         private IOptions<EncryptationConfig> _encryptationConfig;
-        private ParametroEnvioModel _model;
         private IMapper _mapper;
         private Mock<IAlunosInadimplentesRepository> _alunosInadimplentesRepository;
         private Mock<ILoteEnvioRepository> _loteEnvioRepository;
@@ -39,19 +35,19 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
         private TipoTituloModel _CriarTipoTituloModel;
         private CacheServiceRepository _cacheServiceRepository;
         private Mock<HttpMessageHandler> _mockHttpClient;
-
+        private ParametroEnvioModel _model;
 
         [SetUp]
         public void Setup()
         {
             DbContextOptions<CobrancaAtivaDbContext> optionsContext =
                 new DbContextOptionsBuilder<CobrancaAtivaDbContext>()
-                    .UseInMemoryDatabase("TesteConsultarPorID")
+                    .UseInMemoryDatabase("TesteAlterarParametro")
                     .Options;
             
              DbContextOptions<CobrancaAtivaScfDbContext> optionsContextScf =
                 new DbContextOptionsBuilder<CobrancaAtivaScfDbContext>()
-                    .UseInMemoryDatabase("TesteConsultarPorID")
+                    .UseInMemoryDatabase("TesteAlterarParametro")
                     .Options;
        
             _encryptationConfig = Options.Create<EncryptationConfig>(new EncryptationConfig()
@@ -87,9 +83,9 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
 
             services.AddScoped<MongoContext>();
             services.AddDbContext<CobrancaAtivaDbContext>(options =>
-                options.UseInMemoryDatabase("TesteConsultarPorID")); 
+                options.UseInMemoryDatabase("TesteAlterarParametro")); 
             services.AddDbContext<CobrancaAtivaScfDbContext>(options =>
-                options.UseInMemoryDatabase("TesteConsultarPorID"));
+                options.UseInMemoryDatabase("TesteAlterarParametro"));
 
             var serviceProvider = services.BuildServiceProvider();
             serviceProvider.GetService(typeof(CobrancaAtivaDbContext));
@@ -117,7 +113,6 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
             });
 
             _service = new ParametroEnvioService(criptografiaService, repository, geracaoCobrancasRepository, itensGeracaoRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions, arquivoCobrancasRepository);
-
 
             _CriarCursoModel = new CursoModel()
             {
@@ -173,50 +168,47 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
            
             _context.SaveChanges();
 
-            
-
-
-            
             _CriarParametroEnvio = new CriarParametroEnvioViewModel()
             {
-                EmpresaParceiraId = CriarEmpresaParceiraModel.Id,
-                InstituicaoId = CriarInstituicaoModel.Id,
-                ModalidadeId = CriarModalidadeModel.Id,
-                DiaEnvio = 28,
-                Status = true,
-                InadimplenciaInicial = DateTime.Now,
-                InadimplenciaFinal = DateTime.Now,
-                ValidadeInicial = DateTime.Now,
-                ValidadeFinal = DateTime.Now,
-                CursoIds = new int[1]{ _CriarCursoModel.Id },
-                SituacaoAlunoIds = new int[1]{ _CriarSituacaoAlunoModel.Id },
-                TituloAvulsoIds = new int[1]{ _CriarTituloAvulsoModel.Id },
-                TipoTituloIds = new int[1]{ _CriarTipoTituloModel.Id }
+            EmpresaParceiraId = CriarEmpresaParceiraModel.Id,
+            InstituicaoId = CriarInstituicaoModel.Id,
+            ModalidadeId = CriarModalidadeModel.Id,
+            DiaEnvio = 28,
+            Status = true,
+            InadimplenciaInicial = DateTime.Now,
+            InadimplenciaFinal = DateTime.Now,
+            ValidadeInicial = DateTime.Now,
+            ValidadeFinal = DateTime.Now,
+            CursoIds = new int[1]{ _CriarCursoModel.Id },
+            SituacaoAlunoIds = new int[1]{ _CriarSituacaoAlunoModel.Id },
+            TituloAvulsoIds = new int[1]{ _CriarTituloAvulsoModel.Id },
+            TipoTituloIds = new int[1]{ _CriarTipoTituloModel.Id }
             };
 
+            _model = _mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio);
+            _context.ParametroEnvio.Add(_model);
+            _context.SaveChanges();
 
-                _model = _mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio);
-                _context.ParametroEnvio.Add(_model);
-                _context.SaveChanges();
+
+             _context.ChangeTracker.Clear();
 
 
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            GC.SuppressFinalize(this);
         }
 
         [Test]
-        [TestCase(TestName = "Teste Consultar Parametro envio por ID",
-                    Description = "Testando função de busca do CRUD Parametro envio")]
-        public async Task TesteBuscarParametroEnvio()
+        [TestCase(TestName = "Teste Atualizar Parametro envio",
+                    Description = "Testando função de Atualizar do CRUD Parametro envio")]
+        public async Task TesteAlterarParametroEnvio()
         {
+            var Alterar = new AlterarParametroEnvioViewModel()
+            {
+                DiaEnvio = 10,
+                Id = _model.Id
+            };
 
-                var busca = await _service.BuscarPorId(_model.Id);
+            var teste = await _service.Alterar(Alterar);
 
-                Assert.AreEqual(_model.DiaEnvio, busca?.DiaEnvio);
+            Assert.AreEqual(Alterar.DiaEnvio, teste?.DiaEnvio);
         }
     } 
 }
