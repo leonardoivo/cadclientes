@@ -79,7 +79,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 "" + model.Matricula + ", " +
                 "" + model.Periodo + ", " +
                 "" + model.Parcela + ", " +
-                "'" + model.DataVencimento + "', " +
+                "'" + model.DataVencimento.ToString("d") + "', " +
                 "" + model.Valor.ToString().Replace(",", ".") + ", " +
                 "'" + model.Controle + "', " +
                 "" + model.CnpjEmpresaCobranca + ", " +
