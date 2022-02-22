@@ -8,6 +8,7 @@ using Moq;
 using System.Threading.Tasks;
 using Tiradentes.CobrancaAtiva.Application.AutoMapper;
 using Tiradentes.CobrancaAtiva.Application.Configuration;
+using Tiradentes.CobrancaAtiva.Application.QueryParams;
 using Tiradentes.CobrancaAtiva.Domain.Interfaces;
 using Tiradentes.CobrancaAtiva.Infrastructure.Context;
 using Tiradentes.CobrancaAtiva.Infrastructure.Repositories;
@@ -15,17 +16,15 @@ using Tiradentes.CobrancaAtiva.Services.Interfaces;
 using Tiradentes.CobrancaAtiva.Services.Services;
 using Tiradentes.CobrancaAtiva.Application.ViewModels.ParametroEnvio;
 using Tiradentes.CobrancaAtiva.Domain.Models;
-using Tiradentes.CobrancaAtiva.Api.Controllers;
-using System.Net.Http;
 using Microsoft.Extensions.DependencyInjection;
+using System.Net.Http;
 
-namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
+namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvioTestes
 {
-    public class ConsultaParametroEnvioPorId
+    public class EnviarParametroParaConsumer
     {
         private CobrancaAtivaDbContext _context;
         private CobrancaAtivaScfDbContext _contextScf;
-        private MongoContext _contextMongo;
         private IParametroEnvioService _service;
         private IOptions<EncryptationConfig> _encryptationConfig;
         private ParametroEnvioModel _model;
@@ -33,11 +32,9 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
         private Mock<IAlunosInadimplentesRepository> _alunosInadimplentesRepository;
         private Mock<ILoteEnvioRepository> _loteEnvioRepository;
         private CriarParametroEnvioViewModel _CriarParametroEnvio;
-        private CursoModel _CriarCursoModel;
-        private TituloAvulsoModel _CriarTituloAvulsoModel;
-        private SituacaoAlunoModel _CriarSituacaoAlunoModel;
-        private TipoTituloModel _CriarTipoTituloModel;
-        private CacheServiceRepository _cacheServiceRepository;
+        private InstituicaoModel _CriarInstituicaoModel;
+
+         private CacheServiceRepository _cacheServiceRepository;
         private Mock<HttpMessageHandler> _mockHttpClient;
 
 
@@ -118,35 +115,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
 
             _service = new ParametroEnvioService(criptografiaService, repository, geracaoCobrancasRepository, itensGeracaoRepository, _alunosInadimplentesRepository.Object, _loteEnvioRepository.Object, conflitoRepository, mapper, rabbitOptions, arquivoCobrancasRepository);
 
-
-            _CriarCursoModel = new CursoModel()
-            {
-               Descricao = "aaa",
-               ModalidadeId = 1,
-               InstituicaoId = 10,
-               CodigoMagister = "bbb"
-            };
-            
-            _CriarTituloAvulsoModel = new TituloAvulsoModel()
-            {
-                CodigoGT = 1,
-                Descricao = "aaa",
-            };
-
-            _CriarSituacaoAlunoModel = new SituacaoAlunoModel()
-            {
-                Situacao = "aaa",
-                CodigoMagister = "bbb",
-            };
-
-            _CriarTipoTituloModel = new TipoTituloModel()
-            {
-                TipoTitulo = "aaa",
-                CodigoMagister = "bbb"
-            };
-
-            
-            var CriarInstituicaoModel = new InstituicaoModel()
+            _CriarInstituicaoModel = new InstituicaoModel()
             {
                 Instituicao = "teste2"
             };
@@ -161,26 +130,44 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
                 ChaveIntegracaoSap = "teste2"
             };
 
-            
-            
-            _context.Curso.Add(_CriarCursoModel);
-            _context.TituloAvulso.Add(_CriarTituloAvulsoModel);
-            _context.SituacaoAluno.Add(_CriarSituacaoAlunoModel);
-            _context.TipoTitulo.Add(_CriarTipoTituloModel);
-            _context.Instituicao.Add(CriarInstituicaoModel);
+            var CriarCursosModel = new CursoModel()
+            {
+                Descricao = "teste3",
+                CodigoMagister = "aaa"
+            };
+
+            var CriarTituloAvulsoModel = new TituloAvulsoModel()
+            {
+                CodigoGT = 1,
+                Descricao = "aaa",
+            };
+
+            var CriarSituacaoAlunoModel = new SituacaoAlunoModel()
+            {
+                Situacao = "aaa",
+                CodigoMagister = "aaa",
+            };
+
+            var CriarTipoTituloModel = new TipoTituloModel()
+            {
+                TipoTitulo = "aaa",
+                CodigoMagister = "aaa"
+            };
+
+            _context.Instituicao.Add(_CriarInstituicaoModel);
             _context.Modalidade.Add(CriarModalidadeModel);
             _context.EmpresaParceira.Add(CriarEmpresaParceiraModel);
+            _context.Curso.Add(CriarCursosModel);
+            _context.TituloAvulso.Add(CriarTituloAvulsoModel);
+            _context.SituacaoAluno.Add(CriarSituacaoAlunoModel);
+            _context.TipoTitulo.Add(CriarTipoTituloModel);
            
             _context.SaveChanges();
 
-            
-
-
-            
             _CriarParametroEnvio = new CriarParametroEnvioViewModel()
             {
-                EmpresaParceiraId = CriarEmpresaParceiraModel.Id,
-                InstituicaoId = CriarInstituicaoModel.Id,
+                EmpresaParceiraId = 1,
+                InstituicaoId = _CriarInstituicaoModel.Id,
                 ModalidadeId = CriarModalidadeModel.Id,
                 DiaEnvio = 28,
                 Status = true,
@@ -188,35 +175,26 @@ namespace Tiradentes.CobrancaAtiva.Unit.ParametroEnvio
                 InadimplenciaFinal = DateTime.Now,
                 ValidadeInicial = DateTime.Now,
                 ValidadeFinal = DateTime.Now,
-                CursoIds = new int[1]{ _CriarCursoModel.Id },
-                SituacaoAlunoIds = new int[1]{ _CriarSituacaoAlunoModel.Id },
-                TituloAvulsoIds = new int[1]{ _CriarTituloAvulsoModel.Id },
-                TipoTituloIds = new int[1]{ _CriarTipoTituloModel.Id }
+                CursoIds = new int[1]{ CriarCursosModel.Id },
+                SituacaoAlunoIds = new int[1]{ CriarSituacaoAlunoModel.Id },
+                TituloAvulsoIds = new int[1]{ CriarTituloAvulsoModel.Id },
+                TipoTituloIds = new int[1]{ CriarTipoTituloModel.Id }
             };
 
-
+            
                 _model = _mapper.Map<ParametroEnvioModel>(_CriarParametroEnvio);
                 _context.ParametroEnvio.Add(_model);
                 _context.SaveChanges();
 
-
-        }
-
-        [TearDown]
-        public void TearDown()
-        {
-            GC.SuppressFinalize(this);
         }
 
         [Test]
-        [TestCase(TestName = "Teste Consultar Parametro envio por ID",
-                    Description = "Testando função de busca do CRUD Parametro envio")]
-        public async Task TesteBuscarParametroEnvio()
+        [TestCase(TestName = "Teste Enviar para consumer Parametro envio",
+                    Description = "Testando função de Enviar Para Consumer do CRUD Parametro envio")]
+        public async Task TesteEnviarParaConsumerParametroEnvio()
         {
-
-                var busca = await _service.BuscarPorId(_model.Id);
-
-                Assert.AreEqual(_model.DiaEnvio, busca?.DiaEnvio);
-        }
+            await _service.EnviarParametroParaConsumer(_model.Id);
+            Assert.Pass();
+        }       
     } 
 }
