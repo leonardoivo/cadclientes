@@ -83,8 +83,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 }
                 catch (Exception)
                 {
-
-                    throw;
+                    
                 }
             }
         }

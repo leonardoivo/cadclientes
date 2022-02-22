@@ -25,7 +25,8 @@ namespace Tiradentes.CobrancaAtiva.Api.Workers
             {
                 if (DateTime.Now.Hour == 6 && DateTime.Now.Minute == 00)
                 {
-                    Process();                    
+                    Process();
+                    await Task.Delay(TimeSpan.FromHours(23), stoppingToken);
                 }
                 
             }

@@ -74,6 +74,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
         private async Task GerenciaArquivos(IList<RespostaViewModel> arquivos, string cnpjEmpresa, int ies)
         {
             var dataBaixa = DateTime.MinValue;
+
             try
             {
                 var errosContabilizados = new List<ErroParcelaViewModel>();
