@@ -68,7 +68,27 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             _criptografiaService = criptografiaService;
             _arquivosGeracaoRepository = arquivosGeracaoRepository;
         }
+        
+        public async Task EnviarParametrosAgendadosConsumer()
+        {
+            var parametrosEnvio = await _repositorio.BuscarApenasParametroEnvio();
 
+            var parametrosExecucaoDoDia = parametrosEnvio.Where(X => X.Status && X.DiaEnvio == DateTime.Now.Day);
+
+            foreach (var parametro in parametrosExecucaoDoDia)
+            {
+                try
+                {
+                    await EnviarParametroParaConsumer(parametro.Id);
+                }
+                catch (Exception)
+                {
+
+                    throw;
+                }
+            }
+        }
+        
         public async Task<ViewModelPaginada<BuscaParametroEnvioViewModel>> Buscar(
             ConsultaParametroEnvioQueryParam queryParam)
         {
@@ -236,7 +256,55 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var filenameTemplate = "{0}_{1}_{2}_{3}_{4}_PARTE{5}de{6}.csv";
 
             var cabecalhoCsv =
-                "\"CNPJ EMPRESA COBRANÇA\",\"MODALIDADE DE ENSINO\",\"DESCRIÇÃO DA MODALIDADE DE ENSINO\",\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\",\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\",\"IDENTIFICADOR CURSO\",\"DESCRIÇÃO CURSO\",\"TIPO TITULO\",\"DESCRIÇÃO TIPO TÍTULO\",\"TIPO TITULO AVULSO\",\"DESCRICAO INADIMPLENCIA\",\"SITUACAO ALUNO\",\"CPF ALUNO\",\"MATRICULA\",\"PERIODO\",\"IDENTIFICADOR DO ALUNO\",\"IDENTIFICADOR DA PESSOA\",\"NOME\",\"ENDERECO\",\"BAIRRO\",\"CIDADE\",\"CEP\",\"UF\",\"DDD RES\",\"TELEFONE RES\",\"DDD CELULAR\",\"TELEFONE CELULAR\",\"EMAIL DO ALUNO\",\"NUMERO CONTRATO\",\"PAGAMENTO A VISTA - DESCONTO NA MULTA E JUROS\",\"PAGAMENTO A VISTA - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - DESCONTO NA MULTA E JUROS\",\"CARTÃO - DESCONTO NO VALOR PRINCIPAL\",\"CARTÃO - QUANTIDADE DE PARCELAS\",\"BOLETO - DESCONTO NA MULTA E JUROS\",\"BOLETO - DESCONTO NO VALOR PRINCIPAL\",\"BOLETO - ENTRADA\",\"BOLETO - QUANTIDADE DE PARCELAS\",\"DESCONTO INCONDICIONAL\",\"VALIDADE DA NEGOCIAÇÃO\",\"NUMERO DA PARCELA\",\"DATA VENCIMENTO\",\"VALOR PARCELA\",\"OBSERVACAO\",\"CODIGO DA CAMPUS IES\",\"NOME DA CAMPUS IES\",\"FILIACAO - MAE\",\"FILIACAO - PAI\",\"NUMERO DO RG\"";
+                "\"CNPJ EMPRESA COBRANÇA\"," +
+                "\"MODALIDADE DE ENSINO\"," +
+                "\"DESCRIÇÃO DA MODALIDADE DE ENSINO\"," +
+                "\"IDENTIFICADOR INSTITUIÇÃO DE ENSINO\"," +
+                "\"DESCRIÇÃO INSTIUIÇÃO DE ENSINO\"," +
+                "\"IDENTIFICADOR CURSO\"," +
+                "\"DESCRIÇÃO CURSO\"," +
+                "\"TIPO TITULO\"," +
+                "\"DESCRIÇÃO TIPO TÍTULO\"," +
+                "\"TIPO TITULO AVULSO\"," +
+                "\"DESCRICAO INADIMPLENCIA\"," +
+                "\"SITUACAO ALUNO\"," +
+                "\"CPF ALUNO\"," +
+                "\"MATRICULA\"," +
+                "\"PERIODO\"," +
+                "\"IDENTIFICADOR DO ALUNO\"," +
+                "\"IDENTIFICADOR DA PESSOA\"," +
+                "\"NOME\"," +
+                "\"ENDERECO\"," +
+                "\"BAIRRO\"," +
+                "\"CIDADE\"," +
+                "\"CEP\"," +
+                "\"UF\"," +
+                "\"DDD RES\"," +
+                "\"TELEFONE RES\"," +
+                "\"DDD CELULAR\"," +
+                "\"TELEFONE CELULAR\"," +
+                "\"EMAIL DO ALUNO\"," +
+                "\"NUMERO CONTRATO\"," +
+                "\"PAGAMENTO A VISTA - DESCONTO NA MULTA E JUROS\"," + //inicio
+                "\"PAGAMENTO A VISTA - DESCONTO NO VALOR PRINCIPAL\"," +
+                "\"CARTÃO - DESCONTO NA MULTA E JUROS\"," +
+                "\"CARTÃO - DESCONTO NO VALOR PRINCIPAL\"," +
+                "\"CARTÃO - QUANTIDADE DE PARCELAS\"," +
+                "\"BOLETO - DESCONTO NA MULTA E JUROS\"," +
+                "\"BOLETO - DESCONTO NO VALOR PRINCIPAL\"," +
+                "\"BOLETO - ENTRADA\"," +
+                "\"BOLETO - QUANTIDADE DE PARCELAS\"," + //fim
+                "\"DESCONTO INCONDICIONAL\"," +
+                "\"VALIDADE DA NEGOCIAÇÃO\"," +
+                "\"NUMERO DA PARCELA\"," +
+                "\"DATA VENCIMENTO\"," +
+                "\"VALOR PARCELA\"," +
+                "\"OBSERVACAO\"," +
+                "\"CODIGO DA CAMPUS IES\"," +
+                "\"NOME DA CAMPUS IES\"," +
+                "\"FILIACAO - MAE\"," +
+                "\"FILIACAO - PAI\"," +
+                "\"NUMERO DO RG\"";
 
             var dataTemplate =
                 "{0},{1},{2},{3},{4},{5},{6},{7},{8},{9},{10},{11},{12},{13},{14},{15},{16},{17},{18},{19},{20},{21},{22},{23},{24},{25},{26},{27},{28},{29},{30},{31},{32},{33},{34},{35},{36},{37},{38},{39},{40},{41},{42},{43},{44},{45},{46},{47},{48}";
