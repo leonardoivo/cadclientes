@@ -30,7 +30,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Workers
             while (!stoppingToken.IsCancellationRequested);
         }
 
-        private void Process()
+        private async Task Process()
         {
             using (var scope = scopeFactory.CreateScope())
             {
@@ -38,7 +38,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Workers
 
                 try
                 {                    
-                    _service.Gerenciar();
+                   await _service.Gerenciar();
                 }
                 catch (Exception ex)
                 {
