@@ -19,18 +19,22 @@ namespace Tiradentes.CobrancaAtiva.Api.Workers
         }
 
         protected override async Task ExecuteAsync(CancellationToken stoppingToken)
-        {            
+        {
 
-            do
-            {
-                if (DateTime.Now.Hour == 6 && DateTime.Now.Minute == 00)
+            await Task.Run(async () => {
+                do
                 {
-                    Process();
-                    await Task.Delay(TimeSpan.FromHours(23), stoppingToken);
+                    if (DateTime.Now.Hour == 6 && DateTime.Now.Minute == 00)
+                    {
+                        Process();
+                        await Task.Delay(TimeSpan.FromHours(23), stoppingToken);
+                    }
+
+
                 }
-                
-            }
-            while (!stoppingToken.IsCancellationRequested);
+                while (!stoppingToken.IsCancellationRequested);
+            }, stoppingToken);
+            
         }
 
         private void Process()
