@@ -10,5 +10,6 @@ namespace Tiradentes.CobrancaAtiva.Domain.Interfaces
     {
         Task<ModelPaginada<BuscaParametroEnvio>> Buscar(ParametroEnvioQueryParam queryParam);
         Task<BuscaParametroEnvio> BuscarPorIdComRelacionamentos(int id);
+        Task<List<ParametroEnvioModel>> BuscarApenasParametroEnvio();
     }
 }

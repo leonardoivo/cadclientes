@@ -59,6 +59,11 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
             return base.Criar(model);
         }
 
+        public async Task<List<ParametroEnvioModel>> BuscarApenasParametroEnvio()
+        {
+            return await DbSet.AsNoTracking().ToListAsync();
+        }
+
         public async Task<ModelPaginada<BuscaParametroEnvio>> Buscar(ParametroEnvioQueryParam queryParams)
         {
             var listCursoModel = _cache.CursoModel;

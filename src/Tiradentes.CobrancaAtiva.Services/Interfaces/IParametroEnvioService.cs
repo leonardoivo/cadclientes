@@ -18,5 +18,6 @@ namespace Tiradentes.CobrancaAtiva.Services.Interfaces
         Task<ParametroEnvioViewModel> Criar(CriarParametroEnvioViewModel viewModel);
         Task<ParametroEnvioViewModel> Alterar(AlterarParametroEnvioViewModel viewModel);
         Task Deletar(int id);
+        Task EnviarParametrosAgendadosConsumer();
     }
 }
