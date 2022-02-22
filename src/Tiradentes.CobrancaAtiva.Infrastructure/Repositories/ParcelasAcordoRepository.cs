@@ -318,8 +318,8 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
         {
 
 
-            await Db.Database.ExecuteSqlRawAsync(@"insert into scf.obs_reg_pgto_acordo(cnpj_empresa_cobranca,num_acordo,parcela,tpo_pgto,dat_hora,usarname,texto)
-                                                           values( {0},{1},{2},'P',sysdate,sec#_.usuarios_pkg.obter_username,{3} )", cnpjEmpresaCobranca, numAcordo, parcela, texto);
+            await Db.Database.ExecuteSqlRawAsync(@"insert into scf.obs_reg_pgto_acordo(cnpj_empresa_cobranca,num_acordo,parcela,tpo_pgto,dat_hora,username,texto)
+                                                           values( {0},{1},{2},'P',sysdate,sec#_.usuarios_pkg.obter_username,'{3}' )", cnpjEmpresaCobranca, numAcordo, parcela, texto);
 
         }
     }
