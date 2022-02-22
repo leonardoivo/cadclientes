@@ -23,7 +23,7 @@ namespace Tiradentes.CobrancaAtiva.Api.Workers
 
             do
             {
-                //Process();
+                Process();
 
                 await Task.Delay(TimeSpan.FromHours(1), stoppingToken);
             }

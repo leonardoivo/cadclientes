@@ -48,7 +48,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Context
         {
             get
             {
-                return _database.GetCollection<RespostasCollection>("respostas-cobrancas-lucas");
+                return _database.GetCollection<RespostasCollection>("respostas-cobrancas");
             }
         }
     }
