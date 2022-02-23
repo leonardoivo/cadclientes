@@ -343,10 +343,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     arquivo.Parcela,
                     arquivo.PeriodoOutros);
 
-                if (dataEnvio.Date != Convert.ToDateTime(arquivo.DataVencimento).Date)
-                {
-                    throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.DataInconsistente);
-                }
+                // if (dataEnvio.Date != Convert.ToDateTime(arquivo.DataVencimento).Date)
+                // {
+                //     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.DataInconsistente);
+                // }
 
                 if (_parcelaTituloService.ExisteParcela(arquivo.Matricula, arquivo.Periodo, arquivo.Parcela,
                         arquivo.PeriodoOutros))
@@ -439,6 +439,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 });
             }
 
+try
+{
+     
 
             await _itensBaixasTipo2Service.InserirBaixa(arquivo.DataBaixa,
                 arquivo.Matricula,
@@ -453,6 +456,12 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 arquivo.SituacaoAluno,
                 arquivo.TipoInadimplencia,
                 arquivo.PeriodoOutros);
+                }
+catch (System.Exception ex)
+{
+    
+    throw ex;
+}
         }
 
         private async Task ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta,
@@ -502,8 +511,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             try
             {
-                var valorParcelaAcordo =
-                    _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
+                var valorParcelaAcordo = _parcelasAcordoService.ObterValorParcelaAcordo(arquivo.Parcela, arquivo.NumeroAcordo);
 
                 if (valorParcelaAcordo == null)
                 {
@@ -527,9 +535,11 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
                 try
                 {
+var dt = arquivo.DataPagamento != null ? Convert.ToDateTime(arquivo.DataPagamento) : DateTime.MinValue;
+
                     await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(arquivo.Parcela,
                                                                          arquivo.NumeroAcordo,
-                                                                         Convert.ToDateTime(arquivo.DataPagamento != null ? DateTime.ParseExact(arquivo.DataPagamento.ToString(), "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
+                                                                         dt,
                                                                          arquivo.DataBaixa,
                                                                          arquivo.ValorPago,
                                                                          null);
@@ -546,7 +556,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                             await _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: arquivo.NumeroAcordo,
                                                                         matricula: arquivo.Matricula,
                                                                         sistema: arquivo.Sistema,
-                                                                        dataPagamento: Convert.ToDateTime(arquivo.DataPagamento != null ? DateTime.ParseExact(arquivo.DataPagamento.ToString(), "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
+                                                                        dataPagamento: arquivo.DataPagamento != null ? Convert.ToDateTime(arquivo.DataPagamento) : DateTime.MinValue,
                                                                         periodo: arquivo.Periodo,
                                                                         idTitulo: arquivo.IdTitulo,
                                                                         codigoAtividade: arquivo.CodigoAtividade,

@@ -50,6 +50,10 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasColumnName("TIPO_INADIMPLENCIA")
                 .HasColumnType("CHAR(1)");
 
+            builder.Property(ep => ep.SituacaoPagamento)
+                .HasColumnName("STA_PGTO")
+                .HasColumnType("CHAR(1)");
+
             builder.ToTable("PARCELAS_ACORDO", "SCF");
 
         }
