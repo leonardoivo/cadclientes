@@ -42,7 +42,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .HasForeignKey(c => c.EmpresaParceiraId)
                 .HasConstraintName("FK_HONORARIO_COD_EMPRESA");
 
-            builder.ToTable("HONORARIOS");
+            builder.ToTable("HONORARIOS", "APP_COBRANCA");
         }
     }
 }

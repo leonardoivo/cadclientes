@@ -63,7 +63,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             if (!respostas.Any())
                 return;
 
-            var respostasAgrupadas = respostas.GroupBy(a => new {a.CnpjEmpresaCobranca, a.CodigoInstituicaoEnsino});
+            var respostasAgrupadas = respostas.GroupBy(a => new { a.CnpjEmpresaCobranca, a.CodigoInstituicaoEnsino });
 
             foreach (var resp in respostasAgrupadas)
             {
@@ -79,8 +79,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 var errosContabilizados = new List<ErroParcelaViewModel>();
                 try
                 {
-                    dataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S",
-                        JsonSerializer.Serialize(arquivos), cnpjEmpresa, ies);
+                    dataBaixa = await _arquivolayoutService.SalvarLayoutArquivo("S", JsonSerializer.Serialize(arquivos), cnpjEmpresa, ies);
                 }
                 catch (Exception ex)
                 {
@@ -110,8 +109,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                                 await ProcessaBaixaTipo3(dataBaixa, arquivo, errosContabilizados);
                                 break;
                             default:
-                                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(arquivo),
-                                    ErrosBaixaPagamento.ErroInternoServidor, "");
+                                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(arquivo), ErrosBaixaPagamento.ErroInternoServidor, "");
                                 break;
                         }
 
@@ -120,8 +118,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     }
                     catch (Exception ex)
                     {
-                        await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
-                            ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
+                        await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace), ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
                     }
                 }
 
@@ -133,12 +130,9 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     QuantidadeTipo2 = arquivos.Count(A => A.TipoRegistro == 2),
                     QuantidadeTipo3 = arquivos.Count(A => A.TipoRegistro == 3),
 
-                    ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == 1)
-                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-                    ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == 2)
-                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
-                    ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == 3)
-                        .Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
+                    ValorTotalTipo1 = arquivos.Where(A => A.TipoRegistro == 1).Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
+                    ValorTotalTipo2 = arquivos.Where(A => A.TipoRegistro == 2).Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
+                    ValorTotalTipo3 = arquivos.Where(A => A.TipoRegistro == 3).Sum(A => Convert.ToDecimal(A.ValorParcela) / 100),
 
                     QuantidadeErrosTipo1 = errosContabilizados.Count(E => E.Etapa == 1),
                     QuantidadeErrosTipo2 = errosContabilizados.Count(E => E.Etapa == 2),
@@ -147,28 +141,25 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     ValorTotalErrosTipo1 = errosContabilizados.Where(E => E.Etapa == 1).Sum(E => E.ValorParcela),
                     ValorTotalErrosTipo2 = errosContabilizados.Where(E => E.Etapa == 2).Sum(E => E.ValorParcela),
                     ValorTotalErrosTipo3 = errosContabilizados.Where(E => E.Etapa == 3).Sum(E => E.ValorParcela),
-                    UserName = ""
+                    UserName = "APP_COBRANCA"
                 });
             }
             catch (ArgumentNullException ex)
             {
-                var dataErro =
-                    await _arquivolayoutService.SalvarLayoutArquivo("E", "Arquivo ja processado com a data de hoje",
-                        cnpjEmpresa, ies);
-                await _arquivolayoutService.RegistrarErro(dataErro, JsonSerializer.Serialize(ex.StackTrace),
-                    ErrosBaixaPagamento.OutrosErros, ex.Message);
+                var dataErro = await _arquivolayoutService.SalvarLayoutArquivo("E", "Arquivo ja processado com a data de hoje", cnpjEmpresa, ies);
+
+                await _arquivolayoutService.RegistrarErro(dataErro, JsonSerializer.Serialize(ex.StackTrace), ErrosBaixaPagamento.OutrosErros, ex.Message);
             }
             catch (Exception ex)
             {
-                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace),
-                    ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
+                await _arquivolayoutService.RegistrarErro(dataBaixa, JsonSerializer.Serialize(ex.StackTrace), ErrosBaixaPagamento.ErroInternoServidor, ex.Message);
             }
             finally
             {
                 await _arquivolayoutService.AlterarConteudo(dataBaixa, arquivos);
             }
         }
-        
+
         private async Task ProcessaBaixaTipo1(DateTime dataBaixa, RespostaViewModel resposta, List<ErroParcelaViewModel> erros)
         {
             int codErro = 0;
@@ -214,8 +205,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             try
             {
-                if (_parcelasAcordoService.ExisteParcelaAcordo(Convert.ToDecimal(arquivo.Parcela),
-                        Convert.ToDecimal(arquivo.NumeroAcordo)))
+                if (_parcelasAcordoService.ExisteParcelaAcordo(Convert.ToDecimal(arquivo.Parcela), Convert.ToDecimal(arquivo.NumeroAcordo)))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.ParcelaJaCadastrada);
                 }
@@ -251,11 +241,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
             catch (ErroArquivoCobrancaException ex)
             {
-                resposta.Erro = (int) ex.Erro;
-                var idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa,
-                    JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
+                resposta.Erro = (int)ex.Erro;
+                var idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
 
-                codErro = (int) ex.Erro;
+                codErro = (int)ex.Erro;
 
                 erros.Add(new ErroParcelaViewModel()
                 {
@@ -283,8 +272,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             );
         }
 
-        private async Task ProcessaBaixaTipo2(DateTime dataBaixa, RespostaViewModel resposta,
-            List<ErroParcelaViewModel> erros)
+        private async Task ProcessaBaixaTipo2(DateTime dataBaixa, RespostaViewModel resposta, List<ErroParcelaViewModel> erros)
         {
             int codErro = 0;
 
@@ -330,29 +318,21 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
 
             try
             {
-                if (!_matriculaAlunoExisteService.MatriculaAlunoExiste(arquivo.TipoInadimplencia,
-                        arquivo.Sistema,
-                        arquivo.Matricula))
+                if (!_matriculaAlunoExisteService.MatriculaAlunoExiste(arquivo.TipoInadimplencia, arquivo.Sistema, arquivo.Matricula))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.MatriculaInexistente);
                 }
 
-                var dataEnvio = _itensGeracaoService.ObterDataEnvio(arquivo.CnpjEmpresaCobranca,
-                    arquivo.Matricula,
-                    arquivo.Periodo,
-                    arquivo.Parcela,
-                    arquivo.PeriodoOutros);
+                var dataEnvio = _itensGeracaoService.ObterDataEnvio(arquivo.CnpjEmpresaCobranca, arquivo.Matricula, arquivo.Periodo, arquivo.Parcela, arquivo.PeriodoOutros);
 
                 // if (dataEnvio.Date != Convert.ToDateTime(arquivo.DataVencimento).Date)
                 // {
                 //     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.DataInconsistente);
                 // }
 
-                if (_parcelaTituloService.ExisteParcela(arquivo.Matricula, arquivo.Periodo, arquivo.Parcela,
-                        arquivo.PeriodoOutros))
+                if (_parcelaTituloService.ExisteParcela(arquivo.Matricula, arquivo.Periodo, arquivo.Parcela, arquivo.PeriodoOutros))
                 {
-                    throw new ErroArquivoCobrancaException(ErrosBaixaPagamento
-                        .ParcelaEnviadaAnteriormentePelaEmpresaCobranca);
+                    throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.ParcelaEnviadaAnteriormentePelaEmpresaCobranca);
                 }
 
                 if (_parcelaPagaAlunoInstituicao.ParcelaPagaInstituicao(tipoInadimplencia: arquivo.TipoInadimplencia,
@@ -373,11 +353,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.ParcelaPagaInstituicao);
                 }
 
-                if (!_itensGeracaoService.ExisteMatricula(arquivo.CnpjEmpresaCobranca,
-                        arquivo.Matricula,
-                        arquivo.Periodo,
-                        arquivo.Parcela,
-                        arquivo.PeriodoOutros))
+                if (!_itensGeracaoService.ExisteMatricula(arquivo.CnpjEmpresaCobranca, arquivo.Matricula, arquivo.Periodo, arquivo.Parcela, arquivo.PeriodoOutros))
                 {
                     throw new ErroArquivoCobrancaException(ErrosBaixaPagamento.GeracaoInconsistente);
                 }
@@ -386,8 +362,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 {
                     await _acordoCobrancaService.AtualizarMatriculaAcordo(arquivo.Matricula, arquivo.NumeroAcordo);
 
-                    await _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, arquivo.NumeroAcordo,
-                        arquivo.Matricula);
+                    await _itensBaixasTipo1Service.AtualizarMatricula(arquivo.DataBaixa, arquivo.NumeroAcordo, arquivo.Matricula);
                 }
 
                 await _parcelaTituloService.InserirParcela(arquivo.NumeroAcordo,
@@ -408,7 +383,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                     await _parcelasAcordoService.QuitarParcelasAcordo(numeroAcordo: arquivo.NumeroAcordo,
                                                                 matricula: arquivo.Matricula,
                                                                 sistema: arquivo.Sistema,
-                                                                dataPagamento: Convert.ToDateTime(arquivo.DataPagamento != null ? DateTime.ParseExact(arquivo.DataPagamento.ToString(), "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
+                                                                dataPagamento: arquivo.DataPagamento != null ? Convert.ToDateTime(arquivo.DataPagamento) : DateTime.MinValue,
                                                                 periodo: arquivo.Periodo,
                                                                 idTitulo: arquivo.IdTitulo,
                                                                 codigoAtividade: arquivo.CodigoAtividade,
@@ -424,11 +399,10 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
             catch (ErroArquivoCobrancaException ex)
             {
-                resposta.Erro = (int) ex.Erro;
-                var idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa,
-                    JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
+                resposta.Erro = (int)ex.Erro;
+                var idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa, JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
 
-                codErro = (int) ex.Erro;
+                codErro = (int)ex.Erro;
 
                 erros.Add(new ErroParcelaViewModel()
                 {
@@ -439,33 +413,30 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
                 });
             }
 
-try
-{
-     
+            try
+            {
+                await _itensBaixasTipo2Service.InserirBaixa(arquivo.DataBaixa,
+                    arquivo.Matricula,
+                    arquivo.NumeroAcordo,
+                    arquivo.Parcela,
+                    arquivo.Periodo,
+                    arquivo.DataVencimento,
+                    arquivo.ValorParcela,
+                    codErro,
+                    arquivo.CnpjEmpresaCobranca,
+                    arquivo.Sistema,
+                    arquivo.SituacaoAluno,
+                    arquivo.TipoInadimplencia,
+                    arquivo.PeriodoOutros);
+            }
+            catch (System.Exception ex)
+            {
 
-            await _itensBaixasTipo2Service.InserirBaixa(arquivo.DataBaixa,
-                arquivo.Matricula,
-                arquivo.NumeroAcordo,
-                arquivo.Parcela,
-                arquivo.Periodo,
-                arquivo.DataVencimento,
-                arquivo.ValorPago,
-                codErro,
-                arquivo.CnpjEmpresaCobranca,
-                arquivo.Sistema,
-                arquivo.SituacaoAluno,
-                arquivo.TipoInadimplencia,
-                arquivo.PeriodoOutros);
-                }
-catch (System.Exception ex)
-{
-    
-    throw ex;
-}
+                throw ex;
+            }
         }
 
-        private async Task ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta,
-            List<ErroParcelaViewModel> erros)
+        private async Task ProcessaBaixaTipo3(DateTime dataBaixa, RespostaViewModel resposta, List<ErroParcelaViewModel> erros)
         {
             int codErro = 0;
 
@@ -535,11 +506,9 @@ catch (System.Exception ex)
 
                 try
                 {
-var dt = arquivo.DataPagamento != null ? Convert.ToDateTime(arquivo.DataPagamento) : DateTime.MinValue;
-
                     await _parcelasAcordoService.AtualizaPagamentoParcelaAcordo(arquivo.Parcela,
                                                                          arquivo.NumeroAcordo,
-                                                                         dt,
+                                                                         arquivo.DataPagamento != null ? Convert.ToDateTime(arquivo.DataPagamento) : DateTime.MinValue,
                                                                          arquivo.DataBaixa,
                                                                          arquivo.ValorPago,
                                                                          null);
@@ -586,11 +555,11 @@ var dt = arquivo.DataPagamento != null ? Convert.ToDateTime(arquivo.DataPagament
             }
             catch (ErroArquivoCobrancaException ex)
             {
-                resposta.Erro = (int) ex.Erro;
+                resposta.Erro = (int)ex.Erro;
                 var idErroLayout = await _arquivolayoutService.RegistrarErro(arquivo.DataBaixa,
                     JsonSerializer.Serialize(resposta), ex.Erro, ex.Message);
 
-                codErro = (int) ex.Erro;
+                codErro = (int)ex.Erro;
 
                 erros.Add(new ErroParcelaViewModel()
                 {
@@ -605,7 +574,7 @@ var dt = arquivo.DataPagamento != null ? Convert.ToDateTime(arquivo.DataPagament
                                                   arquivo.Matricula,
                                                   arquivo.NumeroAcordo,
                                                   arquivo.Parcela,
-                                                  Convert.ToDateTime(arquivo.DataPagamento != null ? DateTime.ParseExact(arquivo.DataPagamento.ToString(), "ddMMyyyy", CultureInfo.InvariantCulture) : "01-01-0001"),
+                                                  arquivo.DataPagamento != null ? Convert.ToDateTime(arquivo.DataPagamento) : DateTime.MinValue,
                                                   arquivo.ValorPago,
                                                   codErro,
                                                   arquivo.CnpjEmpresaCobranca.ToString(),
@@ -614,6 +583,5 @@ var dt = arquivo.DataPagamento != null ? Convert.ToDateTime(arquivo.DataPagament
                                                   arquivo.TipoInadimplencia,
                                                   arquivo.TipoPagamento);
         }
-
     }
 }

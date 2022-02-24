@@ -70,6 +70,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             model.TotalTipo1 = baixasCobrancas.ValorTotalTipo1;
             model.TotalTipo2 = baixasCobrancas.ValorTotalTipo2;
             model.TotalTipo3 = baixasCobrancas.ValorTotalTipo3;
+            model.UserName = baixasCobrancas.UserName;
 
             _baixasCobrancasRepository.HabilitarAlteracaoBaixaCobranca(true);
 

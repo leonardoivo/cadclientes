@@ -27,7 +27,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .WithMany(e => e.RegraNegociacaoCurso)
                 .HasForeignKey(c => c.RegraNegociacaoId);
 
-            builder.ToTable("REGRA_NEGOCIACAO_CURSO");
+            builder.ToTable("REGRA_NEGOCIACAO_CURSO", "APP_COBRANCA");
         }
     }
 }
