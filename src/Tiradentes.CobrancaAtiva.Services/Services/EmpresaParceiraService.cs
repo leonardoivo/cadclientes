@@ -108,14 +108,14 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             }
 
             await ValidaCnpj(viewModel.CNPJ, viewModel.Id);
-            if (viewModel.SenhaEnvioArquivo != null)
+            if (viewModel.SenhaEnvioArquivo != null && !viewModel.SenhaEnvioArquivo.Equals(modelNoBanco.SenhaEnvioArquivo))
             {
                 viewModel.SenhaEnvioArquivo = await _criptografiaService.Criptografar(viewModel.SenhaEnvioArquivo);
             }
 
             if (string.IsNullOrEmpty(viewModel.SenhaApi))
                 viewModel.SenhaApi = modelNoBanco.SenhaApi;
-            else 
+            else
                 viewModel.SenhaApi = await _criptografiaService.Criptografar(viewModel.SenhaApi);
 
             var model = _map.Map<EmpresaParceiraModel>(viewModel);
@@ -141,7 +141,7 @@ namespace Tiradentes.CobrancaAtiva.Services.Services
             var CnpjCadastrado = await _repositorio.VerificaCnpjJaCadastrado(cnpj, id);
 
             if (CnpjCadastrado)
-                throw CustomException.BadRequest(JsonSerializer.Serialize(new {erro = "CNPJ já cadastrado"}));
+                throw CustomException.BadRequest(JsonSerializer.Serialize(new { erro = "CNPJ já cadastrado" }));
         }
 
         public void Dispose()
