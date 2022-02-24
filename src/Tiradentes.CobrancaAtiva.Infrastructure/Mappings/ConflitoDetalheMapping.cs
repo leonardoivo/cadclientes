@@ -41,7 +41,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .WithMany(cd => cd.ConflitoDetalhes)
                 .HasForeignKey(cd => cd.ConflitoId);
 
-            builder.ToTable("CONFLITOS_DETALHES");
+            builder.ToTable("CONFLITOS_DETALHES", "APP_COBRANCA");
         }
     }
 }

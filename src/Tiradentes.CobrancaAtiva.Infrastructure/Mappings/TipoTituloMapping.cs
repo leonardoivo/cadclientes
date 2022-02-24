@@ -22,7 +22,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasMany(c => c.RegraNegociacaoTipoTitulo)
                .WithOne(c => c.TipoTitulo);
 
-            builder.ToTable("TIPO_TITULOS");
+            builder.ToTable("TIPO_TITULOS", "APP_COBRANCA");
         }
     }
 }

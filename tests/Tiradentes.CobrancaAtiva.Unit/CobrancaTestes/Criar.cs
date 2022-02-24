@@ -106,7 +106,7 @@ namespace Tiradentes.CobrancaAtiva.Unit.CobrancaTestes
                 ChaveInadimplencia = "ChaveInadimplencia",
                 CodigoInstituicaoEnsino = 1,
                 Curso = 1,
-                CPF = 34567809811,
+                CPF = "34567809811",
                 NomeAluno = "Aluno Teste",
                 Matricula = 1,
                 NumeroAcordo = 1,

@@ -39,7 +39,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .WithMany(e => e.ContaBancarias)
                 .HasForeignKey(e => e.BancoId);
 
-            builder.ToTable("EMPRESAS_CONTAS_BANCARIAS");
+            builder.ToTable("EMPRESAS_CONTAS_BANCARIAS", "APP_COBRANCA");
         }
     }
 }

@@ -14,7 +14,7 @@ namespace Tiradentes.CobrancaAtiva.Application.ViewModels.Cobranca
         public string ChaveInadimplencia { get; set; }
         public int CodigoInstituicaoEnsino { get; set; }
         public int? Curso { get; set; }
-        public Int64 CPF { get; set; }
+        public string CPF { get; set; }
         public string NomeAluno { get; set; }
         public Int64 Matricula { get; set; }
         public Int64 NumeroAcordo { get; set; }

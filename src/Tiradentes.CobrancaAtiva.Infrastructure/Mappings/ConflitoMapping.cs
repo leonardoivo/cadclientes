@@ -34,7 +34,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.CPF)
               .HasColumnName("CPF");
 
-            builder.ToTable("CONFLITOS");
+            builder.ToTable("CONFLITOS", "APP_COBRANCA");
         }
     }
 }

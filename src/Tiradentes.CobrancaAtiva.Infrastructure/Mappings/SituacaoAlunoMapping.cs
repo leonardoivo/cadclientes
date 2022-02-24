@@ -22,7 +22,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.HasMany(c => c.RegraNegociacaoSituacaoAluno)
                .WithOne(s => s.SituacaoAluno);
 
-            builder.ToTable("SITUACOES_ALUNO");
+            builder.ToTable("SITUACOES_ALUNO", "APP_COBRANCA");
         }
     }
 }

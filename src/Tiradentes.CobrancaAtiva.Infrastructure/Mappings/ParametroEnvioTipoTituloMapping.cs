@@ -27,7 +27,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
                 .WithMany(e => e.ParametroEnvioTipoTitulo)
                 .HasForeignKey(c => c.ParametroEnvioId);
 
-            builder.ToTable("PARAMETRO_ENVIO_TIPO_TITULO");
+            builder.ToTable("PARAMETRO_ENVIO_TIPO_TITULO", "APP_COBRANCA");
         }
     }
 }

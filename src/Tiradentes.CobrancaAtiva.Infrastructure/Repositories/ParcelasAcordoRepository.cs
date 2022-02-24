@@ -149,6 +149,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
                 Sistema = sistema,
                 CnpjEmpresaCobranca = cnpjEmpresaCobranca,
                 TipoInadimplencia = tipoInadimplencia,
+                SituacaoPagamento = "N"
             });
 
             HabilitarAlteracaoParcelasAcordo(false);
@@ -193,7 +194,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Repositories
 
 
                         await Db.Database.ExecuteSqlRawAsync(@"insert into sca.obs_reg_pgto( ano, semestre, idt_alu, parcela, tpo_pgto, dat_hora, username, texto )
-                                                      values( {0}, {1}, {2}, {3}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, Regularização automática através do processamento da baixa da empresa de cobrança' );", periodo.ToString().Substring(0, 4), semestre, idAluno, parcela.Parcela);
+                                                      values( {0}, {1}, {2}, {3}, 'P', sysdate, sec#_.usuarios_pkg.obter_username, 'Regularização automática através do processamento da baixa da empresa de cobrança' );", periodo.ToString().Substring(0, 4), semestre, idAluno, parcela.Parcela);
                     }
                     else if (parcela.Sistema == "E")
                     {

@@ -19,7 +19,7 @@ namespace Tiradentes.CobrancaAtiva.Infrastructure.Mappings
             builder.Property(ep => ep.Numeral)
              .HasColumnName("NUMERAL_SEMESTRE");
 
-            builder.ToTable("SEMESTRES");
+            builder.ToTable("SEMESTRES", "APP_COBRANCA");
         }
     }
 }
