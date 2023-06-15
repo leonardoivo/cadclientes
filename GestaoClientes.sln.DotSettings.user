@@ -1,0 +1,9 @@
+﻿<wpf:ResourceDictionary xml:space="preserve" xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml" xmlns:s="clr-namespace:System;assembly=mscorlib" xmlns:ss="urn:shemas-jetbrains-com:settings-storage-xaml" xmlns:wpf="http://schemas.microsoft.com/winfx/2006/xaml/presentation">
+	<s:String x:Key="/Default/Environment/UnitTesting/UnitTestSessionStore/Sessions/=120c6d7d_002Df94b_002D45dd_002D87b8_002D56862d94cadf/@EntryIndexedValue">&lt;SessionState ContinuousTestingMode="0" IsActive="True" Name="TesteBuscarPorIdComResultado" xmlns="urn:schemas-jetbrains-com:jetbrains-ut-session"&gt;&#xD;
+  &lt;TestAncestor&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::6C805817-66E4-4A21-B8BF-6E1C7F19A8AE::net5.0::GestaoColaboradores.Unit.EmpresaParceiraTestes.ConsultaEmpresaParceiraPorId.TesteBuscarPorIdComResultado&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::6C805817-66E4-4A21-B8BF-6E1C7F19A8AE::net5.0::GestaoColaboradores.Unit.EmpresaParceiraTestes.ConsultaEmpresaParceiraPorId.TesteBuscarPorId&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::6C805817-66E4-4A21-B8BF-6E1C7F19A8AE::net5.0::GestaoColaboradores.Unit.EmpresaParceiraTestes.CadastraEmpresaParceira&lt;/TestId&gt;&#xD;
+    &lt;TestId&gt;NUnit3x::6C805817-66E4-4A21-B8BF-6E1C7F19A8AE::net5.0::GestaoColaboradores.Unit.EmpresaParceiraTestes.AtualizarEmpresaParceira&lt;/TestId&gt;&#xD;
+  &lt;/TestAncestor&gt;&#xD;
+&lt;/SessionState&gt;</s:String></wpf:ResourceDictionary>
